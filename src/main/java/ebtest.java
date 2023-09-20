@@ -1,6 +1,6 @@
 
 public class ebtest {
-	String ebddd;
+	String ebddsd;
 	String e;
 	
 
