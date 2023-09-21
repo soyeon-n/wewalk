@@ -1,0 +1,40 @@
+<!-- 템플릿 상속 -->
+<html layout:decorate="~{layout}">
+<meta charset="UTF-8">
+
+<div layout:fragment="content" class="container">
+
+	<h5 class="my-3 border-bottom pb-2">질문 등록</h5>
+	
+	<!-- 같은 주소지만 해당 폼에서 섭밋하면 포스트방식으로 감 -->
+	<!-- th:object를 통해 폼을 다시 한 번 감싸줌 -> 버튼을 클릭하면 questionForm으로 subject와 content를 가져가서 검증 -->
+	<!-- action을 통해 Security가 위변조 데이터를 감지할 수 있도록 csrf 히든 데이터를 만들어줌 -->
+	<!-- action이 있으면 수정되는 것이 아니라 계속해서 생성되므로 지워야 함 -->
+	<form th:object="${questionForm}" method="post">
+	
+		<!-- html 보안 코드 -->
+		<input type="hidden" th:name="${_csrf.parameterName}"
+			th:value="${_csrf.token}"/>
+		
+		
+		<!-- 에러 메시지 -->
+		<!-- 공용 템플릿 : form_errors.html로 가서 formErrorsFragment를 불러와라 -->
+		<div th:replace="form_errors :: formErrorsFragment"></div>
+	
+		<div class="mb-3">
+			<label for="subject" class="form-label">제목</label>
+			<input type="text" th:field="*{subject}" class="form-control"/>
+		</div>
+		
+		<div class="mb-3">
+			<label for="content" class="form-label">내용</label>
+			<textarea rows="10" th:field="*{content}" class="form-control"></textarea>
+		</div>
+	
+		<input type="submit" value="저장하기" class="btn btn-primary my-2"/>
+		
+	</form>
+
+</div>
+
+</html>
