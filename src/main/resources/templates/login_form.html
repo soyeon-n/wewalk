@@ -30,6 +30,31 @@
 			
 		<button type="submit" class="btn btn-primary">로그인</button>
 		
+		<a href="/oauth2/authorization/google">
+			<img th:src="@{/images/google.png}"/>
+		</a>
+		
+		<br/>
+		
+		<a href="/oauth2/authorization/kakao">
+			<img th:src="@{/images/kakao.png}"/>
+		</a>
+		
+		<br/>
+		
+		<a href="/oauth2/authorization/naver">
+			<img th:src="@{/images/naver.png}"/>
+		</a>
+		
+		<br/><br/>
+		
+		이름 : <b th:text="${name}"></b><br/>
+		이메일 : <b th:text="${email}"></b><br/>
+		프로필 사진 : <p><img th:src="@{${picture}}" width="200" height="200"/></p>
+		
+		<br/><br/>
+		
+		<a href="/logout">logout</a>
 	</form>
 </div>
 
