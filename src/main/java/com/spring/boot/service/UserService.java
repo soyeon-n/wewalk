@@ -6,9 +6,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.exe.board.DataNotFoundException;
-import com.spring.boot.user.SiteUser;
-import com.spring.boot.user.UserRepository;
+import com.spring.boot.config.DataNotFoundException;
+import com.spring.boot.dao.UserRepository;
+import com.spring.boot.model.SiteUser;
 
 import lombok.RequiredArgsConstructor;
 
@@ -18,10 +18,9 @@ public class UserService {
 
 	private final UserRepository userRepository;
 	
-	//SecurityConfig¿¡¼­ @BeanÀ¸·Î ¸Ş¼Òµå¸¦ Å¬·¡½ºÈ­ ½ÃÄ×À¸¹Ç·Î DI µÊ
 	private final PasswordEncoder passwordEncoder;
 	
-	//id »ı¼º ¸Ş¼Òµå
+	//id ìƒì„± ë©”ì†Œë“œ
 	public SiteUser create(String userName, String email, String password) {
 		
 		SiteUser user = new SiteUser();
@@ -29,13 +28,13 @@ public class UserService {
 		user.setUserName(userName);
 		user.setEmail(email);
 		
-		//ÆĞ½º¿öµå ¾ÏÈ£È­(BCryptÇØ½Ã ÇÔ¼ö) -> SecurityConfig¿¡ °´Ã¼È­µÈ ¸Ş¼Òµå »ı¼º
+		//íŒ¨ìŠ¤ì›Œë“œ ì•”í˜¸í™”(BCryptí•´ì‹œ í•¨ìˆ˜) -> SecurityConfigì— ê°ì²´í™”ëœ ë©”ì†Œë“œ ìƒì„±
 //		BCryptPasswordEncoder passwordEncoder = 
 //				new BCryptPasswordEncoder();
 		
 		user.setPassword(passwordEncoder.encode(password));
 		
-		//È¸¿øÁ¤º¸ db¿¡ ÀúÀå
+		//íšŒì›ì •ë³´ dbì— ì €ì¥
 		userRepository.save(user);
 		
 		return user;

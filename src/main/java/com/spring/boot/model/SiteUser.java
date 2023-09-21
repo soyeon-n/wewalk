@@ -1,4 +1,4 @@
-package com.spring.boot.user;
+package com.spring.boot.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

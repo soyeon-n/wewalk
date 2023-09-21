@@ -1,13 +1,15 @@
-package com.spring.boot.user;
+package com.spring.boot.dao;
 
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import com.spring.boot.model.SiteUser;
+
 public interface UserRepository extends JpaRepository<SiteUser, Long>{
 
-	//»ç¿ëÀÚ Á¤ÀÇ
-	//ÀÔ·ÂÇÑ userNameÀÌ ÀÖ´ÂÁö È®ÀÎÇÏ±â À§ÇÑ ¸Ş¼Òµå
+	//ì‚¬ìš©ì ì •ì˜
+	//ì…ë ¥í•œ userNameì´ ìˆëŠ”ì§€ í™•ì¸í•˜ê¸° ìœ„í•œ ë©”ì†Œë“œ
 	Optional<SiteUser> findByUserName(String userName);
 	
 }

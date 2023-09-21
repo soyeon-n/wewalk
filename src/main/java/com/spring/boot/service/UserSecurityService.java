@@ -1,4 +1,4 @@
-package com.spring.boot.user;
+package com.spring.boot.service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,24 +12,29 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.spring.boot.dao.UserRepository;
+import com.spring.boot.model.SiteUser;
+import com.spring.boot.model.UserRole;
+
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
 public class UserSecurityService implements UserDetailsService{
 
+	//DB
 	private final UserRepository userRepository;
 
-	//»ç¿ëÀÚ ¸íÀ¸·Î ºñ¹Ğ¹øÈ£¸¦ Á¶È¸ÇÏ¿© returnÇÏ´Â ¸Ş¼Òµå
+	//ì‚¬ìš©ì ëª…ìœ¼ë¡œ ë¹„ë°€ë²ˆí˜¸ë¥¼ ì¡°íšŒí•˜ì—¬ returní•˜ëŠ” ë©”ì†Œë“œ
 	@Override
 	public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
 
-		//»ç¿ëÀÚ¸íÀ¸·Î SiteUser °´Ã¼¸¦ Á¶È¸
+		//ì‚¬ìš©ìëª…ìœ¼ë¡œ SiteUser ê°ì²´ë¥¼ ì¡°íšŒ
 		Optional<SiteUser> searchUser = userRepository.findByUserName(userName);
 		
-		//»ç¿ëÀÚ¸í¿¡ ÇØ´çÇÏ´Â µ¥ÀÌÅÍ°¡ ¾øÀ» °æ¿ì
+		//ì‚¬ìš©ìëª…ì— í•´ë‹¹í•˜ëŠ” ë°ì´í„°ê°€ ì—†ì„ ê²½ìš°
 		if(!searchUser.isPresent()) {
-			throw new UsernameNotFoundException("»ç¿ëÀÚ¸¦ Ã£À» ¼ö ¾ø½À´Ï´Ù");
+			throw new UsernameNotFoundException("ì‚¬ìš©ìë¥¼ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤");
 		}
 		
 		SiteUser siteUser = searchUser.get();
@@ -37,7 +42,7 @@ public class UserSecurityService implements UserDetailsService{
 		List<GrantedAuthority> authorities = 
 				new ArrayList<GrantedAuthority>();
 		
-		//»ç¿ëÀÚ¸íÀÌ "admin"ÀÎ °æ¿ì ADMIN ±ÇÇÑÀ» ºÎ¿©ÇÏ°í ±× ¿Ü¿¡´Â ÀÏ¹İ »ç¿ëÀÚ ±ÇÇÑ ºÎ¿©
+		//ì‚¬ìš©ìëª…ì´ "admin"ì¸ ê²½ìš° ADMIN ê¶Œí•œì„ ë¶€ì—¬í•˜ê³  ê·¸ ì™¸ì—ëŠ” ì¼ë°˜ ì‚¬ìš©ì ê¶Œí•œ ë¶€ì—¬
 		if("admin".equals(userName)) {
 			authorities.add(new SimpleGrantedAuthority(UserRole.ADMIN.getValue()));
 		}else {
@@ -45,7 +50,7 @@ public class UserSecurityService implements UserDetailsService{
 					new SimpleGrantedAuthority(UserRole.USER.getValue()));
 		}
 		
-		//»ç¿ëÀÚ¸í, ºñ¹Ğ¹øÈ£, ±ÇÇÑÀ» ÀÔ·ÂÀ¸·Î ½ºÇÁ¸µ SecurityÀÇ User °´Ã¼¸¦ »ı¼ºÇÏ¿© return
+		//ì‚¬ìš©ìëª…, ë¹„ë°€ë²ˆí˜¸, ê¶Œí•œì„ ì…ë ¥ìœ¼ë¡œ ìŠ¤í”„ë§ Securityì˜ User ê°ì²´ë¥¼ ìƒì„±í•˜ì—¬ return
 		return new User(siteUser.getUserName(), 
 				siteUser.getPassword(), authorities);
 
