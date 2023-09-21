@@ -30,7 +30,25 @@ public class MyPage {
 	@Column(name = "USERNAME")
 	private String nickname;
 	
-	@
+	@Column(name = "PASSWORD")
+	private String password;
 	
+	@Column(name = "NAME")
+	private String name;
+	
+	@Column(name = "TEL")
+	private String tel;
+	
+	@Column(name = "PHOTO")
+	private String photo;
+	
+	@Column(name = "MEMBERGRADE")
+	private String membergrade;
+	
+	@Column(name = "PAYMONEY")
+	private String paymoney;
+	
+	@Column(name = "POINT")
+	private String point;
 
 }
