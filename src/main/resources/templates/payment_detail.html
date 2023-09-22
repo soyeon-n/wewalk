@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout}">
+
+<head>
+
+<meta charset="UTF-8">
+<title>결제 페이지</title>
+</head>
+<body>
+<div layout:fragment="content">결제할페이지</div>
+
+	<p>물건종류: <span th:text="${productName}"></span></p>
+    <p>갯수: <span th:text="${count}"></span></p>
+    <p>가격: <span th:text="${price}"></span></p>
+
+</body>
+</html>
