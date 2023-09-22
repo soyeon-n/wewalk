@@ -1,8 +1,11 @@
 package com.spring.boot.dto;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -15,14 +18,13 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "USER")
-public class MyPage {
+public class MyPage implements Serializable {
 	
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID")
 	private String id;
 	
-	@Id
 	@Column(name = "EMAIL")
 	private String email;
 	

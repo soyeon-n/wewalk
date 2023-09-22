@@ -5,7 +5,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import com.spring.boot.config.PwUpdate;
 import com.spring.boot.config.SessionConst;
-import com.spring.boot.dto.Member;
+import com.spring.boot.dto.MyPage;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -16,39 +16,90 @@ public class MyPageController {
     @GetMapping("/mypage")
     public String myPage(Model model, HttpServletRequest request) {
     	
-    	Member dummyUser = new Member();
-    	dummyUser.setName("John Doe");
-    	model.addAttribute("loginMember", dummyUser);
-    	
         HttpSession session = request.getSession();
-        Member loginMember = (Member) session.getAttribute(SessionConst.LOGIN_MEMBER);
+        MyPage loginMember = (MyPage) session.getAttribute(SessionConst.LOGIN_MEMBER);
         model.addAttribute("loginMember", loginMember);
+        
+        MyPage dummyUser = new MyPage();
+    	dummyUser.setName("name");
+    	model.addAttribute("loginMember", dummyUser);
+        
         return "mypage";
     }
 
     @GetMapping("/mypage/changePW")
     public String changePWForm(Model model, HttpServletRequest request) {
         HttpSession session = request.getSession();
-        Member loginMember = (Member) session.getAttribute(SessionConst.LOGIN_MEMBER);
+        MyPage loginMember = (MyPage) session.getAttribute(SessionConst.LOGIN_MEMBER);
         model.addAttribute("loginMember", loginMember);
         model.addAttribute("pwUpdate", new PwUpdate());
         return "changePW";
     }
     
-    /*
-    @GetMapping("/mypage/me")
-    public String myPageHome(Model model, @AuthenticationPrincipal Member currentMember) {
-        List<Category> categoryList = categoryService.findAll();
-
-        MemberForm memberForm = new MemberForm();
-        memberForm.setName(currentMember.getUsername());
-        memberForm.setEmail(currentMember.getEmail());
+    @GetMapping("/mypage/member")
+    public String member(Model model, HttpServletRequest request) {
         
-        model.addAttribute("categoryList", categoryList);
-        model.addAttribute("memberForm", memberForm);
-        return "mypage/me";
+    	
+    	//회원정보 수정탭
+    	
+        return "member";
     }
     
+    @GetMapping("/mypage/shipping")
+    public String shipping(Model model, HttpServletRequest request) {
+        
+    	
+    	//배송지 등록, 수정, 삭제
+    	
+        return "shipping";
+    }
+    
+    @GetMapping("/mypage/myshop")
+    public String myShop(Model model, @PathVariable String name) {
+        model.addAttribute("name", name);
+        
+        //나의 상점 - 여기선 로그인 되있는 상태니까 주소에 {name} 없어도 될 것 같음
+        
+        return "myshop";
+    }
+    
+    @GetMapping("/mypage/myshop/add")
+    public String myShopAdd(Model model, HttpServletRequest request) {
+        
+        
+        //물건 등록 페이지
+        
+        return "myshop_add";
+    }
+    
+    @GetMapping("/mypage/pay")
+    public String pay(Model model, HttpServletRequest request) {
+    	
+    	//pay 충전 페이지
+    	
+    	return "pay";
+    }
+    
+    @GetMapping("/mypage/membership")
+    public String membership(Model model, HttpServletRequest request) {
+    	
+    	//membership 가입 페이지
+    	
+    	return "membership";
+    }
+    
+    @GetMapping("/mypage/grade")
+    public String grade(Model model, HttpServletRequest request) {
+    	
+    	//구매등급 안내 페이지
+    	
+    	return "grade";
+    }
+    
+    
+    
+    /*
+
     @PostMapping("/mypage/me")
     public String userEdit(MemberForm form, BindingResult result, @AuthenticationPrincipal Member currentMember) {
         if(result.hasErrors()) {
