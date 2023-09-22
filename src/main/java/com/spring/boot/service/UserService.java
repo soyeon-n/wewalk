@@ -18,6 +18,7 @@ public class UserService {
 
 	private final UserRepository userRepository;
 	
+	//BCrypt해시 함수 호출
 	private final PasswordEncoder passwordEncoder;
 	
 	//id 생성 메소드
@@ -28,10 +29,7 @@ public class UserService {
 		user.setUserName(userName);
 		user.setEmail(email);
 		
-		//패스워드 암호화(BCrypt해시 함수) -> SecurityConfig에 객체화된 메소드 생성
-//		BCryptPasswordEncoder passwordEncoder = 
-//				new BCryptPasswordEncoder();
-		
+		//암호화 처리
 		user.setPassword(passwordEncoder.encode(password));
 		
 		//회원정보 db에 저장
@@ -41,10 +39,11 @@ public class UserService {
 		
 	}
 	
-	public SiteUser getUser(String userName) {
+	//userName으로 불러오기
+	public SiteUser getUser(String email) {
 		
 		Optional<SiteUser> siteUser = 
-				userRepository.findByUserName(userName);
+				userRepository.findByEmail(email);
 		
 		if(siteUser.isPresent()) {
 			return siteUser.get();

@@ -7,9 +7,14 @@ import javax.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
+//회원가입 검증용 Form
 @Getter
 @Setter
 public class UserCreateForm {
+
+	@NotEmpty(message = "이메일은 필수 항목입니다.")
+	@Email(message = "이메일 형식으로 입력해주세요!")
+	private String email;
 
 	@Size(min = 3, max = 25, message = "사용자명은 3~25자 이내로 생성해주세요!")
 	@NotEmpty(message = "사용자명은 필수 항목입니다.")
@@ -21,7 +26,4 @@ public class UserCreateForm {
 	@NotEmpty(message = "비밀번호 확인은 필수 항목입니다.")
 	private String password2;
 
-	@NotEmpty(message = "이메일은 필수 항목입니다.")
-	@Email(message = "이메일 형식으로 입력해주세요!")
-	private String email;
 }

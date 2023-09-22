@@ -26,6 +26,7 @@ public class SecurityConfig {
 	//스프링 Security에 UserSecurityService를 등록
 	private final UserSecurityService userSecurityService;
 	
+	//WebSecurityConfig와 비교하여 Config 수정 필요
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {	
 		
@@ -39,7 +40,6 @@ public class SecurityConfig {
         http
             .formLogin()
                 .loginPage("/user/login")    // GET 요청 (login form을 보여줌)
-                .loginProcessingUrl("/user/auth")    // POST 요청 (login 창에 입력한 데이터를 처리)
                 .usernameParameter("email")	// login에 필요한 id 값을 email로 설정 (default는 username)
                 .passwordParameter("password")	// login에 필요한 password 값을 password(default)로 설정
                 .defaultSuccessUrl("/");	// login에 성공하면 /로 redirect

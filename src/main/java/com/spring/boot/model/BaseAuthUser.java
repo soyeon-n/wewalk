@@ -54,7 +54,7 @@ public class BaseAuthUser {
 		return this;
 	}
 	
-	//사용자 유형 식별
+	//사용자 유형 식별(Guest / User)
 	public String getRoleKey() {
 		return this.role.getKey();
 	}
