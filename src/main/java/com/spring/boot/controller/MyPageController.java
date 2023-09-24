@@ -96,8 +96,6 @@ public class MyPageController {
     	return "grade";
     }
     
-    
-    
     /*
 
     @PostMapping("/mypage/me")
