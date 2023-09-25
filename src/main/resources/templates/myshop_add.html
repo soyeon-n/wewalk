@@ -22,9 +22,14 @@
             <textarea id="content" th:field="*{content}" required></textarea>
             <span th:if="${#fields.hasErrors('content')}" th:errors="*{content}"></span>
         </div>
+        
         <div>
-            <label for="image">상품 사진:</label>
-            <input type="file" id="image" name="image" accept="image/*" required>
+            <label for="images">상품 사진 (최대 5장):</label>
+            <input type="file" id="image1" name="images" accept="image/*" required>
+            <input type="file" id="image2" name="images" accept="image/*">
+            <input type="file" id="image3" name="images" accept="image/*">
+            <input type="file" id="image4" name="images" accept="image/*">
+            <input type="file" id="image5" name="images" accept="image/*">
         </div>
         
         <div>

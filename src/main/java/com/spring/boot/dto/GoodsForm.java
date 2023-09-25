@@ -20,7 +20,7 @@ public class GoodsForm {
     @PositiveOrZero(message = "가격은 0 이상이어야 합니다.")
     private Integer gdprice; // 필드 이름 수정
     
-    private MultipartFile image;
+    private List<MultipartFile> images;
     
     private String gdcategory;
     
@@ -68,11 +68,13 @@ public class GoodsForm {
 		this.gdtag = gdtag;
 	}
 
-	public MultipartFile getImage() {
-		return image;
+	public List<MultipartFile> getImages() {
+		return images;
 	}
 
-	public void setImage(MultipartFile image) {
-		this.image = image;
+	public void setImages(List<MultipartFile> images) {
+		this.images = images;
 	}
+
+	
 }

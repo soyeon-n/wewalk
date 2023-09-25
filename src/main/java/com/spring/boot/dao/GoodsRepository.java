@@ -9,7 +9,13 @@ import com.spring.boot.dto.Goods;
 
 @Repository
 public interface GoodsRepository extends JpaRepository<Goods, Integer> {
+
+	static List<Goods> findByAddedByUserEmail(String strieng) {
+		
+		return null;
+	}
 	
-    List<Goods> findByAddedByUserId(Integer userId);
+    //판매자 닉네임으로 등록한 상품 가져오기 쿼리 구현하기
+	//List<Goods> findByAddedByUserId(Integer userId);
     
 }

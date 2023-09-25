@@ -6,6 +6,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.spring.boot.config.PwUpdate;
 import com.spring.boot.config.SessionConst;
 import com.spring.boot.dao.GoodsRepository;
@@ -14,7 +16,13 @@ import com.spring.boot.dto.GoodsForm;
 import com.spring.boot.dto.MyPage;
 import com.spring.boot.service.GoodsService;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -70,15 +78,16 @@ public class MyPageController {
         //나의 상점 - 여기선 로그인 되있는 상태니까 주소에 {name} 없어도 될 것 같음
     	
     	// 현재 로그인한 사용자의 정보 가져오기
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String name = authentication.getName();
+        //Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        //String name = authentication.getName();
         
         // 사용자 ID를 기반으로 상품 리스트 가져오기
-        List<Goods> goodsList = GoodsRepository.findByAddedByUserId(name);
-    	
+        //List<Goods> goodsList = GoodsRepository.findByAddedByUserId(name);
+    	List<Goods> goodsList = GoodsRepository.findByAddedByUserEmail("user1@example.com");
+    	model.addAttribute("goodsList", goodsList);
         
         // 모델에 데이터를 추가
-        model.addAttribute("goodsList", goodsList);
+        //model.addAttribute("goodsList", goodsList);
     	
         
         return "myshop";
@@ -104,6 +113,28 @@ public class MyPageController {
             return "myshop_add";
         }
         
+        // 파일 업로드 및 경로 저장
+        List<String> imagePaths = new ArrayList<>();
+        for (MultipartFile image : goodsForm.getImages()) {
+            if (!image.isEmpty()) {
+                // 이미지를 파일 시스템에 저장하고 경로를 반환
+                String imagePath = saveImage(image);
+                
+                if (imagePath != null) {
+                    imagePaths.add(imagePath);
+                }
+            }
+        }
+                
+         // Goods 엔티티에 이미지 경로 저장
+            Goods goods = new Goods();
+            goods.setGdimage1(imagePaths.size() >= 1 ? imagePaths.get(0) : null);
+            goods.setGdimage2(imagePaths.size() >= 2 ? imagePaths.get(1) : null);
+            goods.setGdimage3(imagePaths.size() >= 3 ? imagePaths.get(2) : null);
+            goods.setGdimage4(imagePaths.size() >= 4 ? imagePaths.get(3) : null);
+            goods.setGdimage5(imagePaths.size() >= 5 ? imagePaths.get(4) : null);
+        
+                
         //상품 등록 로직
         goodsService.registerProduct(goodsForm);
         
@@ -133,6 +164,24 @@ public class MyPageController {
     	
     	return "grade";
     }
+    
+    
+    //사진 저장 메서드
+    private String saveImage(MultipartFile image) {
+        String imagePath = "/path/to/save/images"; // 이미지를 저장할 경로 설정
+        String imageName = UUID.randomUUID().toString() + "_" + image.getOriginalFilename();
+        try {
+            byte[] bytes = image.getBytes();
+            Path filePath = Paths.get(imagePath, imageName);
+            Files.write(filePath, bytes);
+            return "/images/" + imageName; // 실제 웹에서 접근 가능한 경로로 저장
+        } catch (IOException e) {
+            e.printStackTrace();
+            // 예외 처리 필요
+            return null;
+        }
+    }
+    
     
     /*
 

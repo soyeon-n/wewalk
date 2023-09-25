@@ -7,7 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.spring.boot.config.DataNotFoundException;
-import com.spring.boot.dao.UserRepository;
+import com.spring.boot.dao.MyPageRepository;
 import com.spring.boot.model.SiteUser;
 
 import lombok.RequiredArgsConstructor;
@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserService {
 
-	private final UserRepository userRepository;
+	private final MyPageRepository userRepository;
 	
 	private final PasswordEncoder passwordEncoder;
 	
