@@ -20,8 +20,6 @@ public class BaseAuthController {
 	@GetMapping("/")
 	public String index(Model model, @LoginUser SessionUser user) {
 		
-		//SessionUser user = (SessionUser)httpSession.getAttribute("user");
-		
 		if(user!=null) {
 			model.addAttribute("email", user.getEmail());
 			model.addAttribute("name", user.getName());

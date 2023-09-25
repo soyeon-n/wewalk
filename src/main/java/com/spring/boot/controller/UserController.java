@@ -9,8 +9,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.spring.boot.dto.UserCreateForm;
+import com.spring.boot.model.SiteUser;
 import com.spring.boot.service.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -25,7 +27,7 @@ public class UserController {
 	@GetMapping("signup")
 	public String signup(UserCreateForm userCreateForm) {
 		
-		return "signup_form";
+		return "join";
 		
 	}
 	
@@ -34,7 +36,7 @@ public class UserController {
 		
 		//입력값 검증
 		if(bindResult.hasErrors()) {
-			return "signup_form";
+			return "join";
 		}
 		
 		if(!userCreateForm.getPassword1()
@@ -42,10 +44,10 @@ public class UserController {
 			bindResult.rejectValue("password2", "passwordInCorrect",
 					"2개의 패스워드가 일치하지 않습니다!");
 			
-			return "signup_form";
+			return "join";
 		}
 		
-		//입력값 DB에 넣으면서 검증
+		//입력값 DB에 넣으면서 검증(서버사이드)
 		try {
 			
 			userService.create(userCreateForm.getUserName(), 
@@ -56,23 +58,33 @@ public class UserController {
 			e.printStackTrace();
 			bindResult.reject("signupFailed", "이미 등록된 사용자입니다");
 			
-			return "signup_form";
+			return "join";
 			
 		} catch (Exception e) {
 			
 			e.printStackTrace();
 			bindResult.reject("signupFailed", e.getMessage());
 			
-			return "signup_form";
+			return "join";
 			
 		}
 		return "redirect:/";
 	}
 	
+	@PostMapping("/checkEmail")
+    public String checkEmail(@RequestParam String email) {
+        SiteUser user = userService.getUser(email);
+        if (user != null) {
+            return "DUPLICATE";
+        }else {
+            return "AVAILABLE";
+        }
+    }
+	
 	//login은 security가 처리하므로 post방식의 로그인 처리 메소드는 없어도 됨
 	@GetMapping("/login")
 	public String login() {
-		return "login_form";
+		return "login";
 	}
 	
 }

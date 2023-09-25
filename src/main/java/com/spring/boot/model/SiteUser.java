@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -24,6 +26,10 @@ public class SiteUser {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false, columnDefinition = "default USER")
+	private UserRole role;
+	
 	@Column(unique = true)
 	private String email;
 
@@ -39,8 +45,8 @@ public class SiteUser {
 	//생성 일자(생성일시 추가하는 코드 추가 필요)
 	private LocalDateTime createdDate;
 	
-	@Column(length = 20, nullable = false)
-	private String jumin;
+	@Column(length = 12, nullable = false)
+	private String birth;
 	
 	@Column(nullable = false)
 	private String address;
@@ -48,24 +54,20 @@ public class SiteUser {
 	@Column(length = 20, nullable = false)
 	private String tel;
 	
-	//성별 필요할까...?
-	@Column(length = 1)
-	private String gender;
-	
 	private String picture;
 	
 	//판매자 등록 여부(0 또는 1)
-	@GeneratedValue()
 	@Column(columnDefinition = "TINYINT(1) default 0")
 	private boolean seller;
 	
 	//판매자 설명
 	private String intro;
 
-	//멤버십 등급(추후 연결되면 @OneToOne 추가 여부 검토 필요)
+	//멤버십 등급(멤버십 테이블과 연결하려면 추후 혜택 등 디테일한 설정 필요)
+	@Column(columnDefinition = "default normal", length = 30)
 	private String grade;
 	
-	//페이금액(bigint로 들어가므로 
+	//페이금액(bigint로 들어가므로
 	//-9,223,372,036,854,775,808부터 9,223,372,036,854,775,807까지의 
 	//정수값을 저장할 수 있음)
 	private Long paymoney;

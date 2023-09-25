@@ -13,6 +13,9 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+import com.spring.boot.model.BaseAuthRole;
+import com.spring.boot.model.UserRole;
+import com.spring.boot.service.BaseCustomOAuth2UserService;
 import com.spring.boot.service.UserSecurityService;
 
 import lombok.RequiredArgsConstructor;
@@ -26,15 +29,27 @@ public class SecurityConfig {
 	//스프링 Security에 UserSecurityService를 등록
 	private final UserSecurityService userSecurityService;
 	
+	//OAuth 2.0 서비스 등록 
+	private final BaseCustomOAuth2UserService baseCustomOAuth2UserService; 
+	
 	//WebSecurityConfig와 비교하여 Config 수정 필요
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {	
 		
-		// 권한에 따라 허용하는 url 설정
+		//Routing Security
+        http
+        	.csrf().disable()// disable csrf for our requests 
+        	.cors();// Cross-Origin Resource Sharing (CORS)를 활성화하는 메소드. 
+        			// CORS는 웹 페이지가 다른 도메인의 리소스에 액세스할 수 있게 하는 메커니즘
+        	
+        // 권한에 따라 허용하는 url 설정
         // /login, /signup 페이지는 모두 허용, 다른 페이지는 인증된 사용자만 허용
         http
             .authorizeRequests()
-                .antMatchers("/**").permitAll();
+            .antMatchers("/", "/css/**", "/images/**", "/js/**").permitAll()
+            .antMatchers("/admin/**").hasRole(UserRole.ADMIN.name())
+			.antMatchers("/api/vi/**").hasRole(BaseAuthRole.USER.name()) //USER권한 설정을 통해 모든 페이지에 접근 가능
+			.anyRequest().authenticated();
 
 		// login 설정
         http
@@ -42,7 +57,14 @@ public class SecurityConfig {
                 .loginPage("/user/login")    // GET 요청 (login form을 보여줌)
                 .usernameParameter("email")	// login에 필요한 id 값을 email로 설정 (default는 username)
                 .passwordParameter("password")	// login에 필요한 password 값을 password(default)로 설정
-                .defaultSuccessUrl("/");	// login에 성공하면 /로 redirect
+                .defaultSuccessUrl("/");
+        
+        //OAuth 2.0 login 설정
+        http
+            .oauth2Login()
+            .defaultSuccessUrl("/")
+            .userInfoEndpoint() //소셜 로그인 성공시 진입할 페이지 설정
+            .userService(baseCustomOAuth2UserService);	// login에 성공하면 /로 redirect
 
 		// logout 설정
         http
