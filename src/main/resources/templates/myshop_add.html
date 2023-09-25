@@ -1,12 +1,54 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+    <meta charset="UTF-8">
+    <title>상품 등록</title>
 </head>
 <body>
-
-	<h1>상품 등록 페이지</h1>
-
+    <h2>상품 등록 페이지</h2>
+    <form th:action="@{/mypage/myshop/add}" th:object="${goodsForm}" method="post" enctype="multipart/form-data">
+        <div>
+            <label for="gdname">상품 이름:</label>
+            <input type="text" id="gdname" th:field="*{gdname}" required>
+            <span th:if="${#fields.hasErrors('gdname')}" th:errors="*{gdname}"></span>
+        </div>
+        <div>
+            <label for="gdprice">상품 가격:</label>
+            <input type="number" id="gdprice" th:field="*{gdprice}" required>
+            <span th:if="${#fields.hasErrors('gdprice')}" th:errors="*{gdprice}"></span>
+        </div>
+        <div>
+            <label for="content">상품 설명:</label>
+            <textarea id="content" th:field="*{content}" required></textarea>
+            <span th:if="${#fields.hasErrors('content')}" th:errors="*{content}"></span>
+        </div>
+        <div>
+            <label for="image">상품 사진:</label>
+            <input type="file" id="image" name="image" accept="image/*" required>
+        </div>
+        
+        <div>
+            <label for="gdcategory">카테고리:</label>
+            <select id="gdcategory" name="gdcategory" th:field="*{gdcategory}">
+                <option value="Electronics">전자제품</option>
+                <option value="Clothing">의류</option>
+                
+            </select>
+        </div>
+        <!-- 
+        <div>
+            <label for="gdtags">태그:</label>
+            <select id="gdtags" name="gdtags" multiple="multiple" th:field="*{gdtags}">
+                <option value="New">신상품</option>
+                <option value="Sale">할인</option>
+                
+            </select>
+        </div>
+         -->
+               
+        <div>
+            <button type="submit"> 등록 </button>
+        </div>
+    </form>
 </body>
 </html>

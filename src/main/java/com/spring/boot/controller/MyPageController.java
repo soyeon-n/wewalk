@@ -1,14 +1,24 @@
 package com.spring.boot.controller;
 
+import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import com.spring.boot.config.PwUpdate;
 import com.spring.boot.config.SessionConst;
+import com.spring.boot.dao.GoodsRepository;
+import com.spring.boot.dto.Goods;
+import com.spring.boot.dto.GoodsForm;
 import com.spring.boot.dto.MyPage;
+import com.spring.boot.service.GoodsService;
+
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 @Controller
 public class MyPageController {
@@ -55,10 +65,21 @@ public class MyPageController {
     }
     
     @GetMapping("/mypage/myshop")
-    public String myShop(Model model, @PathVariable String name) {
-        model.addAttribute("name", name);
+    public String myShop(Model model) {
         
         //나의 상점 - 여기선 로그인 되있는 상태니까 주소에 {name} 없어도 될 것 같음
+    	
+    	// 현재 로그인한 사용자의 정보 가져오기
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String name = authentication.getName();
+        
+        // 사용자 ID를 기반으로 상품 리스트 가져오기
+        List<Goods> goodsList = GoodsRepository.findByAddedByUserId(name);
+    	
+        
+        // 모델에 데이터를 추가
+        model.addAttribute("goodsList", goodsList);
+    	
         
         return "myshop";
     }
@@ -66,11 +87,28 @@ public class MyPageController {
     @GetMapping("/mypage/myshop/add")
     public String myShopAdd(Model model, HttpServletRequest request) {
         
-        
         //물건 등록 페이지
+    	model.addAttribute("goodsForm", new GoodsForm());
         
         return "myshop_add";
     }
+    
+    @Autowired
+    private GoodsService goodsService;
+
+    @PostMapping("/mypage/myshop/add")
+    public String myShopCreate(@Valid @ModelAttribute("goodsForm") GoodsForm goodsForm, BindingResult bindingResult) {
+        // 상품을 등록하기 위한 POST 요청 처리
+        if (bindingResult.hasErrors()) {
+            // 입력 데이터의 유효성 검사 실패 시, 다시 폼을 보여줌
+            return "myshop_add";
+        }
+        
+        //상품 등록 로직
+        goodsService.registerProduct(goodsForm);
+        
+        return "redirect:/mypage/myshop";
+    }   
     
     @GetMapping("/mypage/pay")
     public String pay(Model model, HttpServletRequest request) {
