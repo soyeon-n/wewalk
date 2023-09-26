@@ -13,7 +13,7 @@
     <script src="../static/js/common.js"></script>
     <script src="../static/js/util.js"></script>
     <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-    
+
     <script src="../static/js/join.js"></script>
 
 	<!-- 유효성 검사 -->
@@ -31,20 +31,84 @@
     </SCRIPT>
 
     <script>
+    var timer; // 타이머 변수 선언
+/*     function email_check(){
+        
+    	var email = $(".field_email input").val();             // 변수 email에  email값 대입
+
+        if(!isValidEmail(email)){    //isValidEmail(email) --> email이 유효하지 않으면 false 반환
+        	$(".field_email .txt_guide .txt_case1").css('color', '#b3130b');
+            $(".field_email .txt_guide .txt_case1").text('이메일 양식이 아닙니다.');
+        }else{          // 모든 조건이 일치하지 않다면  
+            $(".field_email .txt_guide .txt_case1").css('color', '#0f851a');  //글자색 초록색으로 변경
+        }
+        
+        // 이전에 설정한 타이머가 있다면 취소
+        if(timer) {
+            clearTimeout(timer);
+        }
+        
+     // 500 밀리초 후에 이메일 주소 확인 함수 실행
+        timer = setTimeout(function() {
+            // AJAX 요청을 사용하여 이메일 주소 확인
+            $.ajax({
+                url: '/user/checkEmail', // 이메일 주소를 확인하는 서버의 URL
+                type: 'POST',
+                data: { email: email },
+                success: function(response) {
+                    if(response == null || response == undefined) {
+                        alert('서버로부터 응답을 받지 못했습니다. 다시 시도해주세요.');
+                    } else if(response == "DUPLICATE") {
+                        $(".field_email .txt_guide .txt_case2").css('color', '#b3130b');
+                        $(".field_email .txt_guide .txt_case2").text('이미 존재하는 이메일입니다.');
+                    } else if(response == "AVAILABLE") {
+                        $(".field_email .txt_guide .txt_case2").css('color', '#0f851a');
+                        $(".field_email .txt_guide .txt_case2").text('가입이 가능한 이메일입니다.');
+                    }
+                }
+            });
+        }, 500);
+    } */
         function id_check(){
             var id = $(".field_id input").val();             // 변수 id에  id값 대입
 
-            // var num = /[0-9]/;
-            // var eng = /[a-zA-Z]/;
-            var spe = /[~!@#$%^&*()_+|<>?:{}]/;         
+            var num = /[0-9]/;
+            var eng = /[a-zA-Z]/;
+            var notNumOrEng = /[^a-zA-Z0-9]/;
 
-            if(id.length < 6){                     //만약에 id의 길이가 6보다 작으면
-                $(".field_id .txt_guide .txt_case1").css('color', '#b3130b');   //글자색 변경
-            }else if(spe.test(id) == 1){    //spe.test(id) --> id안에 특수문자가 있으면 true반환 없으면 false반환
-                $(".field_id .txt_guide .txt_case1").css('color', '#b3130b');   //글자색 변경
-            }else{          // 모든 조건이 일치하지 않다면  
-                $(".field_id .txt_guide .txt_case1").css('color', '#0f851a');  //글자색 초록색으로 변경
+          //만약에 id의 길이가 6 이상이고 영문이 최소 한 자리 이상이며 영문과 숫자 이외의 문자가 들어가지 않으면
+            if(id.length >= 6 && notNumOrEng.test(id) == 0 && eng.test(id) == 1){ 
+                $(".field_id .txt_guide .txt_case1").css('color', '#0f851a');   //글자색 초록색으로 변경
+            }else{          // 그 외에는 전부 빨강처리 
+                $(".field_id .txt_guide .txt_case1").css('color', '#b3130b');  //글자색 빨간색으로 변경
             }
+            
+         // 이전에 설정한 타이머가 있다면 취소
+		    if(timer) {
+		        clearTimeout(timer);
+		    }
+		    
+		    // 500 밀리초 후에 이메일 주소 확인 함수 실행
+		    timer = setTimeout(function() {
+		        // AJAX 요청을 사용하여 이메일 주소 확인
+		        $.ajax({
+		            url: '/user/checkUserName', // 이메일 주소를 확인하는 서버의 URL
+		            type: 'POST',
+		            data: { userName: userName },
+		            success: function(response) {
+		            	if(response == null || response == undefined) {
+	                        alert('서버로부터 응답을 받지 못했습니다. 다시 시도해주세요.');
+	                    } else if(response == "DUPLICATE") {
+	                        $(".field_id .txt_guide .txt_case2").css('color', '#b3130b');
+	                        $(".field_id .txt_guide .txt_case2").text('이미 존재하는 닉네임입니다.');
+	                    } else if(response == "AVAILABLE") {
+	                        $(".field_id .txt_guide .txt_case2").css('color', '#0f851a');
+	                        $(".field_id .txt_guide .txt_case2").text('가입이 가능한 닉네임입니다.');
+	                    }
+		                
+		            }
+		        });
+		    }, 500);
         }
 
         function pw_check(){
@@ -55,11 +119,11 @@
             var eng = /[a-zA-Z]/;
             var spe = /[~!@#$%^&*()_+|<>?:{}]/;
         
-            if(pw.length < 10){                                  //pw의 길이가 10 이하일 때
+            if(pw.length < 8){                                  //pw의 길이가 10 이하일 때
                 $(".field_pw .txt_guide .txt_case1").css('color', '#b3130b');
             }
 
-            if(pw.length >= 10){                                  //pw의 길이가 10 이상일 때
+            if(pw.length >= 8){                                  //pw의 길이가 10 이상일 때
                 $(".field_pw .txt_guide .txt_case1").css('color', '#0f851a'); 
             }
 
@@ -95,27 +159,17 @@
 
     <script>
 
-		//이메일 검사 함수
+		//이메일 검사 함수		
         function on_email_check(){ 
-            var email = $(".field_email input").val();
-            if(email.length == 0){
-            
-	            alert('이메일을 입력해주세요');
-	            $(".field_email input").focus();
-	            return false;
-            
-            }
-            
-            if(!isValidEmail(email){
-                alert("\n이메일 양식으로 입력해주세요.");
-                $(".field_email input").focus();
-                return false;
-                
-            }
-            
-            return true;
-           
-        }
+		    var email = $(".field_email input").val();
+		    if(email.length == 0){
+		        alert('이메일을 입력해주세요');
+		        $(".field_email input").focus();
+		        return false;
+		    }
+		    
+		    return true;
+		}
 
       	//id 검사 함수
         function on_userName_check(){          
@@ -141,25 +195,6 @@
         }
 
       	//비밀번호 검사 함수
-        /* function on_pw_check(){           
-            var pw = $(".field_pw input").val();
-            var num = /[0-9]/;
-            var eng = /[a-zA-Z]/;
-            var spe = /[~!@#$%^&*()_+|<>?:{}]/;
-            if(pw.length < 8){
-            
-            alert('비밀번호는 최소 8자 이상 입력해주세요');
-            return false;
-            }else if(num.test(pw) == 0 || eng.test(pw) == 0 || spe.test(pw) == 0){
-            
-            alert('비밀번호를 정확히 입력해주세요');
-            return false;
-            }
-            else{
-            
-            return true;
-            }
-        } */
         function on_pw_check(){           
         	
             var pw = $(".field_pw input").val();
@@ -262,6 +297,25 @@
             }
         }
 
+        /* function on_pw_check(){           
+            var pw = $(".field_pw input").val();
+            var num = /[0-9]/;
+            var eng = /[a-zA-Z]/;
+            var spe = /[~!@#$%^&*()_+|<>?:{}]/;
+            if(pw.length < 8){
+            
+            alert('비밀번호는 최소 8자 이상 입력해주세요');
+            return false;
+            }else if(num.test(pw) == 0 || eng.test(pw) == 0 || spe.test(pw) == 0){
+            
+            alert('비밀번호를 정확히 입력해주세요');
+            return false;
+            }
+            else{
+            
+            return true;
+            }
+        } */
        
     </script>
 </head>
@@ -269,7 +323,6 @@
 
 
     <div id="container">
- 
         <div id="main">
             <div id="content">
                 <div class="page_aticle">
@@ -286,8 +339,7 @@
 
                             <table class="tbl_comm">
                                 <tbody>
-
-                                    <tr class="field_email">
+									<tr class="field_email">
                                         <th>
                                             이메일 
                                             <span class="ico">
@@ -295,12 +347,33 @@
                                                 <span class="screen_out">필수항목</span>
                                             </span>
                                         </th>
-									<!-- 입력과 동시에 중복검사하도록 ajax 활용하기 -->
+
                                         <td>
                                             <input type="text" name="email" size="30" required=""  option="regEmail" label="이메일" placeholder="예: marketkurly@kurly.com">
                                             <a href="#" class="btn default">중복확인</a>
                                         </td>
                                     </tr>
+                                    <!-- <tr class="field_email"> 실시간으로 유효성 검사하도록 만들기 위한 코드
+                                        <th>
+                                            이메일 
+                                            <span class="ico">
+                                                *
+                                                <span class="screen_out">필수항목</span>
+                                            </span>
+                                        </th>
+									
+                                        <td>
+                                            <input type="text" name="email" onkeyup="email_check()" size="30" required=""  option="regEmail" label="이메일" placeholder="예: marketkurly@kurly.com">
+                                            <p class="txt_guide square">
+                                                <span class="txt txt_case1">
+                                                    이메일 양식으로 입력
+                                                </span>
+                                                <span class="txt txt_case2">
+                                                    이메일 중복확인
+                                                </span>
+                                            </p>
+                                        </td>
+                                    </tr> -->
                                     
                                     <tr class="fst field_id">
                                         <th>아이디
@@ -311,7 +384,6 @@
                                         </th>
                                         <td>
                                             <input type="text" name="userName" th:field="*{userName}" maxlength="16" required="" option="regId" onkeyup="id_check()" placeholder="6~16자의 영문 혹은 영문과 숫자를 조합">
-                                            <a class="btn default" href="#">중복확인</a>
                                             <p class="txt_guide square">
                                                 <span class="txt txt_case1">
                                                     6자 이상의 영문 혹은 영문과 숫자를 조합
@@ -405,8 +477,8 @@
                                             <a href="#" id="addressSearch" class="search">
                                                 <span id="addressNo" class="address_no">주소검색</span>
                                             </a>
-                                            <input type="text" id="user_address" name="user_address" placeholder="주소">
-                                            <input type="text" id="user_detail_address" name="user_detail_address"  placeholder="상세주소">
+                                            <input type="text" id="address" name="address" placeholder="주소">
+                                            <input type="text" id="detailAddress" name="detailAddress"  placeholder="상세주소">
                                             <p class="txt_guide" style="display:block;">
                                                 <span class="txt txt_case1">배송지에 따라 상품 정보가 달라질 수 있습니다.</span>
                                             </p>
@@ -441,6 +513,6 @@
             </div>
         </div>
     </div>
-    
+	
 </body>
 </html>

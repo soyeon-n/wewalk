@@ -1,6 +1,9 @@
 package com.spring.boot.controller;
 
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.validation.Valid;
 
 import org.springframework.dao.DataIntegrityViolationException;
@@ -71,9 +74,30 @@ public class UserController {
 		return "redirect:/";
 	}
 	
-	@PostMapping("/checkEmail")
-    public String checkEmail(@RequestParam String email) {
-        SiteUser user = userService.getUser(email);
+	@GetMapping("/checkEmail")
+    public Map<String, String> checkEmail(@RequestParam String email) {
+        SiteUser user = userService.getUserByEmail(email);
+        Map<String, String> result = new HashMap<>();
+        if (user != null) {
+            result.put("overlap", "fail");
+        } else {
+            result.put("overlap", "success");
+        }
+        return result;
+    }
+//	@PostMapping("/checkEmail")
+//    public String checkEmail(@RequestParam String email) {
+//        SiteUser user = userService.getUserByEmail(email);
+//        if (user != null) {
+//            return "DUPLICATE";
+//        }else {
+//            return "AVAILABLE";
+//        }
+//    }
+	
+	@PostMapping("/checkUserName")
+    public String checkUserName(@RequestParam String userName) {
+        SiteUser user = userService.getUserByUserName(userName);
         if (user != null) {
             return "DUPLICATE";
         }else {

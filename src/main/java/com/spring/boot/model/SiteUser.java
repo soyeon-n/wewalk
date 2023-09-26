@@ -10,9 +10,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -27,7 +25,7 @@ public class SiteUser {
 	private Long id;
 	
 	@Enumerated(EnumType.STRING)
-	@Column(nullable = false, columnDefinition = "default USER")
+	@Column(nullable = false)
 	private UserRole role;
 	
 	@Column(unique = true)
@@ -51,6 +49,9 @@ public class SiteUser {
 	@Column(nullable = false)
 	private String address;
 	
+	@Column(nullable = false)
+	private String detailAddress;
+	
 	@Column(length = 20, nullable = false)
 	private String tel;
 	
@@ -64,28 +65,21 @@ public class SiteUser {
 	private String intro;
 
 	//멤버십 등급(멤버십 테이블과 연결하려면 추후 혜택 등 디테일한 설정 필요)
-	@Column(columnDefinition = "default normal", length = 30)
-	private String grade;
+	@ManyToOne
+	private Membership membership;
 	
-	//페이금액(bigint로 들어가므로
-	//-9,223,372,036,854,775,808부터 9,223,372,036,854,775,807까지의 
-	//정수값을 저장할 수 있음)
-	private Long paymoney;
-	
-	//위워크페이 포인트
+	//위워크페이 포인트(bigint로 들어가므로 -9,223,372,036,854,775,808부터 9,223,372,036,854,775,807까지의 정수값을 저장할 수 있음)
+	//적립내역 테이블이 필요할 것 같음
 	private Long point;
-	
-	//lazy 설정을 통해 필요할 때만 꺼내오도록 하여 최적화
+
 	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "interest1_id")
-	private int interest1;
-	
-	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "interest2_id")
-	private int interest2;
-	
-	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "interest3_id")
-	private int interest3;
+    private Interest interest1;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Interest interest2;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Interest interest3;
+    
 	
 }

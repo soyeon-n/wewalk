@@ -19,7 +19,7 @@ $(document).ready(function(){
     });
     text_pw.blur(function(){              //포커스에서 벗어나면
         
-        pw_check();              //id_check() 함수 실행    
+        pw_check();              //pw_check() 함수 실행    
     });
 
 
@@ -32,6 +32,7 @@ $(document).ready(function(){
     text_pw2.blur(function(){      
         pw2_check();
     });
+    
 
     //이메일 중복 체크
     $('.field_email .btn').click(function(){
@@ -45,7 +46,7 @@ $(document).ready(function(){
     
         $.ajax({
           type: "GET",
-          url: "./email_check?id="+email_overlap_input,    //해당 url로 데이터를 넘김
+          url: "./checkEmail?id="+email_overlap_input,    //해당 url로 데이터를 넘김
           data: {
             'email': $('.field_email input').val()
           },
@@ -63,7 +64,7 @@ $(document).ready(function(){
           }
         });
     });
-
+/*
     //아이디 중복 체크
     $('.field_id .btn').click(function(){
 
@@ -77,9 +78,9 @@ $(document).ready(function(){
     
         $.ajax({
           type: "GET",
-          url: "./id_check?id="+id_overlap_input,    //해당 url로 데이터를 넘김
+          url: "/checkUserName?id="+id_overlap_input,    //해당 url로 데이터를 넘김
           data: {
-            'username': $('.field_id input').val()
+            'userName': $('.field_id input').val()
           },
           datatype: 'json',
           success: function (data) {
@@ -97,10 +98,7 @@ $(document).ready(function(){
           }
         });
     });
-
-
-
-
+*/
 
     $('#addressSearch').click(function(){
         new daum.Postcode({
@@ -133,6 +131,7 @@ $(document).ready(function(){
                     // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
                     if(extraAddr !== ''){
                         extraAddr = ' (' + extraAddr + ')';
+                        addr += ', ' + extraAddr;
                     }
                     // 조합된 참고항목을 해당 필드에 넣는다.
                     
@@ -141,50 +140,22 @@ $(document).ready(function(){
                     
                 }
 
-                // 우편번호와 주소 정보를 해당 필드에 넣는다.
-               
-                document.getElementById("user_address").value = addr;
-                
-               
+                // 우편번호와 주소 정보를 해당 필드에 넣는다.               
+                document.getElementById("address").value = addr;                               
 
                 //주소 검색이 완료된 후 변하는 css 목록
                 $('.field_address input').css('display', 'block');
                 $('#addressNo').text('재검색')
 
                 // 커서를 상세주소 필드로 이동한다.
-                document.getElementById("user_detail_address").focus();
-
-
-
-
-
-                
-
-
-
-
-
-
-
+                document.getElementById("detailAddress").focus();
+    
                 // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분입니다.
                 // 예제를 참고하여 다양한 활용법을 확인해 보세요.
                 // http://postcode.map.daum.net/guide  api주소 
             }
         }).open();
 
-
-
     });
-
-
-
-
-
-
-
-
-
-
-
 
 });

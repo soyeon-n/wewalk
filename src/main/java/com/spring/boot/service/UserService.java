@@ -39,8 +39,8 @@ public class UserService {
 		
 	}
 	
-	//userName으로 불러오기
-	public SiteUser getUser(String email) {
+	//이메일로 불러오기
+	public SiteUser getUserByEmail(String email) {
 		
 		Optional<SiteUser> siteUser = 
 				userRepository.findByEmail(email);
@@ -53,4 +53,17 @@ public class UserService {
 		
 	}
 	
+	//userName으로 불러오기
+		public SiteUser getUserByUserName(String userName) {
+			
+			Optional<SiteUser> siteUser = 
+					userRepository.findByUserName(userName);
+			
+			if(siteUser.isPresent()) {
+				return siteUser.get();
+			}else {
+				throw new DataNotFoundException("User not found!");
+			}
+			
+		}
 }

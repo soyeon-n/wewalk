@@ -43,7 +43,7 @@ public class BaseCustomOAuth2UserService implements OAuth2UserService<OAuth2User
 		String registrationId = 
 				userRequest.getClientRegistration().getRegistrationId();
 		
-			String userNameAttributeName = 
+		String userNameAttributeName = 
 				userRequest.getClientRegistration().getProviderDetails()
 				.getUserInfoEndpoint().getUserNameAttributeName();
 		
