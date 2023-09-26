@@ -21,14 +21,17 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "USER")
-public class MyPage implements Serializable {
+public class User implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Long id;
 	
-	@OneToMany(mappedBy = "myPage")
+	@OneToMany(mappedBy = "user")
+	private List<Shipping> shippingList;
+	
+	@OneToMany(mappedBy = "user")
     private List<Goods> goodsList;
 	
 	@Column(name = "EMAIL")

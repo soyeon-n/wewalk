@@ -14,8 +14,11 @@ import com.spring.boot.config.SessionConst;
 import com.spring.boot.dao.GoodsRepository;
 import com.spring.boot.dto.Goods;
 import com.spring.boot.dto.GoodsForm;
-import com.spring.boot.dto.MyPage;
+import com.spring.boot.dto.User;
+import com.spring.boot.dto.Shipping;
+import com.spring.boot.dto.ShippingForm;
 import com.spring.boot.service.GoodsService;
+import com.spring.boot.service.ShippingService;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -40,10 +43,10 @@ public class MyPageController {
     public String myPage(Model model, HttpServletRequest request) {
     	
         HttpSession session = request.getSession();
-        MyPage loginMember = (MyPage) session.getAttribute(SessionConst.LOGIN_MEMBER);
+        User loginMember = (User) session.getAttribute(SessionConst.LOGIN_MEMBER);
         model.addAttribute("loginMember", loginMember);
         
-        MyPage dummyUser = new MyPage();
+        User dummyUser = new User();
     	dummyUser.setName("name");
     	model.addAttribute("loginMember", dummyUser);
         
@@ -53,7 +56,7 @@ public class MyPageController {
     @GetMapping("/mypage/changePW")
     public String changePWForm(Model model, HttpServletRequest request) {
         HttpSession session = request.getSession();
-        MyPage loginMember = (MyPage) session.getAttribute(SessionConst.LOGIN_MEMBER);
+        User loginMember = (User) session.getAttribute(SessionConst.LOGIN_MEMBER);
         model.addAttribute("loginMember", loginMember);
         model.addAttribute("pwUpdate", new PwUpdate());
         return "changePW";
@@ -71,10 +74,34 @@ public class MyPageController {
     @GetMapping("/mypage/shipping")
     public String shipping(Model model, HttpServletRequest request) {
         
-    	
-    	//배송지 등록, 수정, 삭제
+    	// 배송지 입력 폼을 보여주는 페이지로 이동
+    	model.addAttribute("ShippingForm", new ShippingForm());
     	
         return "shipping";
+    }
+    
+    @PostMapping("/mypage/shipping")
+    public String shippingAdd(@ModelAttribute("ShippingForm") @Valid ShippingForm shippingForm, BindingResult result) {
+    	
+    	//배송지 정보 관리
+    	if (result.hasErrors()) {
+            // 폼 데이터 유효성 검사에 실패한 경우 폼 다시 표시
+            return "shipping";
+        }
+
+        // ShippingForm에서 Shipping 엔티티로 데이터 복사
+    	Shipping shipping = new Shipping();
+    	shipping.setReceiverName(shippingForm.getReceivername());
+        shipping.setPhone(shippingForm.getPhone());
+        shipping.setZipcode(shippingForm.getZipcode());
+        shipping.setAddress01(shippingForm.getAddress01());
+        shipping.setAddress02(shippingForm.getAddress02());
+
+        // Shipping 정보를 서비스를 통해 저장
+        //ShippingService.saveShipping(shipping);
+
+        return "redirect:/mypage/shipping";
+    	
     }
     
     @GetMapping("/mypage/myshop")

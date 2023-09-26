@@ -4,12 +4,10 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
@@ -30,12 +28,8 @@ public class Goods {
     @Column(name = "pno")
     private Integer pno;
 	
-	@ManyToOne // 다대일 관계 설정
-    @JoinColumn(name = "id", referencedColumnName = "id")
-    private MyPage myPage; // MyPage 엔티티와의 관계 설정
-
-    @Column(name = "id", insertable = false, updatable = false) // 사용자 ID 필드
-    private Long id;
+	@ManyToOne
+	private User user;
     
     @Column(name = "name", length = 50)
     private String name;
