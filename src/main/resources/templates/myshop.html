@@ -23,23 +23,23 @@
     	<img th:src="@{'/' + imagePath}" alt="Image">
         <div class="wrap_productInfo">
             <div class="wrap_img">
-                <img src="${goods.gdimage1}" class="gdimage1" alt="상품 이미지"/>
+                <img src="${goods.image}" class="image" alt="상품 이미지"/>
             </div>
             
             <div class="wrap_title_price_hours">
-                <a th:href="@{/productInfo/{id}(id=${goods.gdno})}">
-                    <span class="pr_title">${goods.gdname}</span><br>
-                	<span class="pr_price">${goods.gdprice}원</span><br>
-                	<span class="hoursFromUpload">${goods.writeday}시간 전</span>
+                <a th:href="@{/productInfo/{id}(id=${goods.pno})}">
+                    <span class="pr_title">${goods.name}</span><br>
+                	<span class="pr_price">${goods.price}원</span><br>
+                	<span class="hoursFromUpload">${goods.date}시간 전</span>
             	</a>
             </div>
-            <div th:if="${login.email == product.pr_email}" class="wrap_update">
-    			<a th:href="@{/product/{id}/edit(id=${goods.gdno})}">
+            <div th:if="${login.id == product.id}" class="wrap_update">
+    			<a th:href="@{/product/{id}/edit(id=${goods.pno})}">
         			<button id="update"> 수정 </button>
     			</a>
 			</div>
-			<div th:if="${login.email != product.pr_email}" class="wrap_delete">
-    			<a th:href="@{/product/{id}/delete(id=${goods.gdno})}">
+			<div th:if="${login.id != product.id}" class="wrap_delete">
+    			<a th:href="@{/product/{id}/delete(id=${goods.pno})}">
         			<button id="delete" th:onclick="deleteAlert()"> 삭제 </button>
     			</a>
 			</div>

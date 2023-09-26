@@ -1,8 +1,10 @@
 package com.spring.boot.dto;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -20,68 +22,64 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "goods")
+@Table(name = "product")
 public class Goods {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "gdno")
-    private Integer gdno;
+    @Column(name = "pno")
+    private Integer pno;
 	
 	@ManyToOne // 다대일 관계 설정
-    @JoinColumn(name = "user_email", referencedColumnName = "email")
-	private MyPage myPage; // MyPage 엔티티와의 관계 설정
+    @JoinColumn(name = "id", referencedColumnName = "id")
+    private MyPage myPage; // MyPage 엔티티와의 관계 설정
+
+    @Column(name = "id", insertable = false, updatable = false) // 사용자 ID 필드
+    private Long id;
     
-    @Column(name = "user_email", insertable = false, updatable = false) // 사용자 이메일 필드
-    private String email;
+    @Column(name = "name", length = 50)
+    private String name;
 
-    @Column(name = "gdname", length = 50)
-    private String gdname;
-
-    @Column(name = "gdprice")
-    private Integer gdprice;
-
-    @Column(name = "gdcondition", length = 20)
-    private String gdcondition;
+    @Column(name = "price")
+    private Integer price;
 
     @Column(name = "content", length = 1000)
     private String content;
+    
+    @Column(name = "stock")
+    private Integer stock;
 
-    @Column(name = "gdimage1", length = 100)
-    private String gdimage1;
+    @Column(name = "image", length = 100)
+    private String image;
 
-    @Column(name = "gdimage2", length = 100)
-    private String gdimage2;
+    @Column(name = "image1", length = 100)
+    private String image1;
 
-    @Column(name = "gdimage3", length = 100)
-    private String gdimage3;
+    @Column(name = "image2", length = 100)
+    private String image2;
 
-    @Column(name = "gdimage4", length = 100)
-    private String gdimage4;
+    @Column(name = "image3", length = 100)
+    private String image3;
 
-    @Column(name = "gdimage5", length = 100)
-    private String gdimage5;
+    @Column(name = "image4", length = 100)
+    private String image4;
 
-    @Column(name = "gdcategory", length = 30)
-    private String gdcategory;
+    @Column(name = "category", length = 30)
+    private String category;
 
-    @Column(name = "gdtag", length = 30)
-    private String gdtag;
+    @Column(name = "tag", length = 30)
+    private String tag;
     
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "writeday")
-    private Date writeday;
+    @Column(name = "date")
+    private Date date;
     
     @PrePersist
     protected void onCreate() {
-    	writeday = new Date();
+    	date = new Date();
     }
 
-    @Column(name = "inventory")
-    private Integer inventory;
-
-	public void setDescription(String description) {
-		// TODO Auto-generated method stub
+	public void setTags(List<String> tags) {
 		
 	}
 

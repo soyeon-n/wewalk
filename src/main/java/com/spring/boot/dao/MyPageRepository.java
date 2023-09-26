@@ -10,5 +10,5 @@ import com.spring.boot.model.SiteUser;
 
 @Repository
 public interface MyPageRepository extends JpaRepository<MyPage, String> {
-    MyPage findByEmail(String email);
+    //MyPage findByEmail(String email);
 }

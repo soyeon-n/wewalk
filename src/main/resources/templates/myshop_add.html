@@ -3,19 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <title>상품 등록</title>
+    <script type="text/javascript">
+    
+    function showTags(selectElement) {
+        var selectedCategory = selectElement.value;
+        var tagsContainer = document.getElementById("tagsContainer");
+        var tagsSelect = document.getElementById("tag");
+
+        // 카테고리에 따라 태그 선택 엘리먼트를 업데이트
+        if (selectedCategory === "Digital") { // "Electronic"을 "Electronics"로 수정
+            tagsSelect.innerHTML = ""; // 기존 옵션 초기화
+
+            var digitalTags = ["TV", "PC", "가전"]; // 전자제품 카테고리에 해당하는 태그들
+            for (var i = 0; i < digitalTags.length; i++) {
+                var option = document.createElement("option");
+                option.text = digitalTags[i];
+                option.value = digitalTags[i];
+                tagsSelect.appendChild(option);
+            }
+
+            // 태그 선택 엘리먼트를 보이도록 설정
+            tagsContainer.style.display = "block";
+            
+        } else if (selectedCategory === "Home") {
+            tagsSelect.innerHTML = ""; // 기존 옵션 초기화
+
+            var homeTags = ["셔츠", "바지", "신발"]; // 의류 카테고리에 해당하는 태그들
+            for (var i = 0; i < homeTags.length; i++) {
+                var option = document.createElement("option");
+                option.text = homeTags[i];
+                option.value = homeTags[i];
+                tagsSelect.appendChild(option);
+            }
+
+            // 태그 선택 엘리먼트를 보이도록 설정
+            tagsContainer.style.display = "block";
+            
+        } else {
+            // 기본적으로 숨겨둠
+            tagsContainer.style.display = "none";
+        }
+    }
+    
+    </script>
 </head>
 <body>
     <h2>상품 등록 페이지</h2>
     <form th:action="@{/mypage/myshop/add}" th:object="${goodsForm}" method="post" enctype="multipart/form-data">
         <div>
-            <label for="gdname">상품 이름:</label>
-            <input type="text" id="gdname" th:field="*{gdname}" required>
-            <span th:if="${#fields.hasErrors('gdname')}" th:errors="*{gdname}"></span>
+            <label for="name">상품 이름:</label>
+            <input type="text" id="name" th:field="*{name}" required>
+            <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
         </div>
         <div>
-            <label for="gdprice">상품 가격:</label>
-            <input type="number" id="gdprice" th:field="*{gdprice}" required>
-            <span th:if="${#fields.hasErrors('gdprice')}" th:errors="*{gdprice}"></span>
+            <label for="price">상품 가격:</label>
+            <input type="number" id="price" th:field="*{price}" required>
+            <span th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></span>
+        </div>
+        <div>
+            <label for="price">상품 재고:</label>
+            <input type="number" id="stock" th:field="*{stock}" required>
+            <span th:if="${#fields.hasErrors('stock')}" th:errors="*{stock}"></span>
         </div>
         <div>
             <label for="content">상품 설명:</label>
@@ -24,32 +72,28 @@
         </div>
         
         <div>
-            <label for="images">상품 사진 (최대 5장):</label>
-            <input type="file" id="image1" name="images" accept="image/*" required>
-            <input type="file" id="image2" name="images" accept="image/*">
-            <input type="file" id="image3" name="images" accept="image/*">
-            <input type="file" id="image4" name="images" accept="image/*">
-            <input type="file" id="image5" name="images" accept="image/*">
-        </div>
+    		<label for="image">상품 사진 (최대 5장):</label>
+    		<input type="file" id="image" name="images" accept="image/*" multiple="multiple" required>
+			<input type="file" id="image1" name="images" accept="image/*" multiple="multiple">
+			<input type="file" id="image2" name="images" accept="image/*" multiple="multiple">
+			<input type="file" id="image3" name="images" accept="image/*" multiple="multiple">
+			<input type="file" id="image4" name="images" accept="image/*" multiple="multiple">
+		</div>
         
         <div>
-            <label for="gdcategory">카테고리:</label>
-            <select id="gdcategory" name="gdcategory" th:field="*{gdcategory}">
-                <option value="Electronics">전자제품</option>
-                <option value="Clothing">의류</option>
-                
-            </select>
-        </div>
-        <!-- 
-        <div>
-            <label for="gdtags">태그:</label>
-            <select id="gdtags" name="gdtags" multiple="multiple" th:field="*{gdtags}">
-                <option value="New">신상품</option>
-                <option value="Sale">할인</option>
-                
-            </select>
-        </div>
-         -->
+    		<label for="category">카테고리:</label>
+    			<select id="category" name="category" th:field="*{category}" onchange="showTags(this)">
+        			<option value="Digital">디지털 기기</option>
+        			<option value="Home">생활 가전</option>
+        			
+    			</select>
+		</div>
+        <div id="tagsContainer" style="display: none;">
+    		<label for="tag">태그:</label>
+    			<select id="tag" name="tag" multiple="multiple" th:field="*{tag}">
+        			
+    			</select>
+		</div>
                
         <div>
             <button type="submit"> 등록 </button>

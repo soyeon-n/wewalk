@@ -11,29 +11,33 @@ import org.springframework.web.multipart.MultipartFile;
 public class GoodsForm {
 	
 	@NotEmpty(message = "상품명을 입력해주세요.")
-    private String gdname; // 필드 이름 수정
+    private String name; // 필드 이름 수정
 
     @NotEmpty(message = "상품 설명을 입력해주세요.")
     private String content;
 
     @NotNull(message = "가격을 입력해주세요.")
     @PositiveOrZero(message = "가격은 0 이상이어야 합니다.")
-    private Integer gdprice; // 필드 이름 수정
+    private Integer price; // 필드 이름 수정
+    
+    @NotNull(message = "재고를 입력해주세요.")
+    @PositiveOrZero(message = "재고는 0개 이상이어야 합니다.")
+    private Integer stock;
     
     private List<MultipartFile> images;
     
-    private String gdcategory;
+    private String category;
     
-    private List<String> gdtag;
+    private String tag;
     
     // 필드 이름과 어노테이션을 일치시켜야 합니다.
 
-    public String getGdname() {
-        return gdname;
+    public String getName() {
+        return name;
     }
 
-    public void setGdname(String gdname) {
-        this.gdname = gdname;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getContent() {
@@ -44,28 +48,28 @@ public class GoodsForm {
         this.content = content;
     }
 
-    public Integer getGdprice() {
-        return gdprice;
+    public Integer getPrice() {
+        return price;
     }
 
-    public void setGdprice(Integer gdprice) {
-        this.gdprice = gdprice;
+    public void setPrice(Integer price) {
+        this.price = price;
     }
 
-	public String getGdcategory() {
-		return gdcategory;
+	public String getCategory() {
+		return category;
 	}
 
-	public void setGdcategory(String gdcategory) {
-		this.gdcategory = gdcategory;
+	public void setCategory(String category) {
+		this.category = category;
 	}
 
-	public List<String> getGdtag() {
-		return gdtag;
+	public String getTag() {
+	    return tag;
 	}
 
-	public void setGdtag(List<String> gdtag) {
-		this.gdtag = gdtag;
+	public void setTag(String tag) {
+	    this.tag = tag;
 	}
 
 	public List<MultipartFile> getImages() {
@@ -74,6 +78,14 @@ public class GoodsForm {
 
 	public void setImages(List<MultipartFile> images) {
 		this.images = images;
+	}
+
+	public Integer getStock() {
+	    return stock;
+	}
+
+	public void setStock(Integer stock) {
+	    this.stock = stock;
 	}
 
 	
