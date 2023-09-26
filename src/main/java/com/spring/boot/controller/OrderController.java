@@ -14,6 +14,16 @@ import lombok.RequiredArgsConstructor;
 @Controller
 public class OrderController {
 
+	@GetMapping("/dd")
+	public String cart(Model model) {
+		
+		//장바구니(추가한다면) or 상품상세페이지에서
+		//물건 갯수 고르고 다음페이지
+		
+		
+		return "cart";
+	}
+	
 	@GetMapping("/test")
 	public String text(Model model) {
 		

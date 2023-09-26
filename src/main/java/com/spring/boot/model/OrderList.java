@@ -11,11 +11,11 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-public class Order {
+public class OrderList {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer orderno;
+	private Integer Id;
 	
 	private int productno;
 	
