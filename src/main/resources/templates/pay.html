@@ -3,41 +3,147 @@
 <head>
     <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
     <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
-    <script>
+    <script type="text/javascript">
+    
         var IMP = window.IMP;
         IMP.init("imp68260115");
 
-        function requestPay() {
+        function requestPay() {  
+        	
+        	var money = $('input[name="cp_item"]:checked').val(); // 선택한 라디오 버튼의 값 가져오기
+            console.log(money);
+        	
             IMP.request_pay(
                 {
                     pg: "html5_inicis",		//KG이니시스 pg파라미터 값
                     pay_method: "card",		//결제 방법
-                    merchant_uid: "1234578",//주문번호
+                    merchant_uid : 'merchant_' + new Date().getTime(),   //주문번호
                     name: "페이 충전",		//상품 명
-                    amount: 10000,			//금액
-      				buyer_email: "gildong@gmail.com",
-      				buyer_name: "홍길동",
-      				buyer_tel: "010-4242-4242",
-      				buyer_addr: "서울특별시 강남구 신사동",
-      				buyer_postcode: "01181"
+                    amount: money,			//금액
+      				buyer_email: "aaa@aa.aa",   // user.email 변수 불러오는 방법때문에 결제창 안뜸 (방법 모색)
+      				buyer_name: "수지",
+      				buyer_tel: "010-1010-1010",
+      				buyer_addr: "서울", //buyer_addr: user.address01 + " " + user.address02,
+      				buyer_postcode: "12345" //buyer_postcode: user.zipcode
      	
                 },
-                function (rsp) {
-      				//rsp.imp_uid 값으로 결제 단건조회 API를 호출하여 결제결과를 판단합니다.
+                function (rsp) {   //callback
+      				
                     if (rsp.success) {
-                        //서버 검증 요청 부분
+                    	console.log(rsp);
+                        //결제 성공 시 로직,
+                    	data.impUid = rsp.imp_uid;
+            	        data.merchant_uid = rsp.merchant_uid;
+            	        paymentComplete(data);
+            	        alert('결제가 성공했습니다.');
+            	        
                     } else {
                         alert("결제에 실패하였습니다. 에러 내용: " + rsp.error_msg);
                     }
+                });
+        	}
+       
+        
+        function requestPayKaKao() {  
+            var money = $('input[name="cp_item"]:checked').val(); // 선택한 라디오 버튼의 값 가져오기
+            console.log(money);
+
+            IMP.request_pay({
+            	pg : 'kakaopay',
+            	merchant_uid : 'merchant_' + new Date().getTime(),
+                name: '페이 충전',
+                amount: money, // 선택한 금액으로 설정
+                buyer_email: 'iamport@siot.do',
+                buyer_name: '수지',
+                buyer_tel: '010-1234-5678',
+                buyer_addr: '인천광역시 부평구',
+                buyer_postcode: '12345',  
+                
+            }, function (rsp) {
+
+                if (rsp.success) {
+                    var msg = '결제가 완료되었습니다.';
+                    msg += '고유ID : ' + rsp.imp_uid;
+                    msg += '상점 거래ID : ' + rsp.merchant_uid;
+                    msg += '결제 금액 : ' + rsp.paid_amount;
+                    msg += '카드 승인번호 : ' + rsp.apply_num;
+                    $.ajax({
+                        type: "GET", 
+                        url: "/mypage/pay", //충전 금액값을 보낼 url 설정
+                        data: {
+                            "amount" : money
+                        },
+                    });
+                } else {
+                    var msg = '결제에 실패하였습니다.';
+                    msg += '에러내용 : ' + rsp.error_msg;
+                    m_redirect_url : "/mypage/pay";
                 }
-            );
+                alert(msg);
+                //document.location.href="/mypage"; alert창 확인 후 이동할 url 설정
+            });
         }
-    </script>
-    <meta charset="UTF-8"/>
-    <title>Sample Payment</title>
+      	
+		/* 주문번호 만들기
+     	var orderNo = createOrderNo(); // 주문번호 생성
+     	
+        function createOrderNo(){
+        	const date = new Date();
+        	const year = date.getFullYear();
+        	const month = String(date.getMonth() + 1).padStart(2, "0");
+        	const day = String(date.getDate()).padStart(2, "0");
+        	
+        	let orderNo = year + month + day;
+        	
+        	for(let i=0;i<10;i++) {
+        		orderNo += Math.floor(Math.random() * 8);	
+        	}
+        	return orderNo;
+        }
+     	*/
+        
+        </script> 	
+<meta charset="UTF-8"/>
+<title>ㅇㅇ 페이 충전</title>
 </head>
 <body>
 <h1>페이 충전 페이지</h1>
-<button onclick="requestPay()">결제하기</button>
+
+<div class="card-body bg-white mt-0 shadow">
+     <p style="font-weight: bold">카드결제 현재 사용가능</p>
+     <label class="box-radio-input"><input type="radio" name="cp_item" value="5000"><span>5,000원</span></label>
+     <label class="box-radio-input"><input type="radio" name="cp_item" value="10000"><span>10,000원</span></label>
+     <label class="box-radio-input"><input type="radio" name="cp_item" value="15000"><span>15,000원</span></label>
+     <label class="box-radio-input"><input type="radio" name="cp_item" value="20000"><span>20,000원</span></label>
+     <label class="box-radio-input"><input type="radio" name="cp_item" value="25000"><span>25,000원</span></label>
+     <label class="box-radio-input"><input type="radio" name="cp_item" value="30000"><span>30,000원</span></label>
+     <label class="box-radio-input"><input type="radio" name="cp_item" value="35000"><span>35,000원</span></label>
+     <label class="box-radio-input"><input type="radio" name="cp_item" value="40000"><span>40,000원</span></label>
+     <label class="box-radio-input"><input type="radio" name="cp_item" value="45000"><span>45,000원</span></label>
+     <label class="box-radio-input"><input type="radio" name="cp_item" value="50000"><span>50,000원</span></label>
+     <p style="color: #ac2925; margin-top: 30px">카드결제의 최소 충전금액은 5,000원이며 <br/>최대 충전금액은 50,000원 입니다.</p>
+     <button onclick="requestPay()">카드결제로 충전하기</button>
+ </div>
+
+
+
+
+<div class="card-body bg-white mt-0 shadow">
+     <p style="font-weight: bold">카카오페이 현재 사용가능</p>
+     <label class="box-radio-input"><input type="radio" name="cp_item" value="5000"><span>5,000원</span></label>
+     <label class="box-radio-input"><input type="radio" name="cp_item" value="10000"><span>10,000원</span></label>
+     <label class="box-radio-input"><input type="radio" name="cp_item" value="15000"><span>15,000원</span></label>
+     <label class="box-radio-input"><input type="radio" name="cp_item" value="20000"><span>20,000원</span></label>
+     <label class="box-radio-input"><input type="radio" name="cp_item" value="25000"><span>25,000원</span></label>
+     <label class="box-radio-input"><input type="radio" name="cp_item" value="30000"><span>30,000원</span></label>
+     <label class="box-radio-input"><input type="radio" name="cp_item" value="35000"><span>35,000원</span></label>
+     <label class="box-radio-input"><input type="radio" name="cp_item" value="40000"><span>40,000원</span></label>
+     <label class="box-radio-input"><input type="radio" name="cp_item" value="45000"><span>45,000원</span></label>
+     <label class="box-radio-input"><input type="radio" name="cp_item" value="50000"><span>50,000원</span></label>
+     <p style="color: #ac2925; margin-top: 30px">카카오페이의 최소 충전금액은 5,000원이며 <br/>최대 충전금액은 50,000원 입니다.</p>
+     <button onclick="requestPayKaKao()">카카오페이로 충전하기</button>
+ </div>
+
+
 </body>
 </html>

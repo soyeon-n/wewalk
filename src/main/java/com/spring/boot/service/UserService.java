@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.spring.boot.config.DataNotFoundException;
 import com.spring.boot.dao.UserRepository;
+import com.spring.boot.dto.User;
 import com.spring.boot.model.SiteUser;
 
 import lombok.RequiredArgsConstructor;
@@ -53,5 +54,10 @@ public class UserService {
 		}
 		
 	}
+	
+	public User getUserById(int userId) {
+		
+        return userRepository.findById(userId);
+    }
 	
 }

@@ -29,12 +29,15 @@ public class User implements Serializable {
 	@Column(name = "id")
 	private Long id;
 	
-	@OneToOne(mappedBy = "user")
-    private Goods product;
-
-	@OneToOne(mappedBy = "user")
-    private Shipping address;
+	@OneToMany(mappedBy = "user")
+    private List<Goods> productList;
 	
+	@OneToMany(mappedBy = "user")
+    private List<Shipping> addressList;
+	
+	@OneToOne(mappedBy = "user")
+    private Pay pay;
+
 	@Column(name = "EMAIL")
 	private String email;
 	

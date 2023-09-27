@@ -20,10 +20,11 @@ import lombok.Setter;
 public class Shipping {
 	
 		@Id
-	    @Column(name = "id")
-	    private Integer id;
+		@GeneratedValue(strategy = GenerationType.IDENTITY)
+	    @Column(name = "ano")
+	    private Integer ano;
 	    
-	    @OneToOne
+	    @ManyToOne
 	    @JoinColumn(name = "id") // 이 부분이 FK로 User 테이블의 id와 연결됩니다.
 	    private User user;
 

@@ -1,24 +1,22 @@
 package com.spring.boot.controller;
 
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import com.spring.boot.config.PwUpdate;
 import com.spring.boot.config.SessionConst;
-import com.spring.boot.dao.GoodsRepository;
+
 import com.spring.boot.dto.Goods;
 import com.spring.boot.dto.GoodsForm;
 import com.spring.boot.dto.User;
 import com.spring.boot.dto.Shipping;
 import com.spring.boot.dto.ShippingForm;
 import com.spring.boot.service.GoodsService;
-import com.spring.boot.service.ShippingService;
+import com.spring.boot.service.PayService;
+import com.spring.boot.service.UserService;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -26,7 +24,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -38,6 +35,15 @@ import javax.validation.Valid;
 public class MyPageController {
 
     private static final List<MultipartFile> imagePaths = null;
+    
+    private final PayService payService;
+    private final UserService userService;
+
+    @Autowired
+    public MyPageController(PayService payService, UserService userService) {
+        this.payService = payService;
+        this.userService = userService;
+    }
 
 	@GetMapping("/mypage")
     public String myPage(Model model, HttpServletRequest request) {
@@ -214,12 +220,36 @@ public class MyPageController {
         }
     }
 
-	@GetMapping("/mypage/pay")
-    public String pay(Model model, HttpServletRequest request) {
+    @GetMapping("/mypage/pay")
+    public String Pay (Model model, HttpServletRequest request) {
     	
     	//pay 충전 페이지
     	
-    	return "pay";
+        return "pay"; // payment.html 또는 결제 페이지 템플릿을 반환
+    }
+    
+    @PostMapping("/mypage/pay")
+    public String pay(Model model, HttpServletRequest request) {
+    	
+    	//pay 충전 페이지
+    	try { 
+    		
+    		// 클라이언트로부터 받은 요청 파라미터 처리 (예: userId, paymentAmount 등)
+    		int userId = Integer.parseInt(request.getParameter("userId"));
+            int payMoney = Integer.parseInt(request.getParameter("payMoney"));
+            
+            // 결제 로직 수행 및 결제 정보 저장
+            payService.processPayment(userId, payMoney);
+
+            // 결제 성공 시 화면에 메시지 전달 (예: "결제가 성공적으로 처리되었습니다.")
+            model.addAttribute("message", "결제가 성공적으로 처리되었습니다.");
+            
+        } catch (Exception e) {
+            // 결제 실패 시 화면에 메시지 전달 (예: "결제에 실패하였습니다.")
+            model.addAttribute("message", "결제에 실패하였습니다.");
+            e.printStackTrace();
+        }
+        return "pay";
     }
     
     @GetMapping("/mypage/membership")

@@ -30,7 +30,7 @@ public class Goods {
     @Column(name = "pno")
     private Integer pno;
 	
-	@OneToOne
+	@ManyToOne
     @JoinColumn(name = "id")
 	private User user;
     
