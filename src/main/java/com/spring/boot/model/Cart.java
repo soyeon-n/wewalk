@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -11,33 +12,13 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-public class OrderList {
+public class Cart {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer Id;
 	
-	private int productno;
-	
-	private int sellerid;
-	
-	private int userid;
-	
-	private int count;
-	
-	private int price;
-	
-	private String payment;
-	
-	private String name;
-	
-	private String tel;
-	
-	private String addr;
-	
-	private String zip;
-	
-	private String addr_detail;
-	
-	
+	@OneToOne
+	private SiteUser user;
+
 }
