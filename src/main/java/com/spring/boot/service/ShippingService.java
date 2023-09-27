@@ -19,6 +19,8 @@ public class ShippingService {
 
     public void registerShippingAddress(Long id) {
     	
+    	/*
+    	 
         User user = userRepository.findById(id).orElse(null);
         
         if (user!= null) {
@@ -27,7 +29,9 @@ public class ShippingService {
             // 주소 등록에 필요한 다른 필드 설정
             shippingRepository.save(address); // 주소 정보를 저장
         }
+        */
     }
+    
 }
 
 
