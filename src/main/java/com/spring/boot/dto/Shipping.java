@@ -7,6 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import lombok.Getter;
@@ -18,14 +19,13 @@ import lombok.Setter;
 @Table(name = "address")
 public class Shipping {
 	
-		@ManyToOne
-		@JoinColumn(name = "user_id", referencedColumnName = "id")
-		private User user;
-	
 		@Id
-		@GeneratedValue(strategy = GenerationType.IDENTITY)
-		@Column(name = "id", updatable = false, insertable = false)
-		private Long id;
+	    @Column(name = "id")
+	    private Integer id;
+	    
+	    @OneToOne
+	    @JoinColumn(name = "id") // 이 부분이 FK로 User 테이블의 id와 연결됩니다.
+	    private User user;
 
 	    @Column(name = "type", length = 30, nullable = false)
 	    private String type;

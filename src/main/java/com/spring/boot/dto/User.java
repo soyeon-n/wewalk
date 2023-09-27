@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.sun.istack.NotNull;
@@ -28,11 +29,11 @@ public class User implements Serializable {
 	@Column(name = "id")
 	private Long id;
 	
-	@OneToMany(mappedBy = "user")
-	private List<Shipping> shippingList;
-	
-	@OneToMany(mappedBy = "user")
-    private List<Goods> goodsList;
+	@OneToOne(mappedBy = "user")
+    private Goods product;
+
+	@OneToOne(mappedBy = "user")
+    private Shipping address;
 	
 	@Column(name = "EMAIL")
 	private String email;
