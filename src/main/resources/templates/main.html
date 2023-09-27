@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+<div>
+    <tbody>
+        <tr th:each="product,loop: ${paging}">
+        <td th:text="${paging.totalElements - (paging.number * paging.size) - loop.index} ">
+           <td>
+           여기를 클릭하면 개별게시물 detail 을 볼수있도록  <br/>
+              <a th:href="@{|/product/detail/${product.productNo}|}" th:text="${product.name}"><br/></a>
+           </td>
+           <td th:text="${product.content}">
+           <td th:text="${product.price}">
+           
+           </td>
+       
+        </td>
+        </tr>
+        
+    
+    
+    </tbody>
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
