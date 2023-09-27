@@ -11,7 +11,6 @@ $(document).ready(function(){
         
     });
 
-
     //비밀번호 조건 만족 불만족 확인하기
     var text_pw = $('.field_pw input');
     text_pw.focus(function(){               //포커스 되면
@@ -21,7 +20,6 @@ $(document).ready(function(){
         
         pw_check();              //pw_check() 함수 실행    
     });
-
 
     //비밀번호 확인 조건 만족 불만족 확인하기
 
@@ -33,22 +31,21 @@ $(document).ready(function(){
         pw2_check();
     });
     
-
     //이메일 중복 체크
     $('.field_email .btn').click(function(){
 
-        if ($('.field_email input').val() == '') {    //만약에 아무것도 입력 되지 않은 상태면
+        if($('.field_email input').val() == '') {    //만약에 아무것도 입력 되지 않은 상태면
             alert('이메일을 입력해주세요');
             return;
         }
 
-        email_overlap_input = document.querySelector('input[name="email"]');
+        email_overlap_input = $('.field_email input').val()
     
         $.ajax({
           type: "GET",
-          url: "./checkEmail?id="+email_overlap_input,    //해당 url로 데이터를 넘김
+          url: "/checkEmail?email="+email_overlap_input,    //해당 url로 데이터를 넘김
           data: {
-            'email': $('.field_email input').val()
+            'email': email_overlap_input
           },
           datatype: 'json',
           success: function (data) {
@@ -56,22 +53,22 @@ $(document).ready(function(){
             if (data['overlap'] == "fail") {
               alert("이미 존재하는 이메일 입니다.");
               email_overlap_input.focus();
-              return;
+              return false;
             } else {
               alert("사용가능한 이메일 입니다.");
-              return;
+              return true;
             }
           }
         });
     });
-/*
+
     //아이디 중복 체크
     $('.field_id .btn').click(function(){
 
         if ($('.field_id input').val() == '') {    //만약에 아무것도 입력 되지 않은 상태면
             alert('아이디를 입력해주세요');
             $(".field_id .txt_guide .txt_case2").css('color', '#b3130b');
-            return;
+            return false;
         }
 
         id_overlap_input = document.querySelector('input[name="id"]');
@@ -98,7 +95,6 @@ $(document).ready(function(){
           }
         });
     });
-*/
 
     $('#addressSearch').click(function(){
         new daum.Postcode({
@@ -141,8 +137,11 @@ $(document).ready(function(){
                 }
 
                 // 우편번호와 주소 정보를 해당 필드에 넣는다.               
-                document.getElementById("address").value = addr;                               
-
+                document.getElementById("address").value = addr;      
+                                         
+				// 주소 입력 필드 비활성화
+	            document.getElementById("address").disabled = true;  // 주소 입력 필드 비활성화
+	            
                 //주소 검색이 완료된 후 변하는 css 목록
                 $('.field_address input').css('display', 'block');
                 $('#addressNo').text('재검색')

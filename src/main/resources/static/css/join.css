@@ -97,11 +97,11 @@ table {
     text-align: left;
 }
 
-.member_join input[type=text], .member_join input[type=password] {
+.member_join input[type=text], .member_join input[type=password], .member_join input[type=email] {
     width: 332px;
 }
 
-.type_form textarea, .type_form input[type=text], .type_form input[type=password] {
+.type_form textarea, .type_form input[type=text], .type_form input[type=password], .type_form input[type=email] {
     height: 44px;
     padding: 0 14px;
     border: 1px solid #ccc;

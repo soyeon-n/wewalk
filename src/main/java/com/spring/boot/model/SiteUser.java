@@ -1,5 +1,6 @@
 package com.spring.boot.model;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
@@ -11,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotEmpty;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -41,10 +43,11 @@ public class SiteUser {
 	private String name;
 
 	//생성 일자(생성일시 추가하는 코드 추가 필요)
+	@Column(nullable = false)
 	private LocalDateTime createdDate;
 	
 	@Column(length = 12, nullable = false)
-	private String birth;
+	private LocalDate birthDate;
 	
 	@Column(nullable = false)
 	private String address;
