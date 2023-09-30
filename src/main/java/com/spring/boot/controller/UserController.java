@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.spring.boot.dto.UserCreateForm;
 import com.spring.boot.model.SiteUser;
+import com.spring.boot.model.UserRole;
 import com.spring.boot.service.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -31,7 +32,7 @@ public class UserController {
 	@GetMapping("signup")
 	public String signup(UserCreateForm userCreateForm) {
 		
-		return "join";
+		return "signup_form";
 		
 	}
 	
@@ -42,7 +43,7 @@ public class UserController {
 		//입력값 검증
 		if(bindResult.hasErrors()) {
 			bindResult.reject("signupFailed", "유효성 검증에 실패했습니다");
-			return "join1";
+			return "signup_form";
 			
 		}
 		
@@ -52,42 +53,43 @@ public class UserController {
 			bindResult.rejectValue("password2", "passwordInCorrect",
 					"2개의 패스워드가 일치하지 않습니다!");
 			
-			return "join2";
+			return "signup_form";
 		}
 		
 		//입력값 DB에 넣으면서 검증(서버사이드)
 		try {
 			
 			//날짜 검증 및 날짜 형식으로 변환
-			int year = Integer.parseInt(userCreateForm.getBirth_year());
-		    int month = Integer.parseInt(userCreateForm.getBirth_month());
-		    int day = Integer.parseInt(userCreateForm.getBirth_day());
+			int year = Integer.parseInt(userCreateForm.getBirthYear());
+		    int month = Integer.parseInt(userCreateForm.getBirthMonth());
+		    int day = Integer.parseInt(userCreateForm.getBirthDay());
 
 		    LocalDate birthDate = LocalDate.of(year, month, day);
 			
-			userService.create(userCreateForm.getEmail(), userCreateForm.getUserName(), 
-					 userCreateForm.getPassword1(), userCreateForm.getName(), userCreateForm.getTel(),
-					 userCreateForm.getAddress(), userCreateForm.getDetailAddress(), birthDate);
+		    //UserRole을 지정해서 넣어줘야 하고 거기에 추가로 UserCreateForm과 UserService, SiteUser에서의 데이터 입력 순서를 맞춰줘야 함
+			userService.create(UserRole.USER, userCreateForm.getEmail(), userCreateForm.getPassword1(), userCreateForm.getUserName(), 
+						userCreateForm.getName(), birthDate,
+						userCreateForm.getAddress(), userCreateForm.getDetailAddress(), userCreateForm.getTel());
 		
 		} catch (DateTimeException e) {
 		    // 유효하지 않은 날짜
 			e.printStackTrace();
 			bindResult.reject("signupFailed", "유효하지 않은 날짜입니다");
-			return "join3";
+			return "signup_form";
 			
 		} catch (DataIntegrityViolationException e) {
 			
 			e.printStackTrace();
 			bindResult.reject("signupFailed", "이미 등록된 사용자입니다");
 			
-			return "join4";
+			return "signup_form";
 			
 		} catch (Exception e) {
 			
 			e.printStackTrace();
 			bindResult.reject("signupFailed", e.getMessage());
 			
-			return "join5";
+			return "signup_form";
 			
 		}
 		return "redirect:/user/login";

@@ -61,7 +61,7 @@ public class SiteUser {
 	private String picture;
 	
 	//판매자 등록 여부(0 또는 1)
-	@Column(columnDefinition = "TINYINT(1) default 0")
+//	@Column(columnDefinition = "TINYINT(1) default 0")
 	private boolean seller;
 	
 	//판매자 설명

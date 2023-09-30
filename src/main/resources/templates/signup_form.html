@@ -41,21 +41,36 @@
 		</div>
 		
 		<div class="mb-3">
-			<label for="birth" class="form-label">주민등록번호</label>
-			<input type="" th:field="*{birth}" class="form-control"/>
+			<label for="address" class="form-label">주소</label>
+			<input type="text" th:field="*{address}" class="form-control"/>
 		</div>
 		
 		<div class="mb-3">
-			<label for="address" class="form-label">주소</label>
-			<input type="text" th:field="address" class="form-control"/>
+			<label for="address" class="form-label">상세주소</label>
+			<input type="text" th:field="*{detailAddress}" class="form-control"/>
 		</div>
 		
 		<div class="mb-3">
 			<label for="tel" class="form-label">전화번호</label>
-			<input type="text" th:field="tel" class="form-control"/>
+			<input type="text" th:field="*{tel}" class="form-control"/>
 		</div>
 		
 		<div class="mb-3">
+			<label for="birthYear" class="form-label">생년</label>
+			<input type="text" th:field="*{birthYear}" class="form-control"/>
+		</div>
+		
+		<div class="mb-3">
+			<label for="birthMonth" class="form-label">생월</label>
+			<input type="text" th:field="*{birthMonth}" class="form-control"/>
+		</div>
+		
+		<div class="mb-3">
+			<label for="birthDay" class="form-label">생일</label>
+			<input type="text" th:field="*{birthDay}" class="form-control"/>
+		</div>
+		
+		<!-- <div class="mb-3">
 			<label for="interest1" class="form-label">관심사1</label>
 			<input type="text" th:field="interest1" class="form-control"/>
 		</div>
@@ -68,7 +83,7 @@
 		<div class="mb-3">
 			<label for="interest3" class="form-label">관심사3</label>
 			<input type="text" th:field="interest3" class="form-control"/>
-		</div>
+		</div> -->
 		
 		<button type="submit" class="btn btn-primary">회원가입</button>
 	</form>

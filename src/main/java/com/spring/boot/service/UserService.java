@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.spring.boot.config.DataNotFoundException;
 import com.spring.boot.dao.UserRepository;
 import com.spring.boot.model.SiteUser;
+import com.spring.boot.model.UserRole;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,24 +25,24 @@ public class UserService {
 	private final PasswordEncoder passwordEncoder;
 	
 	//id 생성 메소드
-	public SiteUser create(String email, String userName, String password, 
-							String name, String tel, String address, 
-							String detailAddress, LocalDate birthDate) {
+	public SiteUser create(UserRole role, String email, String password, String userName,  
+							String name, LocalDate birthDate, String address, 
+							String detailAddress, String tel) {
 		
 		SiteUser user = new SiteUser();
 		
+		user.setRole(role);
 		user.setEmail(email);
-		user.setUserName(userName);
-		
 		//암호화 처리
 		user.setPassword(passwordEncoder.encode(password));
 		
+		user.setUserName(userName);
 		user.setName(name);
-		user.setTel(tel);
+		user.setCreatedDate(LocalDateTime.now());
+		user.setBirthDate(birthDate);
 		user.setAddress(address);
 		user.setDetailAddress(detailAddress);
-		user.setBirthDate(birthDate);
-		user.setCreatedDate(LocalDateTime.now());
+		user.setTel(tel);
 		
 		//회원정보 db에 저장
 		userRepository.save(user);

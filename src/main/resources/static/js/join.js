@@ -30,7 +30,7 @@ $(document).ready(function(){
     text_pw2.blur(function(){      
         pw2_check();
     });
-    
+    /*
     //이메일 중복 체크
     $('.field_email .btn').click(function(){
 
@@ -53,10 +53,10 @@ $(document).ready(function(){
             if (data['overlap'] == "fail") {
               alert("이미 존재하는 이메일 입니다.");
               email_overlap_input.focus();
-              return false;
+              return;
             } else {
               alert("사용가능한 이메일 입니다.");
-              return true;
+              return;
             }
           }
         });
@@ -71,11 +71,11 @@ $(document).ready(function(){
             return false;
         }
 
-        id_overlap_input = document.querySelector('input[name="id"]');
+        userName_overlap_input = document.querySelector('input[name="userName"]');
     
         $.ajax({
           type: "GET",
-          url: "/checkUserName?id="+id_overlap_input,    //해당 url로 데이터를 넘김
+          url: "/checkUserName?userName="+userName_overlap_input,    //해당 url로 데이터를 넘김
           data: {
             'userName': $('.field_id input').val()
           },
@@ -85,7 +85,7 @@ $(document).ready(function(){
             if (data['overlap'] == "fail") {
               alert("이미 존재하는 아이디 입니다.");
               $(".field_id .txt_guide .txt_case2").css('color', '#b3130b');
-              id_overlap_input.focus();
+              userName_overlap_input.focus();
               return;
             } else {
               alert("사용가능한 아이디 입니다.");
@@ -95,7 +95,7 @@ $(document).ready(function(){
           }
         });
     });
-
+*/
     $('#addressSearch').click(function(){
         new daum.Postcode({
             oncomplete: function(data) {

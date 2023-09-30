@@ -46,9 +46,9 @@ public class SecurityConfig {
         // /login, /signup 페이지는 모두 허용, 다른 페이지는 인증된 사용자만 허용
         http
             .authorizeRequests()
-            .antMatchers("/", "/css/**", "/images/**", "/js/**", "/user/login", "/user/signup/**").permitAll()
-            .antMatchers("/admin/**").hasRole(UserRole.ADMIN.name())
-			.antMatchers("/api/vi/**").hasRole(BaseAuthRole.USER.name()) //USER권한 설정을 통해 모든 페이지에 접근 가능
+            .antMatchers("/**", "/css/**", "/images/**", "/js/**", "/user/login", "/user/signup/**").permitAll()
+//            .antMatchers("/admin/**").hasRole(UserRole.ADMIN.name()) 우선 모든 페이지 접근 가능하게 해놓고 테스트 예정
+//			.antMatchers("/api/vi/**").hasRole(BaseAuthRole.USER.name()) //USER권한 설정을 통해 모든 페이지에 접근 가능
 			.anyRequest().authenticated();
 
 		// login 설정

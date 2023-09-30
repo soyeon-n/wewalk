@@ -19,9 +19,6 @@ $(document).ready(function(){
            
            pw2_check();              //pw2_check() 함수 실행    
        });
-   
-  
-
 
 });
 
@@ -56,6 +53,5 @@ function show_alert(err){
         alert("아이디 또는 비밀번호가 일치하지 않습니다.");
         return;
     }
-    
     
 }

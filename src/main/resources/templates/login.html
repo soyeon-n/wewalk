@@ -4,9 +4,9 @@
         <script src="http://code.jquery.com/jquery.min.js"></script>
         <title>로그인</title>
         <link rel="stylesheet" href="/css/reset.css">
-        <link rel="stylesheet" href="/css/common.css">
+<!--         <link rel="stylesheet" href="/css/common.css"> -->
         <link rel="stylesheet" href="/css/login.css">
-        <script src="/js/common.js"></script>
+<!--         <script src="/js/common.js"></script> -->
     </head>
     
     
@@ -21,8 +21,7 @@
                         <h3 class="tit_login">LOGIN</h3>
                         <div class="write_form">
                             <div class="write_view login_view">
-                                <form th:action="@{/user/login}" name="login_form" id="form" th:object="${userCreateForm}"
-									method="post" enctype="multipart/form-data">
+                                <form th:action="@{/user/login}" name="login_form" id="form" method="post">
                                     <input type="hidden" name="returnUrl" value="">
                                     <input type="hidden" name="close" value>
                                     <input type="email" name="email" size="50" tabindex="1" value placeholder="이메일 입력">
@@ -50,20 +49,16 @@
 
             </div>
 
-        
-            
-    
-
 
         </div>
 
         
 
-<!-- 
+
         <script>
 
-            var id = "test"
-            var pw = "test" 
+/*             var id = "test"
+            var pw = "test"  */
         
             // getId = '${m_id}';
             // getPw = '${password}';
@@ -79,13 +74,13 @@
                     document.login_form.password.focus();
                     return;
                 }
-                if (document.login_form.email.value != id || document.login_form.password.value != pw){
+               /*  if (document.login_form.email.value != id || document.login_form.password.value != pw){
                     alert("아이디 또는 비밀번호가 틀렸습니다.");
                     history.go(0);
                     return;
-                } 
+                }  */
                 document.login_form.submit();
             }
-        </script> -->
+        </script>
     </body>
 </html>

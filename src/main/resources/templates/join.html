@@ -101,7 +101,7 @@
                 <div class="page_aticle">
                     <div class="type_form member_join">
                         <form id="myForm" th:action="@{/user/signup}" th:object="${userCreateForm}"
-                         method="POST" onsubmit="return on_submit_check();">
+                         method="post" onsubmit="return on_submit_check();">
                             <div class="field_head">
                                 <h3 class="tit">회원가입</h3>
                                 <p class="sub">
@@ -122,21 +122,23 @@
                                         </th>
 
                                         <td>
-                                            <input type="email" name="email" size="30" placeholder="예: marketkurly@kurly.com">
+                                            <input type="email" th:field="*{email}" size="30" placeholder="예: marketkurly@kurly.com">
+<!--                                             <input type="email" name="email" th:field="*{email}" size="30" placeholder="예: marketkurly@kurly.com"> -->
                                             <a href="#" class="btn default">중복확인</a>
                                         </td>
 
                                     </tr>
                                     
                                     <tr class="fst field_id">
-                                        <th>아이디
+                                        <th>닉네임
                                             <span class="ico">
                                                 *
                                                 <span class="screen_out">필수항목</span>
                                             </span>
                                         </th>
                                         <td>
-                                            <input type="text" name="userName" th:field="*{userName}" maxlength="16" onkeyup="id_check()" placeholder="6~16자의 영문 혹은 영문과 숫자를 조합">
+                                            <input type="text" th:field="*{userName}" maxlength="16" onkeyup="id_check()" placeholder="6~16자의 영문 혹은 영문과 숫자를 조합">
+<!--                                             <input type="text" name="userName" th:field="*{userName}" maxlength="16" onkeyup="id_check()" placeholder="6~16자의 영문 혹은 영문과 숫자를 조합"> -->
                                             <a class="btn default" href="#">중복확인</a>
                                             <p class="txt_guide square">
                                                 <span class="txt txt_case1">
@@ -157,7 +159,8 @@
                                             </span>
                                         </th>
                                         <td>
-                                            <input type="password" name="password1" th:field="*{password1}" option="regPass" onkeyup="pw_check()" maxlength="16" class="reg_pw bad" placeholder="비밀번호를 입력해주세요">
+                                            <input type="password" th:field="*{password1}" onkeyup="pw_check()" maxlength="16" class="reg_pw bad" placeholder="비밀번호를 입력해주세요">
+<!--                                             <input type="password" name="password1" th:field="*{password1}" option="regPass" onkeyup="pw_check()" maxlength="16" class="reg_pw bad" placeholder="비밀번호를 입력해주세요"> -->
                                             <p class="txt_guide square">
                                                 <span class="txt txt_case1">
                                                     8자 이상 입력
@@ -178,7 +181,8 @@
                                             </span>
                                         </th>
                                         <td>
-                                            <input type="password" name="password2" th:field="*{password2}" option="regPass" onkeyup="pw2_check()" maxlength="16" class="confirm_pw" placeholder="비밀번호를 한번 더 입력해주세요">
+                                            <input type="password" th:field="*{password2}" onkeyup="pw2_check()" maxlength="16" class="confirm_pw" placeholder="비밀번호를 한번 더 입력해주세요">
+<!--                                             <input type="password" name="password2" th:field="*{password2}" onkeyup="pw2_check()" maxlength="16" class="confirm_pw" placeholder="비밀번호를 한번 더 입력해주세요"> -->
                                             <p class="txt_guide square">
                                                 <span class="txt txt_case1">
                                                     동일한 비밀번호를 입력해주세요.
@@ -196,7 +200,8 @@
                                             </span>
                                         </th>
                                         <td>
-                                            <input type="text" name="name" th:field="*{name}" placeholder="이름을 입력해주세요">
+                                            <input type="text" th:field="*{name}" placeholder="이름을 입력해주세요">
+<!--                                             <input type="text" name="name" th:field="*{name}" placeholder="이름을 입력해주세요"> -->
                                         </td>
                                     </tr>
 
@@ -211,7 +216,8 @@
 
                                         <td>
                                             <div class="phone_num">
-                                                <input type="text" pattern="[0-9]*" name="tel"  th:field="*{tel}" placeholder="숫자만 입력해주세요" class="inp">
+                                                <input type="text" pattern="[0-9]*" th:field="*{tel}" placeholder="숫자만 입력해주세요" class="inp">
+<!--                                                 <input type="text" pattern="[0-9]*" name="tel"  th:field="*{tel}" placeholder="숫자만 입력해주세요" class="inp"> -->
 
                                             </div>
                                         </td>
@@ -229,8 +235,10 @@
                                             <a href="#" id="addressSearch" class="search">
                                                 <span id="addressNo" class="address_no">주소검색</span>
                                             </a>
-                                            <input type="text" id="address" name="address" placeholder="주소">
-                                            <input type="text" id="detailAddress" name="detailAddress"  placeholder="상세주소">
+                                            <input type="text" id="address" th:field="*{address}" placeholder="주소">
+                                            <!-- <input type="text" id="address" name="address" th:field="*{address}" placeholder="주소"> -->
+                                            <input type="text" id="detailAddress" th:field="*{detailAddress}" placeholder="상세주소">
+                                            <!-- <input type="text" id="detailAddress" name="detailAddress" th:field="*{detailAddress}" placeholder="상세주소"> -->
                                             <p class="txt_guide" style="display:block;">
                                                 <span class="txt txt_case1">배송지에 따라 상품 정보가 달라질 수 있습니다.</span>
                                             </p>
@@ -241,13 +249,16 @@
                                         <th>생년월일</th>
                                         <td>
                                             <div class="birth_day">
-                                                <input type="text" name="birth_year" id="birth_year" pattern="[0-9]*"  label="생년월일" size="4" maxlength="4" placeholder="YYYY">
+                                                <input type="text" id="birth_year" th:field="*{birth_year}" pattern="[0-9]*" size="4" maxlength="4" placeholder="YYYY">
+<!--                                                 <input type="text" name="birth_year" id="birth_year" th:field="*{birth_year}" pattern="[0-9]*"  label="생년월일" size="4" maxlength="4" placeholder="YYYY"> -->
                                                 <span class="bar">
 
                                                 </span>
-                                                <input type="text" name="birth_month" id="birth_month" pattern="[0-9]*"  label="생년월일" size="2" maxlength="2" placeholder="MM">
+                                                <input type="text" id="birth_month" th:field="*{birth_month}" pattern="[0-9]*" size="2" maxlength="2" placeholder="MM">
+<!--                                                 <input type="text" name="birth_month" id="birth_month" th:field="*{birth_month}" pattern="[0-9]*"  label="생년월일" size="2" maxlength="2" placeholder="MM"> -->
                                                 <span class="bar"></span>
-                                                <input type="text" name="birth_day" id="birth_day" pattern="[0-9]*"  label="생년월일" size="2" maxlength="2" placeholder="DD">
+                                                <input type="text" id="birth_day" th:field="*{birth_day}" pattern="[0-9]*" size="2" maxlength="2" placeholder="DD">
+<!--                                                 <input type="text" name="birth_day" id="birth_day" th:field="*{birth_day}" pattern="[0-9]*"  label="생년월일" size="2" maxlength="2" placeholder="DD"> -->
 
                                             </div>
                                         </td>                                       
