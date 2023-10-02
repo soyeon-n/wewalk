@@ -65,9 +65,18 @@ public class UserController {
 		    int day = Integer.parseInt(userCreateForm.getBirthDay());
 
 		    LocalDate birthDate = LocalDate.of(year, month, day);
+		    
+		    UserRole role;
+		    
+		    //이메일 주소가 admin@wewalkpay.com이면 role에 ADMIN을 주고 아니면 USER
+			if(userCreateForm.getEmail() == "admin@wewalkpay.com" || "admin@wewalkpay.com".equals(userCreateForm.getEmail())) {
+				role = UserRole.ADMIN;
+			}else {
+				role = UserRole.USER;
+			}
 			
 		    //UserRole을 지정해서 넣어줘야 하고 거기에 추가로 UserCreateForm과 UserService, SiteUser에서의 데이터 입력 순서를 맞춰줘야 함
-			userService.create(UserRole.USER, userCreateForm.getEmail(), userCreateForm.getPassword1(), userCreateForm.getUserName(), 
+			userService.create(role, userCreateForm.getEmail(), userCreateForm.getPassword1(), userCreateForm.getUserName(), 
 						userCreateForm.getName(), birthDate,
 						userCreateForm.getAddress(), userCreateForm.getDetailAddress(), userCreateForm.getTel());
 		
