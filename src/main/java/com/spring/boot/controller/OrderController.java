@@ -1,11 +1,21 @@
 package com.spring.boot.controller;
 
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.spring.boot.dao.CartItemRepository;
+import com.spring.boot.model.CartItem;
+import com.spring.boot.model.Product;
+import com.spring.boot.service.CartItemService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -14,11 +24,35 @@ import lombok.RequiredArgsConstructor;
 @Controller
 public class OrderController {
 
-	@GetMapping("/dd")
+	private final CartItemService cartItemService;
+	
+	@GetMapping("/testsql")
+	@ResponseBody
+	public int sqlq() {
+		
+		int str;
+	
+		CartItem cart = cartItemService.getCartItem(2L);
+		
+		
+		
+/*
+		for(CartItem s : Cartlists) {
+			str+= (s.getProduct());
+		}
+		*/
+		
+		str = cart.getCount();
+		
+		return str;
+	}
+	
+	@GetMapping("/cart")
 	public String cart(Model model) {
 		
-		//장바구니(추가한다면) or 상품상세페이지에서
-		//물건 갯수 고르고 다음페이지
+		//해당유저의 id인데 세션의 id로 수정할것
+		int id = 1;
+		
 		
 		
 		return "cart";
@@ -27,8 +61,7 @@ public class OrderController {
 	@GetMapping("/test")
 	public String text(Model model) {
 		
-		//장바구니(추가한다면) or 상품상세페이지에서
-		//물건 갯수 고르고 다음페이지
+		
 		
 		
 		return "order_test";

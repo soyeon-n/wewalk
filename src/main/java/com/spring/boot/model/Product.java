@@ -8,7 +8,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -16,14 +15,20 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-public class Cart {
+public class Product {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long Id;
+	private Integer Id;
 	
-	@OneToOne
-	private SiteUser user;
+	private String name;
+	
+	private Integer price;
+	
+	private Integer stock;
+	
+	private Character selling;
+	
+	private String image;
 
-	
 }

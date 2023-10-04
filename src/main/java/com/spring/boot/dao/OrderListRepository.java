@@ -4,6 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.spring.boot.model.OrderList;
 
-public interface PaymentRepository extends JpaRepository<OrderList, Integer>{
+public interface OrderListRepository extends JpaRepository<OrderList, Integer>{
 
 }
