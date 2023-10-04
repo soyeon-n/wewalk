@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import com.spring.boot.config.PwUpdate;
 import com.spring.boot.config.SessionConst;
-
+import com.spring.boot.dao.ShippingRepository;
 import com.spring.boot.dto.Goods;
 import com.spring.boot.dto.GoodsForm;
 import com.spring.boot.dto.User;
@@ -16,6 +16,7 @@ import com.spring.boot.dto.Shipping;
 import com.spring.boot.dto.ShippingForm;
 import com.spring.boot.service.GoodsService;
 import com.spring.boot.service.PayService;
+import com.spring.boot.service.ShippingService;
 import com.spring.boot.service.UserService;
 
 import java.io.IOException;
@@ -38,11 +39,13 @@ public class MyPageController {
     
     private final PayService payService;
     private final UserService userService;
+    private final ShippingService shippingService;
 
     @Autowired
-    public MyPageController(PayService payService, UserService userService) {
+    public MyPageController(PayService payService, UserService userService, ShippingService shippingService) {
         this.payService = payService;
         this.userService = userService;
+        this.shippingService = shippingService;
     }
 
 	@GetMapping("/mypage")
@@ -104,7 +107,7 @@ public class MyPageController {
         shipping.setAddress02(shippingForm.getAddress02());
 
         // Shipping 정보를 서비스를 통해 저장
-        //ShippingService.saveShipping(shipping);
+        shippingService.saveShipping(shipping);
 
         return "redirect:/mypage/shipping";
     	
@@ -267,6 +270,31 @@ public class MyPageController {
     	
     	return "grade";
     }
+    
+    @GetMapping("/mypage/shippingList")
+    public String shippingList(Model model, HttpServletRequest request) {
+    	
+    	//구매등급 안내 페이지
+    
+    	return "Shipping_list";
+    }
+    
+    @GetMapping("/mypage/withdraw")
+    public String withdraw (Model model, HttpServletRequest request) {
+    	
+    	//회원 탈퇴 페이지
+    
+    	return "Withdraw";
+    }
+    
+    @PostMapping("/mypage/withdraw")
+    public String withDraw (Model model, HttpServletRequest request) {
+    	
+    	//회원 탈퇴 페이지
+    
+    	return "Withdraw";
+    }
+    
     
     /*
 
