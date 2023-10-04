@@ -9,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.spring.boot.config.DataNotFoundException;
+import com.spring.boot.dao.BaseAuthUserRepository;
 import com.spring.boot.dao.UserRepository;
 import com.spring.boot.model.SiteUser;
 import com.spring.boot.model.UserRole;
@@ -19,6 +20,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserService {
 
+	//private final BaseAuthUserRepository baseAuthUserRepository;
+	
 	private final UserRepository userRepository;
 	
 	//BCrypt해시 함수 호출
@@ -26,20 +29,22 @@ public class UserService {
 	
 	//id 생성 메소드
 	public SiteUser create(UserRole role, String email, String password, String userName,  
-							String name, LocalDate birthDate, String address, 
+							String name, LocalDate birthDate, String postcode, String address, 
 							String detailAddress, String tel) {
 		
 		SiteUser user = new SiteUser();
 		
 		user.setRole(role);
 		user.setEmail(email);
-		//암호화 처리
+		
+		//암호화 처리(이미 Bcrypt를 통해 salt 적용됨)
 		user.setPassword(passwordEncoder.encode(password));
 		
 		user.setUserName(userName);
 		user.setName(name);
 		user.setCreatedDate(LocalDateTime.now());
 		user.setBirthDate(birthDate);
+		user.setPostcode(postcode);
 		user.setAddress(address);
 		user.setDetailAddress(detailAddress);
 		user.setTel(tel);

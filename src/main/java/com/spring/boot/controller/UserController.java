@@ -77,7 +77,7 @@ public class UserController {
 			
 		    //UserRole을 지정해서 넣어줘야 하고 거기에 추가로 UserCreateForm과 UserService, SiteUser에서의 데이터 입력 순서를 맞춰줘야 함
 			userService.create(role, userCreateForm.getEmail(), userCreateForm.getPassword1(), userCreateForm.getUserName(), 
-						userCreateForm.getName(), birthDate,
+						userCreateForm.getName(), birthDate, userCreateForm.getPostcode(),
 						userCreateForm.getAddress(), userCreateForm.getDetailAddress(), userCreateForm.getTel());
 		
 		} catch (DateTimeException e) {

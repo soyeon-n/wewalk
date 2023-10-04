@@ -33,6 +33,7 @@ public class BaseAuthUser {
 	private String picture;
 	
 	//JPA로 db에 저장할 때 enum 자료형 설정(기본값 = int)
+	//role이 GUEST이면 회원가입 창으로 이동하게 하고 USER이면 메인 화면으로 이동하도록 처리
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
 	private BaseAuthRole role;

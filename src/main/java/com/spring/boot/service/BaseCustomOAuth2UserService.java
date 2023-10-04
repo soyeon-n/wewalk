@@ -40,9 +40,12 @@ public class BaseCustomOAuth2UserService implements OAuth2UserService<OAuth2User
 		
 		OAuth2User oauth2User = oauthUserService.loadUser(userRequest);
 		
+		//소셜로그인 하는 곳이 어딘지 알려주는 값(카카오, 네이버, 구글...)
 		String registrationId = 
 				userRequest.getClientRegistration().getRegistrationId();
 		
+		//각 플랫폼에서 로그인하는 계정의 id값
+		//구글 = sub, 네이버 = response, 카카오 = id
 		String userNameAttributeName = 
 				userRequest.getClientRegistration().getProviderDetails()
 				.getUserInfoEndpoint().getUserNameAttributeName();
@@ -56,6 +59,7 @@ public class BaseCustomOAuth2UserService implements OAuth2UserService<OAuth2User
 		
 		BaseAuthUser authUser = saveOrUpdate(attributes);
 		
+		//로그인 한 계정의 attributes를 세션에 올림
 		httpSession.setAttribute("user", new SessionUser(authUser));
 		
 		return new DefaultOAuth2User(Collections.singleton(
@@ -64,6 +68,7 @@ public class BaseCustomOAuth2UserService implements OAuth2UserService<OAuth2User
 												attributes.getNameAttributeKey());
 	} 
 	
+	//저장 또는 업데이트
 	private BaseAuthUser saveOrUpdate(OAuthAttributes attributes) {
 		BaseAuthUser authUser = baseAuthUserRepository
 									.findByEmail(attributes.getEmail())

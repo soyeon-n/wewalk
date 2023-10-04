@@ -47,8 +47,8 @@ public class SecurityConfig {
         http
             .authorizeRequests()
             .antMatchers("/**", "/css/**", "/images/**", "/js/**", "/user/login", "/user/signup/**").permitAll()
-//            .antMatchers("/admin/**").hasRole(UserRole.ADMIN.name()) 우선 모든 페이지 접근 가능하게 해놓고 테스트 예정
-//			.antMatchers("/api/vi/**").hasRole(BaseAuthRole.USER.name()) //USER권한 설정을 통해 모든 페이지에 접근 가능
+            .antMatchers("/admin/**").hasRole(UserRole.ADMIN.name()) //우선 모든 페이지 접근 가능하게 해놓고 테스트 예정
+			.antMatchers("/api/vi/**").hasRole(BaseAuthRole.USER.name()) //USER권한 설정을 통해 모든 페이지에 접근 가능
 			.anyRequest().authenticated();
 
 		// login 설정
@@ -77,10 +77,11 @@ public class SecurityConfig {
 	}
 	
 	//passwordEncoder 실행하면 BCrypt 암호화 객체를 반환
+	//저사양 유저와 암호화의 안전성을 고려하여 해싱의 cost를 11로 설정
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		
-		return new BCryptPasswordEncoder();
+		return new BCryptPasswordEncoder(11);
 		
 	}
 	
