@@ -1,0 +1,102 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <script src="http://code.jquery.com/jquery.min.js"></script>
+        <title>로그인</title>
+        <link rel="stylesheet" href="/css/reset.css">
+<!--         <link rel="stylesheet" href="/css/common.css"> -->
+        <link rel="stylesheet" href="/css/login.css">
+<!--         <script src="/js/common.js"></script> -->
+    </head>
+    
+    
+
+    <body>
+        <div id="container" class="container">
+
+
+            <div id="main">
+                <div id="content">
+                    <div class="section_login">
+                        <h3 class="tit_login">LOGIN</h3>
+                        <div class="write_form">
+                            <div class="write_view login_view">
+                                <form th:action="@{/user/login}" name="login_form" id="form" method="post">
+                                    <input type="hidden" name="returnUrl" value="">
+                                    <input type="hidden" name="close" value>
+                                    <input type="email" name="email" size="50" tabindex="1" value placeholder="이메일 입력">
+                                    <input type="password" name="password" size="50" tabindex="2" placeholder="비밀번호 입력">
+                                    <div class="checkbox_save">
+                                        <div class="login_search">
+                                            <a th:href="@{/user/findEmail}" class="link">계정 찾기</a>
+                                            <span class="bar"></span>
+                                            <a th:href="@{/user/findPwd}" class="link">비밀번호 찾기</a>
+                                        </div>
+                                    </div>
+                                    <button type="button" onclick="check_input()" class="btn_type1">
+                                        <span class="txt_type">로그인</span>
+                                    </button>
+                                </form>
+                                <a th:href="@{/user/signup}" class="btn_type2 btn_member">
+                                    <span class="txt_type">회원가입</span>
+                                </a>
+                                
+                                <a href="/oauth2/authorization/google">
+								<img th:src="@{/images/google.png}"/>
+							</a>
+							
+							<br/>
+							
+							<a href="/oauth2/authorization/kakao">
+								<img th:src="@{/images/kakao.png}"/>
+							</a>
+							
+							<br/>
+							
+							<a href="/oauth2/authorization/naver">
+								<img th:src="@{/images/naver.png}"/>
+							</a>
+        
+                            </div>
+        
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+        </div>
+
+        
+
+
+        <script>
+
+/*             var id = "test"
+            var pw = "test"  */
+        
+            // getId = '${m_id}';
+            // getPw = '${password}';
+            
+            function check_input(){
+                if (!document.login_form.email.value){
+                    alert("이메일을 입력하세요");
+                    document.login_form.email.focus();
+                    return;
+                }
+                if (!document.login_form.password.value){
+                    alert("비밀번호를 입력하세요");
+                    document.login_form.password.focus();
+                    return;
+                }
+               /*  if (document.login_form.email.value != id || document.login_form.password.value != pw){
+                    alert("아이디 또는 비밀번호가 틀렸습니다.");
+                    history.go(0);
+                    return;
+                }  */
+                document.login_form.submit();
+            }
+        </script>
+    </body>
+</html>
