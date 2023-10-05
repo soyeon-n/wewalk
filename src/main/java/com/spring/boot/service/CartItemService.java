@@ -20,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 public class CartItemService {
 
 	private final CartItemRepository cartItemRepository;
-	//private final ProductRepository productRepository;
+	private final ProductRepository productRepository;
 	//private final CartRepository cartRepository;
 	
 	public List<Product> getCartItemList(Long cart_id){

@@ -37,8 +37,9 @@
                     </div>
                     <ul class="list" id='dropup_list'>
                         <li>
+                        
                             <!-- 상품 목록 중 1. 추가/삭제될 목록임. -->
-                            <div class="item">
+                            <div class="item" th:each="item : ${productList}">
                                 <label class="check" for="chkItem1">
                                     <!-- 개당 체크박스 -->
                                     <input onclick='check_sel_all(this)' type="checkbox" id="chkItem1" name="checkOne"
@@ -49,7 +50,7 @@
     
                                 <div class="name">
                                     <div class="inner_name">
-                                        <a href="#" class="package ">[채소] 감자</a>
+                                        <a href="#" class="package " th:text="${item.name}"></a>
                                         <div class="info"></div>
                                     </div>
                                     <div class="goods">
@@ -58,7 +59,7 @@
                                         <!-- 이미지자리 ^-->
                                         <div class="price">
                                             <div class="in_price">
-                                                <span class="selling">6,000
+                                                <span class="selling"th:text="${item.price}">
                                                     <span class="won">원</span>
                                                 </span>
                                                 <p class="noti"></p>
@@ -81,6 +82,8 @@
                                         data-type="cold">
                                         상품 삭제</button>
                                 </div>
+                            </div>
+                                
                         </li>
                         <!--1끝-->
     

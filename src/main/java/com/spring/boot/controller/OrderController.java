@@ -1,9 +1,8 @@
 package com.spring.boot.controller;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,10 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.spring.boot.dao.CartItemRepository;
+import com.spring.boot.model.Cart;
 import com.spring.boot.model.CartItem;
 import com.spring.boot.model.Product;
 import com.spring.boot.service.CartItemService;
+import com.spring.boot.service.CartService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 @Controller
 public class OrderController {
 
+	private final CartService cartService;
 	private final CartItemService cartItemService;
 	
 	@GetMapping("/testsql")
@@ -34,14 +35,7 @@ public class OrderController {
 	
 		CartItem cart = cartItemService.getCartItem(2L);
 		
-		
-		
-/*
-		for(CartItem s : Cartlists) {
-			str+= (s.getProduct());
-		}
-		*/
-		
+
 		str = cart.getCount();
 		
 		return str;
@@ -51,9 +45,12 @@ public class OrderController {
 	public String cart(Model model) {
 		
 		//해당유저의 id인데 세션의 id로 수정할것
-		int id = 1;
+		Long cartId = 2L;
 		
+	
+		List<Product> productList = cartService.getProductList(cartId);
 		
+		model.addAttribute("productList", productList);
 		
 		return "cart";
 	}
