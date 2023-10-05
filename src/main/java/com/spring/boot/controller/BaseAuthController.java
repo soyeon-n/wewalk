@@ -28,7 +28,6 @@ public class BaseAuthController {
 			model.addAttribute("name", user.getName());
 			model.addAttribute("picture", user.getPicture());
 			
-			
 		}
 		
 		return "index";

@@ -3,6 +3,7 @@ package com.spring.boot.dto;
 import java.io.Serializable;
 
 import com.spring.boot.model.BaseAuthUser;
+import com.spring.boot.model.SiteUser;
 
 import lombok.Getter;
 
@@ -24,5 +25,12 @@ public class SessionUser implements Serializable{
 		this.picture = user.getPicture();
 		this.role = user.getRoleKey();
 	}
+	
+//	public SessionUser(SiteUser user) { //SiteUser로 
+//		this.name = user.getName();
+//		this.email = user.getEmail();
+//		this.picture = user.getPicture();
+//		this.role = user.getRoleKey();
+//	}
 	
 }

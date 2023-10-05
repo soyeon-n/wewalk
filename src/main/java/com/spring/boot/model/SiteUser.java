@@ -90,4 +90,9 @@ public class SiteUser {
     @ManyToOne(fetch = FetchType.LAZY)
     private BaseAuthUser baseAuthUser;
 	
+    //사용자 유형 식별(Guest / User)
+  	public String getRoleKey() {
+  		return this.role.getKey();
+  	}
+    
 }

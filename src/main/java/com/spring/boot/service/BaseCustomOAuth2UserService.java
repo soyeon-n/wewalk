@@ -26,10 +26,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class BaseCustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User>{
 
-	@Autowired
 	private final BaseAuthUserRepository baseAuthUserRepository;
 	
-	@Autowired
 	private final HttpSession httpSession;
 
 	@Override
