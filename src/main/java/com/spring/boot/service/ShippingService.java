@@ -20,7 +20,7 @@ public class ShippingService {
         this.shippingRepository = shippingRepository;
     }
 
-    public void registerShippingAddress(Long userId, Shipping shipping) {
+    public void registerShippingAddress(int userId, Shipping shipping) {
     	
     	// 주어진 userId로 사용자를 찾아옵니다.
         User user = UserRepository.findUserById(userId);

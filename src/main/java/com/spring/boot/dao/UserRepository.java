@@ -18,12 +18,9 @@ public interface UserRepository extends JpaRepository<SiteUser, Long>{
 	// id를 기반으로 사용자를 찾는 메서드 추가
 	User findById(int id);
 
-<<<<<<< HEAD
-	static User findUserById(Long userId) {
-=======
+
 	static User findUserById(int id) {
->>>>>>> 4131d33b4fe0e8265419c9b68a21ffe496cd735f
-		// TODO Auto-generated method stub
+
 		return null;
 	}
 	
