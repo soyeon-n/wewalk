@@ -173,7 +173,7 @@ public class AdminController {
 	
 	@PreAuthorize("isAuthenticated")
 	@PostMapping("/modifyUser/{id}")
-	public String questionModify(@Valid AdminCreateForm adminCreateForm, BindingResult bindResult,
+	public String modifyUser(@Valid AdminCreateForm adminCreateForm, BindingResult bindResult,
 			@PathVariable("id") Long id) {
 	
 		if(bindResult.hasErrors()) {
@@ -194,7 +194,7 @@ public class AdminController {
 	
 	@PreAuthorize("isAuthenticated")
 	@GetMapping("/deleteUser/{id}")
-	public String questionDelete(@PathVariable("id") Long id) {
+	public String deleteUser(@PathVariable("id") Long id) {
 	
 		//질문글 데이터 받아옴
 		SiteUser siteUser = userService.getUser(id);
