@@ -39,10 +39,16 @@ public class AdminService {
 		sorts.add(Sort.Order.desc("createdDate"));
 		
 		//실제로 페이지를 구현하는 클래스
+		//한 페이지당 10개의 데이터가 보이도록 세팅
 		pageable = PageRequest.of(
 				pageable.getPageNumber() <= 0 ? 0 : 
-					pageable.getPageNumber() -1 , 
-					pageable.getPageSize() + 10, Sort.by(sorts));
+					pageable.getPageNumber() -1 , 10, Sort.by(sorts));
+
+//		//실제로 페이지를 구현하는 클래스
+//		pageable = PageRequest.of(
+//				pageable.getPageNumber() <= 0 ? 0 : 
+//					pageable.getPageNumber() -1 , 
+//					pageable.getPageSize() + 5, Sort.by(sorts));
 		
 		//getPageNumber() : 반환할 페이지(0보다 작으면 0으로 초기화)
 		//PageRequest : 정렬 매개변수가 적용된 새 항목을 생성해줌
@@ -108,4 +114,38 @@ public class AdminService {
 			throw new DataNotFoundException("User not found!");
 		}
 	}
+	
+	//
+	public void modify(SiteUser siteUser, String email, String password, String userName, String name, 
+			String postcode, String address, String detailAddress, String tel, 
+			boolean seller, String birthYear, String birthMonth, String birthDay) {
+		
+		int year = Integer.parseInt(birthYear);
+	    int month = Integer.parseInt(birthMonth);
+	    int day = Integer.parseInt(birthDay);
+
+	    LocalDate birthDate = LocalDate.of(year, month, day);
+		
+		siteUser.setEmail(email);
+		siteUser.setPassword(passwordEncoder.encode(password));
+		siteUser.setUserName(userName);
+		siteUser.setName(name);
+		siteUser.setPostcode(postcode);
+		siteUser.setAddress(address);
+		siteUser.setDetailAddress(detailAddress);
+		siteUser.setTel(tel);
+		siteUser.setSeller(seller);
+		siteUser.setBirthDate(birthDate);
+		siteUser.setModifyDate(LocalDateTime.now());
+		
+		adminRepository.save(siteUser);
+		
+	}
+	
+	//Question 자체를 삭제
+	//엔티티 설정에 의해 question에 딸려있는 answer들도 전부 삭제됨
+	public void delete(SiteUser siteUser) {
+		adminRepository.delete(siteUser);
+	}
+	
 }

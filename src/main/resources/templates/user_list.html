@@ -12,6 +12,7 @@
 			<th style="width: 50%">이메일</th>			
 			<th>권한</th>
 			<th>닉네임</th>
+			<th>삭제</th>
 		</tr>
 	</thead>
 	
@@ -34,7 +35,7 @@
 			<td th:text="${paging.totalElements - (paging.number * paging.size) - loop.index}"></td>
 			<td class="text-start">
 				<!-- <a th:href="@{/user/login}" sec:authorize="isAnonymous()" th:text="${question.subject}"></a> -->
-				<a th:href="@{|/admin/userDetail/${siteUser.id}|}" th:text="${siteUser.email}"></a>
+				<a th:href="@{|/admin/modifyUser/${siteUser.id}|}" th:text="${siteUser.email}"></a>
 				
 				<!-- 답글 갯수 <span class="text-danger small ms-1" th:if="${#lists.size(question.answerList)>0}"
 					th:text="${#lists.size(question.answerList)}"></span> -->
@@ -45,10 +46,25 @@
 			th:text="${question.author.userName}"></span> -->
 			<!-- 생성일자 표시 <td th:text="${#temporals.format(question.createdDate, 'yyyy-MM-dd HH:mm')}">작성일 </td> -->
 			<td th:text="${siteUser.userName}"></td>
+			<td th:inline="javascript">
+			    <a href="javascript:void(0);" th:onclick="confirmDelete([[${siteUser.id}]])" th:text="삭제"></a>
+			</td>
+	<script type="text/javascript">
+		function confirmDelete(userId) {
+			
+		    var result = confirm("삭제하시겠습니까?");
+		    
+		    // '예'를 클릭했을 때의 처리. 예를 들면, 삭제 처리를 위한 페이지로 리다이렉트.
+		    if (result) {
+		        window.location.href = "/admin/deleteUser/" + userId;  // 해당 URL을 삭제 처리 페이지의 URL로 변경하세요.
+		    } 
+		    
+		    // '아니오'를 클릭했을 때는 아무런 동작을 하지 않습니다.
+		}
+	</script>
 		</tr>
 	</tbody>
 	</table>
-	
 	<!-- 페이징 처리 -->
 	<div th:if="${!paging.isEmpty()}">
 	

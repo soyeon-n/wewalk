@@ -56,6 +56,22 @@ public class UserService {
 		
 	}
 	
+	public SiteUser getUser(Long id) {
+		
+		Optional<SiteUser> op = userRepository.findById(id);
+		
+		if(op.isPresent()) {
+			
+			return op.get();
+			
+		}else {
+			
+			throw new DataNotFoundException("데이터가 없습니다");
+			
+		}
+		
+	}
+	
 	//이메일로 불러오기
 	public SiteUser getUserByEmail(String email) {
 		
@@ -81,6 +97,22 @@ public class UserService {
 		}else {
 			throw new DataNotFoundException("User not found!");
 		}
+		
+	}
+	
+	//사용자 정보 수정
+	public void modify(SiteUser siteUser, String email, String userName, 
+			String postcode, String address, String detailAddress, String tel) {
+		
+		siteUser.setEmail(email);
+		siteUser.setUserName(userName);
+		siteUser.setPostcode(postcode);
+		siteUser.setAddress(address);
+		siteUser.setDetailAddress(detailAddress);
+		siteUser.setTel(tel);
+		siteUser.setModifyDate(LocalDateTime.now());
+		
+		userRepository.save(siteUser);
 		
 	}
 }

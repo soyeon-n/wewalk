@@ -89,6 +89,8 @@ public class SiteUser {
     
     @ManyToOne(fetch = FetchType.LAZY)
     private BaseAuthUser baseAuthUser;
+    
+    private LocalDateTime modifyDate;
 	
     //사용자 유형 식별(Guest / User)
   	public String getRoleKey() {

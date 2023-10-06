@@ -19,7 +19,7 @@ import com.spring.boot.model.BaseAuthRole;
 import com.spring.boot.model.BaseAuthUser;
 import com.spring.boot.model.SiteUser;
 import com.spring.boot.model.UserRole;
-//해결 안됨
+
 //@Component
 //public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 //

@@ -55,6 +55,7 @@ public class BaseCustomOAuth2UserService implements OAuth2UserService<OAuth2User
 		
 		System.out.println(attributes.getAttributes());
 		
+		//여기서 db에 저장
 		BaseAuthUser authUser = saveOrUpdate(attributes);
 		
 		//로그인 한 계정의 attributes를 세션에 올림
