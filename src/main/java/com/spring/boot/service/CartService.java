@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.spring.boot.dao.CartItemRepository;
 import com.spring.boot.dao.CartRepository;
 import com.spring.boot.dao.ProductRepository;
+import com.spring.boot.dao.UserRepository;
 import com.spring.boot.model.Cart;
 import com.spring.boot.model.CartItem;
 import com.spring.boot.model.Product;
@@ -20,10 +21,14 @@ import lombok.RequiredArgsConstructor;
 public class CartService {
 
 	private final CartRepository cartRepository;
-
-	public List<Product> getProductList(Long cartId){
+	private final UserRepository userRepository;
+	
+	
+	public List<Product> getProductList(String email){
 		
-		Cart userCart = cartRepository.findById(cartId).get();
+		Long user_id = userRepository.findByEmail(email).get().getId();
+		
+		Cart userCart = cartRepository.findByUserId(user_id);
 		
 		List<CartItem> cartItemList = userCart.getCartItemList();
 		

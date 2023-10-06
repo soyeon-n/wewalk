@@ -1242,10 +1242,13 @@ label.label_block {
 
 .only_pc .cart_result .inner_result {
     position: absolute;
-    right: 0;
-    top: 60px;
+    background-color: #fff;
+    position: fixed;
+    right: 60%;
+    top: 30%;
+    margin-right: -720px;
     width: 284px;
-    background-color: #fff
+    
 }
 
 .only_pc .cart_result .notice {

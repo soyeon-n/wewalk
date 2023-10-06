@@ -1,8 +1,8 @@
 package com.spring.boot.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.spring.boot.model.Cart;
-import com.spring.boot.model.CartItem;
 import com.spring.boot.model.Product;
+import com.spring.boot.model.SiteUser;
 import com.spring.boot.service.CartItemService;
 import com.spring.boot.service.CartService;
+import com.spring.boot.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -26,29 +26,36 @@ public class OrderController {
 
 	private final CartService cartService;
 	private final CartItemService cartItemService;
+	private final UserService userService;
 	
 	@GetMapping("/testsql")
 	@ResponseBody
-	public int sqlq() {
+	public String sqlq(Authentication authentication) {
 		
-		int str;
+		String email="";
 	
-		CartItem cart = cartItemService.getCartItem(2L);
+		email = authentication.getName(); //email가져옴
+		//dghs1233@naver.com
 		
-
-		str = cart.getCount();
+		//SiteUser user = userService.getUserByEmail(email);
 		
-		return str;
+		return "getName: " +email;
 	}
 	
-	@GetMapping("/cart")
-	public String cart(Model model) {
+	@GetMapping("/testcartpage")
+	public String sqlq() {
 		
-		//해당유저의 id인데 세션의 id로 수정할것
-		Long cartId = 2L;
 		
+		return "cart_test";
+	}
 	
-		List<Product> productList = cartService.getProductList(cartId);
+	
+	@GetMapping("/cart")
+	public String cart(Model model ,Authentication authentication) {
+		
+		//시큐리티 로그인된 사용자의 cartItem(장바구니목록)가져와 장바구니페이지로 이동
+	
+		List<Product> productList = cartService.getProductList(authentication.getName());
 		
 		model.addAttribute("productList", productList);
 		

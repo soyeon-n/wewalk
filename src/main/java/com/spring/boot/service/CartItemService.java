@@ -33,25 +33,7 @@ public class CartItemService {
 		
 	}
 
-	public CartItem getCartItem(Long cartId){
-		
-		
-		CartItem fail = new CartItem();
-		fail.setId(111L);
-		fail.setCount(999);
-		
-		
-		Optional<CartItem> cartitem = cartItemRepository.findById(cartId);
-		
-		
-		
-		if(cartitem.isPresent()) {
-		return cartitem.get();
-		}else {
-			return fail;
-		}
-		
-	}
+
 	
 	
 }
