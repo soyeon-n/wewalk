@@ -39,16 +39,18 @@ public class SecurityConfig {
 		//Routing Security
         http
         	.csrf().disable().headers().frameOptions().disable();// disable csrf for our requests 
-        	//.cors(); Cross-Origin Resource Sharing (CORS)를 활성화하는 메소드. 
-        			// CORS는 웹 페이지가 다른 도메인의 리소스에 액세스할 수 있게 하는 메커니즘
-        	
+        
+        //.cors(); Cross-Origin Resource Sharing (CORS)를 활성화하는 메소드. 
+        // CORS는 웹 페이지가 다른 도메인의 리소스에 액세스할 수 있게 하는 메커니즘
+        http.cors();
+        
         // 권한에 따라 허용하는 url 설정
         // /login, /signup 페이지는 모두 허용, 다른 페이지는 인증된 사용자만 허용
         http
             .authorizeRequests()
-            .antMatchers("/**", "/css/**", "/images/**", "/js/**", "/user/login", "/user/signup/**").permitAll()
-//            .antMatchers("/admin/**").hasRole(UserRole.ADMIN.name()) 우선 모든 페이지 접근 가능하게 해놓고 테스트 예정
-//			.antMatchers("/api/vi/**").hasRole(BaseAuthRole.USER.name()) //USER권한 설정을 통해 모든 페이지에 접근 가능
+            .antMatchers("/", "/css/**", "/images/**", "/js/**", "/user/login", "/user/signup/**", "/oauth2/authorization/**").permitAll()
+            .antMatchers("/admin/**").hasRole(UserRole.ADMIN.name()) //우선 모든 페이지 접근 가능하게 해놓고 테스트 예정
+			.antMatchers("/api/vi/**").hasRole(BaseAuthRole.USER.name()) //USER권한 설정을 통해 모든 페이지에 접근 가능
 			.anyRequest().authenticated();
 
 		// login 설정
@@ -59,7 +61,7 @@ public class SecurityConfig {
                 .passwordParameter("password")	// login에 필요한 password 값을 password(default)로 설정
                 .defaultSuccessUrl("/");
         
-        //OAuth 2.0 login 설정
+        //OAuth 2.0 login 설정(successhandler로 회원 검증 페이지 처리할 것)
         http
             .oauth2Login()
             .defaultSuccessUrl("/")
@@ -77,10 +79,11 @@ public class SecurityConfig {
 	}
 	
 	//passwordEncoder 실행하면 BCrypt 암호화 객체를 반환
+	//저사양 유저와 암호화의 안전성을 고려하여 해싱의 cost를 11로 설정
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		
-		return new BCryptPasswordEncoder();
+		return new BCryptPasswordEncoder(11);
 		
 	}
 	

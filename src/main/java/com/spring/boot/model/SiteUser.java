@@ -50,6 +50,9 @@ public class SiteUser {
 	private LocalDate birthDate;
 	
 	@Column(nullable = false)
+	private String postcode;
+	
+	@Column(nullable = false)
 	private String address;
 	
 	@Column(nullable = false)
@@ -61,7 +64,7 @@ public class SiteUser {
 	private String picture;
 	
 	//판매자 등록 여부(0 또는 1)
-//	@Column(columnDefinition = "TINYINT(1) default 0")
+	@Column(columnDefinition = "TINYINT(1) default 0")
 	private boolean seller;
 	
 	//판매자 설명
@@ -84,5 +87,14 @@ public class SiteUser {
     @ManyToOne(fetch = FetchType.LAZY)
     private Interest interest3;
     
+    @ManyToOne(fetch = FetchType.LAZY)
+    private BaseAuthUser baseAuthUser;
+    
+    private LocalDateTime modifyDate;
 	
+    //사용자 유형 식별(Guest / User)
+  	public String getRoleKey() {
+  		return this.role.getKey();
+  	}
+    
 }

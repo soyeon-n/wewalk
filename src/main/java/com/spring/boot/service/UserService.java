@@ -9,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.spring.boot.config.DataNotFoundException;
+import com.spring.boot.dao.BaseAuthUserRepository;
 import com.spring.boot.dao.UserRepository;
 import com.spring.boot.model.SiteUser;
 import com.spring.boot.model.UserRole;
@@ -19,6 +20,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserService {
 
+	//private final BaseAuthUserRepository baseAuthUserRepository;
+	
 	private final UserRepository userRepository;
 	
 	//BCrypt해시 함수 호출
@@ -26,20 +29,22 @@ public class UserService {
 	
 	//id 생성 메소드
 	public SiteUser create(UserRole role, String email, String password, String userName,  
-							String name, LocalDate birthDate, String address, 
+							String name, LocalDate birthDate, String postcode, String address, 
 							String detailAddress, String tel) {
 		
 		SiteUser user = new SiteUser();
 		
 		user.setRole(role);
 		user.setEmail(email);
-		//암호화 처리
+		
+		//암호화 처리(이미 Bcrypt를 통해 salt 적용됨)
 		user.setPassword(passwordEncoder.encode(password));
 		
 		user.setUserName(userName);
 		user.setName(name);
 		user.setCreatedDate(LocalDateTime.now());
 		user.setBirthDate(birthDate);
+		user.setPostcode(postcode);
 		user.setAddress(address);
 		user.setDetailAddress(detailAddress);
 		user.setTel(tel);
@@ -48,6 +53,22 @@ public class UserService {
 		userRepository.save(user);
 		
 		return user;
+		
+	}
+	
+	public SiteUser getUser(Long id) {
+		
+		Optional<SiteUser> op = userRepository.findById(id);
+		
+		if(op.isPresent()) {
+			
+			return op.get();
+			
+		}else {
+			
+			throw new DataNotFoundException("데이터가 없습니다");
+			
+		}
 		
 	}
 	
@@ -66,16 +87,32 @@ public class UserService {
 	}
 	
 	//userName으로 불러오기
-		public SiteUser getUserByUserName(String userName) {
-			
-			Optional<SiteUser> siteUser = 
-					userRepository.findByUserName(userName);
-			
-			if(siteUser.isPresent()) {
-				return siteUser.get();
-			}else {
-				throw new DataNotFoundException("User not found!");
-			}
-			
+	public SiteUser getUserByUserName(String userName) {
+		
+		Optional<SiteUser> siteUser = 
+				userRepository.findByUserName(userName);
+		
+		if(siteUser.isPresent()) {
+			return siteUser.get();
+		}else {
+			throw new DataNotFoundException("User not found!");
 		}
+		
+	}
+	
+	//사용자 정보 수정
+	public void modify(SiteUser siteUser, String email, String userName, 
+			String postcode, String address, String detailAddress, String tel) {
+		
+		siteUser.setEmail(email);
+		siteUser.setUserName(userName);
+		siteUser.setPostcode(postcode);
+		siteUser.setAddress(address);
+		siteUser.setDetailAddress(detailAddress);
+		siteUser.setTel(tel);
+		siteUser.setModifyDate(LocalDateTime.now());
+		
+		userRepository.save(siteUser);
+		
+	}
 }

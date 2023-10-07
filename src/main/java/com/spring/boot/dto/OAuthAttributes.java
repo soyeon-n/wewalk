@@ -96,6 +96,7 @@ public class OAuthAttributes {
 		
 	}
 	
+	//DB에 저장하는 메소드
 	public BaseAuthUser toEntity() {
 		
 		return BaseAuthUser.builder()
@@ -104,7 +105,6 @@ public class OAuthAttributes {
 				.picture(picture)
 				.role(BaseAuthRole.GUEST)
 				.build();
-		
 		
 	}
 	

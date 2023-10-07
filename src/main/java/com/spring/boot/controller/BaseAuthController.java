@@ -7,6 +7,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.spring.boot.dto.SessionUser;
+import com.spring.boot.model.BaseAuthRole;
+import com.spring.boot.model.BaseAuthUser;
 import com.spring.boot.service.LoginUser;
 
 import lombok.RequiredArgsConstructor;
@@ -20,11 +22,14 @@ public class BaseAuthController {
 	@GetMapping("/")
 	public String index(Model model, @LoginUser SessionUser user) {
 		
-		if(user!=null) {
+		if(user!=null) {		
+			
 			model.addAttribute("email", user.getEmail());
 			model.addAttribute("name", user.getName());
 			model.addAttribute("picture", user.getPicture());
+			
 		}
+		
 		return "index";
 	}
 	

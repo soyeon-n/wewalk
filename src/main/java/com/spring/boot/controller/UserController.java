@@ -77,7 +77,7 @@ public class UserController {
 			
 		    //UserRole을 지정해서 넣어줘야 하고 거기에 추가로 UserCreateForm과 UserService, SiteUser에서의 데이터 입력 순서를 맞춰줘야 함
 			userService.create(role, userCreateForm.getEmail(), userCreateForm.getPassword1(), userCreateForm.getUserName(), 
-						userCreateForm.getName(), birthDate,
+						userCreateForm.getName(), birthDate, userCreateForm.getPostcode(),
 						userCreateForm.getAddress(), userCreateForm.getDetailAddress(), userCreateForm.getTel());
 		
 		} catch (DateTimeException e) {
@@ -104,32 +104,32 @@ public class UserController {
 		return "redirect:/user/login";
 	}
 	
-	@GetMapping("/checkEmail")
-    public Map<String, String> checkEmail(@RequestParam String email) {
-
-        SiteUser user = userService.getUserByEmail(email);
-        
-        Map<String, String> result = new HashMap<>();
-        
-        if (user != null) {
-            result.put("overlap", "fail");
-        } else {
-            result.put("overlap", "success");
-        }
-        return result;
-    }
-	
-	@GetMapping("/checkUserName")
-    public Map<String, String> checkUserName(@RequestParam String userName) {
-        SiteUser user = userService.getUserByUserName(userName);
-        Map<String, String> result = new HashMap<>();
-        if (user != null) {
-            result.put("overlap", "fail");
-        } else {
-            result.put("overlap", "success");
-        }
-        return result;
-    }
+//	@GetMapping("/checkEmail")
+//    public Map<String, String> checkEmail(@RequestParam String email) {
+//
+//        SiteUser user = userService.getUserByEmail(email);
+//        
+//        Map<String, String> result = new HashMap<>();
+//        
+//        if (user != null) {
+//            result.put("overlap", "fail");
+//        } else {
+//            result.put("overlap", "success");
+//        }
+//        return result;
+//    }
+//	
+//	@GetMapping("/checkUserName")
+//    public Map<String, String> checkUserName(@RequestParam String userName) {
+//        SiteUser user = userService.getUserByUserName(userName);
+//        Map<String, String> result = new HashMap<>();
+//        if (user != null) {
+//            result.put("overlap", "fail");
+//        } else {
+//            result.put("overlap", "success");
+//        }
+//        return result;
+//    }
 
 	//login은 security가 처리하므로 post방식의 로그인 처리 메소드는 없어도 됨
 	@GetMapping("/login")
