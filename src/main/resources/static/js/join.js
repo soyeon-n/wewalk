@@ -30,7 +30,7 @@ $(document).ready(function(){
     text_pw2.blur(function(){      
         pw2_check();
     });
-    /*
+    
     //이메일 중복 체크
     $('.field_email .btn').click(function(){
 
@@ -95,7 +95,7 @@ $(document).ready(function(){
           }
         });
     });
-*/
+
     $('#addressSearch').click(function(){
         new daum.Postcode({
             oncomplete: function(data) {
