@@ -32,7 +32,8 @@ public class SecurityConfig {
 	//OAuth 2.0 서비스 등록 
 	private final BaseCustomOAuth2UserService baseCustomOAuth2UserService; 
 	
-	//WebSecurityConfig와 비교하여 Config 수정 필요
+	//https://velog.io/@rnqhstlr2297/Spring-Security-OAuth2-%EC%86%8C%EC%85%9C%EB%A1%9C%EA%B7%B8%EC%9D%B8 페이지 참고하여 소셜 로그인과 일반 로그인 새로 구현해볼 예정
+	//SiteUser의 테이블 내용 전반적 수정 필요
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {	
 		
@@ -61,7 +62,7 @@ public class SecurityConfig {
                 .passwordParameter("password")	// login에 필요한 password 값을 password(default)로 설정
                 .defaultSuccessUrl("/");
         
-        //OAuth 2.0 login 설정(successhandler로 회원 검증 페이지 처리할 것)
+        //OAuth 2.0 login 설정
         http
             .oauth2Login()
             .defaultSuccessUrl("/")

@@ -13,7 +13,6 @@ import org.springframework.security.oauth2.client.authentication.OAuth2Authentic
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
-import com.spring.boot.dao.BaseAuthUserRepository;
 import com.spring.boot.dao.UserRepository;
 import com.spring.boot.model.BaseAuthRole;
 import com.spring.boot.model.BaseAuthUser;
@@ -24,7 +23,7 @@ import com.spring.boot.model.UserRole;
 //public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 //
 //	@Autowired
-//    private BaseAuthUserRepository userRepository; // 예시로 사용자 저장소를 가져옵니다.
+//    private UserRepository userRepository; // 예시로 사용자 저장소를 가져옵니다.
 //
 //    @Override
 //    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -34,7 +33,7 @@ import com.spring.boot.model.UserRole;
 //        String email = token.getPrincipal().getAttribute("email"); // 이메일 얻기. 실제 attribute 이름은 서비스에 따라 달라질 수 있음.
 //
 //        // DB에서 사용자 정보 얻기
-//        Optional<BaseAuthUser> user = userRepository.findByEmail(email); // 예시. 실제 로직은 당신의 상황에 따라 다를 수 있음.
+//        Optional<SiteUser> user = userRepository.findByEmail(email); // 예시. 실제 로직은 당신의 상황에 따라 다를 수 있음.
 //
 //        if (user != null && user.getRole() == BaseAuthRole.USER) { // 만약 사용자의 역할이 GUEST라면
 //            getRedirectStrategy().sendRedirect(request, response, "/user/signup"); // 회원가입 페이지로 리디렉션

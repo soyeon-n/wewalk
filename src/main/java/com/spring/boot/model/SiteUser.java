@@ -17,6 +17,7 @@ import javax.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.Setter;
 
+//UserRole에 Seller라는 role을 추가하여 판매자 관리할 수 있게끔 세팅할 예정
 @Getter
 @Setter
 @Entity
@@ -64,6 +65,7 @@ public class SiteUser {
 	private String picture;
 	
 	//판매자 등록 여부(0 또는 1)
+	//이 부분 삭제 예정
 	@Column(columnDefinition = "TINYINT(1) default 0")
 	private boolean seller;
 	
@@ -87,11 +89,14 @@ public class SiteUser {
     @ManyToOne(fetch = FetchType.LAZY)
     private Interest interest3;
     
+    //해당 테이블도 삭제 예정
     @ManyToOne(fetch = FetchType.LAZY)
     private BaseAuthUser baseAuthUser;
     
     private LocalDateTime modifyDate;
 	
+    //로그인 비활성화 메소드 추가 예정(6개월)
+    
     //사용자 유형 식별(Guest / User)
   	public String getRoleKey() {
   		return this.role.getKey();

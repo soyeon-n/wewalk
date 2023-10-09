@@ -44,6 +44,7 @@ public class UserSecurityService implements UserDetailsService{
 				new ArrayList<GrantedAuthority>();
 		
 		//사용자명이 "admin"인 경우 ADMIN 권한을 부여하고 그 외에는 일반 사용자 권한 부여
+		//여기에서 authority 설정을 해줘야 SecurityConfig에서 authority를 검증해서 해당 페이지로 넘어갈 수 있음
 		if("admin@wewalkpay.com".equals(email) || UserRole.ADMIN.getKey().equals(siteUser.getRoleKey())) {
 			authorities.add(new SimpleGrantedAuthority(UserRole.ADMIN.getKey()));
 		}else {
