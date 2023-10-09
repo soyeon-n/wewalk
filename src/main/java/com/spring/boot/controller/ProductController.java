@@ -31,7 +31,7 @@ public class ProductController {
 		Page<Product> paging = productService.getTotalLists(pageable);
 		model.addAttribute("paging",paging);//request.setattribute 와 같음 html 로
 		
-		return "main";//html 인식
+		return "mainList";//html 인식
 		
 	}
 	
@@ -42,16 +42,11 @@ public class ProductController {
 	public String detail(Model model, @PathVariable("productNo") Integer productNo
 			,ProductForm productForm) {
 		
-		Product product = productService.getProductDetailById(productNo);
+		Product product = productService.getProductDetailByNo(productNo);
 		
 		model.addAttribute("product",product);
 		
-		//return "product_list";//html연결
-		return "product_review_list";
-		//return "product_detail2";// list 랑 detail 이 머가다른겨 
-		//return "mainList";
-		//return "mypage_review";
-		
+		return "product_list";//html연결
 		
 		
 	}

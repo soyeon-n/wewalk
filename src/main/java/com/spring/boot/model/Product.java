@@ -26,7 +26,7 @@ import lombok.Setter;
 @Entity
 @NoArgsConstructor
 @Table(name = "Product")
-public class Product {
+public class Product{
 	//은별 product. 상품 - 리뷰 임시 확인
 	
 	
@@ -63,8 +63,6 @@ public class Product {
 	private String image3;//이미지3
 	private String image4;//이미지4
 	
-	
-	
 	//review fk랑연결 
 	@OneToMany(mappedBy = "product",cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
 	private List<Review> reviewList;
@@ -87,7 +85,7 @@ public class Product {
 		this.image2 = image2;
 		this.image3 = image3;
 		this.image4 = image4;
-		//빌더를 만드는 이유 공부 
+		
 		
 		
 				

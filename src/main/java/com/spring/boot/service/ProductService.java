@@ -56,14 +56,14 @@ public class ProductService {
 		
 	}
 	*/
-	//상품번호만으로 detail 조회하기 
-	
-	public Product getProductDetailById(Integer productNo){
+	//상품번호만으로 상품에대한 detail 조회하기 
+	public Product getProductDetailByNo(Integer productNo){
 		
 		Product product = productRepository.findByProductNo(productNo);
 		
+		
 		if(product!=null) {
-			return product;//받는게 여러개면 ... 어카지 
+			return product;
 		}else {
 			throw new DataNotFoundException("상세정보가 존재하지 않아요!");
 		}

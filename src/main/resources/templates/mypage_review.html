@@ -158,11 +158,11 @@
                             </ul>
                         </div>
 
-                        <div id="viewAfterList" class="after_view" style="display:none;">
+                        <div id="viewAfterList" class="after_view" style="display:;">
                             <ul class="list_after">
                                 <li>
-                                    <div class="tit_after">
-                                        <a href="#" class="main_name">[램노스] 스프레더블 리코타치즈</a>
+                                    <div class="tit_after" th:each="review, loop : ${paging}">
+                                        <a href="#" class="main_name" th:text="${review.pname}">[램노스] 스프레더블 리코타치즈</a>
                                     </div>
 
                                     <div class="cont_after">

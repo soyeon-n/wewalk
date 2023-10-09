@@ -4,15 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>마이컬리- 상품후기</title>
-    <link rel="stylesheet" href="../main/css/reset.css">
-    <link rel="stylesheet" href="../main/css/common.css">
-    <link rel="stylesheet" href="./css/mykurly_order_list.css">
-    <link rel="stylesheet" href="./css/mykurly_review.css">
-    <link rel="stylesheet" href="./css/mykurly_review_register.css">
+    <link rel="stylesheet" href="/reset.css">
+    <link rel="stylesheet" href="/common.css">
+    <link rel="stylesheet" href="/mykurly_order_list.css">
+    <link rel="stylesheet" href="/mykurly_review.css">
+    <link rel="stylesheet" href="/mykurly_review_register.css">
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <script src="./js/mykurly.js"></script>
     <script src="../main/js/common.js"></script>
     <script>
+    /*
         function chkword_name(obj){                      // 상품명 글자수 제한 두기
             var strValue = obj.value;         //strValue : 글자수 값을 저장하기 위한 변수
             var strLen = strValue.length;     //strLen : strValue 값의 길이
@@ -41,6 +42,7 @@
 
             
         }
+        
 
         function submit_check(){    // 10자 이하로 작성할시 submit 안됨
             var chkword = $('.field_cmt textarea').val();
@@ -49,7 +51,7 @@
                 alert("후기를 최소 10자 이상 작성해주세요");
                 return false;
             }
-        }
+        }*/
     </script>
 </head>
 <body>
@@ -157,8 +159,14 @@
                         <div class="head_aticle">
                             <h2 class="tit">후기 작성</h2>
                         </div>
+                        <!-- <form name="form_review" id="form_review" action="" method="POST" onsubmit="return submit_check();"> -->
 
-                        <form name="form_review" id="form_review" action="" method="POST" onsubmit="return submit_check();">
+                        
+                        <!-- 여기부터 form 내가 작성, 수정필요 여기 ReviewForm 아닌 소문자인것 주의 -->
+                        <form th:object="${reviewForm}" action="" method="post" name="form_review" id="form_review" onsubmit="return submit_check();" enctype="multipart/form-data">
+                            <input type="hidden" th:name="${_csrf.parameterName}"   
+	          th:value="${_csrf.token}"/>
+                            
                             <div class="write_board">
                                 <div class="goods_info">
                                     <div class="thumb">
@@ -168,6 +176,9 @@
                                     <div class="desc">
                                         <div class="inner_desc">
                                             <div class="name_main">[상품명]</div>
+                                            <textarea rows="10" cols="" th:field="*{pname}"></textarea>
+                                            <!-- 여기 productNo 가 자동으로 들어 와야함  -->
+                                            
                                         </div>
                                     </div>
                                 </div>
@@ -181,7 +192,10 @@
                                         <tr>
                                             <th>제목</th>
                                             <td>
-                                                <input type="text" name="subject" placeholder="제목을 입력해주세요." class="inp on_txt" value="">
+                                               
+                                                <!-- 원) <input type="text" name="subject" placeholder="제목을 입력해주세요." class="inp on_txt" value=""> -->
+                                                
+                                                <input type="text" th:field="*{title}" name="subject" placeholder="제목을 입력해주세요." class="inp on_txt" value="" />
                                             </td>
                                         </tr>
 
@@ -189,10 +203,16 @@
                                             <th>후기 작성</th>
                                             <td>
                                                 <div class="field_cmt">
-                                                    <textarea id="fieldCmt" name="contents" cols="100" rows="10" onkeyup="chkword_name(this)"  placeholder="자세한 후기는 다른 고객의 구매에 많은 도움이 되며,
+                                                    <!-- 원) <textarea id="fieldCmt" name="contents" cols="100" rows="10" onkeyup="chkword_name(this)"  placeholder="자세한 후기는 다른 고객의 구매에 많은 도움이 되며,
 일반식품의 효능이나 효과 등에 오해의 소지가 있는 내용을 작성 시 검토 후 비공개 조치될 수 있습니다. 
-반품/환불 문의는 1:1문의로 가능합니다." class="on_txt" style="height: 202px;"></textarea>
+반품/환불 문의는 1:1문의로 가능합니다." class="on_txt" style="height: 202px;" ></textarea> -->
+                                                    
+<textarea id="fieldCmt" name="contents" cols="100" rows="10" onkeyup="chkword_name(this)"  placeholder="자세한 후기는 다른 고객의 구매에 많은 도움이 되며,
+일반식품의 효능이나 효과 등에 오해의 소지가 있는 내용을 작성 시 검토 후 비공개 조치될 수 있습니다. 
+반품/환불 문의는 1:1문의로 가능합니다." class="on_txt" style="height: 202px;" th:field="*{content}" ></textarea>
+
                                                     <p class="txt_count">
+                                                    
                                                         <span class="num">0</span>자 / 최소 10자
                                                     </p>
                                                 </div>
@@ -209,7 +229,6 @@
 
                                                    <span class="btn_upload">
                                                         <input type="file" name="file[0]" class="file_upload"  value="사진등록하기" onchange="image_upload(event);" accept="image/*">
-                                                        
                                                         
                                                    </span> 
                                                 </div>
@@ -236,8 +255,11 @@
                                 </p>
 
                                 <button type="submit" id="btnSubmit" class="btn_reg btn_disabled">등록하기</button>
+                                <input type="submit" id="btnSubmit"  value="내꺼등록하기" class="btn_reg btn_disabled"/>
+                                
                             </div>
                         </form>
+                        
                     </div>
 
                 </div>

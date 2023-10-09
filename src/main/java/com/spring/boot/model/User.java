@@ -48,7 +48,7 @@ public class User {
 	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     private List<Product> productList;
 	
-	//이걸 왜 쓰는지,,,아직 모르겠어,,,
+	//빌더 없어도 되나?? 
 	@Builder
 	public User(String email,String username,String password,String name,String jumin, String address, String tel, String gender, String picture) {
 		this.email = email;

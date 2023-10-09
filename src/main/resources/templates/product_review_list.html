@@ -54,7 +54,7 @@
                         </div>
                     </div>
                     <table class="xans-board-listheader" width="100%" border="0" cellpadding="0" cellspacing="0">
-                        <caption style="display:none">구매후기 제목</caption>
+                        <caption style="display:none;">구매후기 제목</caption>
                         <colgroup>
                             <col style="width:70px;">
                             <col style="width:auto;">
@@ -81,7 +81,7 @@
                     </table>
                     <div class="tr_line on">
                         <table class="xans-board-listheaderd tbl_newtype1" width="100%" cellpadding="0" cellspacing="0" onclick="">
-                            <caption style="display:none">구매후기 내용</caption>
+                            <caption style="display:none;">구매후기 내용</caption>
                             <colgroup>
                                 <col style="width:70px;">
                                 <col style="width:auto;">
@@ -92,21 +92,29 @@
                                 <col style="width:80px;">
     
                             </colgroup>
-                            <tr>
-                                <td align="center">공지</td>
+                            <tr th:each="review,loop: ${paging}">
+                            
+                            
+                                <td align="center">글번호
+                                <a th:href="@{|/review/detail/${review.id}|}" th:text="${review.id}"></a>
+                                </td>
                                 <td class="subject">
-                                    <div>금주의 Best 후기 안내</div>
+                                    
+                                    <div th:text="${review.content}" >금주의 Best 후기 안내
+                                    
+                                    </div>
                                 </td>
                                 <td class="user_grade grade_comm"></td>
 
-                                <td class="user_grade">Marketkurly</td>
-                                <td class="time">2021-01-17</td>
+                                <td class="user_grade" th:text="${review.rUser}">Marketkurly</td>
+                                <td class="time" th:text="${review.date}">2021-01-17</td>
                                 <td>
                                     <span class="review-like-cnt">0</span>
                                 </td>
                                 <td>
                                     <span class="review-hit-cnt">0</span>
                                 </td>
+                               
                             </tr>
                         </table>
 
@@ -124,7 +132,7 @@
 
                     <div class="tr_line on">
                         <table class="xans-board-listheaderd tbl_newtype1" width="100%" cellpadding="0" cellspacing="0" onclick="">
-                            <caption style="display:none">구매후기 내용</caption>
+                            <caption style="display:">구매후기 내용</caption>
                             <colgroup>
                                 <col style="width:70px;">
                                 <col style="width:auto;">
@@ -220,7 +228,11 @@
             </div>
         </div>
         <div class="board_pg_area">
+        
+        
+        
             <a href="#" class="layout-pagination-button layout-pagination-first-page">맨 처음 페이지로 가기</a>
+            
             <a href="#" class="layout-pagination-button layout-pagination-prev-page">이전 페이지로 가기</a>
             <a href="#" class="layout-pagination-button layout-pagination-number __active">1</a>
             <a href="#" class="layout-pagination-button layout-pagination-number">2</a>
@@ -235,7 +247,17 @@
 
             <a href="#" class="layout-pagination-button layout-pagination-next-page">다음 페이지로 가기</a>
             <a href="#" class="layout-pagination-button layout-pagination-last-page">맨 끝 페이지로 가기</a>
+            
+            
+            
         </div>
+        
+        <!-- 페이징처리 -->
+			
+        
+	
+	
+	
     </div>
     
 </body>

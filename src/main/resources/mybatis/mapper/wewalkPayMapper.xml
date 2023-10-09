@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.spring.boot.mapper.WewalkPayMapper">
+
+<!-- fintech 테이블에서 num의 max값 가져오기 -->
+<select id="maxNum" resultType="int">
+	select nvl(max(num), 0) from fintech
+</select>
+
+<!-- 회원가입 시 DB에 저장하기 -->
+<insert id="insertData" parameterType="com.spring.boot.dto.SignupDTO">
+	insert into fintech (num, name, pwd, email, subject, content, ipAddr, 
+	hitCount, created) values (#{num}, #{name}, #{pwd}, #{email}, 
+	#{subject}, #{content}, #{ipAddr}, 0, sysdate)
+</insert>
+
+<!-- 게시판 데이터를 num으로 내림차순하여 전부 가져오기 -->
+<select id="getList" parameterType="hashMap"
+	resultType="com.spring.boot.dto.BoardDTO">
+
+	select * from (
+	select rownum rnum, data.* from (
+	select num, name, subject, hitCount, 
+	to_char(created, 'YYYY-MM-DD') created
+	from board where ${searchKey} like '%' || #{searchValue} || '%'
+	order by num desc) data)
+<![CDATA[
+	where rnum>=#{start} and rnum<=#{end}
+]]>
+
+</select>
+
+<!-- 게시글 수 가져오기 -->
+<select id="getDataCount" parameterType="map" resultType="int">
+	select nvl(count(*), 0) from board 
+	where ${searchKey} like '%' || #{searchValue} || '%'
+</select>
+
+<!--  -->
+<select id="getReadData" parameterType="int" resultType="com.spring.boot.dto.BoardDTO">
+	select num, name, pwd, email, subject, content, ipAddr, 
+	hitCount, created from board where num=#{num}
+</select>
+
+<update id="updateHitCount" parameterType="int">
+	update board set hitCount=hitCount+1 where num=#{num}
+</update>
+
+<update id="updateData" parameterType="com.spring.boot.dto.BoardDTO">
+	update board set name=#{name}, pwd=#{pwd}, email=#{email}, 
+	subject=#{subject}, content=#{content} where num=#{num}
+</update>
+
+<delete id="deleteData" parameterType="int">
+	delete board where num=#{num}
+</delete>
+
+</mapper>
