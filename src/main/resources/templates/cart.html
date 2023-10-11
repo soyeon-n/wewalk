@@ -22,7 +22,7 @@
                 <div class="cart_select">
                     <div class="inner_select">
                         <label class="check">
-                            <input type="checkbox" name="checkAll" class="checkAll" onclick="sel_all(this)">
+                            <input type="checkbox" name="checkAll" class="checkAll">
                             <span class="ico"></span>전체선택 (1/1)
                         </label>
                         <a href="#none" class="btn_delete">선택삭제</a>
@@ -42,9 +42,8 @@
                             <div class="item" th:each="item : ${productList}">
                                 <label class="check" for="chkItem1">
                                     <!-- 개당 체크박스 -->
-                                    <input onclick='check_sel_all(this)' type="checkbox" id="chkItem1" name="checkOne"
-                                        class="checkOne" data-item-id="c7b3a4e1-4517-416c-9b3e-d41c0e7592f2" data-item-no="65810"
-                                        data-item-parent-no="65810">
+                                    <input type="checkbox" id="chkItem1" name="checkOne"
+                                        class="checkOne">
                                     <span class="ico"></span>
                                 </label>
     
@@ -59,27 +58,24 @@
                                         <!-- 이미지자리 ^-->
                                         <div class="price">
                                             <div class="in_price">
-                                                <span class="selling"th:text="${item.price}">
-                                                    <span class="won">원</span>
+                                                <span class="selling" th:text="${#numbers.formatInteger(item.price, 1, 'COMMA') + '원'}">
+                                                
+                                                    <span class="won"></span>
+                                                    
                                                 </span>
                                                 <p class="noti"></p>
                                             </div>
                                             <!-- 개수 조정 부분. -->
                                             <div class="stamper count">
-                                                <button type="button" class="btn minus off"
-                                                    data-item-id="c7b3a4e1-4517-416c-9b3e-d41c0e7592f2" data-item-no="65810"
-                                                    data-opt="decrease">감소</button>
-                                                <input type="text" id="stepperCounter" class="num" readonly="" value="1">
-                                                <button type="button" class="btn plus"
-                                                    data-item-id="c7b3a4e1-4517-416c-9b3e-d41c0e7592f2" data-item-no="65810"
-                                                    data-opt="increase">추가</button>
+                                                <button type="button" class="btn minus off">감소</button>
+                                                <input type="text" id="stepperCounter" class="num" onchange="countChange()"
+                                                th:each="cartItem : ${cartItemList}" th:if="${cartItem.product.id == item.id}" th:value="${cartItem.count}" >
+                                                <button type="button" class="btn plus">추가</button>
                                             </div>
                                         </div>
                                     </div>
                                     <!-- 상품 삭제 시 db반영 (btn_delete)-->
-                                    <button type="button" onclick="del_row(this)" class="btn_delete"
-                                        data-item-id="c7b3a4e1-4517-416c-9b3e-d41c0e7592f2" data-item-no="65810"
-                                        data-type="cold">
+                                    <button type="button" class="btn_delete">
                                         상품 삭제</button>
                                 </div>
                             </div>
@@ -101,7 +97,7 @@
                 <div class="cart_select">
                     <div class="inner_select">
                         <label class="check">
-                            <input type="checkbox" name="checkAll" onclick="sel_all(this)">
+                            <input type="checkbox" name="checkAll">
                             <span class="ico"></span>전체선택 (1/1)
                         </label>
                         <!-- 1/n : db-->
@@ -116,7 +112,7 @@
                         <dl class="amount">
                             <dt class="tit">상품금액</dt>
                             <dd class="price">
-                                <span class="num">6,000</span>
+                                <span class="num">0</span>
                                 <!-- product price here-->
                                 <span class="won">원</span>
                             </dd>
@@ -125,6 +121,7 @@
                             <dt class="tit">상품할인금액</dt>
                             <dd class="price">
                                 <span class="num">0</span>
+
                                 <span class="won">원</span>
                             </dd>
                         </dl>
@@ -138,7 +135,7 @@
                         <dl class="amount lst">
                             <dt class="tit">결제예정금액</dt>
                             <dd class="price">
-                                <span class="num">6,000</span>
+                                <span class="num">0</span>
                                 <!-- sum of product price here -->
                                 <span class="won">원</span>
                             </dd>

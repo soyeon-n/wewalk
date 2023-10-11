@@ -42,21 +42,15 @@ public class OrderController {
 		return "getName: " +email;
 	}
 	
-	@GetMapping("/testcartpage")
-	public String sqlq() {
-		
-		
-		return "cart_test";
-	}
-	
 	
 	@GetMapping("/cart")
 	public String cart(Model model ,Authentication authentication) {
 		
 		//시큐리티 로그인된 사용자의 cartItem(장바구니목록)가져와 장바구니페이지로 이동
-	
+		
 		List<Product> productList = cartService.getProductList(authentication.getName());
 		
+		model.addAttribute("cartItemList",cartService.getCartItemList(authentication.getName()));
 		model.addAttribute("productList", productList);
 		
 		return "cart";
@@ -75,12 +69,17 @@ public class OrderController {
 	public String payDetail(Model model,
 				            @RequestParam("productName") String productName,
 				            @RequestParam("count") int count,
-				            @RequestParam("price") int price) {
+				            @RequestParam("price") int price,
+				            Authentication authentication) {
+		
+		String email = authentication.getName(); //email가져옴
+
+		SiteUser user = userService.getUserByEmail(authentication.getName());
 		
 		model.addAttribute("productName", productName);
 		model.addAttribute("count", count);
 		model.addAttribute("price", price);
-		
+		model.addAttribute("SiteUser",user);
 		//view에는앞에서 주문한 상품 정보 받아서 뿌려주고
 		//주문데이터 입력받음
 		

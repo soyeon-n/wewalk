@@ -13,6 +13,7 @@ import com.spring.boot.dao.UserRepository;
 import com.spring.boot.model.Cart;
 import com.spring.boot.model.CartItem;
 import com.spring.boot.model.Product;
+import com.spring.boot.model.SiteUser;
 
 import lombok.RequiredArgsConstructor;
 
@@ -47,5 +48,14 @@ public class CartService {
 		
 	}
 	
+	public List<CartItem> getCartItemList(String email){
+		
+		SiteUser user = userRepository.findByEmail(email).get();
+		
+		Cart cart = cartRepository.findById(user.getId()).get();
+		
+		return cart.getCartItemList();
+		
+	}
 	
 }
