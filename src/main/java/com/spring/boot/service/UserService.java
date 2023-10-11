@@ -28,32 +28,30 @@ public class UserService {
 	private final PasswordEncoder passwordEncoder;
 	
 	//id 생성 메소드
+	//id 생성 메소드
 	public SiteUser create(UserRole role, String email, String password, String userName,  
 							String name, LocalDate birthDate, String postcode, String address, 
-							String detailAddress, String tel) {
+							String detailAddress, String tel, String picture) {
 		
-		SiteUser user = new SiteUser();
-		
-		user.setRole(role);
-		user.setEmail(email);
-		
-		//암호화 처리(이미 Bcrypt를 통해 salt 적용됨)
-		user.setPassword(passwordEncoder.encode(password));
-		
-		user.setUserName(userName);
-		user.setName(name);
-		user.setCreatedDate(LocalDateTime.now());
-		user.setBirthDate(birthDate);
-		user.setPostcode(postcode);
-		user.setAddress(address);
-		user.setDetailAddress(detailAddress);
-		user.setTel(tel);
+		SiteUser user = SiteUser.builder()
+								.role(role)
+								.email(email)
+								.password(passwordEncoder.encode(password))
+								.userName(userName)
+								.name(name)
+								.createdDate(LocalDateTime.now())
+								.birthDate(birthDate)
+								.postcode(postcode)
+								.address(address)
+								.detailAddress(detailAddress)
+								.tel(tel)
+								.picture(picture)
+								.build();
 		
 		//회원정보 db에 저장
 		userRepository.save(user);
 		
 		return user;
-		
 	}
 	
 	public SiteUser getUser(Long id) {
@@ -87,7 +85,7 @@ public class UserService {
 	}
 	
 	//userName으로 불러오기
-	public SiteUser getUserByUserName(String userName) {
+	public SiteUser getUserByUsername(String userName) {
 		
 		Optional<SiteUser> siteUser = 
 				userRepository.findByUserName(userName);

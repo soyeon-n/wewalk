@@ -7,8 +7,8 @@
 <body>
 <h3>메인화면</h3>
 
-<a sec:authorize="isAnonymous()" th:href="@{/user/login}">로그인</a>
-<a sec:authorize="isAuthenticated()" th:href="@{/user/logout}">로그아웃</a>
+<a sec:authorize="isAnonymous()" th:href="@{/auth/login}">로그인</a>
+<a sec:authorize="isAuthenticated()" th:href="@{/logout}">로그아웃</a>
 <a th:href="@{/admin/userList}">관리자</a><br/>
 	이름 : <b th:text="${name}"></b><br/>
 	이메일 : <b th:text="${email}"></b><br/>

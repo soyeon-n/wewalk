@@ -19,6 +19,7 @@ public class UserCreateForm {
 
 	@Size(min = 6, max = 16, message = "닉네임은 6~16자 이내로 생성해주세요!")
 	@NotEmpty(message = "사용자명은 필수 항목입니다.")
+	//userName은 무조건 userName으로 넣어줘야 함
 	private String userName;
 
 	@Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*+=])(?=\\S+$).{6,}$", 

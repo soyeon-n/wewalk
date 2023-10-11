@@ -1,5 +1,6 @@
 package com.spring.boot.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,29 +14,25 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-import com.spring.boot.model.BaseAuthRole;
 import com.spring.boot.model.UserRole;
-import com.spring.boot.service.BaseCustomOAuth2UserService;
-import com.spring.boot.service.UserSecurityService;
+import com.spring.boot.oauth2.CustomOAuthSevice;
+import com.spring.boot.service.PrincipalService;
 
 import lombok.RequiredArgsConstructor;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class SecurityConfig {
-
-	//스프링 Security에 UserSecurityService를 등록
-	private final UserSecurityService userSecurityService;
 	
-	//OAuth 2.0 서비스 등록 
-	private final BaseCustomOAuth2UserService baseCustomOAuth2UserService; 
+	@Autowired
+	private PrincipalService principalService;
 	
 	//https://velog.io/@rnqhstlr2297/Spring-Security-OAuth2-%EC%86%8C%EC%85%9C%EB%A1%9C%EA%B7%B8%EC%9D%B8 페이지 참고하여 소셜 로그인과 일반 로그인 새로 구현해볼 예정
 	//SiteUser의 테이블 내용 전반적 수정 필요
 	@Bean
-	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {	
+	public SecurityFilterChain filterChain(HttpSecurity http, CustomOAuthSevice customOAuthSevice) throws Exception {	
 		
 		//Routing Security
         http
@@ -49,16 +46,17 @@ public class SecurityConfig {
         // /login, /signup 페이지는 모두 허용, 다른 페이지는 인증된 사용자만 허용
         http
             .authorizeRequests()
-            .antMatchers("/", "/css/**", "/images/**", "/js/**", "/user/login", "/user/signup/**", "/oauth2/authorization/**").permitAll()
+//            .antMatchers("/", "/css/**", "/images/**", "/js/**")
             .antMatchers("/admin/**").hasRole(UserRole.ADMIN.name()) //우선 모든 페이지 접근 가능하게 해놓고 테스트 예정
-			.antMatchers("/api/vi/**").hasRole(BaseAuthRole.USER.name()) //USER권한 설정을 통해 모든 페이지에 접근 가능
-			.anyRequest().authenticated();
-
+			.antMatchers("/user/**").hasRole(UserRole.USER.name()) //USER권한 설정을 통해 모든 페이지에 접근 가능
+			.antMatchers("/seller/**").hasRole(UserRole.SELLER.name()) //USER권한 설정을 통해 모든 페이지에 접근 가능
+			.anyRequest().permitAll();
+//        , "/oauth2/authorization/**"
 		// login 설정
         http
             .formLogin()
-                .loginPage("/user/login")    // GET 요청 (login form을 보여줌)
-                .usernameParameter("email")	// login에 필요한 id 값을 email로 설정 (default는 username)
+                .loginPage("/auth/login")    // GET 요청 (login form을 보여줌)
+                .usernameParameter("userName")	// login에 필요한 id 값을 email로 설정 (default는 username)
                 .passwordParameter("password")	// login에 필요한 password 값을 password(default)로 설정
                 .defaultSuccessUrl("/");
         
@@ -67,12 +65,12 @@ public class SecurityConfig {
             .oauth2Login()
             .defaultSuccessUrl("/")
             .userInfoEndpoint() //소셜 로그인 성공시 진입할 페이지 설정
-            .userService(baseCustomOAuth2UserService);	// login에 성공하면 /로 redirect
+            .userService(customOAuthSevice);	// login에 성공하면 /로 redirect
 
 		// logout 설정
         http
         	.logout()
-        		.logoutRequestMatcher(new AntPathRequestMatcher("/user/logout")) //logout주소가 들어오면 logout시킴
+        		.logoutRequestMatcher(new AntPathRequestMatcher("/logout")) //logout주소가 들어오면 logout시킴
         		.logoutSuccessUrl("/").invalidateHttpSession(true); //logout되면 메인화면으로 돌려보내고 세션을 invalidate함
 
         return http.build();

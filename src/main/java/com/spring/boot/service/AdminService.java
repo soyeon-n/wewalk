@@ -10,13 +10,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.spring.boot.config.DataNotFoundException;
 import com.spring.boot.dao.AdminRepository;
-import com.spring.boot.dao.BaseAuthUserRepository;
 import com.spring.boot.dao.UserRepository;
 import com.spring.boot.model.SiteUser;
 import com.spring.boot.model.UserRole;
@@ -54,35 +52,58 @@ public class AdminService {
 		//PageRequest : 정렬 매개변수가 적용된 새 항목을 생성해줌
 		//getPageSize() : 반환할 항목 수(디폴트 = 0)
 		
+		System.out.println("페이징 처리");
+		
 		return adminRepository.findAll(pageable);
 		
 	}
 	
 	//admin으로 id 생성 메소드(계정 생성하는 프론트 화면 만들기) -> 이거 그냥 userservice로 하면 안되나?
-	public SiteUser create(UserRole role, String email, String password, String userName,  
-							String name, LocalDate birthDate, String postcode, String address, 
-							String detailAddress, String tel, boolean seller) {
+	public SiteUser create(UserRole role, String email, String password, String userName, 
+    		String name, LocalDate birthDate, String postcode, 
+    		String address, String detailAddress, String tel, boolean seller,
+    		String picture, String intro, Long point) {
 		
-		SiteUser user = new SiteUser();
+//		SiteUser user = new SiteUser();
+//		
+//		user.setRole(role);
+//		user.setEmail(email);
+//		
+//		//암호화 처리(이미 Bcrypt를 통해 salt 적용됨)
+//		user.setPassword(passwordEncoder.encode(password));
+//		
+//		user.setUserName(userName);
+//		user.setName(name);
+//		user.setCreatedDate(LocalDateTime.now());
+//		user.setBirthDate(birthDate);
+//		user.setPostcode(postcode);
+//		user.setAddress(address);
+//		user.setDetailAddress(detailAddress);
+//		user.setTel(tel);
+//		user.setSeller(seller);
 		
-		user.setRole(role);
-		user.setEmail(email);
-		
-		//암호화 처리(이미 Bcrypt를 통해 salt 적용됨)
-		user.setPassword(passwordEncoder.encode(password));
-		
-		user.setUserName(userName);
-		user.setName(name);
-		user.setCreatedDate(LocalDateTime.now());
-		user.setBirthDate(birthDate);
-		user.setPostcode(postcode);
-		user.setAddress(address);
-		user.setDetailAddress(detailAddress);
-		user.setTel(tel);
-		user.setSeller(seller);
+		SiteUser user = SiteUser.builder()
+				.role(role)
+				.email(email)
+				.password(passwordEncoder.encode(password)) // 암호화 처리
+				.userName(userName)
+				.name(name)
+				.createdDate(LocalDateTime.now())
+				.birthDate(birthDate)
+				.postcode(postcode)
+				.address(address)
+				.detailAddress(detailAddress)
+				.tel(tel)
+				.seller(seller)
+				.picture(picture)
+				.intro(intro)
+				.point(point)
+				.build();
 		
 		//회원정보 db에 저장
 		adminRepository.save(user);
+		
+		System.out.println(LocalDateTime.now() + ":" + userName + "님 계정 정보 저장 중... ");
 		
 		return user;
 		
