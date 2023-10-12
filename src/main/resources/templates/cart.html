@@ -23,7 +23,7 @@
                     <div class="inner_select">
                         <label class="check">
                             <input type="checkbox" name="checkAll" class="checkAll">
-                            <span class="ico"></span>전체선택 (1/1)
+                            <span class="ico"></span>전체선택
                         </label>
                         <a href="#none" class="btn_delete">선택삭제</a>
                     </div>
@@ -40,12 +40,10 @@
                         
                             <!-- 상품 목록 중 1. 추가/삭제될 목록임. -->
                             <div class="item" th:each="item : ${productList}">
-                                <label class="check" for="chkItem1">
-                                    <!-- 개당 체크박스 -->
-                                    <input type="checkbox" id="chkItem1" name="checkOne"
-                                        class="checkOne">
-                                    <span class="ico"></span>
-                                </label>
+                                <label class="check" th:for="'chkItem_' + ${item.id}">
+							        <input type="checkbox" th:id="'chkItem_' + ${item.id}" name="checkOne" class="checkOne">
+							        <span class="ico"></span>
+							    </label>
     
                                 <div class="name">
                                     <div class="inner_name">
@@ -58,8 +56,7 @@
                                         <!-- 이미지자리 ^-->
                                         <div class="price">
                                             <div class="in_price">
-                                                <span class="selling" th:text="${#numbers.formatInteger(item.price, 1, 'COMMA') + '원'}">
-                                                
+                                               <span class="selling" th:if="${cartItem != null}" th:text="${#numbers.formatInteger(item.price * cartItem.count, 1, 'COMMA') + '원'}">
                                                     <span class="won"></span>
                                                     
                                                 </span>
@@ -68,8 +65,10 @@
                                             <!-- 개수 조정 부분. -->
                                             <div class="stamper count">
                                                 <button type="button" class="btn minus off">감소</button>
-                                                <input type="text" id="stepperCounter" class="num" onchange="countChange()"
-                                                th:each="cartItem : ${cartItemList}" th:if="${cartItem.product.id == item.id}" th:value="${cartItem.count}" >
+                                                <input type="text" class="stepperCounter num" th:each="cartItem : ${cartItemList}"
+											       th:if="${cartItem.product.id == item.id}" th:value="${cartItem.count}" 
+											       th:data-stock="${item.stock}" th:data-cartItemId="${cartItem.id}" th:data-product-id="${item.id}">
+
                                                 <button type="button" class="btn plus">추가</button>
                                             </div>
                                         </div>
@@ -93,17 +92,8 @@
                 </div>
     
     
-                <!-- 여긴 고정. -->
-                <div class="cart_select">
-                    <div class="inner_select">
-                        <label class="check">
-                            <input type="checkbox" name="checkAll">
-                            <span class="ico"></span>전체선택 (1/1)
-                        </label>
-                        <!-- 1/n : db-->
-                        <a href="#none" class="btn_delete">선택삭제</a>
-                    </div>
-                </div>
+               
+                
             </div>
             <div class="cart_result">
                 <div class="inner_result">

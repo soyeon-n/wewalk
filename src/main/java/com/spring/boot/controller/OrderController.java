@@ -2,6 +2,7 @@ package com.spring.boot.controller;
 
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.spring.boot.model.CartItem;
 import com.spring.boot.model.Product;
 import com.spring.boot.model.SiteUser;
 import com.spring.boot.service.CartItemService;
@@ -54,6 +56,13 @@ public class OrderController {
 		model.addAttribute("productList", productList);
 		
 		return "cart";
+	}
+	
+	@PostMapping("/cartItemUpdate")
+	public ResponseEntity<String> cartItemUpdate(@RequestParam Long cartItemId, @RequestParam int count) {
+	    cartItemService.updateCartItemCount(cartItemId, count);
+	    return ResponseEntity.ok("Cart item updated successfully");
+	    
 	}
 	
 	@GetMapping("/test")

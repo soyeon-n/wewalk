@@ -28,11 +28,22 @@ public class CartItemService {
 		List<Product> lists = new ArrayList<Product>();
 		
 
-		
 		return lists;
 		
 	}
 
+	public void updateCartItemCount(Long cartItemId,int count) {
+		
+		Optional<CartItem> cartItem = cartItemRepository.findById(cartItemId);
+		CartItem item;
+		if(cartItem.isPresent()) {
+			item = cartItem.get();
+			
+			item.setCount(count);
+			
+			cartItemRepository.save(item);
+		}
+	}
 
 	
 	
