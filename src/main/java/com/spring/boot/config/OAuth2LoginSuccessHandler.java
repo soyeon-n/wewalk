@@ -14,8 +14,6 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
 import org.springframework.stereotype.Component;
 
 import com.spring.boot.dao.UserRepository;
-import com.spring.boot.model.BaseAuthRole;
-import com.spring.boot.model.BaseAuthUser;
 import com.spring.boot.model.SiteUser;
 import com.spring.boot.model.UserRole;
 

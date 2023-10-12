@@ -11,7 +11,7 @@
 		</div>
 	</div>
 
-	<form th:action="@{/auth/signup}" th:object="${userCreateForm}"
+	<form th:action="@{/auth/oauthSignup}" th:object="${oAuthUserCreateForm}"
 		method="post" enctype="multipart/form-data">
 		
 		<!-- html 보안 코드 -->
@@ -22,22 +22,12 @@
 		
 		<div class="mb-3">
 			<label for="userName" class="form-label">계정명</label>
-			<input type="text" name="userName" th:field="*{userName}" class="form-control"/>
-		</div>
-
-		<div class="mb-3">
-			<label for="password" class="form-label">비밀번호</label>
-			<input type="password" name="password1" th:field="*{password1}" class="form-control"/>
-		</div>
-		
-		<div class="mb-3">
-			<label for="password" class="form-label">비밀번호 확인</label>
-			<input type="password" name="password2" th:field="*{password2}" class="form-control"/>
+			<input type="text" name="userName" th:field="*{userName}" readonly="readonly" class="form-control"/>
 		</div>
 	
 		<div class="mb-3">
 			<label for="email" class="form-label">이메일</label>
-			<input type="email" name="email" th:field="*{email}" class="form-control"/>
+			<input type="email" name="email" th:field="*{email}" readonly="readonly" class="form-control"/>
 		</div>
 		
 		<div class="mb-3">
@@ -55,9 +45,6 @@
 			<input type="text" name="detailAddress" id="detailAddress" th:field="*{detailAddress}" placeholder="상세주소" class="form-control"/>
 		</div>
 		
-		<!-- <div class="mb-3">
-			<label for="address" class="form-label">상세주소</label>
-		</div> -->
 
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>
@@ -121,11 +108,9 @@
 			<div>
 				<input type="text" name="birthYear" th:field="*{birthYear}" class="form-control" placeholder="YYYY" style="width: 200px";/>
 			</div>
-			<!-- <label for="birthMonth" class="form-label">생월</label> -->
 			<div>
 				<input type="text" name="birthMonth" th:field="*{birthMonth}" class="form-control" placeholder="MM" style="width: 100px";/>
-			</div>
-			<!-- <label for="birthDay" class="form-label">생일</label> -->
+			</div>			
 			<div>
 				<input type="text" name="birthDay" th:field="*{birthDay}" class="form-control" placeholder="DD" style="width: 100px";/>
 			</div>

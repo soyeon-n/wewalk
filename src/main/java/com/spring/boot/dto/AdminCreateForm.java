@@ -5,6 +5,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,14 +14,14 @@ import lombok.Setter;
 @Setter
 public class AdminCreateForm {
 
-	@NotEmpty(message = "이메일은 필수 항목입니다.")
-	private String email;
+	@NotEmpty(message = "사용자명은 필수 항목입니다.")
+	private String userName;
 
 	@NotEmpty(message = "비밀번호는 필수 항목입니다.")
 	private String password1;
 
-	@NotEmpty(message = "사용자명은 필수 항목입니다.")
-	private String userName;
+	@NotEmpty(message = "이메일은 필수 항목입니다.")
+	private String email;
 
 	@NotEmpty(message = "이름은 필수 항목입니다.")
 	private String name;
@@ -51,4 +52,24 @@ public class AdminCreateForm {
 	private String birthDay;
 	
 	private boolean seller;
+	
+//	@Builder
+//	public AdminCreateForm(String userName, String password1, String email,
+//			String name, String tel, String postcode, String address, String detailAddress, 
+//			String birthYear, String birthMonth, String birthDay, boolean seller) {
+//		
+//		this.userName = userName;
+//		this.password1 = password1;
+//		this.email = email;
+//		this.name = name;
+//		this.tel = tel;
+//		this.postcode = postcode;
+//		this.address = address;
+//		this.detailAddress = detailAddress;
+//		this.birthYear = birthYear;
+//		this.birthMonth = birthMonth;
+//		this.birthDay = birthDay;
+//		this.seller = seller;
+//		
+//	}
 }

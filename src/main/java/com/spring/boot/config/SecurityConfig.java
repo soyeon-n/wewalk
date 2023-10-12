@@ -26,11 +26,9 @@ import lombok.RequiredArgsConstructor;
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class SecurityConfig {
 	
-	@Autowired
-	private PrincipalService principalService;
+	private final PrincipalService principalService;
 	
-	//https://velog.io/@rnqhstlr2297/Spring-Security-OAuth2-%EC%86%8C%EC%85%9C%EB%A1%9C%EA%B7%B8%EC%9D%B8 페이지 참고하여 소셜 로그인과 일반 로그인 새로 구현해볼 예정
-	//SiteUser의 테이블 내용 전반적 수정 필요
+	//CustomOAuthService
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http, CustomOAuthSevice customOAuthSevice) throws Exception {	
 		
@@ -45,25 +43,26 @@ public class SecurityConfig {
         // 권한에 따라 허용하는 url 설정
         // /login, /signup 페이지는 모두 허용, 다른 페이지는 인증된 사용자만 허용
         http
-            .authorizeRequests()
-//            .antMatchers("/", "/css/**", "/images/**", "/js/**")
-            .antMatchers("/admin/**").hasRole(UserRole.ADMIN.name()) //우선 모든 페이지 접근 가능하게 해놓고 테스트 예정
-			.antMatchers("/user/**").hasRole(UserRole.USER.name()) //USER권한 설정을 통해 모든 페이지에 접근 가능
-			.antMatchers("/seller/**").hasRole(UserRole.SELLER.name()) //USER권한 설정을 통해 모든 페이지에 접근 가능
-			.anyRequest().permitAll();
+        .authorizeRequests()
+        .antMatchers("/auth/oauthSignup", "/auth/signup", "/auth/login").access("not hasRole('USER') and not hasRole('SELLER')")
+        .antMatchers("/auth/oauthSignup").hasRole(UserRole.OAUTH.name())
+        .antMatchers("/admin/**").hasRole(UserRole.ADMIN.name())
+        .antMatchers("/user/**").hasRole(UserRole.USER.name())
+        .antMatchers("/seller/**").hasRole(UserRole.SELLER.name())
+        .anyRequest().permitAll();
 //        , "/oauth2/authorization/**"
 		// login 설정
         http
             .formLogin()
                 .loginPage("/auth/login")    // GET 요청 (login form을 보여줌)
-                .usernameParameter("userName")	// login에 필요한 id 값을 email로 설정 (default는 username)
+                .usernameParameter("userName")	// login에 필요한 id 값을 userName으로 설정 (default는 username)
                 .passwordParameter("password")	// login에 필요한 password 값을 password(default)로 설정
                 .defaultSuccessUrl("/");
         
         //OAuth 2.0 login 설정
         http
             .oauth2Login()
-            .defaultSuccessUrl("/")
+            .defaultSuccessUrl("/auth/verify")
             .userInfoEndpoint() //소셜 로그인 성공시 진입할 페이지 설정
             .userService(customOAuthSevice);	// login에 성공하면 /로 redirect
 

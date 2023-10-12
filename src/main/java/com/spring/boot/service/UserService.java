@@ -9,7 +9,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.spring.boot.config.DataNotFoundException;
-import com.spring.boot.dao.BaseAuthUserRepository;
 import com.spring.boot.dao.UserRepository;
 import com.spring.boot.model.SiteUser;
 import com.spring.boot.model.UserRole;
@@ -28,10 +27,9 @@ public class UserService {
 	private final PasswordEncoder passwordEncoder;
 	
 	//id 생성 메소드
-	//id 생성 메소드
 	public SiteUser create(UserRole role, String email, String password, String userName,  
 							String name, LocalDate birthDate, String postcode, String address, 
-							String detailAddress, String tel, String picture) {
+							String detailAddress, String tel, String picture, boolean seller) {
 		
 		SiteUser user = SiteUser.builder()
 								.role(role)
@@ -46,6 +44,7 @@ public class UserService {
 								.detailAddress(detailAddress)
 								.tel(tel)
 								.picture(picture)
+								.seller(seller)
 								.build();
 		
 		//회원정보 db에 저장
@@ -85,7 +84,7 @@ public class UserService {
 	}
 	
 	//userName으로 불러오기
-	public SiteUser getUserByUsername(String userName) {
+	public SiteUser getUserByUserName(String userName) {
 		
 		Optional<SiteUser> siteUser = 
 				userRepository.findByUserName(userName);
@@ -113,4 +112,22 @@ public class UserService {
 		userRepository.save(siteUser);
 		
 	}
+	
+	//소셜 로그인 유저 회원가입(DB에 있는 정보 업데이트)
+  	public void oauthSignup(SiteUser siteUser, UserRole role, String name, 
+  			LocalDate birthDate, LocalDateTime createdDate, 
+  			String postcode, String address, String detailAddress, String tel) {
+  		
+  		siteUser.setRole(role);
+  		siteUser.setName(name);
+  		siteUser.setBirthDate(birthDate);
+  		siteUser.setCreatedDate(createdDate);
+  		siteUser.setPostcode(postcode);
+  		siteUser.setAddress(address);
+  		siteUser.setDetailAddress(detailAddress);
+  		siteUser.setTel(tel);
+  		
+  		userRepository.save(siteUser);
+  		
+  	}
 }

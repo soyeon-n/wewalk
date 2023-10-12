@@ -29,7 +29,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.spring.boot.dto.AdminCreateForm;
 import com.spring.boot.dto.UserCreateForm;
-import com.spring.boot.model.BaseAuthUser;
 import com.spring.boot.model.SiteUser;
 import com.spring.boot.model.UserRole;
 import com.spring.boot.service.AdminService;

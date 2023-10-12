@@ -104,7 +104,7 @@ public class PrincipalDetails implements UserDetails, OAuth2User{
     public boolean isEnabled() {
 
         //우리사이트!! 1년 동안 사용하지 않으면 휴면 계정으로 바꾼다.
-        // 현재 시간 - 마지막 로그인 시간 => 1년을 초기하면 return false로 바꾼다.
+        // 현재 시간 - 마지막 로그인 시간 => 1년을 초과하면 return false로 바꾼다.
         // 이러한 로직을 여기 넣는다.
         return true;
     }

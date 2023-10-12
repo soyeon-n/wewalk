@@ -12,7 +12,8 @@ public enum UserRole {
 	//시큐리티 권한 코드는 접두사 ROLE_로 시작함
 	ADMIN("ROLE_ADMIN", "관리자"),
 	SELLER("ROLE_SELLER", "판매자"),
-	USER("ROLE_USER", "회원");
+	USER("ROLE_USER", "회원"),
+	OAUTH("ROLE_OAUTH", "소셜미가입 회원");
 	
 	private final String key;
 	private final String title;

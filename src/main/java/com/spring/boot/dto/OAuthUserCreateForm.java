@@ -12,23 +12,14 @@ import lombok.Setter;
 //회원가입 검증용 Form
 @Getter
 @Setter
-public class UserCreateForm {
+public class OAuthUserCreateForm {
 
-	@Size(min = 6, max = 16, message = "닉네임은 6~16자 이내로 생성해주세요!")
 	@NotEmpty(message = "계정명은 필수 항목입니다.")
 	private String userName;
 	
 	@NotEmpty(message = "이메일은 필수 항목입니다.")
 	@Email(message = "이메일 형식으로 입력해주세요!")
 	private String email;
-
-	@Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*+=])(?=\\S+$).{6,}$", 
-			message = "비밀번호는 최소 6자 이상이어야 하며, 영문자 대소문자와 특수 문자, 그리고 숫자를 모두 포함해야 합니다.")
-	@NotEmpty(message = "비밀번호는 필수 항목입니다.")
-	private String password1;
-
-	@NotEmpty(message = "비밀번호 확인은 필수 항목입니다.")
-	private String password2;
 
 	@NotEmpty(message = "이름은 필수 항목입니다.")
 	private String name;
@@ -61,7 +52,7 @@ public class UserCreateForm {
 	private String birthDay;
 	
 //	@Builder
-//	public UserCreateForm(String email, String userName, String name, 
+//	public OAuthUserCreateForm(String email, String userName, String name, 
 //			String tel, String postcode, String address, String detailAddress, 
 //			String birthYear, String birthMonth, String birthDay) {
 //		

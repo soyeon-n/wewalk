@@ -79,18 +79,19 @@ public class CustomOAuthSevice extends DefaultOAuth2UserService{
         String provider = oAuth2UserInfo.getProvider(); //google , naver, facebook etc
         String providerId = oAuth2UserInfo.getProviderId();
         String userName = provider + "_" + oAuth2UserInfo.getName();
-        String password =  hashedPassword;
+        String password = hashedPassword;
         String email = oAuth2UserInfo.getEmail();
-        UserRole role = UserRole.USER;
+        UserRole role = UserRole.OAUTH;
         String picture = oAuth2UserInfo.getPicture();
 
+        //Email 주소가 겹치거나 userName이 변경될 경우 문제가 발생하므로 providerId로 검색
         Optional<SiteUser> userEntity = userRepository.findByProviderId(providerId);
         
         if(!userEntity.isPresent()) {
         	
-        	LocalDateTime createTime = LocalDateTime.now();
+        	LocalDateTime createdTime = LocalDateTime.now();
         	
-        	System.out.println("처음 서비스를 이용한 회원");
+        	System.out.println("처음 접속한 소셜 로그인 회원");
         	
         	SiteUser siteUser = SiteUser.builder()
 			        				.userName(userName)
@@ -99,29 +100,35 @@ public class CustomOAuthSevice extends DefaultOAuth2UserService{
 			        				.role(role)
 			        				.provider(provider)
 			        				.providerId(providerId)
-			        				.createdDate(createTime)
+			        				.createdDate(createdTime)
 			        				.picture(picture)
 			        				.build();
         	
         	userRepository.save(siteUser);
+        	
         	System.out.println(siteUser);
+        	
         	return new PrincipalDetails(siteUser, oAuth2User.getAttributes());
         	
-        }else {
-        	
-        	System.out.println("기존 회원");
+        }else {                	
         	
         	SiteUser existingUser = userEntity.get();
+        	
+        	if(existingUser.getRoleKey().equals("OAUTH")) {
+        		System.out.println(existingUser.getRole().getTitle());
+        	}
+        	
+        	System.out.println("기존 소셜 로그인 회원");
         	
         	existingUser.setUserName(userName);
         	existingUser.setPicture(picture);
         	
         	userRepository.save(existingUser);
+        	
         	System.out.println(existingUser);
         	
         	return new PrincipalDetails(existingUser, oAuth2User.getAttributes());
         }
-        
 
     }
 	

@@ -58,29 +58,11 @@ public class AdminService {
 		
 	}
 	
-	//admin으로 id 생성 메소드(계정 생성하는 프론트 화면 만들기) -> 이거 그냥 userservice로 하면 안되나?
+	//admin으로 계정 생성 메소드
 	public SiteUser create(UserRole role, String email, String password, String userName, 
     		String name, LocalDate birthDate, String postcode, 
     		String address, String detailAddress, String tel, boolean seller,
     		String picture, String intro, Long point) {
-		
-//		SiteUser user = new SiteUser();
-//		
-//		user.setRole(role);
-//		user.setEmail(email);
-//		
-//		//암호화 처리(이미 Bcrypt를 통해 salt 적용됨)
-//		user.setPassword(passwordEncoder.encode(password));
-//		
-//		user.setUserName(userName);
-//		user.setName(name);
-//		user.setCreatedDate(LocalDateTime.now());
-//		user.setBirthDate(birthDate);
-//		user.setPostcode(postcode);
-//		user.setAddress(address);
-//		user.setDetailAddress(detailAddress);
-//		user.setTel(tel);
-//		user.setSeller(seller);
 		
 		SiteUser user = SiteUser.builder()
 				.role(role)
@@ -116,6 +98,7 @@ public class AdminService {
 				userRepository.findByEmail(email);
 		
 		if(siteUser.isPresent()) {
+			System.out.println(siteUser.get());
 			return siteUser.get();
 		}else {
 			throw new DataNotFoundException("User not found!");
@@ -130,13 +113,14 @@ public class AdminService {
 				userRepository.findByUserName(userName);
 		
 		if(siteUser.isPresent()) {
+			System.out.println(siteUser.get());
 			return siteUser.get();
 		}else {
 			throw new DataNotFoundException("User not found!");
 		}
 	}
 	
-	//
+	//수정
 	public void modify(SiteUser siteUser, String email, String password, String userName, String name, 
 			String postcode, String address, String detailAddress, String tel, 
 			boolean seller, String birthYear, String birthMonth, String birthDay) {
@@ -159,13 +143,14 @@ public class AdminService {
 		siteUser.setBirthDate(birthDate);
 		siteUser.setModifyDate(LocalDateTime.now());
 		
+		System.out.println(siteUser + "로 수정");
 		adminRepository.save(siteUser);
-		
 	}
 	
 	//Question 자체를 삭제
 	//엔티티 설정에 의해 question에 딸려있는 answer들도 전부 삭제됨
 	public void delete(SiteUser siteUser) {
+		System.out.println(siteUser + "삭제");
 		adminRepository.delete(siteUser);
 	}
 	
