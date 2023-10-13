@@ -158,34 +158,50 @@
                             </ul>
                         </div>
 
-                        <div id="viewAfterList" class="after_view" style="display:;">
+                        <div id="viewAfterList" class="after_view" style="display:;" th:each="review, loop : ${paging}">
                             <ul class="list_after">
                                 <li>
-                                    <div class="tit_after" th:each="review, loop : ${paging}">
+                                    <div class="tit_after" >
+                                    상품명 : 
                                         <a href="#" class="main_name" th:text="${review.pname}">[램노스] 스프레더블 리코타치즈</a>
+                                        
                                     </div>
 
                                     <div class="cont_after">
                                         <a class="desc_after">
-                                            <span class="subject">
+                                            <span class="subject" th:text="${review.title}">
                                                 그냥 리코타 치즈 ㅇㅇ
-                                                <span class="date">
+                                                <span class="date" th:text="${#dates.format(review.date,'yyyy-MM-dd HH:mm:ss')}"  >
                                                     20.05.26 작성
+                                                    <!-- 지금 date 타입 출력안되고있음  -->
                                                 </span>
+                                                
                                             </span>
 
                                             <span class="desc">
                                                 <span class="thumb">
                                                     <span class="photo" style="background-image: url(&quot;https://img-cf.kurly.com/shop/data/review/20200526/94edd664f356ea243a30d8e9797cc5ad.jpg&quot;);">
+                                                    <img th:src="@{${review.fileDir} + ${review.saveFileName}}"/>
+                                                    <img th:src="@{${review.filePath}}"/>
+                                                    
+                                                    <img th:each="filePath : ${review.filePath}" th:src="|${review.filePath}|">
+                                                    <img th:src="@{'/imgfile/'+ ${review.saveFileName}}"/>
+                                                    <!-- 안나오네,,,,,돌아버리겠네 ...... -->
                                                     </span>
                                                 </span>
-                                                <span class="txt">양은 꽤 많고 리코타 치즈치고 약간 묽긴한데 몽글몽글한게 참 귀엽습니다. 샐러드에 넣어 먹을 때 가장 맛있는 치즈 같아요</span>
+                                                <span class="txt" th:text="${review.content}">양은 꽤 많고 리코타 치즈치고 약간 묽긴한데 몽글몽글한게 참 귀엽습니다. 샐러드에 넣어 먹을 때 가장 맛있는 치즈 같아요</span>
 
                                             </span>
 
                                             <span class="view">
                                                 <span class="img">
-                                                    <img src="https://img-cf.kurly.com/shop/data/review/20200526/94edd664f356ea243a30d8e9797cc5ad.jpg" alt="첨부 이미지">
+                                                <!-- <img src="https://img-cf.kurly.com/shop/data/review/20200526/94edd664f356ea243a30d8e9797cc5ad.jpg" alt="첨부 이미지">  -->
+                                                    
+                                                    
+                                                    <!-- <img th:each="imageFile : ${content.imageFiles}" th:src="|/basic-board/images/${imageFile.storeFilename}|"> -->                                    
+                                                    <img th:each="saveFileName : ${review.saveFileName}" th:src="@{'/imgfile/'+${review.saveFileName}}">
+                                                    <img th:src="@{${review.saveFileName}}"/>
+                                                    <!-- 이걸로 출력이 안되는데 최대한 절대경로로 출력하고싶은데  -->
 
                                                 </span>
 
@@ -199,13 +215,15 @@
                                         </a>
 
                                         <div class="btn_after">
-                                            <button type="button" class="btn_help">도움이 돼요 0</button>
+                                            <button type="button" class="btn_help">도움이 돼요? 0</button>
+                                            
                                             <a class="btn btn_modify">수정</a>
                                             <a class="btn btn_del">삭제하기</a>
 
                                         </div>
                                     </div>
                                 </li>
+                                <!-- 한 단락 반복 끝  -->
 
                                 <li>
                                     <div class="tit_after">
@@ -294,6 +312,10 @@
 
                                         <div class="btn_after">
                                             <button type="button" class="btn_help">도움이 돼요 0</button>
+                                            <button class="btn btn_modify" value="수정">수정</button>
+                                            
+                                            
+                                            
                                             <a class="btn btn_modify">수정</a>
                                             <a class="btn btn_del">삭제하기</a>
 

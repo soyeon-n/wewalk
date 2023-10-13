@@ -5,13 +5,15 @@ import java.time.LocalDateTime;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
+import org.springframework.web.multipart.MultipartFile;
 
-
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
-@Setter
+//@Getter
+//@Setter
+@Data
 public class ReviewForm {//우리가 직접 넣는값만 form 검사 
 	
 	
@@ -30,14 +32,15 @@ public class ReviewForm {//우리가 직접 넣는값만 form 검사
 	@NotEmpty(message = "내용은필수항목입니다")
 	//@size등제한은나중에@Size(max = 200)
 	private String content;//리뷰내용
-	private String photo;//상품사진
-	
 	
 	//파일업로드 
+	//모든내용이 form 거치는게 아니라 form 검사하는것만 
 	
-	private String originalFilename;
+	//private String originalFilename;
 	//private String saveFilename;//+ 시분초로 이름 겹치지 않게하기 
-	private String filepath;
+	//private String filepath;
+	
+	
 	
 	
 	

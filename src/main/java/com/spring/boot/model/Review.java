@@ -14,6 +14,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.ColumnDefault;
 
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -48,15 +49,18 @@ public class Review {
 	private LocalDateTime date;//리뷰등록일
 	private String title;//제목
 	private String content;//리뷰내용
-	private String photo;//상품사진
+	
+	//파일업로드 
+	private String originalFileName;
+	private String saveFileName;
+	private String filePath;
+	private String fileDir;//이거랑 + saveFileName 하면 fullpath 가나오므로 
 	
 	
-	//파일업로드  
-	private String originalFilename;
-	private String saveFilename;//+ 시분초로 이름 겹치지 않게하기 
-	private String filepath;
+	//private FileDTO fileDTO;
 	
-	//이미지 여러개일때 dto 생각해보기 
+	
+	//이미지 여러개일때 dto 생각해보기 .따로entity를 만드는것 같음
 	//private List<UploadFile> imageFiles; 이미지가 여러개일시 UploadFile 객체를분리하고 이렇게 LIst 로 넣은..? 
 	
 	

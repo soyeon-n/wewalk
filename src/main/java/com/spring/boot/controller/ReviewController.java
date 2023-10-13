@@ -1,7 +1,8 @@
 package com.spring.boot.controller;
 
+
+import java.io.IOException;
 import java.security.Principal;
-import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -18,9 +19,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
+
 import com.spring.boot.dto.ReviewForm;
 import com.spring.boot.model.Product;
 import com.spring.boot.model.Review;
+
 import com.spring.boot.service.ProductService;
 import com.spring.boot.service.ReviewService;
 
@@ -55,9 +58,11 @@ public class ReviewController {
 	////로그인한 사람만 들어올수 있음
 	//내가쓴리뷰리스트 {rUser} // 근데 원래는 user 정보를 주소로주면 안되고 세션에 숨기거나 그럴것임 
 	@RequestMapping("/mylist/{rUser}")
-	public String myreviewList(Model model,@PathVariable("rUser") Integer rUser,@PageableDefault Pageable pageable) {
+	public String myreviewList(Model model,
+			@PathVariable("rUser") Integer rUser,@PageableDefault Pageable pageable) {
 		
-		
+		//ruser따로 받아서 넣어주기 
+		//SiteUser user = userService.getUserByEmail(authentication.getName());
 		//내리뷰 여러개는 Page? 로받나? List? 여러개는 아무튼 페이징해야해서 ? 
 		Page<Review> paging = reviewService.getReview(rUser,pageable);
 		
@@ -70,12 +75,10 @@ public class ReviewController {
 	}
 	
 	
-	
-	
 	//@PreAuthorize//권한제한
 	//마이페이지에서 >> 리뷰쓰기
 	@GetMapping("/create/{productNo}")
-	public String createReview(ReviewForm reviewForm) {
+	public String createReview(ReviewForm reviewForm){
 		
 		return "mypage_reviewReg";//리뷰작성 form 
 	}
@@ -86,46 +89,45 @@ public class ReviewController {
 	@PostMapping("/create/{productNo}")
 	public String createReview(Model model,
 			@Valid ReviewForm reviewForm,@PathVariable("productNo") Integer productNo,
+			MultipartFile multipartFile,
 			
-			BindingResult bindResult) {
+			BindingResult bindResult) throws IOException {
 		//Principal principal 안넣은 상태
 		
 		
 		//상품번호ProductNo와 작성자 id 를 받아온다 
-		//작성자아이디는 보통 접속되어있는 세션 에서 받아오기Principal.getName()
 		Integer userId = 1;//임시아이디
 		//SiteUser siteUser = userService.getUser(principal.getName());
 		
-		//상품명pname , productNo 가 알아서 리뷰입력시에 들어가도록하기 
+		//+++상품명pname , productNo 가 알아서 리뷰입력시에 들어가도록하기 
 		 
 		Product productnum = productService.getProductDetailByNo(productNo);
 		//Integer productnum = productNo;//{productNo}값 그대로 넣어주기
 		//이렇게 안어가서 Product product 이렇게 넣는듯 
 		 
+		//pname 자동입력
+		//Product productName = productService.getProductDetailByNo(productNo);
 		//파일업로드
-		//파일경로 
 		
 		
-		
-		
-		
-		
-		if(bindResult.hasErrors()) {
-			
+		if(bindResult.hasErrors()) {			
 			return "mypage_reviewReg";//form에 err 값 있을시 페이지 되돌려보내기 
 		}
  
-		//form에 입력된 반환값 을 받아서 하나하나씩 넣어 	
-		//(product, rUser, pname, star, date, title, content, photo);
+		//pname 을 product에서 자동으로 set 되도록하는거추가
 		reviewService.createReview(productnum,userId, reviewForm.getPname(), 
-				reviewForm.getStar(), reviewForm.getTitle(),reviewForm.getContent(), reviewForm.getPhoto());
+				reviewForm.getStar(), reviewForm.getTitle(),reviewForm.getContent(), 
+				multipartFile);
+		
+		
+		//reviewForm.getFileDTO()?multipartFile
 		//reviewForm.get ~ 으로 리뷰폼에 작성된 내용을 받아서 insert 한다 
 		//어떤 것은 form 을 거쳐서 insert 하고 어떤것은 그냥 받은정보로 insert ? 
 		
 		return "redirect:/review/mylist";
 		 
-		//어 근데 지금접속되어있는 userId 를 가지고 돌아와야 다시 로그인된상태의 내 리뷰 보기가 될거아녀
-		 
+		//주소돌려주기수정))지금접속되어있는 userId 를 가지고 돌아와야 다시 로그인된상태의 내 리뷰 보기가 될거아녀
+		//세션에 올라가있으면 자동으로 인식하나 ?? 
 		
 	}
 	//리뷰삭제,수정,
