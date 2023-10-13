@@ -62,7 +62,7 @@ public class AdminService {
 	public SiteUser create(UserRole role, String email, String password, String userName, 
     		String name, LocalDate birthDate, String postcode, 
     		String address, String detailAddress, String tel, boolean seller,
-    		String picture, String intro, Long point) {
+    		String picture, Long point) {
 		
 		SiteUser user = SiteUser.builder()
 				.role(role)
@@ -78,7 +78,6 @@ public class AdminService {
 				.tel(tel)
 				.seller(seller)
 				.picture(picture)
-				.intro(intro)
 				.point(point)
 				.build();
 		

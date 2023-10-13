@@ -3,6 +3,8 @@ package com.spring.boot.controller;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import javax.servlet.http.HttpSession;
@@ -11,6 +13,8 @@ import javax.validation.Valid;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,6 +24,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.spring.boot.dto.OAuthUserCreateForm;
 import com.spring.boot.dto.PrincipalDetails;
@@ -29,6 +34,14 @@ import com.spring.boot.model.UserRole;
 import com.spring.boot.service.UserService;
 
 import lombok.RequiredArgsConstructor;
+
+/*
+	세션 활용법 : 
+	1. controller에서 mapping할 때 매개변수에 @AuthenticationPrincipal PrincipalDetails principalDetails 추가
+	2. principalDetails.getUser를 하면 각 소셜 로그인 시 받아온 attributes 활용 가능
+	3. principalDetails.getEmail(), getUsername() 등과 같은 데이터 받아올 수 있음(PrincipalDetails 클래스 참조)
+	
+ */
 
 @RequiredArgsConstructor
 @Controller
@@ -197,6 +210,21 @@ public class AuthController {
 		return "redirect:/auth/login";
 	}
 	
+	@GetMapping("/checkUserName")
+	public ResponseEntity<Map<String, Object>> checkUserName(@RequestParam String userName) {
+	    boolean exists = userService.existsByUserName(userName);
+	    Map<String, Object> response = new HashMap<>();
+
+	    if (exists) {
+	        response.put("status", "exists");
+	        response.put("message", "Username already exists");
+	        return new ResponseEntity<>(response, HttpStatus.OK);
+	    } else {
+	        response.put("status", "notExists");
+	        response.put("message", "Username is available");
+	        return new ResponseEntity<>(response, HttpStatus.OK);
+	    }
+	}
 //	@GetMapping("/checkEmail")
 //    public Map<String, String> checkEmail(@RequestParam String email) {
 //

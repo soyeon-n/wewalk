@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" href="/css/style.css" type="text/css"/>
+</head>
+<body>
+
+<script type="text/javascript">
+
+	function sendIt(){
+		
+		var f = document.myForm;
+		
+		str = f.subject.value;
+		str = str.trim();
+		if(!str){
+			alert("제목을 입력하세요.");
+			f.subject.focus();
+			return;
+		}
+		f.subject.value = str;		
+		
+		if(!f.upload.value){
+			alert("업로드할 파일을 선택하세요.");
+			f.upload.focus();
+			return;
+		}
+				
+		f.action = "<%=cp%>/fileT/write.action";
+		f.submit();
+		
+	}
+
+</script>
+
+</head>
+<body>
+
+<table width="600" border="2" cellpadding="0" cellspacing="0" bordercolor="#d6d4a6" align="center">
+<tr height="40">
+	<td style="padding-left: 20px;">
+	<b>판매자 신청</b>
+	</td>
+</tr>
+</table>
+
+<br/>
+
+<form th:action="" method="post" name="myForm" enctype="multipart/form-data">
+
+<table width="600" border="0" cellpadding="0" cellspacing="3" align="center">
+
+<tr><td colspan="2" class="line3" bgcolor="#dbdbdb" align="center"></td></tr>
+
+<tr>
+	<td width="20%" height="30" bgcolor="#eeeeee" style="padding-left: 20px;">
+	판매자 설명
+	</td>
+	<td width="80%" style="padding-left: 10px;">
+	<input type="text" name="subject" size="74" maxlength="100" class="boxTF"/>
+	</td>
+</tr>
+
+<tr><td colspan="2" class="line3" bgcolor="#dbdbdb" align="center"></td></tr>
+
+<tr>
+	<td width="20%" height="30" bgcolor="#eeeeee" style="padding-left: 20px;">
+	첨부파일
+	</td>
+	<td width="80%" style="padding-left: 10px;">
+	<input type="file" name="upload" th:field="*{ size="58" maxlength="100" class="boxTF"
+	style="height: 20px;"/>
+	</td>
+</tr>
+
+<tr><td colspan="2" class="line3" bgcolor="#dbdbdb" align="center"></td></tr>
+
+</table>
+
+<table width="600" border="0" cellpadding="0" cellspacing="3" align="center">
+<tr align="center">
+	<td height="40">
+
+	<input type="hidden" name="mode" value="save"/>
+	
+	<input type="button" value="등록하기" class="btn1" onclick="sendIt();"/>
+	<input type="button" value="작성취소" class="btn1" 
+	onclick="location.href='<%=cp%>/fileT/list.action';"/>
+	</td>
+</tr>
+	
+</table>
+
+</form>
+
+</body>
+</html>

@@ -130,4 +130,15 @@ public class UserService {
   		userRepository.save(siteUser);
   		
   	}
+
+	public boolean existsByUserName(String userName) {
+		Optional<SiteUser> siteUser = 
+				userRepository.findByUserName(userName);
+		
+		if(siteUser.isPresent()) {
+			return true;
+		}else {
+			return false;
+		}
+	}
 }

@@ -20,7 +20,7 @@ import com.spring.boot.dto.OAuth2UserInfo;
 import com.spring.boot.dto.PrincipalDetails;
 import com.spring.boot.model.SiteUser;
 import com.spring.boot.model.UserRole;
-import com.spring.boot.service.PasswordGenerator;
+import com.spring.boot.util.PasswordGenerator;
 
 import lombok.RequiredArgsConstructor;
 
@@ -38,7 +38,7 @@ public class CustomOAuthSevice extends DefaultOAuth2UserService{
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
 
-        //"registraionId" 로 어떤 OAuth 로 로그인 했는지 확인 가능(google,naver등)
+        //"registraionId"로 어떤 OAuth 로 로그인 했는지 확인 가능(google,naver등)
         System.out.println("getClientRegistration: "+ userRequest.getClientRegistration());
         System.out.println("getAccessToken: "+userRequest.getAccessToken().getTokenValue());
         System.out.println("getAttributes: "+ super.loadUser(userRequest).getAttributes());

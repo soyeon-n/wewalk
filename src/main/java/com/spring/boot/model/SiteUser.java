@@ -3,7 +3,10 @@ package com.spring.boot.model;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -13,6 +16,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.NotEmpty;
 
 import lombok.Builder;
@@ -33,7 +38,7 @@ public class SiteUser implements Serializable{
 	
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
-	private UserRole role; //ADMIN, SELLER, USER
+	private UserRole role; //ADMIN, SELLER, USER, OAUTH
 	
 	private String email;
 
@@ -68,9 +73,6 @@ public class SiteUser implements Serializable{
 	//seller의 값이 1이고 role이 ADMIN이 아니면 SELLER role 부여
 	@Column(columnDefinition = "TINYINT(1) default 0")
 	private boolean seller;
-	
-	//판매자 설명
-	private String intro;
 
 	//멤버십 등급(멤버십 테이블과 연결하려면 추후 혜택 등 디테일한 설정 필요)
 	@ManyToOne
@@ -89,11 +91,15 @@ public class SiteUser implements Serializable{
     @ManyToOne(fetch = FetchType.LAZY)
     private Interest interest3;
     
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    private BaseAuthUser baseAuthUser;
-    
     private LocalDateTime modifyDate;
 	
+    @OneToMany(mappedBy = "siteUser")
+    private List<UserFiles> userFileList = new ArrayList<>();
+
+    //처리 내역은 남겨둘 예정
+    @OneToMany(mappedBy = "siteUser")
+    private SellerRequest sellerRequest;
+    
     //로그인 비활성화 메소드 추가 예정(6개월)
     
 	//회원정보 수정(자동 반영)
@@ -114,7 +120,7 @@ public class SiteUser implements Serializable{
     public SiteUser(UserRole role, String email, String password, String userName, 
     		String provider, String providerId, String name, LocalDateTime createdDate, 
     		LocalDate birthDate, String postcode, String address, String detailAddress, 
-    		String tel, String picture, boolean seller, String intro, Membership membership,
+    		String tel, String picture, boolean seller, Membership membership,
     		Long point, Interest interest1, Interest interest2, Interest interest3, LocalDateTime modifyDate) {
   		
   		this.role = role;
@@ -132,7 +138,6 @@ public class SiteUser implements Serializable{
         this.tel = tel;
         this.picture = picture;
         this.seller = seller;
-        this.intro = intro;
         this.membership = membership;
         this.point = point;
         this.interest1 = interest1;

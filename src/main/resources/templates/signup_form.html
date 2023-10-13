@@ -1,8 +1,6 @@
 
 <html layout:decorate="~{layout}">
 <meta charset="UTF-8">
-
-
 <div layout:fragment="content" class="container my-3" style="display: flex; flex-direction:column; justify-content: center; align-items: center; min-width: 630px;">
 
 	<div class="my3 border-bottom">
@@ -17,14 +15,46 @@
 		<!-- html 보안 코드 -->
 		<!-- <input type="hidden" th:name="${_csrf.parameterName}"
 			th:value="${_csrf.token}"/> -->
-	
+	 
 		<div th:replace="form_errors :: formErrorsFragment"></div>	
 		
 		<div class="mb-3">
-			<label for="userName" class="form-label">계정명</label>
-			<input type="text" name="userName" th:field="*{userName}" class="form-control"/>
+		    <label for="userName" class="form-label">계정명</label>
+		    <div style="display: flex; justify-content: space-between;">
+		        <input type="text" id="userNameInput" name="userName" th:field="*{userName}" class="form-control" style="flex: 1; margin-right: 10px;"/>
+		        <button type="button" id="checkUserNameBtn" class="btn" style="border: 1px solid #5f0080; background-color: #5f0080; color: #fff; display: block;">닉네임 확인</button>
+		    </div>
+		    <span id="userNameValidationMessage" style="color: red;"></span>
 		</div>
-
+<script>
+    $(document).ready(function(){
+        $('#checkUserNameBtn').on('click', function(e){
+            e.preventDefault();
+            
+            const userName = $('#userNameInput').val();
+            if(!userName) {
+                $('#userNameValidationMessage').text('닉네임을 입력하세요.');
+                return;
+            }
+            
+            $.ajax({
+                url: '/auth/checkUserName',
+                type: 'GET',
+                data: { userName: userName },
+                success: function(response) {
+                    if(response.status === 'exists') {
+                        $('#userNameValidationMessage').text('이미 존재하는 닉네임입니다.');
+                    } else {
+                        $('#userNameValidationMessage').text('사용 가능한 닉네임입니다.');
+                    }
+                },
+                error: function() {
+                    $('#userNameValidationMessage').text('닉네임 검사 중 오류가 발생했습니다.');
+                }
+            });
+        });
+    });
+</script>
 		<div class="mb-3">
 			<label for="password" class="form-label">비밀번호</label>
 			<input type="password" name="password1" th:field="*{password1}" class="form-control"/>
@@ -49,7 +79,7 @@
 			<label for="address" class="form-label">주소</label>
 			<div style="display: flex; flex-direction: row; width: 60%; justify-content:space-between;">
 				<input type="text" id="postcode" th:field="*{postcode}" class="form-control" placeholder="우편번호" style="width: 150px;"/>
-				<input type="button" class="btn btn-primary" onclick="daumPostcode();" value="우편번호 찾기">
+				<input type="button" class="btn btn-primary" onclick="daumPostcode();" value="우편번호 찾기" style="border: 1px solid #5f0080; background-color: #5f0080; color: #fff; display: block;">
 			</div>						
 			<input type="text" name="address" id="address" th:field="*{address}" placeholder="주소" class="form-control" style="width: 500px"/>
 			<input type="text" name="detailAddress" id="detailAddress" th:field="*{detailAddress}" placeholder="상세주소" class="form-control"/>
@@ -147,7 +177,7 @@
 			<input type="text" th:field="interest3" class="form-control"/>
 		</div> -->
 		
-		<button type="submit" class="btn btn-primary">회원가입</button>
+		<button type="submit" class="btn btn-primary" style="border: 1px solid #5f0080; background-color: #5f0080; color: #fff; display: block;">회원가입</button>
 	</form>
 
 </div>

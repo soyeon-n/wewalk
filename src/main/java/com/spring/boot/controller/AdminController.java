@@ -112,14 +112,14 @@ public class AdminController {
 				    Long point = 999999999999L;
 				    Resource resource = new ClassPathResource("static/images/flower-8173829_640.jpg");
 				    String picture = "/images/flower-8173829_640.jpg";
-				    String intro = "For test";
+//				    String intro = "For test";
 					//String password = "test";
 					
 				    //UserRole을 지정해서 넣어줘야 하고 거기에 추가로 UserCreateForm과 UserService, SiteUser에서의 데이터 입력 순서를 맞춰줘야 함
 					adminService.create(role, adminCreateForm.getEmail(), adminCreateForm.getPassword1(), adminCreateForm.getUserName(), 
 							adminCreateForm.getName(), birthDate, adminCreateForm.getPostcode(),
 							adminCreateForm.getAddress(), adminCreateForm.getDetailAddress(), adminCreateForm.getTel(), adminCreateForm.isSeller(), 
-							picture, intro, point);
+							picture, point);
 				
 				} catch (DateTimeException e) {
 				    // 유효하지 않은 날짜

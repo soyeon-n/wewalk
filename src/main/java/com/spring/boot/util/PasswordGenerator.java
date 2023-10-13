@@ -1,4 +1,4 @@
-package com.spring.boot.service;
+package com.spring.boot.util;
 
 import java.util.Random;
 
