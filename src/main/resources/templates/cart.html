@@ -39,15 +39,18 @@
                         <li>
                         
                             <!-- 상품 목록 중 1. 추가/삭제될 목록임. -->
-                            <div class="item" th:each="item : ${productList}">
+                            <div class="item" th:each="item : ${productList}" >
                                 <label class="check" th:for="'chkItem_' + ${item.id}">
-							        <input type="checkbox" th:id="'chkItem_' + ${item.id}" name="checkOne" class="checkOne">
+							        <input type="checkbox"  th:id="'chkItem_' + ${item.id}" name="checkOne" class="checkOne" 
+							        th:disabled="${#strings.equals(item.selling,'F') || item.stock<1} ? 'disabled'">
 							        <span class="ico"></span>
 							    </label>
     
                                 <div class="name">
                                     <div class="inner_name">
                                         <a href="#" class="package " th:text="${item.name}"></a>
+                                        <span th:if="${#strings.equals(item.selling,'F') || item.stock<1}"><font color="red">현재 구매할수 없는 상품입니다</font></span>
+                                        
                                         <div class="info"></div>
                                     </div>
                                     <div class="goods">
@@ -56,20 +59,24 @@
                                         <!-- 이미지자리 ^-->
                                         <div class="price">
                                             <div class="in_price">
-                                               <span class="selling" th:if="${cartItem != null}" th:text="${#numbers.formatInteger(item.price * cartItem.count, 1, 'COMMA') + '원'}">
-                                                    <span class="won"></span>
+                                               <span class="selling" th:data-price="${item.price}" th:data-selling="${item.selling}">
+                                               <span class="won"></span>
                                                     
                                                 </span>
                                                 <p class="noti"></p>
                                             </div>
                                             <!-- 개수 조정 부분. -->
+                                            
+                                            
+                                            
                                             <div class="stamper count">
-                                                <button type="button" class="btn minus off">감소</button>
+                                                <button type="button" class="btn minus off" th:disabled="${#strings.equals(item.selling,'F') || item.stock<1} ? 'disabled'">감소</button>
                                                 <input type="text" class="stepperCounter num" th:each="cartItem : ${cartItemList}"
 											       th:if="${cartItem.product.id == item.id}" th:value="${cartItem.count}" 
-											       th:data-stock="${item.stock}" th:data-cartItemId="${cartItem.id}" th:data-product-id="${item.id}">
+											       th:data-stock="${item.stock}" th:data-cartItemId="${cartItem.id}" th:data-product-id="${item.id}"
+											       th:disabled="${#strings.equals(item.selling,'F') || item.stock<1} ? 'disabled'">
 
-                                                <button type="button" class="btn plus">추가</button>
+                                                <button type="button" class="btn plus" th:disabled="${#strings.equals(item.selling,'F') || item.stock<1} ? 'disabled'">추가</button>
                                             </div>
                                         </div>
                                     </div>
@@ -102,7 +109,7 @@
                         <dl class="amount">
                             <dt class="tit">상품금액</dt>
                             <dd class="price">
-                                <span class="num">0</span>
+                                <span class="totalPrice">0</span>
                                 <!-- product price here-->
                                 <span class="won">원</span>
                             </dd>

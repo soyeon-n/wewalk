@@ -1,13 +1,14 @@
 $(document).ready(function() {
 
-
 	$('.btn.plus').click(function() {
 	    increaseQuantity(this);
+	    updateTotalPrice();
 	});
 
 
 	$('.btn.minus.off').click(function() {
 	    decreaseQuantity(this);
+	    updateTotalPrice();
 	});
 	
 	$('.stepperCounter').on('input', function() {
@@ -31,13 +32,53 @@ $(document).ready(function() {
             input.val(1);
         }
         updateCartItem(this);
+        updateTotalPrice();
+        updateTotalPrice();
+
     });
 
-	
-	
+	$('.btn.plus, .btn.minus.off, .checkOne').on('change', function() {
+        
+        updateTotalAmount();
+    });
+    
+	updateTotalPrice();
+	updateTotalAmount()
+
 });
 
 
+function updateTotalAmount() {
+    let totalAmount = 0;
+    $('.item').each(function () {
+        const item = $(this);
+        if (item.find('.checkOne').is(':checked')) {
+            const productPrice = parseFloat(item.find('.selling').data('price'));
+
+            const countInput = parseFloat(item.find('.stepperCounter.num').val());
+
+            totalAmount += productPrice * countInput;
+        }
+    });
+
+    $('.totalSum').text(totalAmount); // Update the 'totalSum' element.
+    
+    // Add this section to update the 'Product amount' part.
+    const totalAmountElement = $('.amount .totalPrice');
+    totalAmountElement.text(totalAmount);
+}
+
+
+function updateTotalPrice() {
+    $('.item').each(function() {
+        const item = $(this);
+        const productPrice = parseFloat(item.find('.selling').data('price'));
+        const countInput = parseFloat(item.find('.stepperCounter.num').val());
+        const totalPrice = productPrice * countInput;
+
+        item.find('.selling').text(totalPrice + '원');
+    });
+}
 
 function increaseQuantity(button) {
     const input = $(button).siblings('.num');
@@ -47,6 +88,7 @@ function increaseQuantity(button) {
     if (currentValue < stock) {
         input.val(currentValue + 1);
         updateCartItem(input);
+        updateTotalPrice();
     } else {
         alert("재고부족! 현재재고는 " + stock + "개입니다.");
     }
@@ -60,6 +102,7 @@ function decreaseQuantity(button) {
 	if (currentValue > 1) {
 		input.val(currentValue - 1);
 		updateCartItem(input);
+		updateTotalPrice();
 	}
 }
 
