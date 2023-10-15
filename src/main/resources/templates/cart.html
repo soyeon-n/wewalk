@@ -25,7 +25,7 @@
                             <input type="checkbox" name="checkAll" class="checkAll">
                             <span class="ico"></span>전체선택
                         </label>
-                        <a href="#none" class="btn_delete">선택삭제</a>
+                        <a href="#none" class="btn_delete" id="deleteSelected">선택삭제</a>
                     </div>
                 </div>
                 <div class="box cold">
@@ -81,7 +81,7 @@
                                         </div>
                                     </div>
                                     <!-- 상품 삭제 시 db반영 (btn_delete)-->
-                                    <button type="button" class="btn_delete">
+                                    <button type="button" class="btn_delete" name="deleteOne" >
                                         상품 삭제</button>
                                 </div>
                             </div>
@@ -96,6 +96,7 @@
     
                         
                     </ul>
+                   
                 </div>
     
     

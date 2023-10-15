@@ -1,5 +1,6 @@
 package com.spring.boot.controller;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
@@ -63,6 +64,23 @@ public class OrderController {
 	    cartItemService.updateCartItemCount(cartItemId, count);
 	    return ResponseEntity.ok("Cart item updated successfully");
 	    
+	}
+	
+	@PostMapping("/cartItemDelete")
+	public ResponseEntity<String> cartItemDelete(@RequestParam Long cartItemId) {
+		cartItemService.deleteCartItem(cartItemId);
+		return ResponseEntity.ok("Cart item deleted successfully");
+	}
+	
+	@PostMapping("/cartItemSelDelete")
+	public ResponseEntity<String> cartItemDelete(@RequestParam(value="cartItemIds[]") List<Long> cartItemIds) {
+
+        for (Long itemId : cartItemIds) {
+            cartItemService.deleteCartItem(itemId);
+        }
+        return ResponseEntity.ok("Selected items deleted successfully");
+	    
+		
 	}
 	
 	@GetMapping("/test")
