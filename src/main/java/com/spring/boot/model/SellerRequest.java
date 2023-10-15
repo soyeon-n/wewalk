@@ -1,5 +1,6 @@
 package com.spring.boot.model;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
@@ -8,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import lombok.Builder;
 import lombok.Data;
 
 @Entity
@@ -33,4 +35,19 @@ public class SellerRequest {
 	
 	//처리일시
 	private LocalDateTime processedTime;
+	
+	//set하기 위한 builder
+  	@Builder
+    public SellerRequest(SiteUser siteUser, String intro, 
+    		LocalDateTime requestTime, boolean isProcessed, 
+    		LocalDateTime processedTime) {
+  		
+  		this.siteUser = siteUser;
+  		this.intro = intro;
+  		this.requestTime = requestTime;
+        this.isProcessed = isProcessed;
+        this.processedTime = processedTime;
+        
+    }
+	
 }

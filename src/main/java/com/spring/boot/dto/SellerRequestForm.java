@@ -34,18 +34,8 @@ public class SellerRequestForm {
         this.generalFiles = (generalFiles != null) ? generalFiles : new ArrayList<>();
     }
 
-//	public SellerRequest createSellerRequestDto(SiteUser siteUser) {
-//        Map<AttachmentType, List<MultipartFile>> attachments = getAttachmentTypeListMap();
-//        return SellerRequest.builder()
-//                .title(title)
-//                .writer(student)
-//                .content(content)
-//                .attachmentFiles(attachments)
-//                .build();
-//    }
-	
 	//다중의 이미지 파일과 다중의 일반 파일을 업로드
-    private Map<AttachmentType, List<MultipartFile>> getAttachmentTypeListMap() {
+    public Map<AttachmentType, List<MultipartFile>> getAttachmentTypeListMap() {
         Map<AttachmentType, List<MultipartFile>> attachments = new ConcurrentHashMap<>();
         attachments.put(AttachmentType.IMAGE, imageFiles);
         attachments.put(AttachmentType.GENERAL, generalFiles);

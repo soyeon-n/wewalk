@@ -1,9 +1,7 @@
 package com.spring.boot.util;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,9 +10,7 @@ import java.util.UUID;
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.spring.boot.model.AttachmentType;
@@ -58,6 +54,7 @@ public class FileManager {
         
         multipartFile.transferTo(new File(createPath(savePath, attachmentType)));
 
+        //파일 저장 시 UserFiles 엔티티에 업로드 시간도 기록되게 세팅
         return UserFiles.builder()
         		.saveFileName(savePath)
                 .originalFileName(originalFileName)
@@ -83,7 +80,7 @@ public class FileManager {
         return saveDir + saveFileName;
     }
 
-    //
+    //saveFileName 생성
     private String createSaveFileName(String originalFileName) {
         String uuid = UUID.randomUUID().toString();
         String ext = extractExt(originalFileName);
@@ -98,52 +95,4 @@ public class FileManager {
         String ext = originalFileName.substring(idx);
         return ext;
     }
-	
-	//파일 업로드(참고용)
-//	public static String doFileUpload(InputStream is, String originalFileName, String path) throws Exception{
-//		
-//		String newFileName = "";
-//		
-//		//파일 업로드 안시키고 버튼 누르면
-//		if(is==null) {
-//			return null;
-//		}
-//		
-//		if(originalFileName.equals("")) {
-//			return null;
-//		}
-//		
-//		//abc.txt
-//		//0123456			
-//		//뒤에서부터 .을 찾아서 그 뒤를 넣어줌
-//		String fileExt = 
-//				originalFileName.substring(originalFileName.lastIndexOf("."));
-//		
-//		if(fileExt==null || fileExt.equals("")) {
-//			return null;
-//		}
-//		
-//		//새로운 파일명 생성(연월일시분초)
-//		newFileName = 
-//				String.format("%1$tY%1$tm%1$td%1$tH%1$tM%1$tS", Calendar.getInstance());
-//		
-//		newFileName += System.nanoTime();//절대 중복 안되게 나노타임으로 구분
-//		//newFileName += fileExt;
-//		
-//		File f = new File(path);
-//		
-//		if(!f.exists()) {
-//			f.mkdirs();
-//		}
-//		
-//		String fullFilePath = path + File.separator + newFileName;
-//		
-//		//파일 업로드(사용자가 업로드한 파일의 데이터를 다 담음)
-//		FileCopyUtils.copy(is, new FileOutputStream(fullFilePath));
-//		
-//		//DB에 저장하기 위해 파일명 리턴
-//		return newFileName;
-//		
-//	}
-	
 }

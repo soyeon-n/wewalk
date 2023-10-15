@@ -9,7 +9,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.spring.boot.config.DataNotFoundException;
+import com.spring.boot.dao.SellerRequestRepository;
 import com.spring.boot.dao.UserRepository;
+import com.spring.boot.model.SellerRequest;
 import com.spring.boot.model.SiteUser;
 import com.spring.boot.model.UserRole;
 
@@ -22,6 +24,7 @@ public class UserService {
 	//private final BaseAuthUserRepository baseAuthUserRepository;
 	
 	private final UserRepository userRepository;
+	private final SellerRequestRepository sellerRequestRepository;
 	
 	//BCrypt해시 함수 호출
 	private final PasswordEncoder passwordEncoder;
@@ -140,5 +143,22 @@ public class UserService {
 		}else {
 			return false;
 		}
+	}
+	
+	//판매자 등록 요청 리스트 저장
+	public SellerRequest saveSellerRequest(SiteUser requestUser, String intro, 
+			LocalDateTime requestTime, boolean isProcessed) {
+		
+		SellerRequest sellerRequest = SellerRequest.builder()
+								.siteUser(requestUser)
+								.intro(intro)
+								.requestTime(requestTime)
+								.isProcessed(isProcessed)
+								.build();
+		
+		//판매자 등록 요청 테이블에 저장
+		sellerRequestRepository.save(sellerRequest);
+		
+		return sellerRequest;
 	}
 }

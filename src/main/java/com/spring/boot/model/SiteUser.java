@@ -6,7 +6,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -17,8 +16,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.validation.constraints.NotEmpty;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -93,12 +90,12 @@ public class SiteUser implements Serializable{
     
     private LocalDateTime modifyDate;
 	
-    @OneToMany(mappedBy = "siteUser")
-    private List<UserFiles> userFileList = new ArrayList<>();
+    @OneToMany(mappedBy = "siteUser", fetch = FetchType.LAZY)
+    private List<UserFiles> userFileList;
 
     //처리 내역은 남겨둘 예정
-    @OneToMany(mappedBy = "siteUser")
-    private SellerRequest sellerRequest;
+    @OneToMany(mappedBy = "siteUser", fetch = FetchType.LAZY)
+    private List<SellerRequest> sellerRequestList;
     
     //로그인 비활성화 메소드 추가 예정(6개월)
     
