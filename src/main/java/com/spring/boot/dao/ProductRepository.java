@@ -1,5 +1,6 @@
 package com.spring.boot.dao;
 
+
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -40,6 +41,6 @@ public interface ProductRepository extends JpaRepository<Product, Integer>{
 	
 	
 	
-	
+
 
 }

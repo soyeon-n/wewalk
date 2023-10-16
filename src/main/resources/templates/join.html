@@ -297,7 +297,7 @@
             
             if(userName.length < 6){
             	
-	            alert('아이디를 정확히 입력해주세요');
+	            alert('계정명은 6자 이상  입력해주세요');
 	            $(".field_id input").focus();
 	            return false;
             
@@ -457,10 +457,10 @@
             	return false;
             }else if(on_phone_check() == check){
             	return false;
-            /* }else if(on_addressDetail_check() == check){
-            	return false; */
-/*             }else if(on_birth_check() == check){
-            	return false; */
+            }else if(on_addressDetail_check() == check){
+            	return false;
+            }else if(on_birth_check() == check){
+            	return false;
             }else{
             	return true;
             }

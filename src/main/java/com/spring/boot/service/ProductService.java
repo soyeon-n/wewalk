@@ -12,10 +12,12 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.spring.boot.config.DataNotFoundException;
+
 import com.spring.boot.dao.ProductRepository;
 import com.spring.boot.model.Product;
 
 import lombok.RequiredArgsConstructor;
+
 
 @RequiredArgsConstructor
 @Service
@@ -77,8 +79,13 @@ public class ProductService {
 	//상품수정
 	
 	//상품삭제 
+	//희주님 꺼 
+	public Product gerProductById(Integer id) {
+		Product product = productRepository.findById(id).get();
+		return product;
+	}
+}
 	
 	
 	
 
-}
