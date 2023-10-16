@@ -31,7 +31,7 @@ public class FileManager {
         }
     }
 	
-	//전체 파일 저장
+	//전체 파일 묶음 세팅
 	public List<UserFiles> saveFiles(List<MultipartFile> multipartFiles, AttachmentType attachmentType) throws IOException {
         List<UserFiles> attachments = new ArrayList<>();
         for (MultipartFile multipartFile : multipartFiles) {
@@ -52,6 +52,7 @@ public class FileManager {
         String originalFileName = multipartFile.getOriginalFilename();
         String savePath = createSaveFileName(originalFileName);
         
+        //디렉토리에 파일 저장
         multipartFile.transferTo(new File(createPath(savePath, attachmentType)));
 
         //파일 저장 시 UserFiles 엔티티에 업로드 시간도 기록되게 세팅
@@ -61,10 +62,9 @@ public class FileManager {
                 .uploadTime(LocalDateTime.now())
                 .attachmentType(attachmentType)
                 .build();
-
     }
 
-	//파일 경로 구성
+	//파일 디렉토리 생성
     public String createPath(String saveFileName, AttachmentType attachmentType) {
         String viaPath = (attachmentType == AttachmentType.IMAGE) ? "images/" : "generals/";
         
@@ -76,7 +76,6 @@ public class FileManager {
         if (!f.exists()) {
             f.mkdirs();
         }
-        
         return saveDir + saveFileName;
     }
 

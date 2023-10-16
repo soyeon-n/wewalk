@@ -1,4 +1,4 @@
-package com.spring.boot.oauth2;
+package com.spring.boot.service;
 
 import java.time.LocalDateTime;
 import java.util.Map;

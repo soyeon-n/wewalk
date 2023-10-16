@@ -184,8 +184,7 @@ public class AdminController {
 		if(bindResult.hasErrors()) {
 			return "createUser_form";
 		}
-		
-		//질문글 정보 읽어서 question에 넣어둠
+
 		SiteUser siteUser = userService.getUser(id);
 		
 		//검사한 결과값들을 넣어서 수정

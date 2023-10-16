@@ -15,7 +15,7 @@ import org.springframework.security.web.header.writers.frameoptions.XFrameOption
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import com.spring.boot.model.UserRole;
-import com.spring.boot.oauth2.CustomOAuthSevice;
+import com.spring.boot.service.CustomOAuthSevice;
 import com.spring.boot.service.PrincipalService;
 
 import lombok.RequiredArgsConstructor;
