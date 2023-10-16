@@ -248,9 +248,14 @@ function goCheckOut() {
 	
 	const selectedProductsJSON = JSON.stringify(selectedProducts);
 	
-	const checkoutURL = '/order/detail?selectedProducts=' + encodeURIComponent(selectedProductsJSON);
 	
-	window.location.href = checkoutURL;
+	if(selectedProducts.length==0){
+		alert('선택된 상품이 없습니다.');
+	}else{
+		const checkoutURL = '/order/detail?selectedProducts=' + encodeURIComponent(selectedProductsJSON);
+		
+		window.location.href = checkoutURL;
+	}
 	
 }
 

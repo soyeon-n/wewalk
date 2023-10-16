@@ -42,7 +42,7 @@
 
                                     <div class="info_price">
                                         <span class="num">
-                                            <span class="price" th:text="${#numbers.formatInteger(item.key.price, 1, 'COMMA') + ' 원'}">
+                                            <span class="price" th:text="${#numbers.formatInteger((item.key.price * item.value), 1, 'COMMA') + ' 원'}">
                                                 
                                             </span>
                                             
@@ -100,7 +100,7 @@
                                 </div>
                                 <div class="section_full">
                                 	<input type="radio" name="address" value="default" class="radio" checked="checked"> 배송지 입력
-                                	<input type="radio" name="address" value="default" class="radio"> 저장된배송지 1
+                                	<input type="radio" name="address" value="default" class="radio"th:each="adress:${SiteUser.adressList}"> 저장된배송지 1
                                 	<br/>
                                 	<br/>
                                 	<span class="tag" id="addrTags">

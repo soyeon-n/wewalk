@@ -77,11 +77,11 @@ public class OrderController {
 	
 	
 	@GetMapping("/detail")
-	public String payDetail(Model model,Authentication authentication,
+	public String payDetail(Model model,@AuthenticationPrincipal PrincipalDetails principalDetails,
 			@RequestParam(name = "selectedProducts") String selectedProductsJSON) {
 		
-		String email = authentication.getName(); //email가져옴
-		SiteUser user = userService.getUserByEmail(authentication.getName());
+		
+		SiteUser user = userService.getUserByUserName(principalDetails.getUsername());
 		
 		//JSON데이터 역직렬화 
 		List<Map<String, Integer>> selectedProducts = new ArrayList<>();

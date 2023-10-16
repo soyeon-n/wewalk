@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -147,5 +148,10 @@ public class SiteUser implements Serializable{
         this.interest3 = interest3;
         this.modifyDate = modifyDate;
     }
+  	
+  	@OneToMany(mappedBy = "user",cascade = CascadeType.REMOVE,
+			fetch = FetchType.EAGER)
+	private List<Adress> adressList;
+  	
   	
 }
