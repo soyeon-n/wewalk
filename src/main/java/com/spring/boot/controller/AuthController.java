@@ -31,6 +31,7 @@ import com.spring.boot.dto.PrincipalDetails;
 import com.spring.boot.dto.UserCreateForm;
 import com.spring.boot.model.SiteUser;
 import com.spring.boot.model.UserRole;
+import com.spring.boot.service.CartService;
 import com.spring.boot.service.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -50,6 +51,7 @@ public class AuthController {
 
 	private final HttpSession httpSession;
 	private final UserService userService;
+	private final CartService cartService;
 	
 	
 	@GetMapping("/signup")
@@ -110,6 +112,7 @@ public class AuthController {
 		    
 		    UserRole role;
 		    boolean seller;
+		    
 		    //static에 있는 이미지 사용하기 위한 코드(사진 기본값)
 		    Resource resource = new ClassPathResource("static/images/flower-8173829_640.jpg");
 		    String picture = "/images/flower-8173829_640.jpg";
@@ -128,6 +131,11 @@ public class AuthController {
 						userCreateForm.getName(), birthDate, userCreateForm.getPostcode(),
 						userCreateForm.getAddress(), userCreateForm.getDetailAddress(), userCreateForm.getTel(), picture, seller);
 		
+			SiteUser newUser = userService.getUserByUserName(userCreateForm.getUserName());
+			
+			//새로 생성한 유저의 카트 생성
+			cartService.create(newUser);
+			
 		} catch (DateTimeException e) {
 		    // 유효하지 않은 날짜
 			e.printStackTrace();
@@ -186,6 +194,9 @@ public class AuthController {
 		    userService.oauthSignup(oauthUser, role, name, 
 		    		birthDate, createdDate, postcode, address, detailAddress, tel);		    
 			
+			//새로 생성한 유저의 카트 생성
+			cartService.create(oauthUser);
+		    
 		} catch (DateTimeException e) {
 		    // 유효하지 않은 날짜
 			e.printStackTrace();
@@ -225,32 +236,6 @@ public class AuthController {
 	        return new ResponseEntity<>(response, HttpStatus.OK);
 	    }
 	}
-//	@GetMapping("/checkEmail")
-//    public Map<String, String> checkEmail(@RequestParam String email) {
-//
-//        SiteUser user = userService.getUserByEmail(email);
-//        
-//        Map<String, String> result = new HashMap<>();
-//        
-//        if (user != null) {
-//            result.put("overlap", "fail");
-//        } else {
-//            result.put("overlap", "success");
-//        }
-//        return result;
-//    }
-//	
-//	@GetMapping("/checkUserName")
-//    public Map<String, String> checkUserName(@RequestParam String userName) {
-//        SiteUser user = userService.getUserByUserName(userName);
-//        Map<String, String> result = new HashMap<>();
-//        if (user != null) {
-//            result.put("overlap", "fail");
-//        } else {
-//            result.put("overlap", "success");
-//        }
-//        return result;
-//    }
 
 	@GetMapping("/verify")
     public String verify(@AuthenticationPrincipal PrincipalDetails principalDetails) {

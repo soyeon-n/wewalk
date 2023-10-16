@@ -1,5 +1,5 @@
 .mb-3 {
-	width: 420px;
+	width: 450px;
 }
 
 .password1_txt_guide {
@@ -40,6 +40,12 @@
     vertical-align: 0;
 }
 
+.btn {
+	border: 1px solid #5f0080; 
+	background-color: #5f0080; 
+	color: #fff; 
+	display: block;
+}
 /* #addressSearch {
     display: block;
     overflow: hidden;

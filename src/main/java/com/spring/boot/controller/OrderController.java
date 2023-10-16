@@ -1,7 +1,5 @@
 package com.spring.boot.controller;
 
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.authentication;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -107,14 +105,11 @@ public class OrderController {
 			
 		}
 		
-		
-		
 		model.addAttribute("SiteUser",user);
 		model.addAttribute("productList", productList);
 		
 		return "order_detail";
 	}
-	
 	
 	@PostMapping("/checkout")
 	public String payRequest(Model model) {

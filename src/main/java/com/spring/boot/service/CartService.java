@@ -1,5 +1,7 @@
 package com.spring.boot.service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -14,6 +16,7 @@ import com.spring.boot.model.Cart;
 import com.spring.boot.model.CartItem;
 import com.spring.boot.model.Product;
 import com.spring.boot.model.SiteUser;
+import com.spring.boot.model.UserRole;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,6 +27,18 @@ public class CartService {
 	private final CartRepository cartRepository;
 	private final UserRepository userRepository;
 	
+	//카트 생성 메소드
+	public Cart create(SiteUser user) {
+		
+		Cart userCart = new Cart();
+		
+		userCart.setUser(user);
+		
+		//회원정보 db에 저장
+		cartRepository.save(userCart);
+		
+		return userCart;
+	}
 	
 	public List<Product> getProductList(String userName){
 		
