@@ -41,14 +41,16 @@ public class ReviewController {
 
 
 	//그 상품의 리뷰리스트= {productNo} 가 있어야 할것 같은데 ?? 
-	@RequestMapping("/list")
-	public String reviewList(Model model , @PageableDefault Pageable pageable) {
+	//원래이거는 productController 안에 들어있어서 layout 분리로 들어가야 한다 
+	//Product product
+	@RequestMapping("/list/{productNo}")
+	public String reviewList(Model model , @PathVariable("productNo") Integer productNo,@PageableDefault Pageable pageable) {
 
-		Page<Review> paging = reviewService.getTotalReview(pageable);
+		Page<Review> paging = reviewService.getPnoReview(pageable, productNo);
 		model.addAttribute("paging",paging);
 
-		//return "product_review_list";//제품리뷰
-		return "product_list";
+		return "product_review_list_temp";//제품리뷰
+		//return "product_list";
 
 	}
 
@@ -72,6 +74,7 @@ public class ReviewController {
 		return "mypage_review";//내가쓴 리뷰들 리스트 
 		//지금 로그인한사람이 쓴 리스트 뽑아오기 
 		//지금 optional 안써서 지금 null 처리 안됨>>나 중에 수정 
+		
 
 	}
 
@@ -79,7 +82,10 @@ public class ReviewController {
 	//@PreAuthorize//권한제한
 	//마이페이지에서 >> 리뷰쓰기
 	@GetMapping("/create/{productNo}")
-	public String createReview(ReviewForm reviewForm){
+	public String createReview(ReviewForm reviewForm,@PathVariable("productNo")Integer productNo){
+		
+		//여기서 set을해줘야하나 ..!
+		//getproductdetail 을 만들어서 pname, img 미리 set 가능 ? 
 
 		return "mypage_reviewReg";//리뷰작성 form 
 	}
@@ -101,15 +107,12 @@ public class ReviewController {
 		//SiteUser siteUser = userService.getUser(principal.getName());
 
 		//+++상품명pname , productNo 가 알아서 리뷰입력시에 들어가도록하기 
+		//pname 자동입력
+				//Product productName = productService.getProductDetailByNo(productNo);
+		
 
 		Product productnum = productService.getProductDetailByNo(productNo);
-		//Integer productnum = productNo;//{productNo}값 그대로 넣어주기
-		//이렇게 안어가서 Product product 이렇게 넣는듯 
-
-		//pname 자동입력
-		//Product productName = productService.getProductDetailByNo(productNo);
-		//파일업로드
-
+		
 
 		if(bindResult.hasErrors()) {			
 			return "mypage_reviewReg";//form에 err 값 있을시 페이지 되돌려보내기 
@@ -121,11 +124,11 @@ public class ReviewController {
 				multipartFile);
 
 
-		//reviewForm.getFileDTO()?multipartFile
 		//reviewForm.get ~ 으로 리뷰폼에 작성된 내용을 받아서 insert 한다 
 		//어떤 것은 form 을 거쳐서 insert 하고 어떤것은 그냥 받은정보로 insert ? 
 
 		return "redirect:/review/mylist";
+		
 
 		//주소돌려주기수정))지금접속되어있는 userId 를 가지고 돌아와야 다시 로그인된상태의 내 리뷰 보기가 될거아녀
 		//세션에 올라가있으면 자동으로 인식하나 ?? 
@@ -146,7 +149,7 @@ public class ReviewController {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"수정권한이 없습니다");
 		}
 
-		//아직 파일첨부 수정되는지 반영안됨 
+		//아직 파일첨부 수정되는지 반영안됨 >> 새로 첨부해야지만 반영된다 
 
 
 		 */
@@ -154,7 +157,7 @@ public class ReviewController {
 		reviewForm.setTitle(review.getTitle());
 		reviewForm.setContent(review.getContent());
 		reviewForm.setPname(review.getPname());
-		//reviewForm.setRUser(review.getRUser());//작성하는id는그대로이나
+		reviewForm.setRUser(review.getRUser());//작성하는id는그대로이나
 		reviewForm.setStar(review.getStar());
 
 
@@ -178,7 +181,9 @@ public class ReviewController {
 		}
 		Review review = reviewService.getOneReview(id);
 		
-		//작성자 검사 한번 할것 
+		//기존값 받아와가지고 
+		
+		//작성자=로그인된상태 검사 한번 할것 
 		
 		//reviewService.createReview(productnum,userId, reviewForm.getPname(), 
 		//reviewForm.getStar(), reviewForm.getTitle(),reviewForm.getContent(), 
@@ -186,7 +191,7 @@ public class ReviewController {
 		
 		//다시insert 
 		//ruser는 바꿀필요없는데 ?? reviewForm.getRUser() 없는데 흠
-		reviewService.modifyReview(review,reviewForm.getPname(), 
+		reviewService.modifyReview(review, 
 				reviewForm.getStar(), reviewForm.getTitle(), reviewForm.getContent(), multipartFile);
 		
 		return "redirect:/review/mylist";
