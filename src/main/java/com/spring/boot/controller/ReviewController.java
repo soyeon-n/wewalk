@@ -46,11 +46,17 @@ public class ReviewController {
 	@RequestMapping("/list/{productNo}")
 	public String reviewList(Model model , @PathVariable("productNo") Integer productNo,@PageableDefault Pageable pageable) {
 
-		Page<Review> paging = reviewService.getPnoReview(pageable, productNo);
+		
+		
+		Product productnum = productService.getProductDetailByNo(productNo);
+		
+		Page<Review> paging = reviewService.getPnoReview(pageable, productnum);
 		model.addAttribute("paging",paging);
+		
+		
 
-		return "product_review_list_temp";//제품리뷰
-		//return "product_list";
+		//return "product_review_list_temp";//제품리뷰>>미리보기식으로 
+		return "product_review_list";
 
 	}
 

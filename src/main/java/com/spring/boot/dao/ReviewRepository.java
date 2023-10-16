@@ -24,7 +24,7 @@ public interface ReviewRepository extends JpaRepository<Review, Integer>{
 	//아 레포에서는옵셔널안쓰고 페이징쓰네 
 	
 	//productNo 로 상품에대한 리뷰 모두 조회하기 
-	Page<Review> findByProductNo(Product productNo,Pageable pageable);
+	Page<Review> findByProduct(Product product,Pageable pageable);
 	
 	
 	

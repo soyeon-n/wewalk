@@ -54,7 +54,7 @@ public class ReviewService {
 	
 	
 	//productNo 로 상품의모든리뷰 조회하기 
-	public Page<Review> getPnoReview (Pageable pageable,Integer productNo) {
+	public Page<Review> getPnoReview (Pageable pageable,Product productNo) {
 		
 		
 		List<Sort.Order> sorts = new ArrayList<Sort.Order>();
@@ -64,7 +64,7 @@ public class ReviewService {
 				pageable.getPageSize(),Sort.by(sorts));
 
 
-		return reviewRepository.findByProductNo(productNo, pageable);
+		return reviewRepository.findByProduct(productNo, pageable);
 		
 		
 	}
