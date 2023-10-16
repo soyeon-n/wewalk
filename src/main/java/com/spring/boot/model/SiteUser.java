@@ -14,7 +14,12 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+
+import javax.persistence.OneToOne;
+import javax.validation.constraints.NotEmpty;
+
 import javax.persistence.OneToMany;
 
 import lombok.Builder;
@@ -89,7 +94,7 @@ public class SiteUser implements Serializable{
     private Interest interest3;
     
     private LocalDateTime modifyDate;
-	
+
     @OneToMany(mappedBy = "siteUser", fetch = FetchType.LAZY)
     private List<UserFiles> userFileList;
 
