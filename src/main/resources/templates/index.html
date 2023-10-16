@@ -9,11 +9,13 @@
 <body>
 <h3>메인화면</h3>
 
-<a href="http://192.168.16.21:8080/created.action">글쓰기</a>
+<a sec:authorize="isAnonymous()" th:href="@{/auth/login}">로그인</a>
+<a sec:authorize="isAuthenticated()" th:href="@{/logout}">로그아웃</a>
+<a th:href="@{/admin/userList}">관리자</a><br/>
 	이름 : <b th:text="${name}"></b><br/>
 	이메일 : <b th:text="${email}"></b><br/>
 	프로필 사진 : <p><img th:src="@{${picture}}" width="200" height="200"/></p>
 
 <a href="http://localhost:8080/order/testsql">테스트페이지</a>
 </body>
-</html> 
+</html>
