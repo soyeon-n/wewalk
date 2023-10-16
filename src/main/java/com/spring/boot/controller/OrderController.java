@@ -1,7 +1,5 @@
 package com.spring.boot.controller;
 
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.authentication;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
