@@ -1,5 +1,7 @@
 package com.spring.boot.controller;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.authentication;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -7,17 +9,18 @@ import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.spring.boot.dto.PrincipalDetails;
 import com.spring.boot.model.Product;
 import com.spring.boot.model.SiteUser;
 import com.spring.boot.service.CartItemService;
@@ -38,13 +41,13 @@ public class OrderController {
 	private final ProductService productService;
 
 	@GetMapping("/cart")
-	public String cart(Model model ,Authentication authentication) {
+	public String cart(Model model ,@AuthenticationPrincipal PrincipalDetails principalDetails) {
 		
 		//시큐리티 로그인된 사용자의 cartItem(장바구니목록)가져와 장바구니페이지로 이동
 		
-		List<Product> productList = cartService.getProductList(authentication.getName());
+		List<Product> productList = cartService.getProductList(principalDetails.getUsername()); //로그인할때id 계정명
 		
-		model.addAttribute("cartItemList",cartService.getCartItemList(authentication.getName()));
+		model.addAttribute("cartItemList",cartService.getCartItemList(principalDetails.getUsername()));
 		model.addAttribute("productList", productList);
 		
 		return "cart";

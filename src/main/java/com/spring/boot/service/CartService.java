@@ -25,9 +25,9 @@ public class CartService {
 	private final UserRepository userRepository;
 	
 	
-	public List<Product> getProductList(String email){
+	public List<Product> getProductList(String userName){
 		
-		Long user_id = userRepository.findByEmail(email).get().getId();
+		Long user_id = userRepository.findByUserName(userName).get().getId();
 		
 		Cart userCart = cartRepository.findByUserId(user_id);
 		
@@ -48,9 +48,9 @@ public class CartService {
 		
 	}
 	
-	public List<CartItem> getCartItemList(String email){
+	public List<CartItem> getCartItemList(String userName){
 		
-		SiteUser user = userRepository.findByEmail(email).get();
+		SiteUser user = userRepository.findByUserName(userName).get();
 		
 		Cart cart = cartRepository.findById(user.getId()).get();
 		
