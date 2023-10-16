@@ -161,7 +161,16 @@
                         <div id="viewAfterList" class="after_view" style="display:;" th:each="review, loop : ${paging}">
                             <ul class="list_after">
                                 <li>
-                                    <div class="tit_after" >
+                                <!-- 23/10/13 페이징 시작 -->
+                                    <div class="tit_after"  >
+                                    
+                                    <!-- 작성한 리뷰 갯수 표시 근데 list 가 아니라서,, -->
+                                    <!-- <span th:text="|${#lists.size(question.answerList)}개의 리뷰 작성 이 있습니다.|"></span> -->
+                                    
+                                    
+                                    
+                                    
+                                    <a></a>
                                     상품명 : 
                                         <a href="#" class="main_name" th:text="${review.pname}">[램노스] 스프레더블 리코타치즈</a>
                                         
@@ -173,7 +182,7 @@
                                                 그냥 리코타 치즈 ㅇㅇ
                                                 <span class="date" th:text="${#dates.format(review.date,'yyyy-MM-dd HH:mm:ss')}"  >
                                                     20.05.26 작성
-                                                    <!-- 지금 date 타입 출력안되고있음  -->
+                                                    <!-- 지금 date 타입 출력안되고있음?????????  -->
                                                 </span>
                                                 
                                             </span>
@@ -181,12 +190,14 @@
                                             <span class="desc">
                                                 <span class="thumb">
                                                     <span class="photo" style="background-image: url(&quot;https://img-cf.kurly.com/shop/data/review/20200526/94edd664f356ea243a30d8e9797cc5ad.jpg&quot;);">
+                                                    <!--  
                                                     <img th:src="@{${review.fileDir} + ${review.saveFileName}}"/>
+                                                    
                                                     <img th:src="@{${review.filePath}}"/>
                                                     
-                                                    <img th:each="filePath : ${review.filePath}" th:src="|${review.filePath}|">
+                                                    <img th:each="filePath : ${review.filePath}" th:src="|${review.filePath}|">-->
                                                     <img th:src="@{'/imgfile/'+ ${review.saveFileName}}"/>
-                                                    <!-- 안나오네,,,,,돌아버리겠네 ...... -->
+                                                    <!-- 여기가 리뷰상품 img 출력하는 부분  -->
                                                     </span>
                                                 </span>
                                                 <span class="txt" th:text="${review.content}">양은 꽤 많고 리코타 치즈치고 약간 묽긴한데 몽글몽글한게 참 귀엽습니다. 샐러드에 넣어 먹을 때 가장 맛있는 치즈 같아요</span>
@@ -199,9 +210,9 @@
                                                     
                                                     
                                                     <!-- <img th:each="imageFile : ${content.imageFiles}" th:src="|/basic-board/images/${imageFile.storeFilename}|"> -->                                    
-                                                    <img th:each="saveFileName : ${review.saveFileName}" th:src="@{'/imgfile/'+${review.saveFileName}}">
-                                                    <img th:src="@{${review.saveFileName}}"/>
-                                                    <!-- 이걸로 출력이 안되는데 최대한 절대경로로 출력하고싶은데  -->
+                                                    
+                                                    
+                                                    
 
                                                 </span>
 
@@ -216,6 +227,10 @@
 
                                         <div class="btn_after">
                                             <button type="button" class="btn_help">도움이 돼요? 0</button>
+                                            <input type="button" value="리뷰삭제" >
+                                            <a th:href="@{|/review/delete/${review.id}|}" th:text="삭제"></a>
+                                            <input type="button" value="리뷰수정" >
+                                            <a th:href="@{|/review/modify/${review.id}|}" th:text="수정"></a>
                                             
                                             <a class="btn btn_modify">수정</a>
                                             <a class="btn btn_del">삭제하기</a>
@@ -271,62 +286,69 @@
                                         </div>
                                     </div>
                                 </li>
+                                <!-- 한 단락 반복 끝  -->
 
-                                <li>
-                                    <div class="tit_after">
-                                        <a href="#" class="main_name">[램노스] 스프레더블 리코타치즈</a>
-                                    </div>
-
-                                    <div class="cont_after">
-                                        <a class="desc_after">
-                                            <span class="subject">
-                                                그냥 리코타 치즈 ㅇㅇ
-                                                <span class="date">
-                                                    20.05.26 작성
-                                                </span>
-                                            </span>
-
-                                            <span class="desc">
-                                                <span class="thumb">
-                                                    <span class="photo" style="background-image: url(&quot;https://img-cf.kurly.com/shop/data/review/20200526/94edd664f356ea243a30d8e9797cc5ad.jpg&quot;);">
-                                                    </span>
-                                                </span>
-                                                <span class="txt">양은 꽤 많고 리코타 치즈치고 약간 묽긴한데 몽글몽글한게 참 귀엽습니다. 샐러드에 넣어 먹을 때 가장 맛있는 치즈 같아요</span>
-
-                                            </span>
-
-                                            <span class="view">
-                                                <span class="img">
-                                                    <img src="https://img-cf.kurly.com/shop/data/review/20200526/94edd664f356ea243a30d8e9797cc5ad.jpg" alt="첨부 이미지">
-
-                                                </span>
-
-                                                <span class="txt">
-                                                    양은 꽤 많고 리코타 치즈치고 약간 묽긴한데 몽글몽글한게 참 귀엽습니다. 샐러드에 넣어 먹을 때 가장 맛있는 치즈 같아요
-                                                    <br>
-                                                </span>
-                                            </span>
-
-
-                                        </a>
-
-                                        <div class="btn_after">
-                                            <button type="button" class="btn_help">도움이 돼요 0</button>
-                                            <button class="btn btn_modify" value="수정">수정</button>
-                                            
-                                            
-                                            
-                                            <a class="btn btn_modify">수정</a>
-                                            <a class="btn btn_del">삭제하기</a>
-
-                                        </div>
-                                    </div>
-                                </li>
+                                
                                 
 
                                 
                             </ul>
                         </div>
+                        <!-- 여기까지가 게시물 반복문 -->
+                        <div th:if="${!paging.isEmpty()}">
+	
+							<nav aria-label="Page navigation">
+							     <ul class="pagination justify-content-center"
+							          th:with="startNumber=${(paging.number/10)}*10+1, 
+							          endNumber=(${paging.totalPages}>${startNumber}+9)?
+							          ${startNumber}+9 : ${paging.totalPages}">
+							          
+							          <!-- << -->
+							          <li>
+							          <a class="page-link" th:href="@{/review/mylist?page=1}">&laquo;</a>
+							          <!-- <a class="page-link" th:href="@{/question/list?page=1}">&laquo;</a> -->
+							          </li>
+							          
+							          <!-- < -->
+							          <li class="page-item" th:style ="${paging.first}?'display:none'">
+								          <a class="page-link" th:href="@{/question/list(page=${paging.number})}">
+								          &lsaquo;
+								          
+								          </a>
+							          </li>
+							          <!-- 1 2 3 4 5 -->
+							          <li class="page-item" th:each="page : ${#numbers.sequence(startNumber,endNumber)}"
+							              th:classappend="(${page}==${paging.number}+1) ? 'active'">
+							              <a class="page-link" th:href="@{/question/list(page=${page})}" th:text="${page}">
+							              
+							              </a>
+							          </li>
+							          <!-- > -->
+							          
+							          <li class="page-item" th:style="${paging.last}?'display:none'">
+								          <a class="page-link" th:href="@{/question/list(page=${paging.number}+2)}">
+								          &rsaquo;
+								          
+								          </a>
+							          </li>
+							          
+							          <!-- >> -->
+							          <li>
+							          <a class="page-link" th:href="@{/question/list(page=${paging.totalPages})}">
+							          &raquo;
+							          </a>
+							          </li>
+							          
+							     
+							     </ul>
+							
+							</nav>
+						
+						</div>
+						<!-- 페이징 끝 -->
+                        
+                        
+                        
                     </div>
 
 
