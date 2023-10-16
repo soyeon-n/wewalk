@@ -26,23 +26,23 @@
                         </h2>
 
                         <div id="itemList" class="page_aticle order_goodslist">
-                            <ul class="list_product">
+                            <ul class="list_product" th:each=item:${productList}>
                                 <li>
                                     <div class="thumb">
                                         <img src="https://img-cf.kurly.com/shop/data/goods/156757412839i0.jpg" alt="상품이미지">
                                     </div>
 
                                     <div class="name">
-                                        <div class="inner_name" th:text="${productName}"></div>
+                                        <div class="inner_name" th:text="${item.key.name}"></div>
                                     </div>
 
-                                    <div class="ea" th:text="${#numbers.formatInteger(count, 1, 'COMMA') + ' 개'}">
+                                    <div class="ea" th:text="${#numbers.formatInteger(item.value, 1, 'COMMA') + ' 개'}">
                                         
                                     </div>
 
                                     <div class="info_price">
                                         <span class="num">
-                                            <span class="price" th:text="${#numbers.formatInteger(price, 1, 'COMMA') + ' 원'}">
+                                            <span class="price" th:text="${#numbers.formatInteger(item.key.price, 1, 'COMMA') + ' 원'}">
                                                 
                                             </span>
                                             

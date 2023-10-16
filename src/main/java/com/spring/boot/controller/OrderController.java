@@ -1,7 +1,9 @@
 package com.spring.boot.controller;
 
-import java.util.Iterator;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -13,11 +15,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.spring.boot.model.CartItem;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.spring.boot.model.Product;
 import com.spring.boot.model.SiteUser;
 import com.spring.boot.service.CartItemService;
 import com.spring.boot.service.CartService;
+import com.spring.boot.service.ProductService;
 import com.spring.boot.service.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -30,22 +35,8 @@ public class OrderController {
 	private final CartService cartService;
 	private final CartItemService cartItemService;
 	private final UserService userService;
-	
-	@GetMapping("/testsql")
-	@ResponseBody
-	public String sqlq(Authentication authentication) {
-		
-		String email="";
-	
-		email = authentication.getName(); //email가져옴
-		//dghs1233@naver.com
-		
-		//SiteUser user = userService.getUserByEmail(email);
-		
-		return "getName: " +email;
-	}
-	
-	
+	private final ProductService productService;
+
 	@GetMapping("/cart")
 	public String cart(Model model ,Authentication authentication) {
 		
@@ -83,35 +74,44 @@ public class OrderController {
 		
 	}
 	
-	@GetMapping("/test")
-	public String text(Model model) {
-		
-		
-		
-		
-		return "order_test";
-	}
 	
-	@PostMapping("/detail")
-	public String payDetail(Model model,
-				            @RequestParam("productName") String productName,
-				            @RequestParam("count") int count,
-				            @RequestParam("price") int price,
-				            Authentication authentication) {
+	@GetMapping("/detail")
+	public String payDetail(Model model,Authentication authentication,
+			@RequestParam(name = "selectedProducts") String selectedProductsJSON) {
 		
 		String email = authentication.getName(); //email가져옴
-
 		SiteUser user = userService.getUserByEmail(authentication.getName());
 		
-		model.addAttribute("productName", productName);
-		model.addAttribute("count", count);
-		model.addAttribute("price", price);
+		//JSON데이터 역직렬화 
+		List<Map<String, Integer>> selectedProducts = new ArrayList<>();
+			try {
+			    ObjectMapper objectMapper = new ObjectMapper();
+			    selectedProducts = objectMapper.readValue(selectedProductsJSON, new TypeReference<List<Map<String, Integer>>>(){});
+			} catch (JsonProcessingException e) {
+				
+			}
+		
+		Map<Product, Integer> productList = new HashMap<>();	
+		
+		for(Map<String,Integer> selectProduct : selectedProducts) {
+			
+			Integer productId = selectProduct.get("productId");
+			Integer quantity = selectProduct.get("quantity");
+			
+			Product product = productService.gerProductById(productId);
+			
+			productList.put(product, quantity);
+			
+		}
+		
+		
+		
 		model.addAttribute("SiteUser",user);
-		//view에는앞에서 주문한 상품 정보 받아서 뿌려주고
-		//주문데이터 입력받음
+		model.addAttribute("productList", productList);
 		
 		return "order_detail";
 	}
+	
 	
 	@PostMapping("/checkout")
 	public String payRequest(Model model) {

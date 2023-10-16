@@ -49,7 +49,8 @@ $(document).ready(function() {
         
         if (window.confirm('해당 상품을 삭제하시겠습니까?')){
         	deleteCartItem(cartItemId, item);
-        	window.location.href = '/order/cart'
+			item.remove();
+
         }
         
         
@@ -60,7 +61,7 @@ $(document).ready(function() {
         const selectedItems = [];
 
 		//체크된항목의 id를 배열에담음
-        $('.checkOne').each(function() {
+        $('.checkOne:enabled').each(function() {
 	        if ($(this).is(':checked')) {
 	            const cartItemId = $(this).closest('.item').find('.stepperCounter.num').data('cartitemid');
 	            selectedItems.push(cartItemId);
@@ -101,6 +102,14 @@ $(document).ready(function() {
 	    updateTotalAmount()
 	});
 
+	$('.checkOne').click(function() {
+	    if (!$('.checkOne:not(:checked)').length) {
+	        $('.checkAll').prop('checked', true);
+	    } else {
+	        $('.checkAll').prop('checked', false);
+	    }
+	    
+	});
     
 	updateTotalPrice();
 	updateTotalAmount()
@@ -110,22 +119,31 @@ $(document).ready(function() {
 
 //체크된상품들 가격합표시
 function updateTotalAmount() {
+
     let totalAmount = 0;
+    let deliveryCharge = 0;
+    
     $('.item').each(function () {
         const item = $(this);
-        if (item.find('.checkOne').is(':checked')) {
+        const checkOne = item.find('.checkOne');
+        if (checkOne.is(':checked') && !checkOne.is(':disabled')) {
+        
             const productPrice = parseFloat(item.find('.selling').data('price'));
 
             const countInput = parseFloat(item.find('.stepperCounter.num').val());
 
             totalAmount += productPrice * countInput;
+            deliveryCharge += 3000;
         }
     });
 
+	const resultPrice = totalAmount + deliveryCharge;
+
     $('.totalSum').text(totalAmount); 
     
-    const totalAmountElement = $('.amount .totalPrice');
-    totalAmountElement.text(numberWithComma(totalAmount));
+    $('.amount [name=totalPrice]').text(numberWithComma(totalAmount));
+    $('.amount [name=delever]').text(numberWithComma(deliveryCharge));
+    $('.amount [name=resultPrice]').text(numberWithComma(resultPrice));
 }
 
 //각 상품의 가격*갯수 금액표시
@@ -207,6 +225,33 @@ function deleteCartItem(cartItemId, item) {
             console.error('Error deleting item:', error);
         }
     });
+}
+
+function goCheckOut() {
+	
+	const selectedProducts = [];
+	
+	$('.item').each(function () {
+        const item = $(this);
+        const checkOne = item.find('.checkOne');
+        if (checkOne.is(':checked') && !checkOne.is(':disabled')) {
+            const productId = item.find('.stepperCounter.num').data('product-id');
+            const quantity = item.find('.stepperCounter.num').val();
+
+			selectedProducts.push({
+                productId: productId,
+                quantity: quantity,
+            });
+			
+        }
+    });
+	
+	const selectedProductsJSON = JSON.stringify(selectedProducts);
+	
+	const checkoutURL = '/order/detail?selectedProducts=' + encodeURIComponent(selectedProductsJSON);
+	
+	window.location.href = checkoutURL;
+	
 }
 
 function numberWithComma(number) {
