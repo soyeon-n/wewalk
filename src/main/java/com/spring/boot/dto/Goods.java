@@ -32,7 +32,6 @@ public class Goods {
     private Integer pno;
 	
 	@ManyToOne
-    @JoinColumn(name = "id")
 	private SiteUser user;
     
     @Column(name = "name", length = 50)
@@ -77,8 +76,6 @@ public class Goods {
     	date = new Date();
     }
 
-	public void setTags(List<String> tags) {
-		
-	}
+
 
 }

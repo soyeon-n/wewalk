@@ -22,7 +22,6 @@
       	
         	var userName = '[[${user.name}]]';
             var userTel = '[[${user.tel}]]';
-            var userAddress = '[[${user.address}]]';
             var userPostcode = '[[${user.postcode}]]';
             var userEmail = '[[${user.email}]]';
             
@@ -37,7 +36,6 @@
       				buyer_email: userEmail,
       				buyer_name: userName,
       				buyer_tel: userTel,
-      				buyer_addr: userAddress, //buyer_addr: user.address01 + " " + user.address02,
       				buyer_postcode: userPostcode //buyer_postcode: user.zipcode
      	
                 },
@@ -82,49 +80,65 @@
        
         
         function requestPayKaKao() {  
-            var money = $('input[name="cp_item"]:checked').val(); // 선택한 라디오 버튼의 값 가져오기
-            
-            var userName = '${user.name}'; // 사용자 이름을 가져옴
-            var userTel = '${user.tel}';
-            var userAddress = '${user.address}';
-            var userPostcode = '${user.postcode}';
-
-            IMP.request_pay({
-            	pg : 'kakaopay',
-            	merchant_uid : 'merchant_' + new Date().getTime(),
-                name: '페이 충전',
-                amount: money, // 선택한 금액으로 설정
-                buyer_email: 'user1@example.com',
-                buyer_name: userName,
-  				buyer_tel: userTel,
-  				buyer_addr: userAddress, 
-  				buyer_postcode: userPostcode
+            	
+            	var money = $('input[name="cp_item"]:checked').val(); // 선택한 라디오 버튼의 값 가져오기
+          	
+            	var userName = '[[${user.name}]]';
+                var userTel = '[[${user.tel}]]';
+                var userPostcode = '[[${user.postcode}]]';
+                var userEmail = '[[${user.email}]]';
                 
-            }, function (rsp) {
-
-                if (rsp.success) {
-                	console.log(buyer_name);
-                    var msg = '결제가 완료되었습니다.';
-                    msg += '고유ID : ' + rsp.imp_uid;
-                    msg += '상점 거래ID : ' + rsp.merchant_uid;
-                    msg += '결제 금액 : ' + rsp.paid_amount;
-                    msg += '카드 승인번호 : ' + rsp.apply_num;
-                    $.ajax({
-                        type: "GET", 
-                        url: "/mypage/pay", //충전 금액값을 보낼 url 설정
-                        data: {
-                            "amount" : money
-                        },
+            	
+                IMP.request_pay(
+                    {
+                        pg: "html5_inicis",		//KG이니시스 pg파라미터 값
+                        pay_method: "card",		//결제 방법
+                        merchant_uid : 'merchant_' + new Date().getTime(),   //주문번호
+                        name: "페이 충전",		//상품 명
+                        amount: money,			//금액
+          				buyer_email: userEmail,
+          				buyer_name: userName,
+          				buyer_tel: userTel,
+          				buyer_postcode: userPostcode //buyer_postcode: user.zipcode
+         	
+                    },
+                    function (rsp) {   //callback
+          				
+                        if (rsp.success) {
+                        	
+                        	alert('결제가 성공했습니다.');
+                        	
+                        	var data = {
+                        			userEmail: userEmail,
+                	                paymoney: money// 금액
+                	                
+                        	};
+                	        
+                	     // 여기서 결제 정보를 서버에 전송하고 저장
+                	        $.ajax({
+                	            type: 'POST',
+                	            url: '/user/mypage/pay?paymoney=' + money, // URL에 paymoney를 추가
+                	            contentType: 'application/x-www-form-urlencoded',
+                	            data: data,
+                	            
+                	            success: function (response) {
+                	                // 서버에서의 응답이 성공한 경우, 이 함수가 실행됩니다.
+                	                // 응답을 처리하거나 추가 작업을 수행할 수 있습니다.
+                	                alert('결제 정보가 성공적으로 저장되었습니다.');
+                	                // 여기에서 추가적인 로직을 구현할 수 있습니다.
+                	            },
+                	            error: function (error) {
+                	                // 서버에서의 응답이 실패한 경우, 이 함수가 실행됩니다.
+                	                alert('결제 정보 저장에 실패했습니다.');
+                	                // 오류 처리나 다른 작업을 수행할 수 있습니다.
+                	            }
+                	        });
+                	        
+                        } else {
+                            alert("결제에 실패하였습니다. 에러 내용: " + rsp.error_msg);
+                        }
                     });
-                } else {
-                    var msg = '결제에 실패하였습니다.';
-                    msg += '에러내용 : ' + rsp.error_msg;
-                    m_redirect_url : "/mypage/pay";
-                }
-                alert(msg);
-                //document.location.href="/mypage"; alert창 확인 후 이동할 url 설정
-            });
-        }
+            	}
       	
 		/* 주문번호 만들기
      	var orderNo = createOrderNo(); // 주문번호 생성

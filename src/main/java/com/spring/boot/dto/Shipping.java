@@ -26,7 +26,6 @@ public class Shipping {
 	    private Integer ano;
 	    
 	    @ManyToOne
-	    @JoinColumn(name = "id") // 이 부분이 FK로 User 테이블의 id와 연결됩니다.
 	    private SiteUser user;
 
 	    @Column(name = "type", length = 30, nullable = false)

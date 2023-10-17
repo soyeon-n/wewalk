@@ -49,7 +49,7 @@
 </head>
 <body>
     <h2>상품 등록 페이지</h2>
-    <form th:action="@{/mypage/myshop/add}" th:object="${goodsForm}" method="post" enctype="multipart/form-data">
+    <form th:action="@{/user/mypage/myshop/add}" th:object="${goodsForm}" method="post" enctype="multipart/form-data">
         <div>
             <label for="name">상품 이름:</label>
             <input type="text" id="name" th:field="*{name}" required>

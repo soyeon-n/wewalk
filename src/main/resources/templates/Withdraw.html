@@ -1,14 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>회원 탈퇴</title>
-    <link rel="stylesheet" href="../reset.css">
-    <link rel="stylesheet" href="../common.css">
-    <link rel="stylesheet" href="../Withdraw.css">
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/Withdraw.css">
     <script src="../main/js/common.js"></script>
+    <script type="text/javascript">
+    function checkPassword(event) {
+    	
+        // 사용자가 입력한 비밀번호와 서버 또는 로그인 된 비밀번호를 비교합니다.
+        const enteredPassword = document.getElementById("userPassword").value;
+        var serverPassword = [[${user.password}]];
+
+        if (enteredPassword === serverPassword) {
+        	//진짜 탈퇴할 지 물어보기
+        	
+        	//탈퇴한다고 하면 탈퇴시키고 원하는 페이지로 리디렉션
+
+            window.location.href = "/user/login";
+        	
+        } else {
+            // 비밀번호가 일치하지 않을 때, 사용자에게 알림을 표시합니다.
+            alert("비밀번호가 올바르지 않습니다. 다시 시도하세요.");
+        }
+    }
+    
+    </script>
     
 </head>
 <body>
@@ -23,18 +44,19 @@
                                 <p class="sub"></p>
                             </div>
 
-                            <form action="" method="POST" id="form">
+                            <form name="checkPassword" action="/user/mypage/withdraw" method="post">
                                 <table class="tbl_comm">
                                     <tbody>
                                         <tr>
                                             <th>회원탈퇴안내</th>
                                             <td class="info">
-                                                고객님께서 회원 탈퇴를 원하신다니 저희 쇼핑몰의 서비스가 많이 부족하고 미흡했나 봅니다. 불편하셨던 점이나 불만사항을 알려주시면 적극 반영해서 고객님의 불편함을 해결해 드리도록 노력하겠습니다.
+                                                고객님께서 회원 탈퇴를 원하신다니 저희 사이트의 서비스가 미흡했나 봅니다. 불편하셨던 점이나 불만사항을 알려주시면 적극 반영해서 고객님의 불편함을 해결해 드리도록 노력하겠습니다.
                                                 <strong class="emph">아울러 회원 탈퇴시의 아래 사항을 숙지하시기 바랍니다.</strong>
-                                                1. 회원 탈퇴 시 고객님의 정보는 상품 반품 및 A/S를 위해 전자상거래 등에서의 소비자 보호에 관한 법률에 의거한 고객정보 보호정책에따라 관리 됩니다.<br>
-                                                2. 탈퇴 시 고객님께서 보유하셨던 적립금은 모두 삭제 됩니다.<br>
-                                                3. 회원 탈퇴 후 30일간 재가입이 불가능합니다.<br>
-                                                4. 회원 탈퇴 시 컬리패스 해지는 별도로 고객행복센터(1644-1107)를 통해서 가능합니다. 직접 해지를 요청하지 않으면 해지 처리가 되지 않습니다.
+                                                1. 회원 탈퇴 시 고객님의 정보는 전자상거래 등에서의 소비자 보호에 관한 법률에 의거한 고객정보 보호정책에따라 관리 됩니다.<br>
+                                                2. 탈퇴 시 고객님께서 보유하고 있는 PayMoney가 있을 시 탈퇴가 불가능합니다.<br>
+                                                3. 탈퇴 시 고객님께서 보유하고 있는 포인트는 모두 삭제 됩니다.<br>
+                                                4. 회원 탈퇴 후 30일간 재가입이 불가능합니다.<br>
+                                                5. 회원 탈퇴 시 멤버쉽 해지는 별도로 고객지원센터(1234-5678)를 통해서 가능합니다. 직접 해지를 요청하지 않으면 해지 처리가 되지 않습니다.
                                                 </td>
                                         </tr>
 
@@ -47,6 +69,10 @@
                                                 <input type="password" name="password" size="20">
                                             </td>
                                         </tr>
+                                        
+                                        <div th:if="${errorMessage}" class="error-message">
+            								<p th:text="${errorMessage}"></p>
+        								</div>
 
                                         <tr>
                                             <th>무엇이 불편하였나요?</th>
@@ -90,7 +116,7 @@
                                 </table>
 
                                 <div id="formSubmit" class="form_footer">
-                                    <button type="button" class="btn default">취소</button>
+                                    <a href="/user/mypage/" class="btn default">취소</a>
                                     <button type="submit" class="btn active">탈퇴</button>
                                 </div>
                             </form>

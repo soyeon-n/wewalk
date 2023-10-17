@@ -403,25 +403,19 @@ public class MyPageController {
     @PostMapping("/mypage/pay")
     public String pay(Model model, HttpServletRequest request, Authentication authentication, @ModelAttribute("user") SiteUser user, @RequestParam("paymoney") Integer paymoney) {
 
-    	
-    	System.out.println(paymoney);
-    	
-    	//pay 충전 페이지
-    	try { 
-    		
-    		Pay pay = new Pay();
-    		pay.setUser(user);
-    		pay.setPayMoney(paymoney);
-    		pay.setType("충전");
-    		pay.setPayDate(new Date());
+        // pay 충전 페이지
+        try {
+            Pay pay = new Pay();
+            
+            pay.setUser(user);
+            pay.setPayMoney(paymoney);
+            pay.setType("충전");
+            pay.setPayDate(new Date());
 
             // 결제 정보를 데이터베이스에 저장
-    		payService.save(pay);
-
-            
+            payService.save(pay);
         } catch (Exception e) {
             // 결제 실패 시 화면에 메시지 전달
-
             e.printStackTrace();
         }
         return "pay";

@@ -2,7 +2,9 @@ package com.spring.boot.model;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -12,7 +14,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.validation.constraints.NotEmpty;
+import javax.persistence.OneToMany;
+
+import com.spring.boot.dto.Goods;
+import com.spring.boot.dto.Pay;
+import com.spring.boot.dto.Shipping;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -77,6 +83,9 @@ public class SiteUser {
 	//위워크페이 포인트(bigint로 들어가므로 -9,223,372,036,854,775,808부터 9,223,372,036,854,775,807까지의 정수값을 저장할 수 있음)
 	//적립내역 테이블이 필요할 것 같음
 	private Long point;
+	
+	@Column(name = "paymoney")
+	private Integer paymoney;
 
 	@ManyToOne(fetch = FetchType.LAZY)
     private Interest interest1;
@@ -89,5 +98,14 @@ public class SiteUser {
     
     @ManyToOne(fetch = FetchType.LAZY)
     private BaseAuthUser baseAuthUser;
+    
+    @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    private List<Pay> payList;
+    
+    @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    private List<Shipping> shippingList;
+    
+    @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    private List<Goods> productList;
 	
 }
