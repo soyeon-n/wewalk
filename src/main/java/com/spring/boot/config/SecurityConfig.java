@@ -44,7 +44,7 @@ public class SecurityConfig {
         // /login, /signup 페이지는 모두 허용, 다른 페이지는 인증된 사용자만 허용
         http
         .authorizeRequests()
-        .antMatchers("/auth/oauthSignup", "/auth/signup", "/auth/login").access("not hasRole('USER') and not hasRole('SELLER')")
+//        .antMatchers("/auth/oauthSignup", "/auth/signup", "/auth/login").access("not hasRole('USER') and not hasRole('SELLER')")
         .antMatchers("/auth/oauthSignup").hasRole(UserRole.OAUTH.name())
         .antMatchers("/admin/**").hasRole(UserRole.ADMIN.name())
         .antMatchers("/user/**").hasRole(UserRole.USER.name())

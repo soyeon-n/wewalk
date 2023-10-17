@@ -20,6 +20,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotEmpty;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.OneToMany;
 
 import lombok.Builder;
@@ -44,6 +46,8 @@ public class SiteUser implements Serializable{
 	
 	private String email;
 
+	//API 레벨에서 응답 요청하는 경우 JsonIgnore로 예외처리(보안)
+	@JsonIgnore
 	@Column(nullable = false)
 	private String password;
 
@@ -51,6 +55,8 @@ public class SiteUser implements Serializable{
 	private String userName;
 	
 	private String provider; //어떤 OAuth인지(google, naver 등)
+	
+	@JsonIgnore
 	private String providerId; // 해당 OAuth 의 key(id)
 	
 	private String name;
@@ -76,6 +82,8 @@ public class SiteUser implements Serializable{
 	@Column(columnDefinition = "TINYINT(1) default 0")
 	private boolean seller;
 
+	private String intro;
+	
 	//멤버십 등급(멤버십 테이블과 연결하려면 추후 혜택 등 디테일한 설정 필요)
 	@ManyToOne
 	private Membership membership;
@@ -95,11 +103,8 @@ public class SiteUser implements Serializable{
     
     private LocalDateTime modifyDate;
 
-    @OneToMany(mappedBy = "siteUser", fetch = FetchType.LAZY)
-    private List<UserFiles> userFileList;
-
     //처리 내역은 남겨둘 예정
-    @OneToMany(mappedBy = "siteUser", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "requestUser", fetch = FetchType.LAZY)
     private List<SellerRequest> sellerRequestList;
     
     //로그인 비활성화 메소드 추가 예정(6개월)
@@ -122,7 +127,7 @@ public class SiteUser implements Serializable{
     public SiteUser(UserRole role, String email, String password, String userName, 
     		String provider, String providerId, String name, LocalDateTime createdDate, 
     		LocalDate birthDate, String postcode, String address, String detailAddress, 
-    		String tel, String picture, boolean seller, Membership membership,
+    		String tel, String picture, boolean seller, String intro, Membership membership,
     		Long point, Interest interest1, Interest interest2, Interest interest3, LocalDateTime modifyDate) {
   		
   		this.role = role;
@@ -140,6 +145,7 @@ public class SiteUser implements Serializable{
         this.tel = tel;
         this.picture = picture;
         this.seller = seller;
+        this.intro = intro;
         this.membership = membership;
         this.point = point;
         this.interest1 = interest1;

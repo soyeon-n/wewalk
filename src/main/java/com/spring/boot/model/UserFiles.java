@@ -32,7 +32,10 @@ public class UserFiles {
 	AttachmentType attachmentType;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	SiteUser siteUser;
+	SiteUser user;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	SellerRequest sellerRequest;
 	
 	@Builder
 	public UserFiles(String saveFileName, String originalFileName, 

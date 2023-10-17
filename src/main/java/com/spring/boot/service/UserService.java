@@ -150,7 +150,7 @@ public class UserService {
 			LocalDateTime requestTime, boolean isProcessed) {
 		
 		SellerRequest sellerRequest = SellerRequest.builder()
-								.siteUser(requestUser)
+								.requestUser(requestUser)
 								.intro(intro)
 								.requestTime(requestTime)
 								.isProcessed(isProcessed)
@@ -160,5 +160,19 @@ public class UserService {
 		sellerRequestRepository.save(sellerRequest);
 		
 		return sellerRequest;
+	}
+	
+	//id로 판매자 요청 내용 불러오기
+	public SellerRequest getSellerRequest(Long id) {
+		
+		Optional<SellerRequest> sellerRequest = 
+				sellerRequestRepository.findById(id);
+		
+		if(sellerRequest.isPresent()) {
+			return sellerRequest.get();
+		}else {
+			throw new DataNotFoundException("Data not found!");
+		}
+		
 	}
 }

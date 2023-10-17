@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.spring.boot.dto.OAuthUserCreateForm;
 import com.spring.boot.dto.PrincipalDetails;
@@ -39,7 +40,7 @@ import lombok.RequiredArgsConstructor;
 /*
 	세션 활용법 : 
 	1. controller에서 mapping할 때 매개변수에 @AuthenticationPrincipal PrincipalDetails principalDetails 추가
-	2. principalDetails.getUser를 하면 각 소셜 로그인 시 받아온 attributes 활용 가능
+	2. principalDetails.getUser를 하면 로그인 시 받아온 SiteUser의 데이터 활용 가능
 	3. principalDetails.getEmail(), getUsername() 등과 같은 데이터 받아올 수 있음(PrincipalDetails 클래스 참조)
 	
  */
@@ -55,34 +56,24 @@ public class AuthController {
 	
 	
 	@GetMapping("/signup")
-	public String signup(UserCreateForm userCreateForm) {
+	public String signup(UserCreateForm userCreateForm, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+		
+		if(principalDetails.getUser() != null) {
+			return "redirect:/";
+		}
 		
 		return "signup_form";
 		
 	}
 	
-	@GetMapping("/oauthSignup")
-	public String oauthSignup(OAuthUserCreateForm oAuthUserCreateForm, 
-			@AuthenticationPrincipal PrincipalDetails principalDetails, Model model) {
-		
-		if(principalDetails != null && principalDetails.getUser() != null && principalDetails.getUser().getProvider() != null && !principalDetails.getUser().getProvider().isEmpty()) {
-			
-			oAuthUserCreateForm.setUserName(principalDetails.getUsername());
-			oAuthUserCreateForm.setEmail(principalDetails.getEmail());
-			
-			SecurityContextHolder.clearContext(); // 로그아웃
-			model.addAttribute("oAuthUserCreateForm", oAuthUserCreateForm);
-			
-			return "oauth_signup_form";
-		}else {
-			return "redirect:/";
-		}
-		
-	}
-	
 	@PostMapping("/signup")
 	//@PreAuthorize("isAnonymous()") // 로그인되지 않은 사용자에게만 허용
-	public String signup(@Valid UserCreateForm userCreateForm, BindingResult bindResult) {
+	public String signup(@Valid UserCreateForm userCreateForm, BindingResult bindResult, 
+			@AuthenticationPrincipal PrincipalDetails principalDetails) {
+		
+		if(principalDetails.getUser() != null) {
+			return "redirect:/";
+		}
 		
 		//입력값 검증
 		if(bindResult.hasErrors()) {
@@ -160,9 +151,33 @@ public class AuthController {
 		return "redirect:/auth/login";
 	}
 	
-	@PostMapping("/oauthSignup")
-	//@PreAuthorize("isAnonymous()") // 로그인되지 않은 사용자에게만 허용
-	public String oauthSignup(@Valid OAuthUserCreateForm oAuthUserCreateForm, BindingResult bindResult) {
+	@GetMapping("/oauthSignup")
+	public String oauthSignup(OAuthUserCreateForm oAuthUserCreateForm, 
+			@AuthenticationPrincipal PrincipalDetails principalDetails, Model model) {
+		
+		if(principalDetails != null && principalDetails.getUser() != null && principalDetails.getUser().getProvider() != null && !principalDetails.getUser().getProvider().isEmpty()) {
+			
+			oAuthUserCreateForm.setUserName(principalDetails.getUsername());
+			oAuthUserCreateForm.setEmail(principalDetails.getEmail());
+			
+			SecurityContextHolder.clearContext(); // 로그아웃
+			model.addAttribute("oAuthUserCreateForm", oAuthUserCreateForm);
+			
+			return "oauth_signup_form";
+		}else {
+			return "redirect:/";
+		}
+		
+	}
+	
+	@PostMapping("/oauthSignup")	
+	public String oauthSignup(@Valid OAuthUserCreateForm oAuthUserCreateForm, BindingResult bindResult, 
+			@AuthenticationPrincipal PrincipalDetails principalDetails) {
+		
+		//로그인되어있으면 메인페이지로 보내기
+		if(principalDetails != null) {
+			return "redirect:/auth/login";
+		}
 		
 		//입력값 검증
 		if(bindResult.hasErrors()) {
@@ -237,9 +252,16 @@ public class AuthController {
 	    }
 	}
 
+	//소셜 로그인 시 회원가입 여부 검증
 	@GetMapping("/verify")
-    public String verify(@AuthenticationPrincipal PrincipalDetails principalDetails) {
-        // PrincipalDetails에서 현재 로그인한 사용자 정보에 접근할 수 있습니다.
+    public String verify(@AuthenticationPrincipal PrincipalDetails principalDetails, RedirectAttributes redirectAttributes) {
+        
+		//로그인 되어있지 않으면 메인화면으로 보내기
+		if(principalDetails.getUser() == null) {
+			return "redirect:/";
+		}
+		
+		// PrincipalDetails에서 현재 로그인한 사용자 정보에 접근할 수 있습니다.
         SiteUser oauthUser = userService.getUserByUserName(principalDetails.getUsername());
 
         // db에 정보가 부족한 경우 회원가입 페이지로 리다이렉트
@@ -247,6 +269,7 @@ public class AuthController {
         		oauthUser.getDetailAddress() == null || oauthUser.getDetailAddress().isEmpty() || oauthUser.getName() == null || oauthUser.getName().isEmpty() ||
         		oauthUser.getPostcode() == null || oauthUser.getPostcode().isEmpty() || oauthUser.getTel() == null || oauthUser.getTel().isEmpty()) {
             
+        	redirectAttributes.addFlashAttribute("alertMessage", "처음 오셨군요! 회원 가입을 완료해주세요.");
             return "redirect:/auth/oauthSignup"; // 회원가입 페이지로 이동
             
         } else {
@@ -256,8 +279,14 @@ public class AuthController {
 	}
 	//login은 security가 처리하므로 post방식의 로그인 처리 메소드는 없어도 됨
 	@GetMapping("/login")
-	public String login() {
-		return "login";
+	public String login(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+		
+		if (principalDetails != null) {
+	        return "redirect:/";  // 로그인되어 있다면 메인 페이지로 리다이렉트
+	    }else {	    	
+	    	return "login";
+	    }
+		
 	}
 	
 }

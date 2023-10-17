@@ -31,6 +31,7 @@ import org.springframework.web.server.ResponseStatusException;
 import com.spring.boot.dto.AdminCreateForm;
 import com.spring.boot.dto.PrincipalDetails;
 import com.spring.boot.dto.UserCreateForm;
+import com.spring.boot.model.SellerRequest;
 import com.spring.boot.model.SiteUser;
 import com.spring.boot.model.UserRole;
 import com.spring.boot.service.AdminService;
@@ -62,6 +63,58 @@ public class AdminController {
 		model.addAttribute("userName", userName);
 		
 		return "user_list";
+		
+	}
+	
+	@RequestMapping("/sellerRequestList")
+	public String sellerRequestList(Model model, @PageableDefault Pageable pageable, 
+			@AuthenticationPrincipal PrincipalDetails principalDetails) {
+		
+		Page<SellerRequest> paging = adminService.getSellerRequestLists(pageable);
+		
+	    String userName = principalDetails.getUsername();
+		
+		//모든 데이터가 담긴 lists를 user_list에 넘겨줌
+		model.addAttribute("paging", paging);
+		model.addAttribute("userName", userName);
+		
+		return "seller_request_list";
+		
+	}
+	
+	@PreAuthorize("isAuthenticated")
+	@GetMapping("/approveSellerRequest/{id}")
+	public String approveSellerRequest(@PathVariable("id") Long id) {
+	
+		//판매자 요청 데이터 받기
+		SellerRequest request = userService.getSellerRequest(id);
+		
+		//받아온 판매자 요청으로 요청자 받기
+		SiteUser requestUser =userService
+				.getUser(request.getRequestUser().getId());
+		
+		//요청 승인 처리하고 db에 저장
+		adminService.approveRequest(requestUser, request);
+		
+		return "redirect:/admin/sellerRequestList";
+		
+	}
+	
+	@PreAuthorize("isAuthenticated")
+	@GetMapping("/denySellerRequest/{id}")
+	public String denySellerRequest(@PathVariable("id") Long id) {
+	
+		//판매자 요청 데이터 받기
+		SellerRequest request = userService.getSellerRequest(id);
+		
+		//받아온 판매자 요청으로 요청자 받기
+		SiteUser requestUser =userService
+				.getUser(request.getRequestUser().getId());
+		
+		//요청 승인 처리하고 db에 저장
+		adminService.approveRequest(requestUser, request);
+		
+		return "redirect:/admin/sellerRequestList";
 		
 	}
 	

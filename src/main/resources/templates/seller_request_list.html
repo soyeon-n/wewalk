@@ -9,10 +9,12 @@
 	<thead class="table-dark">
 		<tr class="text-center">
 			<th>번호</th>
-			<th>계정명</th>
-			<th style="width: 50%">이메일</th>			
+			<th>요청자 계정</th>
+			<th style="width: 35%">이메일</th>			
 			<th>권한</th>
-			<th>삭제</th>
+			<th>요청일자</th>
+			<th>처리일자</th>
+			<th>처리/반려</th>
 		</tr>
 	</thead>
 	
@@ -31,33 +33,48 @@
 	paging.hasPrevious	이전 페이지 존재 여부
 	paging.hasNext		다음 페이지 존재 여부 -->
 	<tbody>
-		<tr class="text-center" th:each="siteUser, loop : ${paging}">
+		<tr class="text-center" th:each="sellerRequest, loop : ${paging}">
 			<td th:text="${paging.totalElements - (paging.number * paging.size) - loop.index}"></td>
-			<td th:text="${siteUser.userName}"></td>
 			<td class="text-start">
 				<!-- <a th:href="@{/user/login}" sec:authorize="isAnonymous()" th:text="${question.subject}"></a> -->
-				<a th:href="@{|/admin/modifyUser/${siteUser.id}|}" th:text="${siteUser.email}"></a>
+				<a th:href="@{|/admin/requestDetail/${sellerRequest.id}|}" th:text="${sellerRequest.requestUser.userName}"></a>
 				
 				<!-- 답글 갯수 <span class="text-danger small ms-1" th:if="${#lists.size(question.answerList)>0}"
 					th:text="${#lists.size(question.answerList)}"></span> -->
 			</td>
+			<td th:text="${sellerRequest.requestUser.email}"></td>
 			<td>
-			<span th:text="${siteUser.role}"></span>
+				<span th:text="${sellerRequest.requestUser.role}"></span>
 			</td>
+			<td th:text="${#temporals.format(sellerRequest.requestTime, 'yyyy-MM-dd HH:mm')}"></td>
+			<td th:text="${#temporals.format(sellerRequest.processedTime, 'yyyy-MM-dd HH:mm')}"></td>
 <!-- 			<span th:if="${question.author!=null}" 
 			th:text="${question.author.userName}"></span> -->
 			<!-- 생성일자 표시 <td th:text="${#temporals.format(question.createdDate, 'yyyy-MM-dd HH:mm')}">작성일 </td> -->
 			<td th:inline="javascript">
-			    <a href="javascript:void(0);" th:onclick="confirmDelete([[${siteUser.id}]])" th:text="삭제"></a>
+			    <a href="javascript:void(0);" th:onclick="confirmProcess([[${sellerRequest.id}]])" th:text="${sellerRequest.isProcessed} ? 취소 : 승인"></a>
+			    <a href="javascript:void(0);" th:onclick="denyProcess([[${sellerRequest.id}]])" th:text="${!sellerRequest.isProcessed} ? 반려"></a>
 			</td>
 	<script type="text/javascript">
-		function confirmDelete(userId) {
+		function confirmProcess(sellerRequestId) {
 			
-		    var result = confirm("삭제하시겠습니까?");
+		    var result = confirm("처리하시겠습니까?");
 		    
 		    // '예'를 클릭했을 때의 처리. 예를 들면, 삭제 처리를 위한 페이지로 리다이렉트.
 		    if (result) {
-		        window.location.href = "/admin/deleteUser/" + userId;  // 해당 URL을 삭제 처리 페이지의 URL로 변경하세요.
+		        window.location.href = "/admin/approveSellerRequest/" + sellerRequestId;  // 해당 URL을 삭제 처리 페이지의 URL로 변경하세요.
+		    } 
+		    
+		    // '아니오'를 클릭했을 때는 아무런 동작을 하지 않습니다.
+		}
+		
+		function denyProcess(sellerRequestId) {
+			
+		    var result = confirm("반려하시겠습니까?");
+		    
+		    // '예'를 클릭했을 때의 처리. 예를 들면, 삭제 처리를 위한 페이지로 리다이렉트.
+		    if (result) {
+		        window.location.href = "/admin/denySellerRequest/" + sellerRequestId;  // 해당 URL을 삭제 처리 페이지의 URL로 변경하세요.
 		    } 
 		    
 		    // '아니오'를 클릭했을 때는 아무런 동작을 하지 않습니다.
@@ -85,7 +102,7 @@
 				<li class="page-item"
 					th:style="${paging.first}?'display:none'">
 					<a class="page-link"
-						th:href="@{/admin/userList(page=${paging.number})}">&lsaquo;</a>
+						th:href="@{/admin/sellerRequestList(page=${paging.number})}">&lsaquo;</a>
 				</li>
 				
 				<!-- 12345 -->
@@ -93,7 +110,7 @@
 					th:each="page : ${#numbers.sequence(startNumber, endNumber)}"
 						th:classappend="(${page}==${paging.number}+1) ? 'active'">
 					<a class="page-link"
-						th:href="@{/admin/userList(page=${page})}" th:text="${page}">
+						th:href="@{/admin/sellerRequestList(page=${page})}" th:text="${page}">
 					</a>
 				</li>
 				
@@ -101,13 +118,13 @@
 				<li class="page-item"
 					th:style="${paging.last} ? 'display:none'">
 					<a class="page-link"
-						th:href="@{/admin/userList(page=${paging.number}+2)}">&rsaquo;</a>
+						th:href="@{/admin/sellerRequestList(page=${paging.number}+2)}">&rsaquo;</a>
 				</li>
 				
 				<!-- >> -->
 				<li>
 					<a class="page-link" th:style="${paging.last} ? 'display:none'" 
-					th:href="@{/admin/userList(page=${paging.totalPages})}">&raquo;</a>
+					th:href="@{/admin/sellerRequestList(page=${paging.totalPages})}">&raquo;</a>
 				</li>
 			</ul>
 		</nav>
@@ -115,7 +132,7 @@
 	</div>
 	
 	<a th:href="@{/admin/createUser}" class="btn btn-primary">유저 등록하기</a>
-	<a th:href="@{/admin/sellerRequestList}" class="btn btn-primary">판매자 요청 관리</a>
+	<a th:href="@{/admin/manageSeller}" class="btn btn-primary">판매자 관리</a>
 </div>
 
 </html>

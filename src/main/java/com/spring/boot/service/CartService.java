@@ -27,7 +27,7 @@ public class CartService {
 	private final CartRepository cartRepository;
 	private final UserRepository userRepository;
 	
-	//카트 생성 메소드
+	//카트 생성 메소드(계정 생성과 동시에 생성)
 	public Cart create(SiteUser user) {
 		
 		Cart userCart = new Cart();

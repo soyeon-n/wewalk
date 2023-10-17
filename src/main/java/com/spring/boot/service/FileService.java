@@ -35,7 +35,7 @@ public class FileService{
 	    List<UserFiles> result = Stream.of(imageFiles, generalFiles)
 	            .flatMap(f -> f.stream())
 	            .map(f -> {
-	                f.setSiteUser(user);
+	                f.setUser(user);
 	                return f;
 	            })
 	            .collect(Collectors.toList());

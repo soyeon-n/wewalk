@@ -15,7 +15,9 @@ import org.springframework.stereotype.Service;
 
 import com.spring.boot.config.DataNotFoundException;
 import com.spring.boot.dao.AdminRepository;
+import com.spring.boot.dao.SellerRequestRepository;
 import com.spring.boot.dao.UserRepository;
+import com.spring.boot.model.SellerRequest;
 import com.spring.boot.model.SiteUser;
 import com.spring.boot.model.UserRole;
 
@@ -28,8 +30,9 @@ public class AdminService {
 	private final AdminRepository adminRepository;
 	private final UserRepository userRepository;
 	private final PasswordEncoder passwordEncoder;
+	private final SellerRequestRepository sellerRequestRepository;
 	
-	//페이징
+	//유저 리스트 페이징
 	public Page<SiteUser> getLists(Pageable pageable) {
 		
 		//날짜 기준으로 역순처리(listNum)
@@ -52,10 +55,101 @@ public class AdminService {
 		//PageRequest : 정렬 매개변수가 적용된 새 항목을 생성해줌
 		//getPageSize() : 반환할 항목 수(디폴트 = 0)
 		
-		System.out.println("페이징 처리");
+		System.out.println("유저 리스트 페이징 처리");
 		
 		return adminRepository.findAll(pageable);
 		
+	}
+	
+	//판매자 요청 리스트 페이징
+	public Page<SellerRequest> getSellerRequestLists(Pageable pageable) {
+		
+		//날짜 기준으로 역순처리(listNum)
+		List<Sort.Order> sorts = new ArrayList<Sort.Order>();
+		sorts.add(Sort.Order.desc("requestTime"));
+		
+		//실제로 페이지를 구현하는 클래스
+		//한 페이지당 10개의 데이터가 보이도록 세팅
+		pageable = PageRequest.of(
+				pageable.getPageNumber() <= 0 ? 0 : 
+					pageable.getPageNumber() -1 , 10, Sort.by(sorts));
+
+//			//실제로 페이지를 구현하는 클래스
+//			pageable = PageRequest.of(
+//					pageable.getPageNumber() <= 0 ? 0 : 
+//						pageable.getPageNumber() -1 , 
+//						pageable.getPageSize() + 5, Sort.by(sorts));
+		
+		//getPageNumber() : 반환할 페이지(0보다 작으면 0으로 초기화)
+		//PageRequest : 정렬 매개변수가 적용된 새 항목을 생성해줌
+		//getPageSize() : 반환할 항목 수(디폴트 = 0)
+		
+		System.out.println("판매자 요청 리스트 페이징 처리");
+		
+		return sellerRequestRepository.findAll(pageable);
+		
+	}
+	
+	//판매자 요청 처리(요청 취소도 있을 수 있음)
+	public void approveRequest(SiteUser siteUser, SellerRequest request) {		
+
+		siteUser.setSeller(!siteUser.isSeller());
+		
+		//세팅된 seller의 값이 true면 role을 seller로 set
+		//판매자 신청한 경우
+		if(siteUser.isSeller() == true) {			
+			siteUser.setRole(UserRole.SELLER);
+			siteUser.setIntro(request.getIntro());
+		}else { //false면 role을 user로 set
+			//판매자 취소 신청한 경우
+			siteUser.setRole(UserRole.USER);
+			siteUser.setIntro("");
+		}
+		
+		//변경된 일시 저장
+//			siteUser.setModifyDate(LocalDateTime.now());
+
+		//해당 유저의 데이터 수정
+		adminRepository.save(siteUser);
+
+		//요청 승인(판매자 신청 or 판매자 취소 신청)
+		if(request.isProcessed() == false) {	
+			
+			//처리여부 true
+			request.setProcessed(true);
+			request.setProcessedTime(LocalDateTime.now());
+
+			//판매자 요청 데이터 수정
+			sellerRequestRepository.save(request);
+			
+			System.out.println(siteUser.getUserName() + "의 요청 처리됨");
+			
+		}else { //승인처리 취소
+			
+			request.setProcessed(false);
+			request.setProcessedTime(null);
+
+			//판매자 요청 데이터 수정
+			sellerRequestRepository.save(request);
+			
+			System.out.println(siteUser.getUserName() + "의 요청 처리 취소됨");
+			
+		}						
+		
+	}
+	
+	//판매자 요청 반려
+	public void denyRequest(SellerRequest request) {		
+
+		//처리여부 true
+		request.setProcessed(true);
+		request.setProcessedTime(LocalDateTime.now());
+		request.setDenyReason("판매자 등록을 위한 자료 미비");
+		
+		System.out.println(request.getRequestUser().getUserName() + "의 요청 반려됨");
+		
+		//판매자 요청 데이터 수정
+		sellerRequestRepository.save(request);
 	}
 	
 	//admin으로 계정 생성 메소드

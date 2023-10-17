@@ -23,7 +23,7 @@
 		    <label for="userName" class="form-label">계정명</label>
 		    <div style="display: flex; justify-content: space-between;">
 		        <input type="text" id="userNameInput" name="userName" onkeyup="userName_check();" th:field="*{userName}" class="form-control" style="flex: 1; margin-right: 10px;"/>
-		        <button type="button" id="checkUserNameBtn" class="btn">닉네임 확인</button>
+		        <button type="button" id="checkUserNameBtn" class="btn default">닉네임 확인</button>
 		    </div>
 			<div style="display: flex; flex-direction:column;">
 			    <span class="userName_txt_case1" style="font-size: 14px;">
@@ -68,7 +68,7 @@
 			<label for="address" class="form-label">주소</label>
 			<div style="display: flex; flex-direction: row; width: 60%; justify-content:space-between;">
 				<input type="text" name="postcode" id="postcode" th:field="*{postcode}" class="form-control" placeholder="우편번호" style="width: 150px;"/>
-				<input type="button" class="btn btn-primary" id="findAddress" onclick="daumPostcode();" value="주소 찾기">
+				<input type="button" class="btn default" id="findAddress" onclick="daumPostcode();" value="주소 찾기">
 			</div>						
 			<input type="text" name="address" id="address" th:field="*{address}" placeholder="주소" class="form-control" style="width: 420px"/>
 			<input type="text" name="detailAddress" id="detailAddress" th:field="*{detailAddress}" placeholder="상세주소" class="form-control"/>
@@ -161,7 +161,7 @@
 			<input type="text" th:field="interest3" class="form-control"/>
 		</div> -->
 		
-		<button type="submit" class="btn btn-primary">회원가입</button>
+		<button type="submit" class="btn active btn_join">회원가입</button>
 	</form>
 
 <script src="/js/join.js"></script>
