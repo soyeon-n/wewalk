@@ -8,6 +8,6 @@ import com.spring.boot.dto.Pay;
 @Repository
 public interface PayRepository extends JpaRepository<Pay, Long>{
 	
-	Pay findByUserId(int userId);
+	Pay findByUserId(Long userId);
     
 }

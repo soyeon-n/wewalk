@@ -7,8 +7,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import com.spring.boot.model.SiteUser;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -26,7 +27,7 @@ public class Shipping {
 	    
 	    @ManyToOne
 	    @JoinColumn(name = "id") // 이 부분이 FK로 User 테이블의 id와 연결됩니다.
-	    private User user;
+	    private SiteUser user;
 
 	    @Column(name = "type", length = 30, nullable = false)
 	    private String type;

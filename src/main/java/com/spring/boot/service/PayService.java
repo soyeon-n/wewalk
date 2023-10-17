@@ -5,42 +5,23 @@ import org.springframework.stereotype.Service;
 
 import com.spring.boot.dao.PayRepository;
 import com.spring.boot.dto.Pay;
-import com.spring.boot.dto.User;
+
 @Service
 public class PayService {
-    
-	private final PayRepository payRepository;
-	private final UserService userService;
-    
-    @Autowired
-    public PayService(PayRepository payRepository, UserService userService) {
-        this.payRepository = payRepository;
-        this.userService = userService;      
-    }
 
-    // 결제 정보를 저장하는 메서드
-    public void processPayment(int userId, int payMoney) {
-    	
-        // 사용자 ID를 기반으로 사용자 정보를 가져오는 로직
-    	User user = userService.getUserById(userId);
-
-    	// 사용자의 pay 레코드를 찾아서 업데이트
-        Pay pay = payRepository.findByUserId(userId);
-        
-        if (pay != null) {
-        	
-            // 이미 pay 레코드가 있는 경우 paymoney를 업데이트
-            int currentPayMoney = pay.getPayMoney() + payMoney;
-            pay.setPayMoney(currentPayMoney);
-            
-        } else {
-            // pay 레코드가 없는 경우 새로 생성
-            pay = new Pay();
-            pay.setUser(user);
-            pay.setPayMoney(payMoney);
+	@Autowired
+    private PayRepository payRepository;
+	
+	public Pay save(Pay pay) {
+        try {
+            // Pay 객체를 데이터베이스에 저장
+            return payRepository.save(pay);
+        } catch (Exception e) {
+            // 저장 과정에서 오류 발생 시 예외 처리
+            e.printStackTrace();
+            return null; // 또는 예외를 던지거나 다른 적절한 오류 처리를 수행할 수 있음
         }
-
-        // 결제 정보를 데이터베이스에 저장
-        payRepository.save(pay);
     }
+
+
 }

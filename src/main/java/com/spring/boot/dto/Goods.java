@@ -10,11 +10,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import com.spring.boot.model.SiteUser;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -32,7 +33,7 @@ public class Goods {
 	
 	@ManyToOne
     @JoinColumn(name = "id")
-	private User user;
+	private SiteUser user;
     
     @Column(name = "name", length = 50)
     private String name;
