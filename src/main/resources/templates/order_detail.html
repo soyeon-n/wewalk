@@ -99,8 +99,9 @@
 	                                </h2>
                                 </div>
                                 <div class="section_full">
-                                	<input type="radio" name="address" value="default" class="radio" checked="checked"> 배송지 입력
-                                	<input type="radio" name="address" value="default" class="radio"th:each="adress:${SiteUser.adressList}"> 저장된배송지 1
+                                
+                                	<input type="radio" name="address" value="default" class="radio" checked="checked"> 배송지 입력 | 
+                                	<input type="radio" name="address" value="default" class="radio"th:each="adress:${SiteUser.adressList}" th:text="${adress.type}"> 
                                 	<br/>
                                 	<br/>
                                 	<span class="tag" id="addrTags">
@@ -169,7 +170,7 @@
                                             <dd class="price delivery_area">
                                                 <div id="paper_delivery_msg1" style="display: block;">
                                                     <span class="pm_sign" style="display: inline;">+</span>
-                                                    <span id="paper_delivery" class="">3,000</span>
+                                                    <span id="paper_delivery" class=""></span>
                                                     원
                                                 </div>
                                             </dd>
@@ -186,8 +187,7 @@
                                         <dl class="amount lst">
                                             <dt class="tit">최종결제금액</dt>
                                             <dd class="price">
-                                                <span id="paper_settlement">5,000</span>
-                                                <input type="hidden" id="product_price_value" name="product_price_value" value="">
+                                                <span id="paper_settlement"></span>
                                                 <span class="won">원</span>
                                             </dd>
                                         </dl>
@@ -220,7 +220,7 @@
                                                         </div>
 
                                                         <p class="possess">
-                                                            보유 포인트 : <strong class="emph">1900</strong>원
+                                                            보유 포인트 : <strong class="emph" th:text="${SiteUser.point}"></strong>원
 
                                                         </p>
 

@@ -84,6 +84,7 @@ public class SiteUser implements Serializable{
 	//위워크페이 포인트(bigint로 들어가므로 -9,223,372,036,854,775,808부터 9,223,372,036,854,775,807까지의 정수값을 저장할 수 있음)
 	//적립내역 테이블이 필요할 것 같음
 	private Long point;
+	
 
 	@ManyToOne(fetch = FetchType.LAZY)
     private Interest interest1;
@@ -150,8 +151,11 @@ public class SiteUser implements Serializable{
     }
   	
   	@OneToMany(mappedBy = "user",cascade = CascadeType.REMOVE,
-			fetch = FetchType.EAGER)
+			fetch = FetchType.LAZY)
 	private List<Adress> adressList;
   	
+	@OneToMany(mappedBy = "user",cascade = CascadeType.REMOVE,
+			fetch = FetchType.LAZY)
+	private List<Pay> payList;
   	
 }

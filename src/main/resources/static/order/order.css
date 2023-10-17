@@ -524,7 +524,7 @@ body .data_payment th {
     background-image: -moz-linear-gradient(top,#fff,#f2f2f2);
     background-image: -o-gradient(top,#fff,#f2f2f2);
     background-image: linear-gradient(top,#fff,#f2f2f2);
-    height: 33px;
+    height: 20px;
     text-align: center;
 }
 
