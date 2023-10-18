@@ -1,19 +1,20 @@
 var product_cost = 0;
 var delivery_cost = 0;
 
-
 $(document).ready(function(){
+
     var emoney = Number($('.possess .emph').text());
 
     $('.possess .emph').text(comma(emoney));
     
-    //적립금 사용
+    //모두 사용 클릭시
     $(".emoney_chkbox").click(function(){
     
         var sum = product_cost+delivery_cost;
         
         if(emoney>sum){
         	$(".emoney_reg input").val(comma(sum));
+        	emoney=sum;
         }else{
         	$(".emoney_reg input").val(comma(emoney));
         }
@@ -25,54 +26,49 @@ $(document).ready(function(){
        
         
     })
-
-    $("#emoney").blur(function(){  
-    	
-    	var sum = product_cost+delivery_cost;
-        input_emoney = Number($("#emoney").val());
-        
-        if (input_emoney >= sum){
-        
-        	if(emoney >= sum){
-        	
-        		input_emoney=sum;
-        	
-        	}else{
-        	
-        		input_emoney=emoney;
-        	
-        	}	
-        
-        }else{
-        	
-        	if(input_emoney>emoney){
-        	
-        		input_emoney=emoney;
-        	
-        	}
-        }
-        
-        $("#emoney").val(comma(input_emoney));
-        $("#paper_reserves").text(" - " + comma(input_emoney)+ " 원");
-        $(".emoney_point").val(input_emoney);
-        product_price();
-       
-        
-    });
-
     
+	//포인트결제창 숫자입력시
+	$("#emoney").on("input", function() {
+    
+	    var value = $(this).val().replace(/[^0-9]/g, '');
+	
+	    $(this).val(value);
 
+	    var sum = product_cost + delivery_cost;
+	    input_emoney = Number(value);
+
+	    if (input_emoney >= sum) {
+	        if (emoney >= sum) {
+	            input_emoney = sum;
+	        } else {
+	            input_emoney = emoney;
+	        }
+	    } else {
+	        if (input_emoney > emoney) {
+	            input_emoney = emoney;
+	        }
+	    }
+
+	    $("#emoney").val(comma(input_emoney));
+	    $("#paper_reserves").text(" - " + comma(input_emoney) + " 원");
+	    $(".emoney_point").val(input_emoney);
+	    product_price();
+	    
+	});
+	
+	
     product_price();
-    
-    
+
+	
+	
 });
 
-
+//넘어온 상품들 가격합해서 결제금액창에 보여주기
 function product_price(){
 
-	product_cost = 0;  //주문가격
+	product_cost = 0;
     delivery_cost = 0;
-   
+        
     $('.info_price .price').each(function() {
         
         var priceText = $(this).text();
@@ -92,8 +88,8 @@ function product_price(){
     
 }
 
-
-function comma(num){          //콤마찍는 함수
+//콤마찍는 함수
+function comma(num){
     var len, point, str; 
        
     num = num + ""; 
@@ -110,4 +106,113 @@ function comma(num){          //콤마찍는 함수
     return str;
  
 }
+
+
+//다음지도주소찾기
+function execDaumPostcode() {
+    new daum.Postcode({
+        oncomplete: function(data) {
+            // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+            // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+            // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+            var addr = ''; // 주소 변수
+            var extraAddr = ''; // 참고항목 변수
+
+            //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+            if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                addr = data.roadAddress;
+            } else { // 사용자가 지번 주소를 선택했을 경우(J)
+                addr = data.jibunAddress;
+            }
+
+            // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+            if(data.userSelectedType === 'R'){
+                // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+                // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+                if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+                    extraAddr += data.bname;
+                }
+                // 건물명이 있고, 공동주택일 경우 추가한다.
+                if(data.buildingName !== '' && data.apartment === 'Y'){
+                    extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                }
+                // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+                if(extraAddr !== ''){
+                    extraAddr = ' (' + extraAddr + ')';
+                    addr += ', ' + extraAddr
+                }
+                // 조합된 참고항목을 해당 필드에 넣는다.
+                
+            
+            } else {
+                
+            }
+
+            // 우편번호와 주소 정보를 해당 필드에 넣는다.
+            document.getElementById('postcode').value = data.zonecode;
+            document.getElementById("address").value = addr;
+            // 커서를 상세주소 필드로 이동한다.
+            document.getElementById('postcode').disabled = true;
+            document.getElementById('address').disabled = true;
+            document.getElementById("detailAddress").focus();
+        }
+    }).open();
+}
+
+function al() {
+		var date = new Date();
+alert(date.getTime());
+		
+		
+}
+	
+function requestPay() {
+
+	var num =0;
+
+	$('.name .inner_name').each(function() {
+		num=num+1;
+	});	
+	
+	var name = '';
+	var nameElements = document.querySelectorAll(".inner_name");
+	name = nameElements[0].textContent;
+	
+	if(num>=2){
+		name += '외 '+(num-1)+'건';
+	}
+	
+	var amount = $('#paper_settlement').text().replace(/[^0-9]/g, '');
+	var buyer_email = $('#buyer_email').text();
+	var buyer_name = $('#buyer_name').text();
+	var buyer_tel = $('#buyer_tel').text();
+	var buyer_addr = $('#address').text();
+	var buyer_postcode = $('#postcode').text();
+	
+	IMP.init('imp56668363');
+    IMP.request_pay({
+	    pg : 'html5_inicis.INIpayTest', //테스트 시 html5_inicis.INIpayTest 기재 
+	    pay_method: "card",
+        merchant_uid: "ORD20180131-0000012",   // 주문번호
+        name: name,
+        amount: amount,                         // 숫자 타입
+        buyer_email: buyer_email,
+        buyer_name: buyer_name,
+        buyer_tel: buyer_tel,
+        buyer_addr: buyer_addr,
+        buyer_postcode: buyer_postcode
+	}, function(rsp) { // callback 로직
+		if (rsp.success) {
+            alert('결제성공');
+			window.location.href = '/'
+        } else {
+            alert('실패');
+        }
+		
+	});
+  }
+
+
+
 

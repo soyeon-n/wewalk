@@ -38,6 +38,11 @@ public class OrderController {
 	private final ProductService productService;
 
 	
+	@GetMapping("/test")
+	public String test() {
+		return "test";
+	}
+	
 	@GetMapping("/cart")
 	public String cart(Model model ,@AuthenticationPrincipal PrincipalDetails principalDetails) {
 		
