@@ -27,7 +27,7 @@ public class Cart {
 	private SiteUser user;
 
 	@OneToMany(mappedBy = "cart",cascade = CascadeType.REMOVE,
-			fetch = FetchType.EAGER)
+			fetch = FetchType.LAZY)
 	private List<CartItem> cartItemList;
 	
 }

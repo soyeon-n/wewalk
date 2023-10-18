@@ -37,24 +37,23 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-
 @NoArgsConstructor
-@Table(name = "Product")
 public class Product{
 	//은별 product. 상품 - 리뷰 임시 확인
 	
 	
 	@Id//primaryKey. 
 	@GeneratedValue(strategy = GenerationType.IDENTITY)//1씩 증가
-	//@OneToMany//상품고유번호로 리뷰와 연결
-	private Integer productNo;//상품고유번호
+	//@OneToMany//상품고유번호로 리뷰와 연결 안했음,,,
+	private Integer id;//상품고유번호
+	//id 로 바꾸기 
 	
 	
 	@ManyToOne
-	@JoinColumn(name = "UserId",nullable = false)
-	private User user;//상품판매자? many to one 으로 연결 
+	@JoinColumn(nullable = false)
+	private SiteUser siteUser;//상품판매자? many to one 으로 연결 
 	//bigint id 회원가입시 no 로 고유값아이디가 생긴다 
-	//허어어어어ㅓㅇㄹ 이거 테이블자체를 넣어줘야함 User user
+	
 	
 	
 	private String category;// 상품카테고리.꼭정해진카테고리테이블에서만.
@@ -78,7 +77,7 @@ public class Product{
 	private String image4;//이미지4
 	
 	//review fk랑연결 
-	@OneToMany(mappedBy = "product",cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "product",cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
 	private List<Review> reviewList;
 	
 	

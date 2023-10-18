@@ -1,9 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
+<!--  -->
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>상품상세보기-상품후기</title>
+    <title>상품상세보기-상품후기layout</title>
     <link rel="stylesheet" href="/reset.css">
     <link rel="stylesheet" href="/common.css">
     <link rel="stylesheet" href="/mykurly_order_list.css">
@@ -11,108 +13,19 @@
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <script src="./js/mykurly.js"></script>
     <script src="../main/js/common.js"></script>
+
+
+
+
+
 </head>
 <body>
-    <div id="container">
-        <div id="main">
-            <div id="content">
-                <div id="myPageTop" class="page_aticle mypage_top">
-                    <h2 class="blind">상품후기모아보기</h2>
-                    <div class="mypagetop_user">
-                        <div class="inner_mypagetop">
-                            
-                            <div class="grade_user">
-                                <div class="grade">
-                                    <span class="blind">등급</span>
-                                    <span class="ico_grade class0">
-                                        <span class="inner_grade">
-                                            <span class="in_grade">일반</span>
-                                        </span>
-                                    </span>
-                                    <div class="grade_bnenfit">
-                                        <div class="user">
-                                            <strong class="name">멋쟁이</strong>
-                                            <span class="txt">님</span>
-                                        </div>
-                                        <div class="benefit">
-                                            <strong class="tit"></strong>
-                                            적립 0.5%
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="next">
-                                    <a href="#" class="total_grade">전체등급 보기</a>
-                                    <a href="#" class="next_month">다음 달 예상등급 보기</a>
-                                </div>
-                            </div>
 
-                            <ul class="list_mypage">
-                                <li class="user_reserve">
-                                    <div class="link">
-                                        <div class="tit">
-                                            적립금
-                                        </div>
-                                        <a href="#" class="info">
-                                            999,999,999 원
-                                            <img src="https://res.kurly.com/pc/service/common/1905/ico_arrow_56x56.png" alt="자세히보기">
-                                            <span class="date">소멸 예정 0원</span>
-                                        </a>
-                                    </div>
-                                </li>
-                                <li class="user_coupon">
-                                    <div class="link">
-                                        <div class="tit">
-                                            쿠폰
-                                        </div>
-                                        <a href="#" class="info">
-                                            1123354 개
-                                            <img src="https://res.kurly.com/pc/service/common/1905/ico_arrow_56x56.png" alt="자세히 보기">
-                                        </a>
-                                    </div>
-                                </li>
-                                <li class="user_kurlypass">
-                                    <div class="link">
-                                        <div class="tit">
-                                            컬리패스    
-                                        </div>
-                                        <a href="#" class="info info_link">
-                                            알아보기
-                                            <img src="https://res.kurly.com/pc/service/common/1905/ico_arrow_56x56.png" alt="자세히 보기">
-                                        </a>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                        <a href="#" class="bnr_event" style="background-image: url(https://img-cf.kurly.com/shop/data/skin/designgj/img/banner/bb20c3b9d5542cfdfec3ef5bfefcafa5.jpg);">
-                        </a>
-                    </div>
-                </div>
-                <div class="page_aticle aticle_type2">
-                    <div id="snb" class="snb_my">
-                        <h2 class="tit_snb">마이컬리</h2>
-                        <div class="inner_sub">
-                            <ul class="list_menu">
-                                <li>
-                                    <a href="#">주문내역</a>
-                                </li>
-                                <li>
-                                    <a href="#">배송지 관리</a>
-                                </li>
-                                <li class="on">
-                                    <a href="#">상품 후기</a>
-                                </li>
-                                <li>
-                                    <a href="#">개인 정보 수정</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <a href="#" class="link_inquire">
-                            <span class="emph">도움이 필요하신가요?</span>
-                            1:1 문의하기
-                        </a>
-                    </div>
+
+<!-- 리뷰 paging layout 분리  -->
+                    <nav th:fragment="reviewListFragment">
                     
-                    <div class="page_section section_review">
+                       <div class="page_section section_review">
                         <div class="head_aticle">
                             <h2 class="tit">상품 후기</h2>  
                         </div>
@@ -133,21 +46,7 @@
                                 * 후기 작성은 배송 완료일로부터 30일 이내 가능합니다.
                             </div>
 
-                            <ul class="tab_menu">
-                                <li class="on">
-                                    <a href="#">
-                                        작성가능 후기 
-                                        <span>(0)</span>
-                                    </a>
-                                </li>
-
-                                <li>
-                                    <a href="#">
-                                        작성완료 후기
-                                        <span>(4)</span>
-                                    </a>
-                                </li>
-                            </ul>
+                            
                         </div>
 
                         <div id="viewBeforeList" class="before_view" style="display:block;">
@@ -158,19 +57,103 @@
                             </ul>
                         </div>
                         
-                        <!-- layout 빼온자리 -->
+                        
+                        
+                        
+                        
+                        
+                        
+                        <!-- 일렬로 쭈우우우욱이미지 미리보기 css 를 product_list 에서 가져옴  -->
+                        <div class="goods-add-product">
+	                        <h3 class="goods-add-product-title">
+	                            BEST PHOTO REVIEW
+	                        </h3>
+	                        <div class="goods-add-product-wrapper __slide-wrapper" data-slide-item="5">
+	                            <button class="goods-add-product-move goods-add-product-move-left __slide-go-left">
+	                                왼쪽으로 슬라이드 이동
+	                            </button>
+	                            <button class="goods-add-product-move goods-add-product-move-right __slide-go-right">
+	                                오른쪽으로 슬라이드 이동
+	                            </button>
+	                            <div class="goods-add-product-list-wrapper" style="height:320px;">
+	                                <ul class="goods-add-product-list __slide-mover" style="left: 0px;">
+	                                
+	                                <!-- 반복문 시작 -->
+	                                    <li class="goods-add-product-item __slide-item" th:each="review, loop : ${paging}" >
+	                                        <div class="goods-add-product-item-figure">
+	                                            <a href="#" target="_blank">
+	                                            <img th:src="@{'/imgfile/'+ ${review.saveFileName}}"/>
+	                                                <img src="http://img-cf.kurly.com/shop/data/goods/1581917419401m0.jpg" class="goods-add-product-item-image">
+	                                            </a>
+	                                        </div>
+	                                        <div class="goods-add-product-item-content">
+	                                            <div class="goods-add-product-item-content-wrapper">
+	                                                <p class="goods-add-product-item-name" th:text="${review.title}">사과</p>
+	                                                <p class="goods-add-product-item-price" th:text="${review.content}">1원</p>
+	                                            </div>
+	                                        </div>
+	                                    </li>
+	                                    
+	                                    <!-- 반복문 끝 -->
+	
+	                                    <li class="goods-add-product-item __slide-item">
+	                                        <div class="goods-add-product-item-figure">
+	                                            <a href="#" target="_blank">
+	                                                <img src="http://img-cf.kurly.com/shop/data/goods/1583301269761m0.jpg" class="goods-add-product-item-image">
+	                                            </a>
+	                                        </div>
+	                                        <div class="goods-add-product-item-content">
+	                                            <div class="goods-add-product-item-content-wrapper">
+	                                                <p class="goods-add-product-item-name">배</p>
+	                                                <p class="goods-add-product-item-price">2원</p>
+	                                            </div>
+	                                        </div>
+	                                    </li>
+	
+	                                    
+	
+	                                    
+	                                    <li class="goods-add-product-item __slide-item">
+	                                        <div class="goods-add-product-item-figure">
+	                                            <a href="#" target="_blank">
+	                                                <img src="http://img-cf.kurly.com/shop/data/goods/1586133638510m0.jpg" class="goods-add-product-item-image">
+	                                            </a>
+	                                        </div>
+	                                        <div class="goods-add-product-item-content">
+	                                            <div class="goods-add-product-item-content-wrapper">
+	                                                <p class="goods-add-product-item-name">소고기</p>
+	                                                <p class="goods-add-product-item-price">10.000원</p>
+	                                            </div>
+	                                        </div>
+	                                    </li>
+	
+	                                    
+	                                </ul>
+	                            </div>
+	                        </div>
+                    </div>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
 
                         <div id="viewAfterList" class="after_view" style="display:;" th:each="review, loop : ${paging}">
+                        <!-- 23/10/13 페이징 시작 -->
+                            
+                            
                             <ul class="list_after">
                                 <li>
-                                <!-- 23/10/13 페이징 시작 -->
+                                
                                     <div class="tit_after"  >
                                     
                                     <!-- 작성한 리뷰 갯수 표시 근데 list 가 아니라서,, -->
                                     <!-- <span th:text="|${#lists.size(question.answerList)}개의 리뷰 작성 이 있습니다.|"></span> -->
-                                    
-                                    
-                                    
                                     
                                     <a></a>
                                     상품명 : 
@@ -184,8 +167,10 @@
                                                 그냥 리코타 치즈 ㅇㅇ
                                                 <span class="date" th:text="${#dates.format(review.date,'yyyy-MM-dd HH:mm:ss')}"  >
                                                     20.05.26 작성
+                                                    여기에 작성자 이름 출력해야함
                                                     <!-- 지금 date 타입 출력안되고있음?????????  -->
                                                 </span>
+                                                
                                                 
                                             </span>
 
@@ -193,10 +178,8 @@
                                                 <span class="thumb">
                                                     <span class="photo" style="background-image: url(&quot;https://img-cf.kurly.com/shop/data/review/20200526/94edd664f356ea243a30d8e9797cc5ad.jpg&quot;);">
                                                     <!--  
-                                                    <img th:src="@{${review.fileDir} + ${review.saveFileName}}"/>
-                                                    
-                                                    <img th:src="@{${review.filePath}}"/>
-                                                    
+                                                    <img th:src="@{${review.fileDir} + ${review.saveFileName}}"/>                                                   
+                                                    <img th:src="@{${review.filePath}}"/>                                                    
                                                     <img th:each="filePath : ${review.filePath}" th:src="|${review.filePath}|">-->
                                                     <img th:src="@{'/imgfile/'+ ${review.saveFileName}}"/>
                                                     <!-- 여기가 리뷰상품 img 출력하는 부분  -->
@@ -230,10 +213,15 @@
                                         <div class="btn_after">
                                             <button type="button" class="btn_help">도움이 돼요? 0</button>
                                             <br/>
-                                            
+                                            <button type="button" class="btn_help">리뷰추천하기 0</button>
+                                            <br/>
+                                            <!-- 
                                             <a th:href="@{|/review/delete/${review.id}|}" th:text="리뷰삭제"></a>
                                             
-                                            <a th:href="@{|/review/modify/${review.id}|}" th:text="리뷰수정"></a>
+                                            <a th:href="@{|/review/modify/${review.id}|}" th:text="리뷰수정"></a> -->
+                                            <a>리뷰추천버튼</a>
+                                            
+                                            
                                             
                                             <a class="btn btn_modify">수정</a>
                                             <a class="btn btn_del">삭제하기</a>
@@ -308,13 +296,13 @@
 							          
 							          <!-- << -->
 							          <li>
-							          <a class="page-link" th:href="@{/review/mylist?page=1}">&laquo;</a>
+							          <a class="page-link" th:href="@{/product/detail?page=1}">&laquo;</a>
 							          <!-- <a class="page-link" th:href="@{/question/list?page=1}">&laquo;</a> -->
 							          </li>
 							          
 							          <!-- < -->
 							          <li class="page-item" th:style ="${paging.first}?'display:none'">
-								          <a class="page-link" th:href="@{/review/mylist(page=${paging.number})}">
+								          <a class="page-link" th:href="@{/product/detail(page=${paging.number})}">
 								          &lsaquo;
 								          
 								          </a>
@@ -322,14 +310,14 @@
 							          <!-- 1 2 3 4 5 -->
 							          <li class="page-item" th:each="page : ${#numbers.sequence(startNumber,endNumber)}"
 							              th:classappend="(${page}==${paging.number}+1) ? 'active'">
-							              <a class="page-link" th:href="@{/review/mylist(page=${page})}" th:text="${page}">
+							              <a class="page-link" th:href="@{/product/detail(page=${page})}" th:text="${page}">
 							              
 							              </a>
 							          </li>
 							          <!-- > -->
 							          
 							          <li class="page-item" th:style="${paging.last}?'display:none'">
-								          <a class="page-link" th:href="@{/review/mylist(page=${paging.number}+2)}">
+								          <a class="page-link" th:href="@{/product/detail(page=${paging.number}+2)}">
 								          &rsaquo;
 								          
 								          </a>
@@ -337,7 +325,7 @@
 							          
 							          <!-- >> -->
 							          <li>
-							          <a class="page-link" th:href="@{/question/mylist(page=${paging.totalPages})}">
+							          <a class="page-link" th:href="@{/product/detail(page=${paging.totalPages})}">
 							          &raquo;
 							          </a>
 							          </li>
@@ -350,11 +338,7 @@
 						</div>
 						<!-- 페이징 끝 -->                
                     </div>
-
-
-                </div>
-            </div>
-        </div>
-    </div>
+                    
+                  </nav>  
 </body>
 </html>

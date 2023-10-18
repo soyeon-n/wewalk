@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -21,12 +22,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.spring.boot.dto.PrincipalDetails;
 import com.spring.boot.dto.ReviewForm;
 import com.spring.boot.model.Product;
 import com.spring.boot.model.Review;
-
+import com.spring.boot.model.SiteUser;
 import com.spring.boot.service.ProductService;
 import com.spring.boot.service.ReviewService;
+import com.spring.boot.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -38,25 +41,26 @@ public class ReviewController {
 	//서비스 추가
 	private final ReviewService reviewService;
 	private final ProductService productService;
+	private final UserService userService;
 
 
-	//그 상품의 리뷰리스트= {productNo} 가 있어야 할것 같은데 ?? 
+	
 	//원래이거는 productController 안에 들어있어서 layout 분리로 들어가야 한다 
 	//Product product
 	@RequestMapping("/list/{productNo}")
-	public String reviewList(Model model , @PathVariable("productNo") Integer productNo,@PageableDefault Pageable pageable) {
+	public String reviewList(Model model , @PathVariable("productNo") Integer productNo,
+			@PageableDefault Pageable pageable) {
 
-		
 		
 		Product productnum = productService.getProductDetailByNo(productNo);
 		
 		Page<Review> paging = reviewService.getPnoReview(pageable, productnum);
 		model.addAttribute("paging",paging);
 		
-		
-
-		//return "product_review_list_temp";//제품리뷰>>미리보기식으로 
-		return "product_review_list";
+		//return "product_review_list_temp";//제품리뷰>>미리보기식으로 이거를 layout 분리
+		//return "product_review_list";
+		//return "product_review_list_layout";
+		return "product_qna_list";
 
 	}
 
@@ -64,35 +68,40 @@ public class ReviewController {
 
 
 
-	////로그인한 사람만 들어올수 있음
-	//내가쓴리뷰리스트 {rUser} // 근데 원래는 user 정보를 주소로주면 안되고 세션에 숨기거나 그럴것임 
-	@RequestMapping("/mylist/{rUser}")
+	////로그인한 사람만 들어올수 있음 
+	//접근막기 추가 principal ?  >> d이걸 securityconfig 에서 처리 
+	@RequestMapping("/mylist")
 	public String myreviewList(Model model,
-			@PathVariable("rUser") Integer rUser,@PageableDefault Pageable pageable) {
+			@AuthenticationPrincipal PrincipalDetails principalDetails,
+			@PageableDefault Pageable pageable) {
 
 		//ruser따로 받아서 넣어주기 
-		//SiteUser user = userService.getUserByEmail(authentication.getName());
+		SiteUser user = userService.getUserByUserName(principalDetails.getUsername());
+		
 		//내리뷰 여러개는 Page? 로받나? List? 여러개는 아무튼 페이징해야해서 ? 
-		Page<Review> paging = reviewService.getReview(rUser,pageable);
+		Page<Review> paging = reviewService.getReview(user,pageable);
 
 		model.addAttribute("paging",paging);
 
-		return "mypage_review";//내가쓴 리뷰들 리스트 
+		return "mypage_review";
+		
 		//지금 로그인한사람이 쓴 리스트 뽑아오기 
 		//지금 optional 안써서 지금 null 처리 안됨>>나 중에 수정 
 		
 
 	}
 
-
-	//@PreAuthorize//권한제한
 	//마이페이지에서 >> 리뷰쓰기
 	@GetMapping("/create/{productNo}")
-	public String createReview(ReviewForm reviewForm,@PathVariable("productNo")Integer productNo){
+	public String createReview(ReviewForm reviewForm,
+			@PathVariable("productNo")Integer productNo,
+			Model model){
 		
-		//여기서 set을해줘야하나 ..!
-		//getproductdetail 을 만들어서 pname, img 미리 set 가능 ? 
-
+		//여기서 product 정보 set해주기
+		Product product = productService.getProductDetailByNo(productNo);
+		
+		model.addAttribute(product);//이안에 savefilename
+		
 		return "mypage_reviewReg";//리뷰작성 form 
 	}
 
@@ -103,21 +112,16 @@ public class ReviewController {
 	public String createReview(Model model,
 			@Valid ReviewForm reviewForm,@PathVariable("productNo") Integer productNo,
 			MultipartFile multipartFile,
-
+			@AuthenticationPrincipal PrincipalDetails principalDetails,
 			BindingResult bindResult) throws IOException {
-		//Principal principal 안넣은 상태
-
-
-		//상품번호ProductNo와 작성자 id 를 받아온다 
-		Integer userId = 1;//임시아이디
-		//SiteUser siteUser = userService.getUser(principal.getName());
-
-		//+++상품명pname , productNo 가 알아서 리뷰입력시에 들어가도록하기 
-		//pname 자동입력
-				//Product productName = productService.getProductDetailByNo(productNo);
 		
-
-		Product productnum = productService.getProductDetailByNo(productNo);
+		//상품번호ProductNo와 작성자 id 를 받아온다 
+		
+		SiteUser siteUser = userService.getUserByUserName(principalDetails.getUsername());
+		
+		Product product = productService.getProductDetailByNo(productNo);
+		
+		
 		
 
 		if(bindResult.hasErrors()) {			
@@ -125,7 +129,7 @@ public class ReviewController {
 		}
 
 		//pname 을 product에서 자동으로 set 되도록하는거추가
-		reviewService.createReview(productnum,userId, reviewForm.getPname(), 
+		reviewService.createReview(product,siteUser, reviewForm.getPname(), 
 				reviewForm.getStar(), reviewForm.getTitle(),reviewForm.getContent(), 
 				multipartFile);
 
@@ -136,15 +140,13 @@ public class ReviewController {
 		return "redirect:/review/mylist";
 		
 
-		//주소돌려주기수정))지금접속되어있는 userId 를 가지고 돌아와야 다시 로그인된상태의 내 리뷰 보기가 될거아녀
-		//세션에 올라가있으면 자동으로 인식하나 ?? 
-
 	}
 
 	//리뷰수정할값set하기
+	//권한 제한 하도록 하기 
 	@GetMapping("/modify/{id}")//리뷰글의 id 를 가져가야함 
 	public String reviewModify(ReviewForm reviewForm,@PathVariable("id") Integer id) {
-		//Principal principal아직 안넣음 
+		 
 
 		Review review = reviewService.getOneReview(id);
 		//리뷰글의 고유id 로 하나의 리뷰 읽어오는 서비스 
@@ -163,7 +165,7 @@ public class ReviewController {
 		reviewForm.setTitle(review.getTitle());
 		reviewForm.setContent(review.getContent());
 		reviewForm.setPname(review.getPname());
-		reviewForm.setRUser(review.getRUser());//작성하는id는그대로이나
+		//reviewForm.setRUser(review.getRUser());//작성하는 작성자는그대로 
 		reviewForm.setStar(review.getStar());
 
 

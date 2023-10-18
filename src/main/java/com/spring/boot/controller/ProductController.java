@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.spring.boot.dto.ProductForm;
 import com.spring.boot.model.Product;
+import com.spring.boot.model.Review;
 import com.spring.boot.service.ProductService;
+import com.spring.boot.service.ReviewService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,6 +25,7 @@ public class ProductController {
 	
 	//service 연결 
 	private final ProductService productService;
+	private final ReviewService reviewService;
 	
 	//전체상품 조회하는 메소드 =main?
 	@RequestMapping("/list")
@@ -40,11 +43,19 @@ public class ProductController {
 	
 	@RequestMapping("/detail/{productNo}")
 	public String detail(Model model, @PathVariable("productNo") Integer productNo
-			,ProductForm productForm) {
+			,ProductForm productForm , @PageableDefault Pageable pageable) {
 		
 		Product product = productService.getProductDetailByNo(productNo);
 		
 		model.addAttribute("product",product);
+		
+		
+		//상품리뷰 페이징을 위한 값 넘김
+		Product productnum = productService.getProductDetailByNo(productNo);
+		
+		Page<Review> paging = reviewService.getPnoReview(pageable, productnum);
+		model.addAttribute("paging",paging);
+		
 		
 		return "product_list";//html연결
 		

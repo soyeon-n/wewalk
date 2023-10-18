@@ -11,6 +11,17 @@
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <script src="./js/good_view01.js"></script>
     <script src="./js/common.js"></script>
+    
+    
+   <!-- review script css 적용위해 상단에 넣음  -->
+    <link rel="stylesheet" href="/mykurly_order_list.css">
+    <link rel="stylesheet" href="/mykurly_review.css">
+    <script src="./js/mykurly.js"></script>
+    <script src="../main/js/common.js"></script>
+    
+    
+    
+    
 </head>
 <body>
 
@@ -979,7 +990,10 @@
                                 <a href="#goods-review" class="goods-view-infomation-tab-anchor __active">
                                     고객후기
                                     <span class="count_review">(0)</span>
+                                 
                                 </a>
+                                
+                                
                             </li>
                             <li class="goods-view-infomation-tab">
                                 <a href="#goods-qna" class="goods-view-infomation-tab-anchor">상품문의
@@ -987,6 +1001,22 @@
                                 </a>
                             </li>
                         </ul>
+                        
+                        
+                        
+                        <!-- layout 분리 호출 -->
+                         <!-- product_review_list_layout 분리호출 -->
+                         <!-- <nav th:replace="navbar :: navbarFragment"></nav> -->
+                         <div th:replace="product_review_list_layout :: reviewListFragment">
+                         </div>
+                         
+                         <!-- layout 분리 호출 : 상품문의 + 답변  
+                         <div></div>
+                         <div th:replace="product_qna_list :: reviewListFragment">
+                         </div>-->
+                         
+                         
+                         
                         <div class="goods-view-infomation-content" id="goods-review"> <!-- 아래 주소창에 good_review_list.html url 넣어주면 됩니당-->
                             <iframe src="file:///C:/Users/siwha/OneDrive/%EB%B0%94%ED%83%95%20%ED%99%94%EB%A9%B4/e-commerce-clone-main/good_review_list.html#none" id="inreview" frameborder="0" class="goods-view-infomation-board" height="733"></iframe>
                         </div>

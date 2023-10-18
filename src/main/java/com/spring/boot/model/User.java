@@ -45,8 +45,8 @@ public class User {
 	private String picture;
 	
 	//product의 상품들과 연결될것이기떄문에 
-	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
-    private List<Product> productList;
+	//@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
+    //private List<Product> productList;
 	
 	//빌더 없어도 되나?? 
 	@Builder

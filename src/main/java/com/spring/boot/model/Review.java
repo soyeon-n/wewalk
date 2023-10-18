@@ -28,21 +28,17 @@ public class Review {
 	
 	@Id//primaryKey. 
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	//@ColumnDefault("1")
-	//@Column(unique = true,nullable = false)//짜피 id 니까.. ? 
 	private Integer id;//리뷰글번호PK 알아서 1씩 증가함 
-	//rno 말고 id 로 고유번호를 바꿨더니 알아서 1씩 증가 
 	
-	private Integer rUser;//리뷰작성자 = 여기에 현재로그인된 id 를 set 해야함 
-	//userid 로 바꿔야 
-	//이것도 회원번호랑 ,, ,,, fk 연결해야하나 ? 
+	@ManyToOne
+	private SiteUser siteUser;//리뷰작성자 = 여기에 현재로그인된 id 를 set 해야함  
+	//왜 연결이 안도ㅐ 지 ㅜㅜ 
 	
 	
 	@ManyToOne
-	@JoinColumn(name = "productNo",nullable = false)
-	private Product product;//상품고유번호-fk productNo 가 아니라 product 테이블 자체?
-	//이게왜 int 가 아니라 product 타입이어서 새로 insert 가 안되냐는 ...말이야 fk 인데 
-	//가져오는 fk 인데 insert 도 해야하는데 .>>???????? 이거자체가 productNo 를 의미하는거
+	private Product product;
+	
+	
 	private String pname;//상품명--product 테이블에서가져오기
 	
 	private Integer star;//별점

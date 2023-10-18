@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -103,6 +104,24 @@ public class SiteUser implements Serializable{
     private List<SellerRequest> sellerRequestList;
     
     //로그인 비활성화 메소드 추가 예정(6개월)
+    
+    //은별
+    //상품과 연결
+    @OneToMany(mappedBy = "siteUser", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private List<Product> productList;
+    
+    //내가쓴리뷰
+    @OneToMany(mappedBy = "siteUser", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private List<Review> reviewList;
+    
+    @OneToMany(mappedBy = "siteUser", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private List<Question> questionList;
+    
+    @OneToMany(mappedBy = "siteUser", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private List<Answer> answerList;
+    
+    
+    
     
 	//회원정보 수정(자동 반영)
 	public SiteUser update(String userName, String picture) {

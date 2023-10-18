@@ -23,6 +23,7 @@ import com.spring.boot.dao.ReviewRepository;
 
 import com.spring.boot.model.Product;
 import com.spring.boot.model.Review;
+import com.spring.boot.model.SiteUser;
 
 import lombok.RequiredArgsConstructor;
 
@@ -33,8 +34,6 @@ public class ReviewService {
 
 
 	private final ReviewRepository reviewRepository;
-
-
 
 	//전체리뷰조회
 	public Page<Review> getTotalReview(Pageable pageable){
@@ -68,15 +67,10 @@ public class ReviewService {
 		
 		
 	}
-	
-
-
-
-
 
 	//새리뷰 작성 저장 
-	//리뷰쓰기위해가지고들어갈것들
-	public void createReview(Product product,Integer rUser,String pname,Integer star,
+	//리뷰쓰기위해가지고들어갈것들 SiteUser 타입이어야 함 
+	public void createReview(Product product,SiteUser siteUser,String pname,Integer star,
 			String title, String content,MultipartFile multipartFile) throws IOException{
 
 		Review reviews = new Review();//객체생성
@@ -85,6 +79,7 @@ public class ReviewService {
 
 		//uuid~ filemanager 코딩  
 		String rootPath = System.getProperty("user.dir");
+		//아 이거는 폴더가 유저로컬한테 저장공간이 생기기떄문에 나중에 고쳐야한다 @@@@@@@@@@@@@@@@@@@@@@
 
 		String fileDir = rootPath + "/files/";//내가만든파일폴더이름
 
@@ -114,7 +109,7 @@ public class ReviewService {
 		//확장자 붙이기 
 		int pos = originalFileName.lastIndexOf(".");
 
-		//origin 파일 네임 이거 지금 오류나는중
+		//origin 파일 네임 
 		String extractExt=originalFileName.substring(pos + 1);//확장자명
 
 		//저장할 파일 네임
@@ -139,7 +134,7 @@ public class ReviewService {
 		reviews.setProduct(product);//리뷰한 상품번호 넣기
 		//fk 인 동시에 insert 하려고해서 지금안들어가나 이게타입이 지금 int 가 아님 
 		//reviews.setRNo(rNo);//리뷰글 번호 알아서 set 됨 
-		reviews.setRUser(rUser);
+		reviews.setSiteUser(siteUser);
 		reviews.setPname(pname);
 		reviews.setStar(star);
 		reviews.setDate(LocalDateTime.now());
@@ -158,7 +153,7 @@ public class ReviewService {
 
 
 	//한 작성자 id 로 리뷰셀렉하는거=내가 작성한 리뷰 모두 보기
-	public Page<Review> getReview(Integer rUser,Pageable pageable) {
+	public Page<Review> getReview(SiteUser siteUser,Pageable pageable) {
 
 		//내가쓴리뷰가 존재할수도있고 안할수도 있어서  optional 로 받음
 		//optional 버려 아직 못씀 ,,null 예외처리 필요 
@@ -170,7 +165,7 @@ public class ReviewService {
 				pageable.getPageSize(),Sort.by(sorts));
 
 
-		return reviewRepository.findByrUser(rUser, pageable);
+		return reviewRepository.findBySiteUser(siteUser, pageable);
 
 
 
@@ -178,7 +173,7 @@ public class ReviewService {
 
 
 
-	//하나의 리뷰=id 가져오기 
+	//하나의 리뷰=id리뷰글번호 가져오기 
 	public Review getOneReview(Integer id) {
 		Optional<Review> opreview = reviewRepository.findById(id);
 
