@@ -208,6 +208,8 @@ body, input, select, textarea, button{
 }
 img, video, canvas {
     max-width: 100%;
+    width: 65px;
+    height: 65px;
 }
 
 .square .txt{
@@ -226,4 +228,27 @@ img, video, canvas {
     line-height: 18px;
     font-size:12px;
     display:none;
+}
+
+.social {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	width: 340px;
+	margin-top: 50px;
+	font-family:noto sans, malgun gothic;
+    color: #5F4C0B;
+    font-weight: 800;
+    font-size:20px;
+    text-align: center;
+}
+
+.social .buttons {
+	display:flex;
+	flex-direction:row;
+	justify-content:space-around;
+	margin-top: 50px;
+	padding-left: 20px;
+	padding-right: 20px;
+	width: 100%;
 }

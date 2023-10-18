@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -13,10 +14,15 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.spring.boot.config.DataNotFoundException;
 import com.spring.boot.dao.AdminRepository;
 import com.spring.boot.dao.SellerRequestRepository;
 import com.spring.boot.dao.UserRepository;
+import com.spring.boot.dto.PageRequestDTO;
+import com.spring.boot.dto.PageResultDTO;
+import com.spring.boot.dto.SiteUserDTO;
 import com.spring.boot.model.SellerRequest;
 import com.spring.boot.model.SiteUser;
 import com.spring.boot.model.UserRole;
@@ -60,6 +66,59 @@ public class AdminService {
 		return adminRepository.findAll(pageable);
 		
 	}
+	
+	//검색기능을 포함한 list
+	public PageResultDTO<SiteUserDTO, SiteUser> getList(PageRequestDTO requestDTO) {
+
+        Pageable pageable = requestDTO.getPageable(Sort.by("id").descending());
+
+        BooleanBuilder booleanBuilder = getSearch(requestDTO); // 검색 조건 처리
+
+        Page<SiteUser> result = adminRepository.findAll(booleanBuilder,pageable); // Querydsl 사용
+
+        Function<SiteUser,SiteUserDTO> fn = (entity -> entityToDto(entity));
+        
+        return new PageResultDTO<>(result,fn);
+	}
+
+	//
+	 private BooleanBuilder getSearch(PageRequestDTO requestDTO){ // Querydsl 처리
+
+		//검색유형(userName, email, u+e)
+	    String type = requestDTO.getType();
+	
+	    BooleanBuilder booleanBuilder = new BooleanBuilder();
+	
+        QSiteUser qSiteUser = QSiteUser.siteUser;
+	
+        String keyword = requestDTO.getKeyword();
+
+        BooleanExpression expression = qSiteUser.id.gt(0L); // gno > 0 조건만 생성
+
+        booleanBuilder.and(expression);
+
+        if(type == null || type.trim().length() == 0 ){ // 검색 조건이 없는경우
+            return booleanBuilder;
+        }
+
+        // 검색 조건 작성
+        BooleanBuilder conditionBuilder = new BooleanBuilder();
+
+        if(type.contains("u")){
+            conditionBuilder.or(qSiteUser.userName.contains(keyword));
+        }
+        if(type.contains("e")){
+            conditionBuilder.or(qSiteUser.email.contains(keyword));
+        }
+//        if(type.contains("ue")){
+//            conditionBuilder.or(qSiteUser.writer.contains(keyword));
+//        }
+
+        // 모든 조건 통합
+        booleanBuilder.and(conditionBuilder);
+
+        return booleanBuilder;
+    }
 	
 	//판매자 요청 리스트 페이징
 	public Page<SellerRequest> getSellerRequestLists(Pageable pageable) {
@@ -247,4 +306,31 @@ public class AdminService {
 		adminRepository.delete(siteUser);
 	}
 	
+	public SiteUser dtoToEntity(SiteUserDTO dto){
+		SiteUser entity = SiteUser.builder()
+                .id(dto.getId())
+                .role(dto.getRole())
+                .email(dto.getEmail())
+                .userName(dto.getUserName())
+                .name(dto.getName())
+                .picture(dto.getPicture())
+                .provider(dto.getProvider())
+                .build();
+        return entity;
+    }
+	
+	public SiteUserDTO entityToDto(SiteUser entity){
+
+		SiteUserDTO dto = SiteUserDTO.builder()
+                .id(entity.getId())
+                .role(entity.getRole())
+                .email(entity.getEmail())
+                .userName(entity.getUserName())
+                .name(entity.getName())
+                .picture(entity.getPicture())
+                .provider(entity.getProvider())
+                .build();
+
+        return dto;
+    }
 }

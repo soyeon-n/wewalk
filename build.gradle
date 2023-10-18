@@ -1,7 +1,16 @@
+// querydsl 추가
+//  (gradle 5.0 이상부터는 옵션을 이렇게 넣어주어야 함)
+buildscript {
+	ext {
+		queryDslVersion = "5.0.0"
+	}
+}
+
 plugins {
 	id 'java'
 	id 'org.springframework.boot' version '2.7.15'
 	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+	id 'com.ewerk.gradle.plugins.querydsl' version '1.0.10' // querydsl 사용을 위해 추가된 항목
 }
 
 group = 'WewalkPay'
@@ -49,9 +58,38 @@ dependencies {
 	implementation 'com.mysql:mysql-connector-j'
 
 	implementation 'commons-io:commons-io:2.6'
+	
+	// querydsl 추가
+	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
+	implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
 
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+// querydsl 추가 시작
+def querydslDir = "$buildDir/generated/querydsl"
+
+querydsl {
+	jpa = true
+	querydslSourcesDir = querydslDir
+}
+
+sourceSets {
+	main.java.srcDir querydslDir
+}
+
+//  (gradle 5.0 이상부터는 옵션을 이렇게 넣어주어야 함)
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+	querydsl.extendsFrom compileClasspath
+}
+
+compileQuerydsl {
+	options.annotationProcessorPath = configurations.querydsl
+}
+// querydsl 추가 끝

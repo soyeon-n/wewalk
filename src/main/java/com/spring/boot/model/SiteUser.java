@@ -21,6 +21,7 @@ import javax.persistence.OneToOne;
 import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.spring.boot.dto.SiteUserDTO;
 
 import javax.persistence.OneToMany;
 
@@ -29,7 +30,25 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-//UserRole에 Seller라는 role을 추가하여 판매자 관리할 수 있게끔 세팅할 예정
+/*
+@AllArgsConstructor의 유용성:
+
+모든 필드를 초기화하며 객체를 생성해야 하는 경우에 매우 유용합니다.
+객체를 불변(Immutable)으로 만들고 싶을 때 유용합니다. 
+모든 필드를 final로 선언하고, @AllArgsConstructor로만 생성자를 제공하면, 객체 생성 후에 필드의 값을 변경할 수 없게 됩니다.
+DTO(Data Transfer Object)나 VO(Value Object)와 같이 여러 필드 값을 한 번에 초기화해야 할 때 유용합니다.
+
+@NoArgsConstructor의 유용성:
+
+JPA 엔터티나 다른 ORM(Object-Relational Mapping) 프레임워크를 사용할 때는 기본 생성자가 필요합니다. 
+이 때 @NoArgsConstructor를 사용하면 간편하게 기본 생성자를 제공할 수 있습니다.
+객체를 생성한 후, setter 메서드를 통해 필드 값을 설정하려는 경우 유용합니다.
+직렬화/역직렬화와 같은 작업을 수행할 때 기본 생성자가 필요한 경우도 있습니다.
+
+또한, 명시적으로 모든 필드를 초기화하는 생성자를 제공하면서 동시에 기본 생성자도 제공하고 싶을 때는 
+@AllArgsConstructor와 @NoArgsConstructor를 함께 사용할 수 있습니다.
+ */
+
 @Getter
 @Setter
 @Entity
@@ -117,6 +136,11 @@ public class SiteUser implements Serializable{
 		return this;
 	}
     
+	//엔티티의 데이터를 DTO로 가져가서 활용하기 위한 메소드
+//    public SiteUserDTO entityToDto() {
+//        return SiteUserDTO.fromEntity(this);
+//    }
+	
     //사용자 유형 식별(ADMIN / SELLER / USER)
   	public String getRoleKey() {
   		return this.role.getKey();
@@ -124,12 +148,13 @@ public class SiteUser implements Serializable{
     
   	//set하기 위한 builder
   	@Builder
-    public SiteUser(UserRole role, String email, String password, String userName, 
+    public SiteUser(Long id, UserRole role, String email, String password, String userName, 
     		String provider, String providerId, String name, LocalDateTime createdDate, 
     		LocalDate birthDate, String postcode, String address, String detailAddress, 
     		String tel, String picture, boolean seller, String intro, Membership membership,
     		Long point, Interest interest1, Interest interest2, Interest interest3, LocalDateTime modifyDate) {
   		
+  		this.id = id;
   		this.role = role;
   		this.email = email;
   		this.password = password;

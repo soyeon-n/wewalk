@@ -20,8 +20,6 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class UserService {
-
-	//private final BaseAuthUserRepository baseAuthUserRepository;
 	
 	private final UserRepository userRepository;
 	private final SellerRequestRepository sellerRequestRepository;
@@ -61,7 +59,7 @@ public class UserService {
 		Optional<SiteUser> op = userRepository.findById(id);
 		
 		if(op.isPresent()) {
-			
+						
 			return op.get();
 			
 		}else {
@@ -175,4 +173,20 @@ public class UserService {
 		}
 		
 	}
+	/* security를 이용한 비밀번호 일치여부 확인 메소드
+	 public boolean checkPassword(String username, String inputPassword) {
+	    try {
+	        // 사용자로부터 입력받은 비밀번호를 이용한 인증 요청 객체 생성
+	        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, inputPassword);
+	
+	        // 인증 시도
+	        authenticationManager.authenticate(token);
+	        
+	        return true; // 인증 성공 = 비밀번호 일치
+	    } catch (BadCredentialsException e) {
+	        return false; // 비밀번호 불일치
+	    }
+	}
+	  
+	 */
 }

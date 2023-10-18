@@ -4,12 +4,8 @@
         <script src="http://code.jquery.com/jquery.min.js"></script>
         <title>로그인</title>
         <link rel="stylesheet" href="/css/reset.css">
-<!--         <link rel="stylesheet" href="/css/common.css"> -->
         <link rel="stylesheet" href="/css/login.css">
-<!--         <script src="/js/common.js"></script> -->
     </head>
-    
-    
 
     <body>
         <div id="container" class="container">
@@ -37,25 +33,28 @@
                                         <span class="txt_type">로그인</span>
                                     </button>
                                 </form>
-                                <a th:href="@{/auth/signup}" class="btn_type2 btn_member">
-                                    <span class="txt_type">회원가입</span>
-                                </a>
                                 
-                                <a href="/oauth2/authorization/google">
-								<img th:src="@{/images/google.png}"/>
-							</a>
-							
-							<br/>
-							
-							<a href="/oauth2/authorization/kakao">
-								<img th:src="@{/images/kakao.png}"/>
-							</a>
-							
-							<br/>
-							
-							<a href="/oauth2/authorization/naver">
-								<img th:src="@{/images/naver.png}"/>
-							</a>
+	                                <a th:href="@{/auth/signup}" class="btn_type2 btn_member">
+	                                    <span class="txt_type">회원가입</span>
+	                                </a>
+                                <div class="social">
+	                                
+	                                <div th:text="${'소셜 로그인'}"></div>
+	                                
+	                                <div class="buttons">
+		                                <a href="/oauth2/authorization/google">
+											<img th:src="@{/images/google.png}"/>
+										</a>
+										
+										<a href="/oauth2/authorization/kakao">
+											<img th:src="@{/images/kakao.png}" style="width: 55px; height: 55px; margin-top: 5px"/>
+										</a>
+										
+										<a href="/oauth2/authorization/naver">
+											<img th:src="@{/images/naver.png}"/>
+										</a>	                                
+	                                </div>
+                                </div>
         
                             </div>
         
@@ -72,12 +71,6 @@
 
 
         <script>
-
-/*             var id = "test"
-            var pw = "test"  */
-        
-            // getId = '${m_id}';
-            // getPw = '${password}';
             
             function check_input(){
                 if (!document.login_form.userName.value){
@@ -90,11 +83,7 @@
                     document.login_form.password.focus();
                     return;
                 }
-               /*  if (document.login_form.email.value != id || document.login_form.password.value != pw){
-                    alert("아이디 또는 비밀번호가 틀렸습니다.");
-                    history.go(0);
-                    return;
-                }  */
+               
                 document.login_form.submit();
             }
         </script>

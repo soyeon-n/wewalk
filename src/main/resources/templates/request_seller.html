@@ -40,6 +40,92 @@
 		    </div>
 		</div>
 		
+		<script type="text/javascript">
+		//이미지 파일 업로드 시 크기 검증하는 스크립트
+		document.querySelector('#imageFiles').addEventListener('change', function(event) {
+		    const MAX_SIZE_MB = 10; // 개별 파일의 최대 크기
+		    const MAX_TOTAL_SIZE_MB = 30; // 모든 파일의 합계 크기의 최대 크기
+		    const MB_TO_BYTES = 1048576; // 1MB는 1048576 바이트입니다.
+		
+		    let totalSize = 0; // 모든 파일의 총 크기
+		
+		    for (let i = 0; i < this.files.length; i++) {
+		        const file = this.files[i];
+		
+		        // 개별 파일 크기 검증
+		        if (file.size > MAX_SIZE_MB * MB_TO_BYTES) {
+		            alert('개별 파일의 크기는 ' + MAX_SIZE_MB + 'MB를 초과할 수 없습니다.');
+		            this.value = ''; // 파일 입력을 초기화
+		            return;
+		        }
+		
+		        // 모든 파일의 합계 크기 계산
+		        totalSize += file.size;
+		    }
+		
+		    // 모든 파일의 합계 크기 검증
+		    if (totalSize > MAX_TOTAL_SIZE_MB * MB_TO_BYTES) {
+		        alert('모든 파일의 합계 크기는 ' + MAX_TOTAL_SIZE_MB + 'MB를 초과할 수 없습니다.');
+		        this.value = ''; // 파일 입력을 초기화
+		    }
+		});
+		
+		//일반 파일 업로드 시 크기 검증하는 스크립트
+		document.querySelector('#generalFiles').addEventListener('change', function(event) {
+		    const MAX_SIZE_MB = 10; // 개별 파일의 최대 크기
+		    const MAX_TOTAL_SIZE_MB = 30; // 모든 파일의 합계 크기의 최대 크기
+		    const MB_TO_BYTES = 1048576; // 1MB는 1048576 바이트입니다.
+		
+		    let totalSize = 0; // 모든 파일의 총 크기
+		
+		    for (let i = 0; i < this.files.length; i++) {
+		        const file = this.files[i];
+		
+		        // 개별 파일 크기 검증
+		        if (file.size > MAX_SIZE_MB * MB_TO_BYTES) {
+		            alert('개별 파일의 크기는 ' + MAX_SIZE_MB + 'MB를 초과할 수 없습니다.');
+		            this.value = ''; // 파일 입력을 초기화
+		            return;
+		        }
+		
+		        // 모든 파일의 합계 크기 계산
+		        totalSize += file.size;
+		    }
+		
+		    // 모든 파일의 합계 크기 검증
+		    if (totalSize > MAX_TOTAL_SIZE_MB * MB_TO_BYTES) {
+		        alert('모든 파일의 합계 크기는 ' + MAX_TOTAL_SIZE_MB + 'MB를 초과할 수 없습니다.');
+		        this.value = ''; // 파일 입력을 초기화
+		    }
+		});
+		
+		//폼 제출 시 모든 파일 크기 합계가 30mb를 넘지 않도록 검증
+		document.querySelector('form').addEventListener('submit', function(event) {
+		    const MAX_TOTAL_SIZE_MB = 30; // 모든 파일의 합계 크기의 최대 크기
+		    const MB_TO_BYTES = 1048576; // 1MB는 1048576 바이트입니다.
+
+		    let imageFiles = document.querySelector('#imageFiles').files;
+		    let generalFiles = document.querySelector('#generalFiles').files;
+
+		    let totalSize = 0; // 모든 파일의 총 크기
+
+		    // 이미지 파일 크기 합계 계산
+		    for (let i = 0; i < imageFiles.length; i++) {
+		        totalSize += imageFiles[i].size;
+		    }
+
+		    // 일반 파일 크기 합계 계산
+		    for (let i = 0; i < generalFiles.length; i++) {
+		        totalSize += generalFiles[i].size;
+		    }
+
+		    // 모든 파일의 합계 크기 검증
+		    if (totalSize > MAX_TOTAL_SIZE_MB * MB_TO_BYTES) {
+		        alert('모든 파일의 합계 크기는 ' + MAX_TOTAL_SIZE_MB + 'MB를 초과할 수 없습니다.');
+		        event.preventDefault(); // 폼 제출 중단
+		    }
+		});
+		</script>
 		<button type="submit" class="btn btn-primary" style="border: 1px solid #5f0080; background-color: #5f0080; color: #fff; display: block;">판매자 요청</button>
 	</form>
 <script type="text/javascript">

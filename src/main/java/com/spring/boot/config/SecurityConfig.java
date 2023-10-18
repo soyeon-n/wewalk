@@ -43,13 +43,15 @@ public class SecurityConfig {
         // 권한에 따라 허용하는 url 설정
         // /login, /signup 페이지는 모두 허용, 다른 페이지는 인증된 사용자만 허용
         http
-        .authorizeRequests()
-//        .antMatchers("/auth/oauthSignup", "/auth/signup", "/auth/login").access("not hasRole('USER') and not hasRole('SELLER')")
-        .antMatchers("/auth/oauthSignup").hasRole(UserRole.OAUTH.name())
-        .antMatchers("/admin/**").hasRole(UserRole.ADMIN.name())
-        .antMatchers("/user/**").hasRole(UserRole.USER.name())
-        .antMatchers("/seller/**").hasRole(UserRole.SELLER.name())
-        .anyRequest().permitAll();
+	        .authorizeRequests()
+	//        .antMatchers("/auth/oauthSignup", "/auth/signup", "/auth/login").access("not hasRole('USER') and not hasRole('SELLER')")
+		        .antMatchers("/auth/oauthSignup").hasRole(UserRole.OAUTH.name())
+		        .antMatchers("/admin/**").hasRole(UserRole.ADMIN.name())
+		        .antMatchers("/user/**").hasRole(UserRole.USER.name())
+		        .antMatchers("/seller/**").hasRole(UserRole.SELLER.name())
+		        .anyRequest().permitAll()
+	        .and()
+	        .exceptionHandling().accessDeniedPage("/no-access");
 //        , "/oauth2/authorization/**"
 		// login 설정
         http

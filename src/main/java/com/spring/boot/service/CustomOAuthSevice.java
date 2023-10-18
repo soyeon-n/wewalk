@@ -105,7 +105,7 @@ public class CustomOAuthSevice extends DefaultOAuth2UserService{
 			        				.build();
         	
         	userRepository.save(siteUser);
-        	
+        	siteUser.setPassword(null);
         	System.out.println(siteUser);
         	
         	return new PrincipalDetails(siteUser, oAuth2User.getAttributes());
@@ -126,6 +126,7 @@ public class CustomOAuthSevice extends DefaultOAuth2UserService{
         	userRepository.save(existingUser);
         	
         	System.out.println(existingUser);
+        	existingUser.setPassword(null);
         	
         	return new PrincipalDetails(existingUser, oAuth2User.getAttributes());
         }
