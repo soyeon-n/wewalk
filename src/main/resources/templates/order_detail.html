@@ -28,7 +28,7 @@
 
                         <div id="itemList" class="page_aticle order_goodslist">
                             <ul class="list_product" th:each=item:${productList}>
-                                <li  th:data-id="${item.key.id}" th:data-count="${item.value}">
+                                <li  th:data-id="${item.key.id}" th:data-count="${item.value}" th:data-price="${item.key.price}">
                                     <div class="thumb">
                                         <img src="https://img-cf.kurly.com/shop/data/goods/156757412839i0.jpg" alt="상품이미지">
                                     </div>
@@ -63,14 +63,14 @@
                                         <tr class="fst">
                                             <th>보내는 분</th>
                                             <td>
-                                                <span th:text="${SiteUser.name}" id="buyer_name"></span>
+                                                <span th:text="${SiteUser.name}" ></span>
                                             </td>
                                         </tr>
 
                                         <tr class="fst">
                                             <th>휴대폰</th>
                                             <td>
-                                                <span th:text="${SiteUser.tel}" id="buyer_tel"></span>
+                                                <span th:text="${SiteUser.tel}" ></span>
                                             </td>
                                         </tr>
 
@@ -118,7 +118,7 @@
                                 </h3>
                                 <div class="section_full">
                                     <span class="address" id="divDesination">
-										<span class="address"><input type="text" class="adress_form_mini" id="name"></span>
+										<span class="address"><input type="text" class="adress_form_mini"  id="buyer_name"></span>
                                     </span>
                                 </div>
                                 
@@ -127,7 +127,7 @@
                                 </h3>
                                 <div class="section_full">
                                     <span class="address" id="divDesination">
-										<span class="address"><input type="text" class="adress_form_mini" id="tel"></span>
+										<span class="address"><input type="text" class="adress_form_mini"  id="buyer_tel"></span>
                                     </span>
                                 </div>
                                 

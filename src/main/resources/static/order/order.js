@@ -160,7 +160,9 @@ function execDaumPostcode() {
     }).open();
 }
 
+function al() {
 
+}
 
 
 function requestPay() {
@@ -185,10 +187,14 @@ function requestPay() {
 	
 	itemList.forEach(function (element) {
 	    var itemId = element.getAttribute("data-id");
-	    var count = element.getAttribute("data-count")
+	    var count = element.getAttribute("data-count");
+	    var price = element.getAttribute("data-price");
+	    price = price*count;
+	    
 	    var itemData = {
 	        id: itemId,
-	        count: count
+	        count: count,
+	        price: price
     	};
     	itemIds.push(itemData);
 	});
@@ -208,13 +214,16 @@ function requestPay() {
 	
 	var amount = $('#paper_settlement').text().replace(/[^0-9]/g, '');
 	var buyer_email = $('#buyer_email').text();
-	var buyer_name = $('#buyer_name').text();
-	var buyer_tel = $('#buyer_tel').text();
-	var buyer_postcode = $('#postcode').text();
-	var buyer_addr = $('#address').text();
-	var buyer_addr_detail = $('#detailAddress').text();
+	var buyer_name = $('#buyer_name').val();
+	var buyer_tel = $('#buyer_tel').val();
+	var buyer_postcode = $('#postcode').val();
+	var buyer_addr = $('#address').val();
+	var buyer_addr_detail = $('#detailAddress').val();
+	var request = $('#request').val();
 
-	var request = $('#request').text();
+	var lastPrice = $('#paper_settlement').text().replace(/[^0-9]/g, '');
+	var pointPay = $('#paper_reserves').text().replace(/[^0-9]/g, '');
+
 	
 	IMP.init('imp56668363');
     IMP.request_pay({
@@ -234,18 +243,21 @@ function requestPay() {
             
             var paymentData = {
             
-	            imp_uid: rsp.pay_method,
 	            merchant_uid: rsp.merchant_uid,
+	            name: name,
 	            paid_amount: rsp.paid_amount,
+	            pay_method: rsp.pay_method,
 	            apply_num: rsp.apply_num,
-	            buyer_name: rsp.buyer_name,
-	            buyer_tel: rsp.buyer_tel,
-	            buyer_addr: rsp.buyer_addr,
-	            buyer_addr_detail: rsp.buyer_addr_detail,
-	            buyer_postcode: rsp.buyer_postcode,
+	            buyer_name: buyer_name,
+	            buyer_tel: buyer_tel,
+	            buyer_addr: buyer_addr,
+	            buyer_addr_detail: buyer_addr_detail,
+	            buyer_postcode: buyer_postcode,
+	            request: request,
+	            pointPay: pointPay,
 	            itemIds: itemIds,
        		};
-            var pay_method = rsp.pay_method;
+            
             $.ajax({
 	            type: "POST",
 	            url: "/order/checkout",
@@ -253,7 +265,7 @@ function requestPay() {
 	            data: JSON.stringify(paymentData),
 	            success: function (response) {
 	                
-	            	alert(pay_method);
+	            	
 	            	window.location.href = "/";
 	            	
 	            },

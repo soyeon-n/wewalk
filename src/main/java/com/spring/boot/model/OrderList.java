@@ -41,5 +41,5 @@ public class OrderList {
 	
 	private String addr_detail;
 	
-	
+	private String request;
 }

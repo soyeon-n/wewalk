@@ -8,5 +8,6 @@ import lombok.Setter;
 public class ItemDataForm {
     private int id;
     private int count;
+    private int price;
 
 }

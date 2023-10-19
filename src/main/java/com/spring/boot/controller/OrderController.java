@@ -27,6 +27,7 @@ import com.spring.boot.model.SiteUser;
 import com.spring.boot.service.CartItemService;
 import com.spring.boot.service.CartService;
 import com.spring.boot.service.OrderListService;
+import com.spring.boot.service.PayService;
 import com.spring.boot.service.ProductService;
 import com.spring.boot.service.UserService;
 
@@ -42,7 +43,7 @@ public class OrderController {
 	private final UserService userService;
 	private final ProductService productService;
 	private final OrderListService orderListService;
-
+	private final PayService payService;
 	
 	@GetMapping("/cart")
 	public String cart(Model model ,@AuthenticationPrincipal PrincipalDetails principalDetails) {
@@ -128,9 +129,29 @@ public class OrderController {
 		
 		orderListService.saveOrderHistory(paymentDataForm,user);
 		
+		int point = paymentDataForm.getPointPay();
+		
+		//포인트사용시 포인트내역에도저장
+		if(point>0) {
+			payService.savePointHistory(user, point, paymentDataForm.getName());
+		}
 
 		return new ResponseEntity<>("Order saved successfully", HttpStatus.OK);
 	}
+	
+	@PostMapping("/checkoutAllPoint")
+	public ResponseEntity<String> saveOrderPoint(@RequestBody PaymentDataForm paymentDataForm,
+			@AuthenticationPrincipal PrincipalDetails principalDetails) {
+		
+		SiteUser user = userService.getUserByUserName(principalDetails.getUsername());
+		
+		orderListService.saveOrderHistory(paymentDataForm,user);
+		
+
+		return new ResponseEntity<>("Order saved successfully", HttpStatus.OK);
+	}
+	
+
 	
 	
 	
