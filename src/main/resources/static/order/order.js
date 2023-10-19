@@ -160,17 +160,13 @@ function execDaumPostcode() {
     }).open();
 }
 
-function al() {
-		var date = new Date();
-alert(date.getTime());
-		
-		
-}
-	
+
+
+
 function requestPay() {
 
 	var num =0;
-
+	
 	$('.name .inner_name').each(function() {
 		num=num+1;
 	});	
@@ -183,34 +179,100 @@ function requestPay() {
 		name += '외 '+(num-1)+'건';
 	}
 	
+	var itemList = document.querySelectorAll(".list_product li"); 
+
+	var itemIds = []; //id와 수량들어간 배열
+	
+	itemList.forEach(function (element) {
+	    var itemId = element.getAttribute("data-id");
+	    var count = element.getAttribute("data-count")
+	    var itemData = {
+	        id: itemId,
+	        count: count
+    	};
+    	itemIds.push(itemData);
+	});
+		
+	
+	
+	
+	var merchant_uid = '';
+	var randomInteger = Math.floor(Math.random() * 9) + 1;	
+	var date = new Date();
+	
+	merchant_uid += date.getFullYear();
+	merchant_uid += (date.getMonth()+1);
+	merchant_uid += date.getDate()+'-';
+	merchant_uid += Date.now();
+	merchant_uid += randomInteger;
+	
 	var amount = $('#paper_settlement').text().replace(/[^0-9]/g, '');
 	var buyer_email = $('#buyer_email').text();
 	var buyer_name = $('#buyer_name').text();
 	var buyer_tel = $('#buyer_tel').text();
-	var buyer_addr = $('#address').text();
 	var buyer_postcode = $('#postcode').text();
+	var buyer_addr = $('#address').text();
+	var buyer_addr_detail = $('#detailAddress').text();
+
+	var request = $('#request').text();
 	
 	IMP.init('imp56668363');
     IMP.request_pay({
+    
 	    pg : 'html5_inicis.INIpayTest', //테스트 시 html5_inicis.INIpayTest 기재 
-	    pay_method: "card",
-        merchant_uid: "ORD20180131-0000012",   // 주문번호
+        merchant_uid: merchant_uid,   // 주문번호
         name: name,
-        amount: amount,                         // 숫자 타입
+        amount: amount,               // 금액(숫자 타입)
         buyer_email: buyer_email,
         buyer_name: buyer_name,
         buyer_tel: buyer_tel,
         buyer_addr: buyer_addr,
         buyer_postcode: buyer_postcode
+        
 	}, function(rsp) { // callback 로직
 		if (rsp.success) {
-            alert('결제성공');
-			window.location.href = '/'
+            
+            var paymentData = {
+            
+	            imp_uid: rsp.pay_method,
+	            merchant_uid: rsp.merchant_uid,
+	            paid_amount: rsp.paid_amount,
+	            apply_num: rsp.apply_num,
+	            buyer_name: rsp.buyer_name,
+	            buyer_tel: rsp.buyer_tel,
+	            buyer_addr: rsp.buyer_addr,
+	            buyer_addr_detail: rsp.buyer_addr_detail,
+	            buyer_postcode: rsp.buyer_postcode,
+	            itemIds: itemIds,
+       		};
+            var pay_method = rsp.pay_method;
+            $.ajax({
+	            type: "POST",
+	            url: "/order/checkout",
+	            contentType: "application/json", 
+	            data: JSON.stringify(paymentData),
+	            success: function (response) {
+	                
+	            	alert(pay_method);
+	            	window.location.href = "/";
+	            	
+	            },
+	            error: function (xhr, status, error) {
+			        console.log(xhr.responseText);
+			        alert("error");
+			    }
+            });
+            
+			
+
+			
         } else {
-            alert('실패');
+        	var message = '결제에 실패했습니다.\n'+rsp.error_msg;
+            alert(message);
         }
 		
 	});
+	
   }
 
 

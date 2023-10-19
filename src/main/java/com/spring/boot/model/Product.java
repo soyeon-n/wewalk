@@ -21,6 +21,8 @@ public class Product {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer Id;
 	
+	private Integer userId;
+	
 	private String name;
 	
 	private Integer price;

@@ -5,23 +5,28 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.spring.boot.dto.PaymentDataForm;
 import com.spring.boot.dto.PrincipalDetails;
 import com.spring.boot.model.Product;
 import com.spring.boot.model.SiteUser;
 import com.spring.boot.service.CartItemService;
 import com.spring.boot.service.CartService;
+import com.spring.boot.service.OrderListService;
 import com.spring.boot.service.ProductService;
 import com.spring.boot.service.UserService;
 
@@ -36,12 +41,8 @@ public class OrderController {
 	private final CartItemService cartItemService;
 	private final UserService userService;
 	private final ProductService productService;
+	private final OrderListService orderListService;
 
-	
-	@GetMapping("/test")
-	public String test() {
-		return "test";
-	}
 	
 	@GetMapping("/cart")
 	public String cart(Model model ,@AuthenticationPrincipal PrincipalDetails principalDetails) {
@@ -104,7 +105,7 @@ public class OrderController {
 			Integer productId = selectProduct.get("productId");
 			Integer quantity = selectProduct.get("quantity");
 			
-			Product product = productService.gerProductById(productId);
+			Product product = productService.getProductById(productId);
 			
 			productList.put(product, quantity);
 			
@@ -117,16 +118,20 @@ public class OrderController {
 		
 		return "order_detail";
 	}
-	
-	
+
+	//결제정보 저장
 	@PostMapping("/checkout")
-	public String payRequest(Model model) {
+	public ResponseEntity<String> saveOrder(@RequestBody PaymentDataForm paymentDataForm,
+			@AuthenticationPrincipal PrincipalDetails principalDetails) {
 		
-		//이곳에서 api로 결제를 시도 성공시 result 실패시 결제시도 전으로
+		SiteUser user = userService.getUserByUserName(principalDetails.getUsername());
+		
+		orderListService.saveOrderHistory(paymentDataForm,user);
 		
 
-		return "order_result";
+		return new ResponseEntity<>("Order saved successfully", HttpStatus.OK);
 	}
+	
 	
 	
 }

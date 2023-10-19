@@ -17,11 +17,13 @@ public class OrderList {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer Id;
 	
+	private String orderNo;
+	
 	private int productno;
 	
 	private int sellerid;
 	
-	private int userid;
+	private Long userid;
 	
 	private int count;
 	
