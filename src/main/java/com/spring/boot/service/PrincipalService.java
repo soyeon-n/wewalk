@@ -28,15 +28,19 @@ public class PrincipalService implements UserDetailsService{
 	public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
 		
 		Optional<SiteUser> findUser = userRepository.findByUserName(userName);
-        
-		if(findUser.isPresent()) {
-        	
+     
+		if(!findUser.isPresent()) {
+			throw new UsernameNotFoundException("User not found");
+		}else if(findUser.isPresent() == true && findUser.get().isActivated() == false){//비활성화 되어있을 시 로그인 안되게 처리
+			System.out.println("User is deactivated");
+			throw new UsernameNotFoundException("User is deactivated");
+        }else {        	
         	SiteUser siteUser = findUser.get();
-        	System.out.println(siteUser);
+        	System.out.println(siteUser);        
+        	
             return new PrincipalDetails(siteUser);
         }
 
-		return null;
 	}
 
 }

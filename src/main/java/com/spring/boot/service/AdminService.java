@@ -7,16 +7,20 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
+import javax.transaction.Transactional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.spring.boot.config.DataNotFoundException;
+import com.spring.boot.config.SiteUserSpecification;
 import com.spring.boot.dao.AdminRepository;
 import com.spring.boot.dao.SellerRequestRepository;
 import com.spring.boot.dao.UserRepository;
@@ -67,59 +71,25 @@ public class AdminService {
 		
 	}
 	
-	//검색기능을 포함한 list
+	//검색기능을 포함한 Userlist
 	public PageResultDTO<SiteUserDTO, SiteUser> getList(PageRequestDTO requestDTO) {
+	    Pageable pageable = requestDTO.getPageable(Sort.by("id").descending());
+	    
+	    Specification<SiteUser> spec = SiteUserSpecification.isGreaterThanZero();
+	    
+	    if (requestDTO.getType() != null) {
+	        if (requestDTO.getType().equals("u") || requestDTO.getType().equals("e") || requestDTO.getType().equals("ue")) {
+	            spec = spec.and(SiteUserSpecification.hasKeyword(requestDTO.getKeyword(), requestDTO.getType()));
+	        }
+	    }
 
-        Pageable pageable = requestDTO.getPageable(Sort.by("id").descending());
-
-        BooleanBuilder booleanBuilder = getSearch(requestDTO); // 검색 조건 처리
-
-        Page<SiteUser> result = adminRepository.findAll(booleanBuilder,pageable); // Querydsl 사용
-
-        Function<SiteUser,SiteUserDTO> fn = (entity -> entityToDto(entity));
-        
-        return new PageResultDTO<>(result,fn);
+	    Page<SiteUser> result = adminRepository.findAll(spec, pageable);
+	    
+	    Function<SiteUser, SiteUserDTO> fn = (entity -> entityToDto(entity));
+	    
+	    return new PageResultDTO<>(result, fn);
 	}
 
-	//
-	 private BooleanBuilder getSearch(PageRequestDTO requestDTO){ // Querydsl 처리
-
-		//검색유형(userName, email, u+e)
-	    String type = requestDTO.getType();
-	
-	    BooleanBuilder booleanBuilder = new BooleanBuilder();
-	
-        QSiteUser qSiteUser = QSiteUser.siteUser;
-	
-        String keyword = requestDTO.getKeyword();
-
-        BooleanExpression expression = qSiteUser.id.gt(0L); // gno > 0 조건만 생성
-
-        booleanBuilder.and(expression);
-
-        if(type == null || type.trim().length() == 0 ){ // 검색 조건이 없는경우
-            return booleanBuilder;
-        }
-
-        // 검색 조건 작성
-        BooleanBuilder conditionBuilder = new BooleanBuilder();
-
-        if(type.contains("u")){
-            conditionBuilder.or(qSiteUser.userName.contains(keyword));
-        }
-        if(type.contains("e")){
-            conditionBuilder.or(qSiteUser.email.contains(keyword));
-        }
-//        if(type.contains("ue")){
-//            conditionBuilder.or(qSiteUser.writer.contains(keyword));
-//        }
-
-        // 모든 조건 통합
-        booleanBuilder.and(conditionBuilder);
-
-        return booleanBuilder;
-    }
-	
 	//판매자 요청 리스트 페이징
 	public Page<SellerRequest> getSellerRequestLists(Pageable pageable) {
 		
@@ -299,11 +269,26 @@ public class AdminService {
 		adminRepository.save(siteUser);
 	}
 	
-	//Question 자체를 삭제
-	//엔티티 설정에 의해 question에 딸려있는 answer들도 전부 삭제됨
-	public void delete(SiteUser siteUser) {
-		System.out.println(siteUser + "삭제");
-		adminRepository.delete(siteUser);
+	//논리적 삭제
+	//비활성화 또는 활성화 모두 가능하게 함
+	public void deactivateOrReactivate(SiteUser siteUser) {
+		
+
+		//물리적 삭제는 기한을 두고 진행할 수 있게 추후 업데이트 예정
+		//		adminRepository.delete(siteUser);
+		
+		//현재 세팅되어있는 isActivated값 가져오기
+		boolean isActivated = siteUser.isActivated();
+		
+		if(isActivated == true) {			
+			System.out.println(siteUser + "비활성화");
+		}else {
+			System.out.println(siteUser + "활성화");			
+		}
+		
+		siteUser.setActivated(!isActivated);
+		
+		adminRepository.save(siteUser);
 	}
 	
 	public SiteUser dtoToEntity(SiteUserDTO dto){

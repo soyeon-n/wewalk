@@ -22,6 +22,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,7 +30,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.spring.boot.dto.AdminCreateForm;
+import com.spring.boot.dto.PageRequestDTO;
+import com.spring.boot.dto.PageResultDTO;
 import com.spring.boot.dto.PrincipalDetails;
+import com.spring.boot.dto.SiteUserDTO;
 import com.spring.boot.dto.UserCreateForm;
 import com.spring.boot.model.SellerRequest;
 import com.spring.boot.model.SiteUser;
@@ -50,20 +54,37 @@ public class AdminController {
 	private final AdminService adminService;
 	private final UserService userService;
 
+	
+	//기존에 검색 기능이 없는 리스트
+//	@RequestMapping("/userList")
+//	public String list(Model model, @PageableDefault Pageable pageable, 
+//			@AuthenticationPrincipal PrincipalDetails principalDetails) {
+//		
+//		Page<SiteUser> paging = adminService.getLists(pageable);
+//		
+//	    String userName = principalDetails.getUsername();
+//		
+//		//모든 데이터가 담긴 lists를 user_list에 넘겨줌
+//		model.addAttribute("paging", paging);
+//		model.addAttribute("userName", userName);
+//		
+//		return "user_list";
+//		
+//	}
+	
+	
+	//검색 기능이 포함된 리스트
 	@RequestMapping("/userList")
-	public String list(Model model, @PageableDefault Pageable pageable, 
+	public String list(Model model, @PageableDefault Pageable pageable,
+			@ModelAttribute PageRequestDTO pageRequestDTO,
 			@AuthenticationPrincipal PrincipalDetails principalDetails) {
 		
-		Page<SiteUser> paging = adminService.getLists(pageable);
+		String userName = principalDetails.getUsername();
 		
-	    String userName = principalDetails.getUsername();
-		
-		//모든 데이터가 담긴 lists를 user_list에 넘겨줌
-		model.addAttribute("paging", paging);
-		model.addAttribute("userName", userName);
-		
-		return "user_list";
-		
+	    model.addAttribute("paging", adminService.getList(pageRequestDTO)); // 또는 적절한 필드와 데이터 매핑
+	    model.addAttribute("userName", userName);
+	    
+	    return "user_list2";
 	}
 	
 	@RequestMapping("/sellerRequestList")
@@ -249,17 +270,31 @@ public class AdminController {
 		
 	}
 	
+	//동작은 잘 하지만 페이징 처리에서 isActivated 값이 변경 안됨
 	@PreAuthorize("isAuthenticated")
-	@GetMapping("/deleteUser/{id}")
-	public String deleteUser(@PathVariable("id") Long id) {
+	@GetMapping("/deactivateOrReactivate/{userName}")
+	public String deactivateOrReactivate(@PathVariable("userName") String userName) {
 	
 		//질문글 데이터 받아옴
-		SiteUser siteUser = userService.getUser(id);
+		SiteUser siteUser = userService.getUserByUserName(userName);
 		
-		adminService.delete(siteUser);
+		adminService.deactivateOrReactivate(siteUser);
 		
 		return "redirect:/admin/userList";
 		
 	}
+	
+//	@PreAuthorize("isAuthenticated")
+//	@GetMapping("/reactivateUser/{id}")
+//	public String reactivateUser(@PathVariable("id") Long id) {
+//	
+//		//질문글 데이터 받아옴
+//		SiteUser siteUser = userService.getUser(id);
+//		
+//		adminService.deactivateOrReactivate(siteUser);
+//		
+//		return "redirect:/admin/userList";
+//		
+//	}
 	
 }

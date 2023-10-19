@@ -55,6 +55,8 @@ JPA 엔터티나 다른 ORM(Object-Relational Mapping) 프레임워크를 사용
 @NoArgsConstructor
 public class SiteUser implements Serializable{
 
+	//private static final long serialVersionUID = 517010009203139983L;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -126,7 +128,8 @@ public class SiteUser implements Serializable{
     @OneToMany(mappedBy = "requestUser", fetch = FetchType.LAZY)
     private List<SellerRequest> sellerRequestList;
     
-    //로그인 비활성화 메소드 추가 예정(6개월)
+    @Column(columnDefinition = "TINYINT(1)")
+    private boolean isActivated;
     
 	//회원정보 수정(자동 반영)
 	public SiteUser update(String userName, String picture) {
@@ -150,7 +153,7 @@ public class SiteUser implements Serializable{
   	@Builder
     public SiteUser(Long id, UserRole role, String email, String password, String userName, 
     		String provider, String providerId, String name, LocalDateTime createdDate, 
-    		LocalDate birthDate, String postcode, String address, String detailAddress, 
+    		LocalDate birthDate, String postcode, String address, String detailAddress, boolean isActivated,
     		String tel, String picture, boolean seller, String intro, Membership membership,
     		Long point, Interest interest1, Interest interest2, Interest interest3, LocalDateTime modifyDate) {
   		
@@ -167,6 +170,7 @@ public class SiteUser implements Serializable{
         this.postcode = postcode;
         this.address = address;
         this.detailAddress = detailAddress;
+        this.isActivated = isActivated;
         this.tel = tel;
         this.picture = picture;
         this.seller = seller;

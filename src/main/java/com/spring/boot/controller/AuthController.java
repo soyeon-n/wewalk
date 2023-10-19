@@ -22,6 +22,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -54,26 +55,18 @@ public class AuthController {
 	private final UserService userService;
 	private final CartService cartService;
 	
-	
+	@PreAuthorize("isAnonymous()")
 	@GetMapping("/signup")
-	public String signup(UserCreateForm userCreateForm, @AuthenticationPrincipal PrincipalDetails principalDetails) {
-		
-		if(principalDetails.getUser() != null) {
-			return "redirect:/";
-		}
-		
-		return "signup_form";
-		
+	public String signup(UserCreateForm userCreateForm) {
+	    
+	    // 로그인되지 않은 상태라면 회원가입 페이지를 보여줌
+	    return "signup_form";
 	}
 	
+	@PreAuthorize("isAnonymous()")
 	@PostMapping("/signup")
 	//@PreAuthorize("isAnonymous()") // 로그인되지 않은 사용자에게만 허용
-	public String signup(@Valid UserCreateForm userCreateForm, BindingResult bindResult, 
-			@AuthenticationPrincipal PrincipalDetails principalDetails) {
-		
-		if(principalDetails.getUser() != null) {
-			return "redirect:/";
-		}
+	public String signup(@Valid UserCreateForm userCreateForm, BindingResult bindResult) {
 		
 		//입력값 검증
 		if(bindResult.hasErrors()) {
@@ -120,7 +113,7 @@ public class AuthController {
 		    //UserRole을 지정해서 넣어줘야 하고 거기에 추가로 UserCreateForm과 UserService, SiteUser에서의 데이터 입력 순서를 맞춰줘야 함
 			userService.create(role, userCreateForm.getEmail(), userCreateForm.getPassword1(), userCreateForm.getUserName(), 
 						userCreateForm.getName(), birthDate, userCreateForm.getPostcode(),
-						userCreateForm.getAddress(), userCreateForm.getDetailAddress(), userCreateForm.getTel(), picture, seller);
+						userCreateForm.getAddress(), userCreateForm.getDetailAddress(), userCreateForm.getTel(), picture, seller, true);
 		
 			SiteUser newUser = userService.getUserByUserName(userCreateForm.getUserName());
 			
@@ -171,13 +164,7 @@ public class AuthController {
 	}
 	
 	@PostMapping("/oauthSignup")	
-	public String oauthSignup(@Valid OAuthUserCreateForm oAuthUserCreateForm, BindingResult bindResult, 
-			@AuthenticationPrincipal PrincipalDetails principalDetails) {
-		
-		//로그인되어있으면 메인페이지로 보내기
-		if(principalDetails != null) {
-			return "redirect:/auth/login";
-		}
+	public String oauthSignup(@Valid OAuthUserCreateForm oAuthUserCreateForm, BindingResult bindResult) {
 		
 		//입력값 검증
 		if(bindResult.hasErrors()) {
@@ -207,7 +194,7 @@ public class AuthController {
 		    String tel = oAuthUserCreateForm.getTel();
 		    
 		    userService.oauthSignup(oauthUser, role, name, 
-		    		birthDate, createdDate, postcode, address, detailAddress, tel);		    
+		    		birthDate, createdDate, postcode, address, detailAddress, tel, true);		    
 			
 			//새로 생성한 유저의 카트 생성
 			cartService.create(oauthUser);
@@ -236,6 +223,7 @@ public class AuthController {
 		return "redirect:/auth/login";
 	}
 	
+	@PreAuthorize("isAnonymous()")
 	@GetMapping("/checkUserName")
 	public ResponseEntity<Map<String, Object>> checkUserName(@RequestParam String userName) {
 	    boolean exists = userService.existsByUserName(userName);
@@ -277,6 +265,27 @@ public class AuthController {
             return "redirect:/"; // 홈페이지로 이동
         }
 	}
+	
+	@GetMapping("/reactivateUser")
+	public String reactivateUser(@RequestParam String userName, Model model) {
+	
+		return "reActivate";
+		
+	}
+	
+	@PostMapping("/reactivateUser")
+	public String reactivateUser(@RequestParam String userName) {
+	
+		SiteUser siteUser = userService.getUserByUserName(userName);
+		
+		if(siteUser.isActivated() == false) {
+			userService.reactivate(siteUser);			
+		}
+		
+		return "redirect:/auth/login";
+		
+	}
+	
 	//login은 security가 처리하므로 post방식의 로그인 처리 메소드는 없어도 됨
 	@GetMapping("/login")
 	public String login(@AuthenticationPrincipal PrincipalDetails principalDetails) {

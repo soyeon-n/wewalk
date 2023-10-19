@@ -30,7 +30,7 @@ public class UserService {
 	//id 생성 메소드
 	public SiteUser create(UserRole role, String email, String password, String userName,  
 							String name, LocalDate birthDate, String postcode, String address, 
-							String detailAddress, String tel, String picture, boolean seller) {
+							String detailAddress, String tel, String picture, boolean seller, boolean isActivated) {
 		
 		SiteUser user = SiteUser.builder()
 								.role(role)
@@ -46,6 +46,7 @@ public class UserService {
 								.tel(tel)
 								.picture(picture)
 								.seller(seller)
+								.isActivated(isActivated)
 								.build();
 		
 		//회원정보 db에 저장
@@ -117,7 +118,7 @@ public class UserService {
 	//소셜 로그인 유저 회원가입(DB에 있는 정보 업데이트)
   	public void oauthSignup(SiteUser siteUser, UserRole role, String name, 
   			LocalDate birthDate, LocalDateTime createdDate, 
-  			String postcode, String address, String detailAddress, String tel) {
+  			String postcode, String address, String detailAddress, String tel, boolean isActivated) {
   		
   		siteUser.setRole(role);
   		siteUser.setName(name);
@@ -127,6 +128,7 @@ public class UserService {
   		siteUser.setAddress(address);
   		siteUser.setDetailAddress(detailAddress);
   		siteUser.setTel(tel);
+  		siteUser.setActivated(isActivated);
   		
   		userRepository.save(siteUser);
   		
@@ -173,6 +175,21 @@ public class UserService {
 		}
 		
 	}
+	
+	//논리적 삭제
+	//비활성화 또는 활성화 모두 가능하게 함
+	public void reactivate(SiteUser siteUser) {
+		
+		System.out.println(siteUser + "활성화");
+
+		//물리적 삭제는 기한을 두고 진행할 수 있게 추후 업데이트 예정
+		//		adminRepository.delete(siteUser);
+		
+		siteUser.setActivated(true);
+		
+		userRepository.save(siteUser);
+	}
+	
 	/* security를 이용한 비밀번호 일치여부 확인 메소드
 	 public boolean checkPassword(String username, String inputPassword) {
 	    try {

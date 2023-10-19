@@ -19,6 +19,7 @@ public class SiteUserDTO{
     private String name;
     private String picture;
     private String provider;
+	private boolean isActivated;
 	
     // SiteUser 엔티티로부터 DTO를 생성하는 정적 메서드
     /*public static SiteUserDTO fromEntity(SiteUser entity) {
@@ -41,8 +42,8 @@ public class SiteUserDTO{
   	}
     
   	@Builder
-  	public SiteUserDTO(Long id, UserRole role, String email, 
-  			String userName, String name, String picture, String provider) {
+  	public SiteUserDTO(Long id, UserRole role, String email, String userName, 
+  			String name, String picture, String provider, boolean isActivated) {
   		
   		this.id = id;
   		this.role = role;
@@ -51,6 +52,7 @@ public class SiteUserDTO{
   		this.name = name;
   		this.picture = picture;
   		this.provider = provider;
+  		this.isActivated = isActivated;
   		
   	}
   	

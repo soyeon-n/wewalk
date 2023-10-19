@@ -5,6 +5,19 @@
 
 <!-- layout.html 에 있는 부분과 이름 맞춰줌 -->
 <div layout:fragment="content" class="containter my-3">
+	
+	<form action="/admin/userList" method="get" name="searchForm">
+		<input type="hidden" name="page" value="1">
+		<select name="type" class="selectFiled">
+			<option th:selected="${pageRequestDTO.type == null}">-------</option>
+			<option value="u" th:selected="${pageRequestDTO.type == 'u'}">계정명</option>
+			<option value="e" th:selected="${pageRequestDTO.type == 'e'}">이메일</option>
+			<option value="ue" th:selected="${pageRequestDTO.type == 'ue'}">계정명 + 이메일</option>
+		</select>
+		<input type="text" name="keyword" class="textFiled" th:value="${pageRequestDTO.keyword}"/>
+		<input type="button" value=" 검 색 " class="btn2" onclick="sendIt();"/>		
+	</form>
+
 	<table class="table">
 	<thead class="table-dark">
 		<tr class="text-center">
@@ -31,36 +44,40 @@
 	paging.hasPrevious	이전 페이지 존재 여부
 	paging.hasNext		다음 페이지 존재 여부 -->
 	<tbody>
-		<tr class="text-center" th:each="siteUser, loop : ${paging}">
-			<!-- 번호 -->
-			<td th:text="${paging.totalElements - (paging.number * paging.size) - loop.index}"></td>
-			<!-- 계정명 -->
-			<td th:text="${siteUser.userName}"></td>
+		<tr class="text-center" th:each="siteUserDTO, loop : ${paging.dtoList}">
+			<td th:text="${paging.totalElements - ((paging.number-1) * paging.size) - loop.index}"></td>
+			<td th:text="${siteUserDTO.userName}"></td>
 			<td class="text-start">
-				<!-- 이메일 주소 -->
-				<a th:href="@{|/admin/modifyUser/${siteUser.id}|}" th:text="${siteUser.email}"></a>
+				<!-- <a th:href="@{/user/login}" sec:authorize="isAnonymous()" th:text="${question.subject}"></a> -->
+				<a th:href="@{|/admin/modifyUser/${siteUserDTO.id}|}" th:text="${siteUserDTO.email}"></a>
 				
 				<!-- 답글 갯수 <span class="text-danger small ms-1" th:if="${#lists.size(question.answerList)>0}"
 					th:text="${#lists.size(question.answerList)}"></span> -->
 			</td>
 			<td>
-			<!-- 권한 -->
-				<span th:text="${siteUser.role}"></span>
+			<span th:text="${siteUserDTO.role}"></span>
 			</td>
 <!-- 			<span th:if="${question.author!=null}" 
 			th:text="${question.author.userName}"></span> -->
 			<!-- 생성일자 표시 <td th:text="${#temporals.format(question.createdDate, 'yyyy-MM-dd HH:mm')}">작성일 </td> -->
 			<td th:inline="javascript">
-			    <a href="javascript:void(0);" th:onclick="confirmDelete([[${siteUser.id}]])" th:text="삭제"></a>
+			    <a href="javascript:void(0);" th:onclick="confirmDeactivateOrReactivate([[${siteUserDTO.userName}]], [[${siteUserDTO.isActivated}]])" th:text="${siteUserDTO.isActivated} ? 비활성화 : 활성화"></a>
 			</td>
+			<!-- 리스트를 화면에 띄우고 비활성화까지는 잘 되지만 실시간으로 isActivated의 값이 변동되지 않음 -->
+			<!-- 검색 기능 추가 예정 -->
 	<script type="text/javascript">
-		function confirmDelete(userId) {
+		function confirmDeactivateOrReactivate(userName, isActivated) {
 			
-		    var result = confirm("삭제하시겠습니까?");
+			var result; 
+			if(isActivated) {
+		        result = confirm(userName + " 사용자를 비활성화하시겠습니까?");
+		    } else {
+		        result = confirm(userName + " 사용자를 활성화하시겠습니까?");
+		    }
 		    
-		    // '예'를 클릭했을 때의 처리. 예를 들면, 삭제 처리를 위한 페이지로 리다이렉트.
+			// '예'를 클릭했을 때의 처리. 예를 들면, 삭제 처리를 위한 페이지로 리다이렉트.
 		    if (result) {
-		        window.location.href = "/admin/deleteUser/" + userId;  // 해당 URL을 삭제 처리 페이지의 URL로 변경하세요.
+		        window.location.href = "/admin/deactivateOrReactivate/" + userName;  // 해당 URL을 삭제 처리 페이지의 URL로 변경하세요.
 		    } 
 		    
 		    // '아니오'를 클릭했을 때는 아무런 동작을 하지 않습니다.
@@ -70,7 +87,7 @@
 	</tbody>
 	</table>
 	<!-- 페이징 처리 -->
-	<div th:if="${!paging.isEmpty()}">
+	<div th:if="${!paging.isEmpty}">
 	
 	<!-- 페이징은 5개씩 -->
 		<nav aria-label="Page navigation">
@@ -81,12 +98,12 @@
 				
 				<!-- << -->
 				<li>
-					<a class="page-link" th:style="${paging.first} ? 'display:none'" th:href="@{/admin/userList?page=1}">&laquo;</a>
+					<a class="page-link" th:style="${paging.number == paging.start} ? 'display:none'" th:href="@{/admin/userList?page=1}">&laquo;</a>
 				</li>
 			
 				<!-- < -->
 				<li class="page-item"
-					th:style="${paging.first}?'display:none'">
+					th:style="${paging.number == paging.start}?'display:none'">
 					<a class="page-link"
 						th:href="@{/admin/userList(page=${paging.number})}">&lsaquo;</a>
 				</li>
@@ -102,14 +119,14 @@
 				
 				<!-- > -->
 				<li class="page-item"
-					th:style="${paging.last} ? 'display:none'">
+					th:style="${paging.number == paging.end} ? 'display:none'">
 					<a class="page-link"
 						th:href="@{/admin/userList(page=${paging.number}+2)}">&rsaquo;</a>
 				</li>
 				
 				<!-- >> -->
 				<li>
-					<a class="page-link" th:style="${paging.last} ? 'display:none'" 
+					<a class="page-link" th:style="${paging.number == paging.end} ? 'display:none'" 
 					th:href="@{/admin/userList(page=${paging.totalPages})}">&raquo;</a>
 				</li>
 			</ul>

@@ -27,6 +27,8 @@ import lombok.RequiredArgsConstructor;
 public class SecurityConfig {
 	
 	private final PrincipalService principalService;
+    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+    private final CustomAccessDeniedHandler customAccessDeniedHandler;
 	
 	//CustomOAuthService
 	@Bean
@@ -51,7 +53,10 @@ public class SecurityConfig {
 		        .antMatchers("/seller/**").hasRole(UserRole.SELLER.name())
 		        .anyRequest().permitAll()
 	        .and()
-	        .exceptionHandling().accessDeniedPage("/no-access");
+	        .exceptionHandling()
+            .authenticationEntryPoint(customAuthenticationEntryPoint) //로그인 과정에서 비활성화된 계정에 대한 처리
+            .accessDeniedHandler(customAccessDeniedHandler); //로그인 후 접근 권한이 없는 경우에 대한 처리
+        
 //        , "/oauth2/authorization/**"
 		// login 설정
         http

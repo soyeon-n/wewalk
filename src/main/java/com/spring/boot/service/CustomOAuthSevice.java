@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -102,6 +103,7 @@ public class CustomOAuthSevice extends DefaultOAuth2UserService{
 			        				.providerId(providerId)
 			        				.createdDate(createdTime)
 			        				.picture(picture)
+			        				.isActivated(true)
 			        				.build();
         	
         	userRepository.save(siteUser);
@@ -110,9 +112,11 @@ public class CustomOAuthSevice extends DefaultOAuth2UserService{
         	
         	return new PrincipalDetails(siteUser, oAuth2User.getAttributes());
         	
-        }else {                	
+        }else if(userEntity.isPresent() == true && userEntity.get().isActivated() == false){//비활성화 되어있을 시 로그인 안되게 처리                	
+        	throw new UsernameNotFoundException("User is deactivated");
+        }else {
         	
-        	SiteUser existingUser = userEntity.get();
+        	SiteUser existingUser = userEntity.get();  	        	
         	
         	if(existingUser.getRoleKey().equals("OAUTH")) {
         		System.out.println(existingUser.getRole().getTitle());
