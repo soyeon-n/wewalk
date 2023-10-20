@@ -79,7 +79,7 @@ public class ProductService {
 	
 	//상품삭제 
 	//희주님 꺼 
-	public Product getProductById(Integer id) {
+	public Product getProductById(Long id) {
 		Product product = productRepository.findById(id).get();
 		return product;
 	}

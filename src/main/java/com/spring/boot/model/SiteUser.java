@@ -98,13 +98,14 @@ public class SiteUser implements Serializable{
 	//seller의 값이 1이고 role이 ADMIN이 아니면 SELLER role 부여
 	@Column(columnDefinition = "TINYINT(1) default 0")
 	private boolean seller;
-
 	
 	private String intro;
 	
 	//멤버 등급
 	private String grade;
 
+	@Column(columnDefinition = "TINYINT(1) default 0")
+	private boolean membership;
 	
 	//위워크페이 포인트(bigint로 들어가므로 -9,223,372,036,854,775,808부터 9,223,372,036,854,775,807까지의 정수값을 저장할 수 있음)
 	//적립내역 테이블이 필요할 것 같음
@@ -169,7 +170,7 @@ public class SiteUser implements Serializable{
     public SiteUser(Long id, UserRole role, String email, String password, String userName, 
     		String provider, String providerId, String name, LocalDateTime createdDate, 
     		LocalDate birthDate, String postcode, String address, String detailAddress, boolean isActivated,
-    		String tel, String picture, boolean seller, String intro,
+    		String tel, String picture, boolean seller, String intro, Integer paymoney,
     		Integer point, Interest interest1, Interest interest2, Interest interest3, LocalDateTime modifyDate) {
   		
   		this.id = id;
@@ -190,6 +191,7 @@ public class SiteUser implements Serializable{
         this.picture = picture;
         this.seller = seller;
         this.intro = intro;
+        this.paymoney = paymoney;
         this.point = point;
         this.interest1 = interest1;
         this.interest2 = interest2;

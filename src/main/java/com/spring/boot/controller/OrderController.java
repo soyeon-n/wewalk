@@ -91,20 +91,20 @@ public class OrderController {
 		SiteUser user = userService.getUserByUserName(principalDetails.getUsername());
 		
 		//JSON데이터 역직렬화 
-		List<Map<String, Integer>> selectedProducts = new ArrayList<>();
+		List<Map<String, Long>> selectedProducts = new ArrayList<>();
 			try {
 			    ObjectMapper objectMapper = new ObjectMapper();
-			    selectedProducts = objectMapper.readValue(selectedProductsJSON, new TypeReference<List<Map<String, Integer>>>(){});
+			    selectedProducts = objectMapper.readValue(selectedProductsJSON, new TypeReference<List<Map<String, Long>>>(){});
 			} catch (JsonProcessingException e) {
 				
 			}
 		
-		Map<Product, Integer> productList = new HashMap<>();	
+		Map<Product, Long> productList = new HashMap<>();	
 		
-		for(Map<String,Integer> selectProduct : selectedProducts) {
+		for(Map<String,Long> selectProduct : selectedProducts) {
 			
-			Integer productId = selectProduct.get("productId");
-			Integer quantity = selectProduct.get("quantity");
+			Long productId = selectProduct.get("productId");
+			Long quantity = selectProduct.get("quantity");
 			
 			Product product = productService.getProductById(productId);
 			

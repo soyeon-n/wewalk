@@ -1,45 +1,76 @@
 var product_cost = 0;
 var delivery_cost = 0;
 
+function al() {
+var emoney = Number($('#paper_reserves2').text().replace(/[^0-9]/g, ''));
+
+alert(emoney);
+}
+
 $(document).ready(function(){
-
-    var emoney = Number($('.possess .emph').text());
-
-    $('.possess .emph').text(comma(emoney));
+	
+	//포인트.페이머니 잔액
+    var emoney = Number($('#mypoint').text());
+	var paymoney = Number($('#mypaymoney').text());
     
-    //모두 사용 클릭시
+    $('#mypoint').text(comma(emoney));
+    $('#mypaymoney').text(comma(paymoney));
+
+    //포인트모두 사용 클릭시
     $(".emoney_chkbox").click(function(){
     
-        var sum = product_cost+delivery_cost;
-        
-        if(emoney>sum){
-        	$(".emoney_reg input").val(comma(sum));
-        	emoney=sum;
+    	//표시된 결제예정금액
+        var sum = Number($('#paper_settlement').text().replace(/[^0-9]/g, ''));
+        var inputted = Number($("#emoney").val().replace(/[^0-9]/g, ''));
+
+        if(emoney>=sum+inputted){
+        	$(".emoney_reg #emoney").val(comma(sum+inputted));
+        	$("#paper_reserves").text(" - " + comma(sum+inputted)+ " 원");
+        	$(".emoney_point").val(sum+inputted);
         }else{
-        	$(".emoney_reg input").val(comma(emoney));
+        	$(".emoney_reg #emoney").val(comma(emoney));
+        	$("#paper_reserves").text(" - " + comma(emoney)+ " 원");
+        	$(".emoney_point").val(emoney);
         }
+      
+        product_price();
+       
         
-        
-        $("#paper_reserves").text(" - " + comma(emoney)+ " 원");
-        $(".emoney_point").val(emoney);
+    })
+    
+    //페이머니 모두 사용 클릭시
+    $(".paymoney_chkbox").click(function(){
+        var sum = Number($('#paper_settlement').text().replace(/[^0-9]/g, ''));
+        var inputted = Number($("#paymoney").val().replace(/[^0-9]/g, ''));
+  
+        if(paymoney>=sum+inputted){
+        	$(".emoney_reg #paymoney").val(comma(sum+inputted));
+        	$("#paper_reserves2").text(" - " + comma(sum+inputted)+ " 원");
+        	$(".paymoney_point").val(sum+inputted);
+        }else{
+        	$(".emoney_reg #paymoney").val(comma(paymoney));
+        	$("#paper_reserves2").text(" - " + comma(paymoney)+ " 원");
+        	$(".paymoney_point").val(paymoney);
+        }
+
         product_price();
        
         
     })
     
 	//포인트결제창 숫자입력시
-	$("#emoney").on("input", function() {
-    
+	$("#emoney").on("focusout", function() {
+    	
 	    var value = $(this).val().replace(/[^0-9]/g, '');
 	
 	    $(this).val(value);
-
-	    var sum = product_cost + delivery_cost;
-	    input_emoney = Number(value);
-
-	    if (input_emoney >= sum) {
-	        if (emoney >= sum) {
-	            input_emoney = sum;
+		var already = Number($('#paper_reserves').text().replace(/[^0-9]/g, ''));
+		var sum = Number($('#paper_settlement').text().replace(/[^0-9]/g, ''));
+	    var input_emoney = Number(value);
+	    
+	    if (input_emoney >= sum+already) {
+	        if (emoney >= sum+already) {
+	            input_emoney = sum+already;
 	        } else {
 	            input_emoney = emoney;
 	        }
@@ -56,6 +87,34 @@ $(document).ready(function(){
 	    
 	});
 	
+	//페이머니결제창 숫자입력시
+	$("#paymoney").on("focusout", function() {
+    
+	    var value = $(this).val().replace(/[^0-9]/g, '');
+	
+	    $(this).val(value);
+		var already = Number($('#paper_reserves2').text().replace(/[^0-9]/g, ''));
+	    var sum = Number($('#paper_settlement').text().replace(/[^0-9]/g, ''));
+	    var input_paymoney = Number(value);
+		
+	    if (input_paymoney >= sum+already) {
+	        if (paymoney >= sum+already) {
+	            input_paymoney = sum+already;
+	        } else {
+	            input_paymoney = paymoney;
+	        }
+	    } else {
+	        if (input_paymoney > paymoney) {
+	            input_paymoney = paymoney;
+	        }
+	    }
+
+	    $("#paymoney").val(comma(input_paymoney));
+	    $("#paper_reserves2").text(" - " + comma(input_paymoney) + " 원");
+	    $(".paymoney_point").val(input_paymoney);
+	    product_price();
+	    
+	});
 	
     product_price();
 
@@ -81,10 +140,11 @@ function product_price(){
 	$("#paper_delivery").text(comma(delivery_cost));
 	
     var emoney_point = Number($(".emoney_point").val());
+	var paymoney_point = Number($(".paymoney_point").val());
+	
+    $("#paper_settlement").text(comma(product_cost + delivery_cost - emoney_point - paymoney_point));
 
-    $("#paper_settlement").text(comma(product_cost + delivery_cost - emoney_point));
-
-    $("#product_price_value").val(product_cost + delivery_cost - emoney_point);
+    $("#product_price_value").val(product_cost + delivery_cost - emoney_point - paymoney_point);
     
 }
 
@@ -160,9 +220,6 @@ function execDaumPostcode() {
     }).open();
 }
 
-function al() {
-
-}
 
 
 function requestPay() {
