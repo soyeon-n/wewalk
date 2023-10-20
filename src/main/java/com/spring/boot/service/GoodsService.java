@@ -1,6 +1,12 @@
 package com.spring.boot.service;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -8,6 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.spring.boot.dao.GoodsRepository;
 import com.spring.boot.dto.Goods;
@@ -45,19 +52,32 @@ public class GoodsService {
     }
 	
 	//Sale 출력
-	public List<Goods> getSaleProducts() {
-	    return goodsRepository.findByStockGreaterThan(0);
+	public int getSaleCount() {
+	    List<Goods> saleGoods = goodsRepository.findByStockGreaterThan(0);
+	    return saleGoods.size();
 	}
 	
 	//Soldout 출력
-	public List<Goods> getSoldoutProducts() {
-	    return goodsRepository.findByStockEquals(0);
+	public int getSoldoutCount() {
+		List<Goods> soldoutGoods = goodsRepository.findByStockEquals(0);
+		return soldoutGoods.size();
 	}
 	
-	public Page<Goods> getProductsPaged(int pageNum, int itemsPerPage) {
+	public Page<Goods> getProductsPaged(Long userId, int pageNum, int itemsPerPage) {
         Pageable pageable = PageRequest.of(pageNum - 1, itemsPerPage);
-        return goodsRepository.findAll(pageable);
+        // 사용자 ID를 사용하여 해당 사용자가 등록한 상품만 가져오도록 변경
+        return goodsRepository.findByUserId(userId, pageable);
     }
+	
+	public Page<Goods> getSaleProductsPaged(Long userId,int pageNum, int itemsPerPage) {
+	    Pageable pageable = PageRequest.of(pageNum - 1, itemsPerPage);
+	    return goodsRepository.findByUserIdAndStockGreaterThan(userId, 0, pageable);
+	}
+
+	public Page<Goods> getSoldoutProductsPaged(Long userId, int pageNum, int itemsPerPage) {
+	    Pageable pageable = PageRequest.of(pageNum - 1, itemsPerPage);
+	    return goodsRepository.findByUserIdAndStockEquals(userId, 0, pageable);
+	}
 
     public long getTotalItemCount() {
         return goodsRepository.count();
@@ -70,19 +90,57 @@ public class GoodsService {
     
     @Transactional
     public void updateGoods(int pno, GoodsForm goodsForm) {
-        // 상품 ID를 사용하여 데이터베이스에서 상품을 가져옵니다.
         Goods existingGoods = goodsRepository.findById(pno).orElse(null);
-        
+
         if (existingGoods != null) {
-            // 상품 정보 업데이트
             existingGoods.setName(goodsForm.getName());
             existingGoods.setContent(goodsForm.getContent());
             existingGoods.setPrice(goodsForm.getPrice());
             existingGoods.setCategory(goodsForm.getCategory());
             existingGoods.setStock(goodsForm.getStock());
-            
-            // 상품 업데이트
+
+            // 이미지 업로드 및 이미지 경로 가져오기
+            List<String> imagePaths = uploadImages(goodsForm.getImages());
+
+            // 이미지 경로 업데이트
+            existingGoods.setImage(imagePaths.size() >= 1 ? imagePaths.get(0) : null);
+            existingGoods.setImage1(imagePaths.size() >= 2 ? imagePaths.get(1) : null);
+            existingGoods.setImage2(imagePaths.size() >= 3 ? imagePaths.get(2) : null);
+            existingGoods.setImage3(imagePaths.size() >= 4 ? imagePaths.get(3) : null);
+
             goodsRepository.save(existingGoods);
+        }
+    }
+
+    private List<String> uploadImages(List<MultipartFile> images) {
+        List<String> imagePaths = new ArrayList<>();
+        
+        for (MultipartFile image : images) {
+            if (image != null && !image.isEmpty()) {
+                String imagePath = saveImage(image);
+                if (imagePath != null) {
+                    imagePaths.add(imagePath);
+                }
+            }
+        }
+
+        return imagePaths;
+    }
+    
+    public String saveImage(MultipartFile image) {
+        String uploadDirectory = "src/main/resources/static/product";
+
+        String originalFilename = image.getOriginalFilename();
+
+        String uniqueFileName = UUID.randomUUID().toString() + "_" + originalFilename;
+
+        try {
+            Files.createDirectories(Paths.get(uploadDirectory));
+            Files.copy(image.getInputStream(), Paths.get(uploadDirectory, uniqueFileName), StandardCopyOption.REPLACE_EXISTING);
+            return uniqueFileName;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
         }
     }
    

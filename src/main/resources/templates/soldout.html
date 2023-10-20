@@ -158,7 +158,7 @@
 												<div class="page-numbers">
 												    <span th:each="page, stat : ${pageList}">
 													    <span th:if="${currentPage == page}" class="current-page" th:text="${page}"></span>
-													    <a th:unless="${currentPage == page}" th:href="@{/user/mypage(pageNum=${page})}" th:text="${page}"></a>
+													    <a th:unless="${currentPage == page}" th:href="@{/user/mypage/soldout(pageNum=${page})}" th:text="${page}"></a>
 													</span>
 												</div>
 												

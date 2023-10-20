@@ -23,8 +23,7 @@ public class GoodsForm {
     private List<MultipartFile> images;
     
     private String category;
-    
-    private String tag;
+
     
     // 필드 이름과 어노테이션을 일치시켜야 합니다.
 
@@ -60,13 +59,6 @@ public class GoodsForm {
 		this.category = category;
 	}
 
-	public String getTag() {
-	    return tag;
-	}
-
-	public void setTag(String tag) {
-	    this.tag = tag;
-	}
 
 	public List<MultipartFile> getImages() {
 		return images;

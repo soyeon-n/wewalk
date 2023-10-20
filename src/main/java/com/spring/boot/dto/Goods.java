@@ -1,5 +1,6 @@
 package com.spring.boot.dto;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -70,6 +71,13 @@ public class Goods {
     	date = new Date();
     }
 
-
+    public List<String> getImages() {
+        List<String> images = new ArrayList();
+        images.add(image);
+        images.add(image1);
+        images.add(image2);
+        images.add(image3);
+        return images;
+    }
 
 }

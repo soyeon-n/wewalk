@@ -68,7 +68,7 @@ public class MyPageController {
             model.addAttribute("user", user);
             
             int itemsPerPage = 9; // 페이지당 항목 수
-            Page<Goods> goodsPage = goodsService.getProductsPaged(pageNum, itemsPerPage);
+            Page<Goods> goodsPage = goodsService.getProductsPaged(user.getId(), pageNum, itemsPerPage);
             List<Goods> goods = goodsPage.getContent();
             model.addAttribute("goods", goods);
             
@@ -91,26 +91,48 @@ public class MyPageController {
     }
     
     @GetMapping("/mypage/sale")
-    public String myPageSale(Model model, Authentication authentication) {
+    public String myPageSale(Model model, Authentication authentication, @RequestParam(name = "pageNum", defaultValue = "1") int pageNum) {
 
     	SiteUser user = userService.getUserByEmail(authentication.getName());
         model.addAttribute("user", user);
 
-        List<Goods> saleGoods = goodsService.getSaleProducts();
-        model.addAttribute("goods", saleGoods);
+        int itemsPerPage = 9;
+        Page<Goods> saleGoodsPage = goodsService.getSaleProductsPaged(user.getId(), pageNum, itemsPerPage);
+        List<Goods> saleGoods = saleGoodsPage.getContent();
 
+        int totalItemCount = (int) goodsService.getSaleCount(); // Sale 상품의 총 개수
+        int totalPages = (int) Math.ceil((double) totalItemCount / itemsPerPage);
+
+        List<Integer> pageList = IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList());
+
+        model.addAttribute("goods", saleGoods);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("currentPage", pageNum);
+        model.addAttribute("pageList", pageList);
+        
         return "sale";
 
     }
     
     @GetMapping("/mypage/soldout")
-    public String myPageSoldout(Model model, Authentication authentication) {
+    public String myPageSoldout(Model model, Authentication authentication, @RequestParam(name = "pageNum", defaultValue = "1") int pageNum) {
 
     	SiteUser user = userService.getUserByEmail(authentication.getName());
         model.addAttribute("user", user);
 
-        List<Goods> soldoutGoods = goodsService.getSoldoutProducts();
-        model.addAttribute("goods", soldoutGoods);
+        int itemsPerPage = 9;
+        Page<Goods> soldGoodsPage = goodsService.getSoldoutProductsPaged(user.getId(), pageNum, itemsPerPage);
+        List<Goods> soldGoods = soldGoodsPage.getContent();
+
+        int totalItemCount = (int) goodsService.getSoldoutCount(); 
+        int totalPages = (int) Math.ceil((double) totalItemCount / itemsPerPage);
+
+        List<Integer> pageList = IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList());
+
+        model.addAttribute("goods", soldGoods);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("currentPage", pageNum);
+        model.addAttribute("pageList", pageList);
 
         return "soldout";
 
@@ -327,9 +349,6 @@ public class MyPageController {
             // 입력 데이터의 유효성 검사 실패 시, 다시 폼을 보여줌
             return "myshop_add";
         }
-
-        // 컨트롤러에서 선택된 태그를 GoodsForm에 설정
-        goodsForm.setTag(goodsForm.getTag());
         
         // 파일 업로드 및 경로 저장
         List<String> imagePaths = new ArrayList<>();
@@ -367,7 +386,6 @@ public class MyPageController {
         // 이미지를 저장할 디렉토리 경로 설정 (application.properties에 설정한 경로 사용)
     	
     	String uploadDirectory = "src/main/resources/static/product";
-        
 
         // 업로드한 이미지 파일의 원래 파일 이름
         String originalFilename = image.getOriginalFilename();
@@ -397,46 +415,35 @@ public class MyPageController {
     
     @GetMapping("/mypage/myshop/edit/{pno}")
     public String myShopEdit(@PathVariable int pno, Model model, Principal principal) {
-        
-        // Principal 객체를 통해 현재 사용자의 ID를 가져옵니다.
-        String currentUserId = principal.getName(); // 사용자의 ID를 가져옴
+    	
+    	SiteUser user = userService.getUserByEmail(principal.getName());
+    	model.addAttribute("user", user);
+    	
+        // Principal 객체를 통해 현재 사용자의 ID를 가져오기
+        String userId = principal.getName(); // 사용자의 ID를 가져옴
 
-        // 상품 정보를 데이터베이스에서 가져옵니다.
-        List<Goods> goodsList = goodsService.getSaleProducts();
-        
-        Goods targetGoods = null;
+        // pno를 기반으로 수정할 상품을 가져옵니다.
+        Goods editGoods = goodsService.getGoodsById(pno);
 
-        // 상품 목록에서 pno와 일치하는 상품을 찾습니다.
-        for (Goods goods : goodsList) {
-            if (goods.getPno() == pno) {
-                targetGoods = goods;
-                break;
-            }
-        }
-
-        // pno에 해당하는 상품을 찾지 못한 경우에 대한 오류 처리
-        if (targetGoods == null) {
-            return "redirect:/error-page"; // 에러 페이지로 리디렉션 또는 다른 처리
-        }
-
-        // 상품의 소유자(사용자 ID)와 현재 로그인한 사용자의 ID를 비교하여 검증
-        if (!currentUserId.equals(targetGoods.getUser().getId())) {
-            return "redirect:/user/mypage"; // 액세스 거부 페이지로 리디렉션 또는 다른 처리
+        // 상품이 없는 경우 또는 권한이 없는 경우에 대한 처리
+        if (editGoods == null || !userId.equals(editGoods.getUser().getEmail())) {
+            return "redirect:/user/mypage"; // 에러 페이지로 리디렉션 또는 다른 처리
         }
 
         // 사용자가 상품을 수정할 수 있으므로 정보를 모델에 추가
-        model.addAttribute("goods", targetGoods);
-        model.addAttribute("goodsForm", new GoodsForm());
+        model.addAttribute("editGoods", editGoods);
         
         return "myshop_edit";
     }
     
     
     @PostMapping("/mypage/myshop/edit/{pno}")
-    public String updateGoods(@PathVariable int pno, GoodsForm goodsForm) {
+    public String myShopEdit(@PathVariable int pno, GoodsForm goodsForm) {
+
         // 상품 정보 업데이트를 수행하는 서비스 호출
         goodsService.updateGoods(pno, goodsForm);
-        return "redirect:/user/mypage"; // 수정 후 다시 마이 페이지로 이동
+        
+        return "redirect:/user/mypage/sale";
         
     }
 

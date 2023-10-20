@@ -144,7 +144,7 @@
 												</div>
 												
 												<div th:each="goods : ${goods}">
-												    <div class="product-container">
+												    <div class="product-container" style="position: relative;">
 												        <div class="product-image">
 												            <img th:src="@{'/product/' + ${goods.image}}">
 												        </div>
@@ -152,23 +152,23 @@
 												            <div class="product-name" th:text="${goods.name}"></div>
 												            <div class="product-price" th:text="${goods.price} + '원'"></div>
 												        </div>
+												        <div class="product-actions" style="position: absolute; bottom: 0; right: 0;">
+												        	<a th:href="@{'/user/mypage/myshop/edit/' + ${goods.pno}}">
+												            <button type="button" class="ico modify" th:onclick=""></button>
+												            </a>
+												        </div>
 												    </div>
 												</div>
+												
 
 												<div class="page-numbers">
 												    <span th:each="page, stat : ${pageList}">
 													    <span th:if="${currentPage == page}" class="current-page" th:text="${page}"></span>
-													    <a th:unless="${currentPage == page}" th:href="@{/user/mypage(pageNum=${page})}" th:text="${page}"></a>
+													    <a th:unless="${currentPage == page}" th:href="@{/user/mypage/sale(pageNum=${page})}" th:text="${page}"></a>
 													</span>
 												</div>
 
-												<!-- 
-												<div class="product-actions" style="position: absolute; bottom: 0; right: 0;">
-												    <a th:href="@{'/user/mypage/myshop/edit/' + ${goods.pno}}">
-												        <button type="button" class="ico modify"></button>
-												    </a>
-												</div>
-												 -->
+												
 												
 											</div>
 											

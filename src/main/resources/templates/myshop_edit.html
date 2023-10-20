@@ -3,7 +3,7 @@
 <head>
  <meta charset="UTF-8">
  <meta name="viewport" content="width=device-width, initial-scale=1.0">
- <title>상품 등록 페이지</title>
+ <title>상품 수정 페이지</title>
  <link rel="stylesheet" href="/css/reset.css">
  <link rel="stylesheet" href="/css/common.css">
  <link rel="stylesheet" href="/css/upload.css">
@@ -289,14 +289,14 @@
                                     				<a class="" href="/user/mypage/heart">찜한 상품</a>
                                 					</li>
                                 					<li name="cate_gory">
-                                    				<a class="on" href="/user/mypage/myshop/add">판매상품등록</a>
+                                    				<a class="on" href="">판매상품수정</a>
                                 					</li>
                                 				</ul> 
                                 				
 												</div>
 												
 												<div class="list_order">
-									              <form th:action="@{/user/mypage/myshop/edit}" th:object="${goodsForm}" method="post" enctype="multipart/form-data">
+									              <form th:action="@{'/user/mypage/myshop/edit/' + ${editGoods.pno}}" th:object="${editGoods}" method="post" enctype="multipart/form-data">
 									                <div class="size">
 									                  <div class="p_board">
 									                    <table width="75%"> 
@@ -306,7 +306,7 @@
 									                                <td colspan="2"> 
 									                                    <div>
 									                                        <span>
-									                                            <input type="text" id="name" class="i_text text1" onkeyup="chkword_name(this, 50)" th:field="*{name}" required>
+									                                            <input type="text" id="name" class="i_text text1" onkeyup="chkword_name(this, 50)" th:field="*{name}" required readonly="readonly">
 									                                        </span>
 									                                    </div>
 									                                    <span class="txtByte" title="현재글자수/최대글자수">
@@ -355,7 +355,7 @@
 									                                <td>
 									                                    <div>
 									                                        <span>
-									                                            <select id="category" name="category" class="product_category" th:field="*{category}">
+									                                            <select id="category" name="category" class="product_category" th:field="*{category}" >
 									                                                <option value="">- - - - - - - - 선택하세요 - - - - - - - -</option>
 									                                                <optgroup label="디지털 기기" >
 									                                                    <option value="데스크탑">-데스크탑·모니터</option>
@@ -421,9 +421,11 @@
 																		    <div class="image_add">
 																		        <input type="file" name="image" th:field="*{images}" multiple="multiple" accept="image/*" id="image_input" onchange="set_main_image(event);">
 																		        <button type="button" class="image_input_button"></button>
-																		        <div id="image_main_container"></div>
+																		        <div id="image_main_container">
+																		        <img th:src="@{'/product/' + ${editGoods.image}}">
+																		        </div>
 																		        <div style="margin-bottom:10px;">
-																		            <button type="button" name="image_main_container1" class="remove" onclick="img_remove(this)">
+																		            <button type="button" name="image_main_container" class="remove" onclick="img_remove(this)">
 																		                <span>삭제</span>
 																		            </button>
 																		        </div>
@@ -432,9 +434,11 @@
 																		    <div class="image_add">
 																		        <input type="file" name="image1" th:field="*{images}" multiple="multiple" accept="image/*" id="image_input" onchange="set_main_image1(event);">
 																		        <button type="button" class="image_input_button"></button>
-																		        <div id="image_main_container1"></div>
+																		        <div id="image_main_container1">
+																		        <img th:if="${editGoods.image1 != null}" th:src="@{'/product/' + ${editGoods.image1}}">
+																		        </div>
 																		        <div style="margin-bottom:10px;">
-																		            <button type="button" name="image_main_container2" class="remove" onclick="img_remove(this)">
+																		            <button type="button" name="image_main_container1" class="remove" onclick="img_remove(this)">
 																		                <span>삭제</span>
 																		            </button>
 																		        </div>
@@ -443,9 +447,11 @@
 																		    <div class="image_add">
 																		        <input type="file" name="image2" th:field="*{images}" multiple="multiple" accept="image/*" id="image_input" onchange="set_main_image2(event);">
 																		        <button type="button" class="image_input_button"></button>
-																		        <div id="image_main_container2"></div>
+																		        <div id="image_main_container2">
+																		        <img th:if="${editGoods.image2 != null}" th:src="@{'/product/' + ${editGoods.image2}}">
+																		        </div>
 																		        <div style="margin-bottom:10px;">
-																		            <button type="button" name="image_main_container3" class="remove" onclick="img_remove(this)">
+																		            <button type="button" name="image_main_container2" class="remove" onclick="img_remove(this)">
 																		                <span>삭제</span>
 																		            </button>
 																		        </div>
@@ -454,9 +460,11 @@
 																		    <div class="image_add">
 																		        <input type="file" name="image3" th:field="*{images}" multiple="multiple" accept="image/*" id="image_input" onchange="set_main_image3(event);">
 																		        <button type="button" class="image_input_button"></button>
-																		        <div id="image_main_container3"></div>
+																		        <div id="image_main_container3">
+																		        <img th:if="${editGoods.image3 != null}" th:src="@{'/product/' + ${editGoods.image3}}">
+																		        </div>
 																		        <div style="margin-bottom:10px;">
-																		            <button type="button" name="image_main_container4" class="remove" onclick="img_remove(this)">
+																		            <button type="button" name="image_main_container3" class="remove" onclick="img_remove(this)">
 																		                <span>삭제</span>
 																		            </button>
 																		        </div>
@@ -470,7 +478,7 @@
 									                                        </div>
 									                                        <span>
 									                                            
-									                                            <textarea class="i_text main_description" name="content"  id="" cols="30" rows="10" onkeyup="chkword_information(this, 1000)"></textarea>
+									                                            <textarea class="i_text main_description" name="content" cols="30" rows="10" onkeyup="chkword_information(this, 1000)"></textarea>
 									                                        </span>
 									                                        <span class="txtByte_big txtByte" title="현재글자수/최대글자수">
 									                                      [
@@ -488,7 +496,7 @@
 									
 													<br/><br/>
 									                  <div id="product_submit" class="pd_submit">
-									                    <button type="submit" >등록하기</button>
+									                    <button type="submit" >수정하기</button>
 									                  </div>
 									
 									                </div>
