@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -130,6 +131,24 @@ public class SiteUser implements Serializable{
     
     @Column(columnDefinition = "TINYINT(1)")
     private boolean isActivated;
+    
+    //은별
+    //상품과 연결
+    @OneToMany(mappedBy = "siteUser", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private List<Product> productList;
+    
+    //내가쓴리뷰
+    @OneToMany(mappedBy = "siteUser", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private List<Review> reviewList;
+    
+    @OneToMany(mappedBy = "siteUser", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private List<Question> questionList;
+    
+    @OneToMany(mappedBy = "siteUser", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private List<Answer> answerList;
+    
+    
+    
     
 	//회원정보 수정(자동 반영)
 	public SiteUser update(String userName, String picture) {

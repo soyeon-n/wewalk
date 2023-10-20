@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>상품답변폼 </title>
+    <link rel="stylesheet" href="/reset.css">
+    <link rel="stylesheet" href="/common.css">
+    <link rel="stylesheet" href="/mykurly_order_list.css">
+    <link rel="stylesheet" href="/mykurly_review.css">
+    <link rel="stylesheet" href="/mykurly_review_register.css">
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script src="./js/mykurly.js"></script>
+    <script src="../main/js/common.js"></script>
+    
+<title>Insert title here</title>
+</head>
+<body>
+
+
+
+<div class="page_section section_write">
+	<div class="head_aticle">
+	    <h2 class="tit">문의답변 작성</h2>
+	</div>
+	<!-- <form name="form_review" id="form_review" action="" method="POST" onsubmit="return submit_check();"> -->
+	
+	
+	<!-- 여기부터 form 내가 작성, 수정필요 여기 ReviewForm 아닌 소문자인것 주의 -->
+	<form th:object="${answerForm}" action="" method="post" name="form_review" id="form_review" onsubmit="return submit_check();" enctype="multipart/form-data">
+	    <!-- <input type="hidden" th:name="${_csrf.parameterName}"   
+	th:value="${_csrf.token}"/> -->
+	    
+	    
+	    <div class="write_board">
+	        <div class="goods_info">
+	            <div class="thumb">
+	                <img src=""
+	                onerror="this.src='https://res.kurly.com/mobile/img/1808/img_none_x2.png'" alt="상품 이미지">
+	            </div>
+	
+	            <div class="desc">
+	                <div class="inner_desc">
+	                    <div class="name_main">[상품명]</div>
+	                    <textarea rows="10" cols=""  readonly="readonly"></textarea>
+	                    <!-- 여기 productNo 가 자동으로 들어 와야함   -->
+	                    <!-- 근데 여기 입력된 값을 가지고 가야함 ?? form 에 들어가야 ?? th:field="${product.pname}" -->
+	                    
+	                </div>
+	            </div>
+	        </div>
+	
+	        <table class="tbl">
+	            <colgroup>
+	                <col style="width:110px;">
+	                <col style="width:auto;">
+	            </colgroup>
+	            <tbody>
+	                <tr>
+	                    <th>제목</th>
+	                    <td>
+	                       
+	                        <!-- 원) <input type="text" name="subject" placeholder="제목을 입력해주세요." class="inp on_txt" value=""> -->
+	                        <!-- <input type="text" th:field="*{title}" name="subject" placeholder="제목을 입력해주세요." class="inp on_txt" value="" /> -->
+	                        
+	                    </td>
+	                </tr>
+	
+	                <tr>
+	                    <th>상품 문의 작성</th>
+	                    <td>
+	                        <div class="field_cmt">
+	                            <!-- 원) <textarea id="fieldCmt" name="contents" cols="100" rows="10" onkeyup="chkword_name(this)"  placeholder="자세한 후기는 다른 고객의 구매에 많은 도움이 되며,
+	일반식품의 효능이나 효과 등에 오해의 소지가 있는 내용을 작성 시 검토 후 비공개 조치될 수 있습니다. 
+	반품/환불 문의는 1:1문의로 가능합니다." class="on_txt" style="height: 202px;" ></textarea> -->
+	                            
+	<textarea id="fieldCmt" name="contents" cols="100" rows="10" onkeyup="chkword_name(this)"  
+	placeholder="상품문의 작성 전 확인해주세요. 답변은 영업일 기준 2-3 일 소요됩니다. 
+	-배송관련, 주문(취소/교환/환불) 에 관련한 사항은 1:1 문의를 이용해 주세요" class="on_txt" style="height: 202px;" 
+	th:field="*{content}" ></textarea>
+	
+	                            <p class="txt_count">
+	                            
+	                                <span class="num">0</span>자 / 최소 10자
+	                            </p>
+	                        </div>
+	                    </td>
+	                </tr>
+	
+	                
+	            </tbody>
+	        </table>
+	
+	        <p class="link_inquire">
+	            혹시 상품에 문제가 있으셨나요?
+	            <a href="#">1:1 문의하기</a>
+	        </p>
+	
+	        <button type="submit" id="btnSubmit" class="btn_reg btn_disabled">등록하기</button>
+	        <input type="submit" id="btnSubmit"  value="답변 등록" class="btn_reg btn_disabled"/>
+	        
+	    </div>
+	</form>
+
+</div>
+
+</body>
+</html>

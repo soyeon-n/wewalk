@@ -15,10 +15,15 @@ public class WebImgConfig implements WebMvcConfigurer{
 	
 	
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
+
 		registry.addResourceHandler("/image/**")//위의주소로 src요청시
 		.addResourceLocations("file:///C:/teamproject/files/images/");
 		registry.addResourceHandler("/general/**")//위의주소로 src요청시
 		.addResourceLocations("file:///C:/teamproject/files/generals/");
+
+		registry.addResourceHandler("/imgfile/**")//위의주소로 src요청시
+		.addResourceLocations("file:///C:/Users/pinke/OneDrive/문서/itwillfinal/files/");
+
 		//.addResourceLocations(imgSavePath);//밑의 로컬주소로 연결
 		//file:///C:/Users/pinke/OneDrive/문서/itwillfinal/files/
 		
