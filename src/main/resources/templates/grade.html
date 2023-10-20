@@ -3,14 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>마이 페이지</title>
+    <title>전체 등급 보기</title>
     <link rel="stylesheet" href="/css/reset.css">
-    <link rel="stylesheet" href="/css/common.css">
-    <link rel="stylesheet" href="/css/order_list.css">
-    <link rel="stylesheet" href="/css/changeInfo.css">
-    <link rel="stylesheet" href="/css/myShopList.css">
+	<link rel="stylesheet" href="/css/common.css">
+	<link rel="stylesheet" href="/css/order_list.css">
+	<link rel="stylesheet" href="/css/Shipping_list.css">
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-    
+	<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script type="text/javascript">
+
+    </script> 
+	
 </head>
 <body>
     <div id="container">
@@ -95,7 +98,7 @@
                         <h2 class="tit_snb">마이 페이지</h2>
                         <div class="inner_sub">
                             <ul class="list_menu">
-                                <li class="on">
+                                <li class="">
                                     <a href="/user/mypage">나의 상점</a>
                                 </li>
                                 <li>
@@ -114,64 +117,18 @@
                             1:1 문의하기
                         </a>
                     </div>
-
-                    <div class="page_section section_myinfo">
+                    
+                    <div class="page_section section_destination">
                         <div class="head_aticle">
-                            <h2 class="tit">나의 상점</h2>
-                        		<div id="main">
-            						<div id="content">
-                						<div class="page_aticle">
-                    						<div id="lnbMenu" class="lnb_menu">
-                       							<div class="inner_lnb">
-                            					<ul class="list">
-                                					<li name="cate_gory">
-                                    				<a class="on">전체보기</a>
-                                					</li>
-                                					<li name="cate_gory">
-                                    				<a class="" href="/user/mypage/sale">판매 중</a>
-                                					</li>
-                                					<li name="cate_gory">
-                                    				<a class="" href="/user/mypage/soldout">판매 완료</a>
-                                					</li>
-                                					<li name="cate_gory">
-                                    				<a class="" href="/user/mypage/heart">찜한 상품</a>
-                                					</li>
-                                					<li name="cate_gory">
-                                    				<a class="" href="/user/mypage/myshop/add">판매상품등록</a>
-                                					</li>
-                                				</ul> 
-                                				
-												</div>
-												
-												<div th:each="goods : ${goods}">
-												    <div class="product-container">
-												        <div class="product-image">
-												            <img th:src="@{'/product/' + ${goods.image}}">
-												        </div>
-												        <div class="product-details">
-												            <div class="product-name" th:text="${goods.name}"></div>
-												            <div class="product-price" th:text="${goods.price} + '원'"></div>
-												        </div>
-												    </div>
-												</div>
-
-												<div class="page-numbers">
-												    <span th:each="page, stat : ${pageList}">
-													    <span th:if="${currentPage == page}" class="current-page" th:text="${page}"></span>
-													    <a th:unless="${currentPage == page}" th:href="@{/user/mypage(pageNum=${page})}" th:text="${page}"></a>
-													</span>
-												</div>
-												
-											</div>	
-										</div>		
-									</div>    
-								</div>
-							</div>
-                    	</div>
+                            <h2 class="tit">
+                                회원 등급 안내
+                                <span id="addrListInfo" class="tit_sub">운영 중인 회원 등급 안내입니다.</span>
+                            </h2>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </body>
-
 </html>

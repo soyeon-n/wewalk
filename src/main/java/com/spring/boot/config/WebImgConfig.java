@@ -6,6 +6,7 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
+<<<<<<< HEAD
 public class WebImgConfig implements WebMvcConfigurer{
 	
 	//로컬 서버 C:// 에저장된 img 파일을 연결해줌 
@@ -30,3 +31,16 @@ public class WebImgConfig implements WebMvcConfigurer{
 	}
 
 }
+=======
+public class WebImgConfig implements WebMvcConfigurer {
+
+    @Value("${img.upload.directory}")
+    private String imgUploadDirectory;
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("src/main/resources/static/product/**")
+                .addResourceLocations(imgUploadDirectory);
+    }
+}
+>>>>>>> SY

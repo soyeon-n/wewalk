@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>주소 찾기</title>
+<link rel="stylesheet" href="/css/reset.css">
+<link rel="stylesheet" href="/css/common.css?ver=4">
+<link rel="stylesheet" href="/css/Shipping_popup.css">
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+
+<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
+</head>
+<body>
+
+    <div class="section_destination" >
+        <div id="inputForm">
+            <form role="form" action="/user/mypage/shipping_popup" th:object="${ShippingForm}" method="post">
+                <div class="modify only_pc">
+                    <p class="tit_result">주소지 등록<br></p>
+                    
+                    <div class="field">
+                    	<div class="address_search">
+                    		<input id="type" type="text" name="type" placeholder="배송지 구분">
+                    		<br/>
+                    		<input id="receivername" type="text" name="receivername" placeholder="받는 사람">
+                    		<br/>
+                    		<input id="phone" type="text" name="phone" placeholder="연락처"> 
+                    		<input type="hidden" id="zipcode" name="zipcode">
+ 						</div>
+ 						<div class="address_search">
+ 							<input id="addrMain" class="address01" type="text" readonly="" name="address01" placeholder="주소를 검색해주세요.">
+                            <!-- 함수를 사용해서 text창을 누르면 검색버튼이 눌리도록 함.-->
+                            
+                            <button id="searchButton" type="button" class="btn" onclick="sample3_execDaumPostcode()">
+                                <span class="ico"></span>주소 검색<!-- 검색kakao api -->
+                            </button>
+                        </div>
+                        <input type="text" id="address02" name="address02" placeholder="나머지 주소를 입력해주세요">
+                    </div>
+                    <label class="label_default"><br>
+                        <input type="checkbox" id="isDefault" name="isDefault">
+                        <span class="ico"></span>기본 배송지로 저장</label>
+                        <!-- db에 반영해야할 요소로 보임.(기본배송지)-->
+                        <button type="submit" class="btn active" id="yourSubmitButtonId">저장</button>
+                        <!-- 저장시 db에 반영됨. 기본배송지 체크 시 반영해야함.-->
+                        
+                </div>
+            </form>
+        </div>
+    </div>
+    <div id="wrapp" style="height:100%;">
+    </div>
+
+
+</body>
+<script>
+
+//우편번호 찾기 찾기 화면을 넣을 element
+var element_wrap = document.getElementById('wrapp');
+
+document.getElementById('addrMain').addEventListener('click', function() {
+    // '주소를 검색해주세요' 텍스트 필드를 클릭하면 재검색 버튼을 누릅니다.
+    document.getElementById('searchButton').click();
+});
+
+function sample3_execDaumPostcode() {
+    $('.section_destination').css('display', 'none');
+
+    // 현재 scroll 위치를 저장해놓는다.
+    var currentScroll = Math.max(document.body.scrollTop, document.documentElement.scrollTop);
+    new daum.Postcode({
+    	
+        oncomplete: function(data) {
+            // 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+            // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+            // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+            var addr = ''; // 주소 변수
+            var extraAddr = ''; // 참고항목 변수
+
+            //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+            if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                addr = data.roadAddress;
+            } else { // 사용자가 지번 주소를 선택했을 경우(J)
+                addr = data.jibunAddress;
+            }
+
+            // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+            if(data.userSelectedType === 'R'){
+                // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+                // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+                if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+                    extraAddr += data.bname;
+                }
+                // 건물명이 있고, 공동주택일 경우 추가한다.
+                if(data.buildingName !== '' && data.apartment === 'Y'){
+                    extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                }
+                // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+                if(extraAddr !== ''){
+                    extraAddr = ' (' + extraAddr + ')';
+                }
+                // 조합된 참고항목을 해당 필드에 넣는다.
+                // document.getElementById("sample3_extraAddress").value = extraAddr;
+            
+            } else {
+                document.getElementById("addrMain").value = '';
+            }
+
+            // 우편번호와 주소 정보를 해당 필드에 넣는다.
+            // document.getElementById('sample3_postcode').value = data.zonecode;
+            document.getElementById("zipcode").value = data.zonecode;
+            document.getElementById("addrMain").value = addr;
+            $('.section_destination').css('display', 'block');
+
+            
+            // 커서를 상세주소 필드로 이동한다. (오류 남)
+            document.getElementById("sample3_detailAddress").focus();
+
+            // iframe을 넣은 element를 안보이게 한다.
+            // (autoClose:false 기능을 이용한다면, 아래 코드를 제거해야 화면에서 사라지지 않는다.)
+            element_wrap.style.display = 'none';
+
+            // 우편번호 찾기 화면이 보이기 이전으로 scroll 위치를 되돌린다.
+            document.body.scrollTop = currentScroll;
+        },
+        // 우편번호 찾기 화면 크기가 조정되었을때 실행할 코드를 작성하는 부분. iframe을 넣은 element의 높이값을 조정한다.
+        onresize : function(size) {
+            element_wrap.style.height = 866+'px'; // size.height
+            
+        },
+        width : '100%',
+        height : '100%'
+        
+    }).embed(element_wrap);
+
+    // iframe을 넣은 element를 보이게 한다.
+    element_wrap.style.display = 'block';
+    
+}
+
+
+//즉시 호출되어서 바로 팝업이 보이게 함
+//sample3_execDaumPostcode();
+
+</script>
+</html>

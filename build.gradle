@@ -21,6 +21,11 @@ repositories {
 	mavenCentral()
 }
 
+repositories {
+	maven { url 'https://jitpack.io' }
+}
+
+
 dependencies {
 
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
@@ -34,6 +39,18 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	testImplementation 'org.springframework.security:spring-security-test'
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
+	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
+	compileOnly 'org.projectlombok:lombok'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	runtimeOnly 'com.mysql:mysql-connector-java'
+	annotationProcessor 'mysql:mysql-connector-java'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.security:spring-security-test'
+
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
 
 	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
@@ -47,7 +64,11 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.session:spring-session-jdbc'
 	implementation 'com.mysql:mysql-connector-j'
+<<<<<<< HEAD
 
+=======
+	implementation 'com.github.iamport:iamport-rest-client-java:0.2.21'
+>>>>>>> SY
 	
 	
 	implementation 'commons-io:commons-io:2.6'

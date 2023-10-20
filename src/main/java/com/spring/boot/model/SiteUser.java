@@ -3,7 +3,10 @@ package com.spring.boot.model;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+<<<<<<< HEAD
 import java.util.ArrayList;
+=======
+>>>>>>> SY
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -17,9 +20,19 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+<<<<<<< HEAD
 
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotEmpty;
+=======
+import javax.persistence.OneToMany;
+
+import org.hibernate.annotations.ColumnDefault;
+
+import com.spring.boot.dto.Goods;
+import com.spring.boot.dto.Pay;
+import com.spring.boot.dto.Shipping;
+>>>>>>> SY
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.spring.boot.dto.SiteUserDTO;
@@ -104,15 +117,23 @@ public class SiteUser implements Serializable{
 	@Column(columnDefinition = "TINYINT(1) default 0")
 	private boolean seller;
 
+<<<<<<< HEAD
 	private String intro;
 	
 	//멤버십 등급(멤버십 테이블과 연결하려면 추후 혜택 등 디테일한 설정 필요)
 	@ManyToOne
 	private Membership membership;
+=======
+	//멤버 등급
+	private String grade;
+>>>>>>> SY
 	
 	//위워크페이 포인트(bigint로 들어가므로 -9,223,372,036,854,775,808부터 9,223,372,036,854,775,807까지의 정수값을 저장할 수 있음)
 	//적립내역 테이블이 필요할 것 같음
 	private Long point;
+	
+	@ColumnDefault("0")
+	private Integer paymoney;
 
 	@ManyToOne(fetch = FetchType.LAZY)
     private Interest interest1;
@@ -123,6 +144,7 @@ public class SiteUser implements Serializable{
     @ManyToOne(fetch = FetchType.LAZY)
     private Interest interest3;
     
+<<<<<<< HEAD
     private LocalDateTime modifyDate;
 
     //처리 내역은 남겨둘 예정
@@ -203,3 +225,18 @@ public class SiteUser implements Serializable{
     }
   	
 }
+=======
+    @ManyToOne(fetch = FetchType.LAZY)
+    private BaseAuthUser baseAuthUser;
+    
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private List<Pay> payList;
+    
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private List<Shipping> shippingList;
+    
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private List<Goods> productList;
+	
+}
+>>>>>>> SY
