@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+
+<div th:each="question, loop : ${question}">
+
+ <div th:if="${#lists.size(question.answerList) > 0}"
+           th:text="|${#lists.size(question.answerList)}개의 답변이 있습니다.|"></div>
+
+  <div th:text="${question.title}">제목</div>
+  <div th:text="${question.content}">내용</div>
+<!-- 답변 반복문 -->
+   <div th:each="answer : ${question.answerList}">
+        <div th:text=${answer.content}></div>
+   </div>     
+</div>
+</body>
+</html>

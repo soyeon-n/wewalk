@@ -19,6 +19,13 @@
     <script src="./js/mykurly.js"></script>
     <script src="../main/js/common.js"></script>
     
+    <!-- qna css -->
+    <link rel="stylesheet" href="/reset.css">
+    <link rel="stylesheet" href="/common.css">
+    <link rel="stylesheet" href="/good_review_list.css">
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script src="./js/good_view.js"></script>
+    
     
     
     
@@ -1010,10 +1017,10 @@
                          <div th:replace="product_review_list_layout :: reviewListFragment">
                          </div>
                          
-                         <!-- layout 분리 호출 : 상품문의 + 답변  
-                         <div></div>
-                         <div th:replace="product_qna_list :: reviewListFragment">
-                         </div>-->
+                         <!-- layout 분리 호출 : 상품문의 + 답변  -->
+                         
+                         <div th:replace="product_qna_list :: qnaFragment">
+                         </div>
                          
                          
                          
@@ -1026,21 +1033,6 @@
             </div>
 
         </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

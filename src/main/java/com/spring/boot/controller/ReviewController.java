@@ -95,10 +95,17 @@ public class ReviewController {
 	@GetMapping("/create/{productNo}")
 	public String createReview(ReviewForm reviewForm,
 			@PathVariable("productNo")Integer productNo,
+			@AuthenticationPrincipal PrincipalDetails principalDetails,
 			Model model){
 		
 		//여기서 product 정보 set해주기
 		Product product = productService.getProductDetailByNo(productNo);
+		SiteUser siteUser = userService.getUserByUserName(principalDetails.getUsername());
+		//비로그인시 튕기기
+		if(siteUser==null) {
+			
+			return "redirect:/product/detail/{productNo}";
+		}
 		
 		model.addAttribute(product);//이안에 savefilename
 		

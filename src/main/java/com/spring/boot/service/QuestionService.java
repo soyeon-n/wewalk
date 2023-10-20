@@ -64,8 +64,20 @@ public class QuestionService {
 		questionRepository.save(question);
 		
 	}
+	//답변작성시 question 이 
+	/*
+	public void ansDone(String true, Question question) {
+		Question question = 
+		question.setd
+	}*/
+	
+	
+	
+	
 	public void deleteQuestion(Question question) {
 		questionRepository.delete(question);
 	}
+	
+	
 
 }
