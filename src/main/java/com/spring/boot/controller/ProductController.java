@@ -45,6 +45,7 @@ public class ProductController {
 		model.addAttribute("paging",paging);//request.setattribute 와 같음 html 로
 		
 		return "mainList";//html 인식
+		//return "products";//이게 검색결과 뿌리는 창 
 		
 	}
 	
@@ -52,7 +53,7 @@ public class ProductController {
 	//상품 눌렀을떄 상세주소로 이동하는 주소
 	
 	@RequestMapping("/detail/{productNo}")
-	public String detail(Model model, @PathVariable("productNo") Integer productNo
+	public String detail(Model model, @PathVariable("productNo") long productNo
 			,ProductForm productForm , @PageableDefault Pageable pageable) {
 		
 		Product product = productService.getProductDetailByNo(productNo);

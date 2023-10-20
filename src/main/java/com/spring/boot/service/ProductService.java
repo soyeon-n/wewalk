@@ -58,7 +58,7 @@ public class ProductService {
 	}
 	*/
 	//상품번호만으로 상품에대한 detail 조회하기 
-	public Product getProductDetailByNo(Integer productNo){
+	public Product getProductDetailByNo(long productNo){
 		
 		Optional<Product> product= productRepository.findById(productNo);
 		

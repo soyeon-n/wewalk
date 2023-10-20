@@ -42,7 +42,7 @@ public class QuestionController {
 	//여기서따로맵핑할필욘없지만 ?? ,왜냐면 product controller 에서 layout 에 보내줘야하니까 ??? 
 	//일단은 여기서 게시판들을 확인할것 
 	@GetMapping("/list/{productNo}")
-	public String list(Model model, @PageableDefault Pageable pageable,@PathVariable("productNo") Integer productNo) {
+	public String list(Model model, @PageableDefault Pageable pageable,@PathVariable("productNo") long productNo) {
 		
 		//그럼 main 에서 상품연결할때 hidden 으로 product.id 를 넘겨야?? 
 		//여기서 hidden 으로 productNo 를 넘겨야 
@@ -59,7 +59,7 @@ public class QuestionController {
 	}
 	//하나의 문의글 자세히 보기 >> 근데 난 모달창으로 할거임 주소만 만들어놓기 
 	@RequestMapping("/detail/{id}")
-	public String detail(Model model, @PathVariable("id") Integer id , AnswerForm answerForm) {
+	public String detail(Model model, @PathVariable("id") long id , AnswerForm answerForm) {
 		
 		Question question = questionService.getOneQuestion(id);
 		model.addAttribute("question",question);//데이터 넘기기
@@ -74,7 +74,7 @@ public class QuestionController {
 	//문의글 작성
 	@GetMapping("/create/{productNo}")
 	public String questionCreate(QuestionForm questionForm, 
-			Model model , @PathVariable("productNo")Integer productNo ) {
+			Model model , @PathVariable("productNo")long productNo ) {
 		
 		//상품문의시 문의하려는 product-pname 이 들어와있으면 좋을듯 ? set 하기 
 		
@@ -86,7 +86,7 @@ public class QuestionController {
 	
 	@PostMapping("/create/{productNo}")
 	public String questionCreate(@Valid QuestionForm questionForm,
-			@PathVariable("productNo") Integer productNo,
+			@PathVariable("productNo") long productNo,
 			@AuthenticationPrincipal PrincipalDetails principalDetails,
 			BindingResult bindResult ) {
 		

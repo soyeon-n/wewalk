@@ -48,7 +48,7 @@ public class ReviewController {
 	//원래이거는 productController 안에 들어있어서 layout 분리로 들어가야 한다 
 	//Product product
 	@RequestMapping("/list/{productNo}")
-	public String reviewList(Model model , @PathVariable("productNo") Integer productNo,
+	public String reviewList(Model model , @PathVariable("productNo") long productNo,
 			@PageableDefault Pageable pageable) {
 
 		
@@ -82,6 +82,7 @@ public class ReviewController {
 		Page<Review> paging = reviewService.getReview(user,pageable);
 
 		model.addAttribute("paging",paging);
+		model.addAttribute("user",user);
 
 		return "mypage_review";
 		
@@ -94,7 +95,7 @@ public class ReviewController {
 	//마이페이지에서 >> 리뷰쓰기
 	@GetMapping("/create/{productNo}")
 	public String createReview(ReviewForm reviewForm,
-			@PathVariable("productNo")Integer productNo,
+			@PathVariable("productNo")long productNo,
 			@AuthenticationPrincipal PrincipalDetails principalDetails,
 			Model model){
 		
@@ -108,6 +109,7 @@ public class ReviewController {
 		}
 		
 		model.addAttribute(product);//이안에 savefilename
+		model.addAttribute(siteUser);
 		
 		return "mypage_reviewReg";//리뷰작성 form 
 	}
@@ -117,7 +119,7 @@ public class ReviewController {
 	//리뷰등록
 	@PostMapping("/create/{productNo}")
 	public String createReview(Model model,
-			@Valid ReviewForm reviewForm,@PathVariable("productNo") Integer productNo,
+			@Valid ReviewForm reviewForm,@PathVariable("productNo") long productNo,
 			MultipartFile multipartFile,
 			@AuthenticationPrincipal PrincipalDetails principalDetails,
 			BindingResult bindResult) throws IOException {
@@ -128,7 +130,7 @@ public class ReviewController {
 		
 		Product product = productService.getProductDetailByNo(productNo);
 		
-		
+		model.addAttribute(siteUser);
 		
 
 		if(bindResult.hasErrors()) {			
@@ -152,7 +154,7 @@ public class ReviewController {
 	//리뷰수정할값set하기
 	//권한 제한 하도록 하기 
 	@GetMapping("/modify/{id}")//리뷰글의 id 를 가져가야함 
-	public String reviewModify(ReviewForm reviewForm,@PathVariable("id") Integer id) {
+	public String reviewModify(ReviewForm reviewForm,@PathVariable("id") long id) {
 		 
 
 		Review review = reviewService.getOneReview(id);
@@ -189,7 +191,7 @@ public class ReviewController {
 	public String reviewModify(@Valid ReviewForm reviewForm,
 			MultipartFile multipartFile,
 			BindingResult bindResult,
-			@PathVariable("id") Integer id) throws IOException{
+			@PathVariable("id") long id) throws IOException{
 
 		if(bindResult.hasErrors()) {
 			return "question_form";
@@ -215,7 +217,7 @@ public class ReviewController {
 
 	//리뷰삭제 동시에 사진도 db 와로컬에서 삭제되어야함 
 	@GetMapping("/delete/{id}")//id=리뷰글번호
-	public String reviewDelete(@PathVariable("id") Integer id, Principal principal) {
+	public String reviewDelete(@PathVariable("id") long id, Principal principal) {
 		
 		Review review = reviewService.getOneReview(id);
 		

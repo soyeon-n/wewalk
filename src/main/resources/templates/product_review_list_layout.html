@@ -88,8 +88,10 @@
 	                                        </div>
 	                                        <div class="goods-add-product-item-content">
 	                                            <div class="goods-add-product-item-content-wrapper">
+	                                            <!--  리뷰의 내용제목은 보여줄필요 없으므로
 	                                                <p class="goods-add-product-item-name" th:text="${review.title}">사과</p>
 	                                                <p class="goods-add-product-item-price" th:text="${review.content}">1원</p>
+	                                                -->
 	                                            </div>
 	                                        </div>
 	                                    </li>
@@ -212,8 +214,9 @@
 
                                         <div class="btn_after">
                                             <button type="button" class="btn_help">도움이 돼요? 0</button>
-                                            <br/>
-                                            <button type="button" class="btn_help">리뷰추천하기 0</button>
+                                            <button value="리뷰추천하기" ></button>
+                                            
+                                            
                                             <br/>
                                             <!-- 
                                             <a th:href="@{|/review/delete/${review.id}|}" th:text="리뷰삭제"></a>
@@ -230,6 +233,7 @@
                                     </div>
                                 </li>
                                 <!-- 한 단락 반복 끝  -->
+                                <!--  
 
                                 <li>
                                     <div class="tit_after">
@@ -276,7 +280,7 @@
 
                                         </div>
                                     </div>
-                                </li>
+                                </li>-->
                                 <!-- 한 단락 반복 끝  -->
 
                                 
@@ -296,28 +300,28 @@
 							          
 							          <!-- << -->
 							          <li>
-							          <a class="page-link" th:href="@{/product/detail?page=1}">&laquo;</a>
+							          <a class="layout-pagination-button layout-pagination-first-page" th:href="@{/product/detail?page=1}">&laquo;</a>
 							          <!-- <a class="page-link" th:href="@{/question/list?page=1}">&laquo;</a> -->
 							          </li>
 							          
 							          <!-- < -->
-							          <li class="page-item" th:style ="${paging.first}?'display:none'">
-								          <a class="page-link" th:href="@{/product/detail(page=${paging.number})}">
+							          <li class="layout-pagination-button layout-pagination-prev-page" th:style ="${paging.first}?'display:none'">
+								          <a class="layout-pagination-button layout-pagination-prev-page" th:href="@{/product/detail(page=${paging.number})}">
 								          &lsaquo;
 								          
 								          </a>
 							          </li>
 							          <!-- 1 2 3 4 5 -->
-							          <li class="page-item" th:each="page : ${#numbers.sequence(startNumber,endNumber)}"
+							          <li class="layout-pagination-button layout-pagination-number" th:each="page : ${#numbers.sequence(startNumber,endNumber)}"
 							              th:classappend="(${page}==${paging.number}+1) ? 'active'">
-							              <a class="page-link" th:href="@{/product/detail(page=${page})}" th:text="${page}">
+							              <a class="layout-pagination-button layout-pagination-number" th:href="@{|/product/detail/${product.id}?page=${page}|}" th:text="${page}">
 							              
 							              </a>
 							          </li>
 							          <!-- > -->
 							          
-							          <li class="page-item" th:style="${paging.last}?'display:none'">
-								          <a class="page-link" th:href="@{/product/detail(page=${paging.number}+2)}">
+							          <li class="layout-pagination-button layout-pagination-next-page" th:style="${paging.last}?'display:none'">
+								          <a class="layout-pagination-button layout-pagination-next-page" th:href="@{/product/detail(page=${paging.number}+2)}">
 								          &rsaquo;
 								          
 								          </a>

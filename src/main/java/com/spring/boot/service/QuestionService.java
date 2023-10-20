@@ -40,7 +40,7 @@ public class QuestionService {
 	
 	
 	//하나의 question 가져오기
-	public Question getOneQuestion(Integer id) {
+	public Question getOneQuestion(long id) {
 		
 		Optional<Question> op = questionRepository.findById(id);
 		
@@ -64,7 +64,7 @@ public class QuestionService {
 		questionRepository.save(question);
 		
 	}
-	//답변작성시 question 이 
+	//답변작성시 question 답변작성완료로 바뀌게되는것 추가
 	/*
 	public void ansDone(String true, Question question) {
 		Question question = 

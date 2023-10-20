@@ -11,7 +11,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.spring.boot.model.Product;
 
-public interface ProductRepository extends JpaRepository<Product, Integer>{
+public interface ProductRepository extends JpaRepository<Product, Long>{
 	//주의: 여기 레포에서 하나라도 안돌아가면 에러남 
 	
 	
@@ -26,7 +26,7 @@ public interface ProductRepository extends JpaRepository<Product, Integer>{
 	//이거아직 안씀
 	
 	//productno로 상품 detail 찾는 메소드 
-	Optional<Product> findById(Long long1);
+	Optional<Product> findById(long productNo);
 	//Question findBySubjectAndContent(String subject, String content);//두개의조건으로셀렉하기
 	
 	//검색어-상품이름name으로 상품찾는 메소드 
