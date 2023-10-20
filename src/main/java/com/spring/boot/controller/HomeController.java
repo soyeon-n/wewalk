@@ -17,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 public class HomeController {
 	
 	@GetMapping("/")
-	public String index(Model model, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+	public String index(Model model, @AuthenticationPrincipal PrincipalDetails principalDetails, HttpSession session) {
 		
 		if(principalDetails!=null) {		
 			System.out.println(principalDetails.getEmail() + "/" + principalDetails.getUsername() + "/" + principalDetails.getPicture());
@@ -25,8 +25,15 @@ public class HomeController {
 			model.addAttribute("name", principalDetails.getUsername());
 			model.addAttribute("picture", principalDetails.getPicture());
 			
+			if (session.getAttribute("welcomeMessage") != null) {
+//	            model.addAttribute("welcomeMessage", session.getAttribute("welcomeMessage"));
+	            session.removeAttribute("welcomeMessage");
+	            return "redirect:/welcomeMessage?" + session.getAttribute("welcomeMessage");
+	        }
 		}
 		
 		return "index";
+	    
+		
 	}
 }

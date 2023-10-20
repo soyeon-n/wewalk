@@ -2,6 +2,7 @@ package com.spring.boot.service;
 
 import java.util.Optional;
 
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -32,8 +33,8 @@ public class PrincipalService implements UserDetailsService{
 		if(!findUser.isPresent()) {
 			throw new UsernameNotFoundException("User not found");
 		}else if(findUser.isPresent() == true && findUser.get().isActivated() == false){//비활성화 되어있을 시 로그인 안되게 처리
-			System.out.println("User is deactivated");
-			throw new UsernameNotFoundException("User is deactivated");
+			System.out.println("비활성화된 계정입니다");
+			throw new DisabledException("비활성화된 계정입니다");
         }else {        	
         	SiteUser siteUser = findUser.get();
         	System.out.println(siteUser);        

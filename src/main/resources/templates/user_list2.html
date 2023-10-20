@@ -6,7 +6,7 @@
 <!-- layout.html 에 있는 부분과 이름 맞춰줌 -->
 <div layout:fragment="content" class="containter my-3">
 	
-	<form action="/admin/userList" method="get" name="searchForm">
+	<form th:action="@{/admin/userList}" method="get" id="searchForm" name="searchForm">
 		<input type="hidden" name="page" value="1">
 		<select name="type" class="selectFiled">
 			<option th:selected="${pageRequestDTO.type == null}">-------</option>
@@ -15,7 +15,7 @@
 			<option value="ue" th:selected="${pageRequestDTO.type == 'ue'}">계정명 + 이메일</option>
 		</select>
 		<input type="text" name="keyword" class="textFiled" th:value="${pageRequestDTO.keyword}"/>
-		<input type="button" value=" 검 색 " class="btn2" onclick="sendIt();"/>		
+		<input type="button" value=" 검 색 " class="btn2"/>		
 	</form>
 
 	<table class="table">
@@ -45,7 +45,7 @@
 	paging.hasNext		다음 페이지 존재 여부 -->
 	<tbody>
 		<tr class="text-center" th:each="siteUserDTO, loop : ${paging.dtoList}">
-			<td th:text="${paging.totalElements - ((paging.number-1) * paging.size) - loop.index}"></td>
+			<td th:text="${((paging.number - 1) * paging.size) + loop.index + 1}"></td>
 			<td th:text="${siteUserDTO.userName}"></td>
 			<td class="text-start">
 				<!-- <a th:href="@{/user/login}" sec:authorize="isAnonymous()" th:text="${question.subject}"></a> -->
@@ -66,22 +66,26 @@
 			<!-- 리스트를 화면에 띄우고 비활성화까지는 잘 되지만 실시간으로 isActivated의 값이 변동되지 않음 -->
 			<!-- 검색 기능 추가 예정 -->
 	<script type="text/javascript">
-		function confirmDeactivateOrReactivate(userName, isActivated) {
-			
-			var result; 
-			if(isActivated) {
-		        result = confirm(userName + " 사용자를 비활성화하시겠습니까?");
-		    } else {
-		        result = confirm(userName + " 사용자를 활성화하시겠습니까?");
-		    }
-		    
-			// '예'를 클릭했을 때의 처리. 예를 들면, 삭제 처리를 위한 페이지로 리다이렉트.
-		    if (result) {
-		        window.location.href = "/admin/deactivateOrReactivate/" + userName;  // 해당 URL을 삭제 처리 페이지의 URL로 변경하세요.
-		    } 
-		    
-		    // '아니오'를 클릭했을 때는 아무런 동작을 하지 않습니다.
-		}
+	function confirmDeactivateOrReactivate(userName, isActivated) {
+	    var message = isActivated ? (userName + " 사용자를 비활성화하시겠습니까?") : (userName + " 사용자를 활성화하시겠습니까?");
+	    var result = confirm(message);
+	    
+	    if (result) {
+	        // AJAX 호출
+	        $.ajax({
+	            url: "/admin/deactivateOrReactivate/" + userName,
+	            type: 'GET',
+	            success: function(response) {
+	                // 성공적으로 응답을 받았을 때 실행되는 코드
+	               	location.reload();  // 페이지 새로 고침
+	            },
+	            error: function(error) {
+	                // 에러 발생 시 실행되는 코드
+	                alert("Error occurred!");
+	            }
+	        });
+	    }
+	}
 	</script>
 		</tr>
 	</tbody>
@@ -105,13 +109,13 @@
 				<li class="page-item"
 					th:style="${paging.number == paging.start}?'display:none'">
 					<a class="page-link"
-						th:href="@{/admin/userList(page=${paging.number})}">&lsaquo;</a>
+						th:href="@{/admin/userList(page=${paging.number-1})}">&lsaquo;</a>
 				</li>
 				
 				<!-- 12345 -->
 				<li class="page-item" 
 					th:each="page : ${#numbers.sequence(startNumber, endNumber)}"
-						th:classappend="(${page}==${paging.number}+1) ? 'active'">
+						th:classappend="(${page}==${paging.number}) ? 'active'">
 					<a class="page-link"
 						th:href="@{/admin/userList(page=${page})}" th:text="${page}">
 					</a>
@@ -121,7 +125,7 @@
 				<li class="page-item"
 					th:style="${paging.number == paging.end} ? 'display:none'">
 					<a class="page-link"
-						th:href="@{/admin/userList(page=${paging.number}+2)}">&rsaquo;</a>
+						th:href="@{/admin/userList(page=${paging.number}+1)}">&rsaquo;</a>
 				</li>
 				
 				<!-- >> -->
@@ -133,6 +137,25 @@
 		</nav>
 	
 	</div>
+	<script th:inline="javascript">
+
+            var searchForm = $("#searchForm");
+
+            $('.btn2').click(function(e){
+
+                searchForm.submit();
+
+            });
+
+            $('.btn-clear').click(function(e){
+
+                searchForm.empty().submit();
+
+            });
+
+
+
+        </script>
 	
 	<a th:href="@{/admin/createUser}" class="btn btn-primary">유저 등록하기</a>
 	<a th:href="@{/admin/sellerRequestList}" class="btn btn-primary">판매자 요청 관리</a>

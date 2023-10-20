@@ -3,7 +3,10 @@ package com.spring.boot.controller;
 import java.security.Principal;
 import java.time.DateTimeException;
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.core.io.ClassPathResource;
@@ -25,8 +28,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.spring.boot.dto.AdminCreateForm;
@@ -283,6 +288,21 @@ public class AdminController {
 		return "redirect:/admin/userList";
 		
 	}
+	
+//	@PreAuthorize("isAuthenticated")
+//	@PutMapping("/deactivateOrReactivate/{userName}")
+//	@ResponseBody
+//	public Map<String, Object> deactivateOrReactivate(@PathVariable("userName") String userName) {
+//	    Map<String, Object> response = new HashMap<>();
+//
+//	    SiteUser siteUser = userService.getUserByUserName(userName);
+//	    adminService.deactivateOrReactivate(siteUser);
+//
+//	    response.put("status", "success");
+//	    response.put("message", "User activation status changed successfully.");
+//
+//	    return response;
+//	}
 	
 //	@PreAuthorize("isAuthenticated")
 //	@GetMapping("/reactivateUser/{id}")

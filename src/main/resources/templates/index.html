@@ -7,7 +7,6 @@
 
 </head>
 <body>
-<h3>메인화면</h3>
 
 <a sec:authorize="isAnonymous()" th:href="@{/auth/login}">로그인</a>
 <a sec:authorize="isAuthenticated()" th:href="@{/logout}">로그아웃</a>
@@ -17,5 +16,6 @@
 	프로필 사진 : <p><img th:src="@{${picture}}" width="200" height="200"/></p>
 
 <a href="http://localhost:8080/order/cart">장바구니로이동</a>
+
 </body>
 </html>

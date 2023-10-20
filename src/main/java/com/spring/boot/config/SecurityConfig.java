@@ -1,6 +1,5 @@
 package com.spring.boot.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -29,7 +28,8 @@ public class SecurityConfig {
 	private final PrincipalService principalService;
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
     private final CustomAccessDeniedHandler customAccessDeniedHandler;
-	
+	private final CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
+
 	//CustomOAuthService
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http, CustomOAuthSevice customOAuthSevice) throws Exception {	
@@ -47,7 +47,7 @@ public class SecurityConfig {
         http
 	        .authorizeRequests()
 	//        .antMatchers("/auth/oauthSignup", "/auth/signup", "/auth/login").access("not hasRole('USER') and not hasRole('SELLER')")
-		        .antMatchers("/auth/oauthSignup").hasRole(UserRole.OAUTH.name())
+//		        .antMatchers("/auth/oauthSignup").hasRole(UserRole.OAUTH.name())
 		        .antMatchers("/admin/**").hasRole(UserRole.ADMIN.name())
 		        .antMatchers("/user/**").hasRole(UserRole.USER.name())
 		        .antMatchers("/seller/**").hasRole(UserRole.SELLER.name())
@@ -55,7 +55,10 @@ public class SecurityConfig {
 	        .and()
 	        .exceptionHandling()
             .authenticationEntryPoint(customAuthenticationEntryPoint) //로그인 과정에서 비활성화된 계정에 대한 처리
-            .accessDeniedHandler(customAccessDeniedHandler); //로그인 후 접근 권한이 없는 경우에 대한 처리
+            .accessDeniedHandler(customAccessDeniedHandler)
+            .and()
+            	.sessionManagement()
+                	.invalidSessionUrl("/auth/login"); //로그인 후 접근 권한이 없는 경우에 대한 처리
         
 //        , "/oauth2/authorization/**"
 		// login 설정
@@ -64,7 +67,8 @@ public class SecurityConfig {
                 .loginPage("/auth/login")    // GET 요청 (login form을 보여줌)
                 .usernameParameter("userName")	// login에 필요한 id 값을 userName으로 설정 (default는 username)
                 .passwordParameter("password")	// login에 필요한 password 값을 password(default)로 설정
-                .defaultSuccessUrl("/");
+                .defaultSuccessUrl("/")
+                .failureHandler(customAuthenticationFailureHandler);
         
         //OAuth 2.0 login 설정
         http

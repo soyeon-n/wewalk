@@ -11,6 +11,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import com.spring.boot.model.SiteUser;
 
+import aj.org.objectweb.asm.Attribute;
 import lombok.Data;
 
 //시큐리티가 "/login" 주소 요청이 오면 낚아 채서 로그인을 진행해준다.
@@ -26,7 +27,6 @@ public class PrincipalDetails implements UserDetails, OAuth2User{
 
 	private SiteUser user;
     private Map<String, Object> attributes;
-
 
     //일반 로그인 생성자
     public PrincipalDetails(SiteUser user) {

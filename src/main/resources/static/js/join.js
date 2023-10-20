@@ -63,11 +63,11 @@ function pw_check(){
     var engUpper = /[A-Z]/;
     var spe = /[~!@#$%^&*()_+|<>?:{}]/;
     
-    if(pw1.length < 8){                                  //pw의 길이가 8 미만일 때
+    if(pw1.length < 6){                                  //pw의 길이가 6 미만일 때
     	password1_txt_case1.css('color', '#b3130b'); // 빨간색
     }
 
-    if(pw1.length >= 8){                                  //pw의 길이가 10 이상일 때
+    if(pw1.length >= 6){                                  //pw의 길이가 6 이상일 때
     	password1_txt_case1.css('color', '#0f851a'); // 초록색 
     }
 

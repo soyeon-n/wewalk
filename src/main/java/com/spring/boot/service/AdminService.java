@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
+import javax.transaction.Transactional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -69,7 +71,7 @@ public class AdminService {
 	
 	//검색기능을 포함한 Userlist
 	public PageResultDTO<SiteUserDTO, SiteUser> getList(PageRequestDTO requestDTO) {
-	    Pageable pageable = requestDTO.getPageable(Sort.by("id").descending());
+	    Pageable pageable = requestDTO.getPageable(Sort.by("id").ascending());
 	    
 	    Specification<SiteUser> spec = SiteUserSpecification.isGreaterThanZero();
 	    
@@ -268,7 +270,6 @@ public class AdminService {
 	//논리적 삭제
 	//비활성화 또는 활성화 모두 가능하게 함
 	public void deactivateOrReactivate(SiteUser siteUser) {
-		
 
 		//물리적 삭제는 기한을 두고 진행할 수 있게 추후 업데이트 예정
 		//		adminRepository.delete(siteUser);
@@ -296,6 +297,7 @@ public class AdminService {
                 .name(dto.getName())
                 .picture(dto.getPicture())
                 .provider(dto.getProvider())
+                .isActivated(dto.isActivated())
                 .build();
         return entity;
     }
@@ -310,6 +312,7 @@ public class AdminService {
                 .name(entity.getName())
                 .picture(entity.getPicture())
                 .provider(entity.getProvider())
+                .isActivated(entity.isActivated())
                 .build();
 
         return dto;
