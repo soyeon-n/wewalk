@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
-import javax.transaction.Transactional;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -17,8 +15,6 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.types.dsl.BooleanExpression;
 import com.spring.boot.config.DataNotFoundException;
 import com.spring.boot.config.SiteUserSpecification;
 import com.spring.boot.dao.AdminRepository;
@@ -185,7 +181,7 @@ public class AdminService {
 	public SiteUser create(UserRole role, String email, String password, String userName, 
     		String name, LocalDate birthDate, String postcode, 
     		String address, String detailAddress, String tel, boolean seller,
-    		String picture, Long point) {
+    		String picture, Integer point) {
 		
 		SiteUser user = SiteUser.builder()
 				.role(role)

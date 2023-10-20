@@ -85,6 +85,13 @@ public class PrincipalDetails implements UserDetails, OAuth2User{
         return user.getPicture();
     }
     
+    //은별 #authentication.getPrincipalDetails().getId() 위해추가
+    public Long getId() {
+    	return user.getId();
+    }
+    
+    
+    
     @Override
     public boolean isAccountNonExpired() {
         return true;

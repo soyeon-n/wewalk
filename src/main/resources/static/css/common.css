@@ -90,7 +90,7 @@
 }
 
 .sign_menu .join {
-    color: #5f0080;
+    color: #1EC800;
 }
 
 .sign_menu .item {
@@ -199,12 +199,12 @@
 
 .gnb_menu .list:active .link,
 .gnb_menu .list:hover .link {
-    color: #5f0080;
+    color: #1EC800;
 }
 
 .gnb_menu .list + .list:active .txt,
 .gnb_menu .list + .list:hover .txt{
-    border-bottom: 1px solid #5f0080;
+    border-bottom: 1px solid #1EC800;
 }
 
 /* 추후 전체 카테고리 앞 메뉴 아이콘 컬러 변경 */
@@ -272,7 +272,7 @@
 }
 
 .gnb_sub .tit:hover .txt {
-    color: #5f0080;
+    color: #1EC800;
 }
 
 .gnb_main:active .gnb_sub,
@@ -432,7 +432,7 @@
 /* 포인터가 영역을 벗어나면 notice가 바로 사라져버림 */
 
 .gnb .location_notice .emph {
-    color: #5f0080;
+    color: #1EC800;
 }
 
 .gnb .group_button .btn {
@@ -447,16 +447,16 @@
 .gnb .group_button .login {
     float: left;
     width: 104px;
-    border: 1px solid #5f0080;
+    border: 1px solid #1EC800;
     background-color: #fff;
-    color: #5f0080;
+    color: #1EC800;
 }
 
 .gnb .group_button .search_address {
     float: right;
     width: 158px;
-    border: 1px solid #5f0081;
-    background-color: #5f0080;
+    border: 1px solid #1EC800;
+    background-color: #1EC800;
     color: #fff;
 }
 
@@ -594,7 +594,7 @@
 }
 
 .company_info .spec_info .link {
-    color: #5f0080;
+    color: #1EC800;
 }
 
 .company_info .spec_info .copy {
@@ -673,28 +673,11 @@
     height: 34px;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+.ico.modify {
+	background: url(https://res.kurly.com/mobile/ico/2006/ico_modify.png) no-repeat 25% 25%;
+	width: 40px; 
+    height: 40px;
+}
 
 
 

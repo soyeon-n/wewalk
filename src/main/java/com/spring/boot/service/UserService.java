@@ -4,12 +4,14 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.spring.boot.config.DataNotFoundException;
+
 import com.spring.boot.dao.SellerRequestRepository;
+
 import com.spring.boot.dao.UserRepository;
 import com.spring.boot.model.SellerRequest;
 import com.spring.boot.model.SiteUser;
@@ -85,17 +87,20 @@ public class UserService {
 		
 	}
 	
+
 	//userName으로 불러오기
 	public SiteUser getUserByUserName(String userName) {
-		
+	
 		Optional<SiteUser> siteUser = 
 				userRepository.findByUserName(userName);
-		
+			
+
 		if(siteUser.isPresent()) {
 			return siteUser.get();
 		}else {
 			throw new DataNotFoundException("User not found!");
 		}
+
 		
 	}
 	
@@ -206,4 +211,27 @@ public class UserService {
 	}
 	  
 	 */
+
+	
+	//비밀번호 업데이트
+	public void updatePassword(SiteUser user, String newPassword) {
+		
+        // 새로운 비밀번호를 암호화하여 설정합니다.
+        String encodedPassword = passwordEncoder.encode(newPassword);
+        user.setPassword(encodedPassword);
+
+        // 사용자 정보를 업데이트합니다.
+        userRepository.save(user);
+    }
+	
+	//회원 탈퇴
+	 public void deleteUserById(Long userId) {
+	        userRepository.deleteById(userId);
+	    }
+	 
+	 //수정
+	 public void updateUser(SiteUser user) {
+	        userRepository.save(user);
+	    }
+	 
 }

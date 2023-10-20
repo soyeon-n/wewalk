@@ -182,7 +182,7 @@ public class AdminController {
 		    LocalDate birthDate = LocalDate.of(year, month, day);
 		    
 		    UserRole role = UserRole.ADMIN;
-		    Long point = 999999999999L;
+		    Integer point = 999999999;
 		    Resource resource = new ClassPathResource("static/images/flower-8173829_640.jpg");
 		    String picture = "/images/flower-8173829_640.jpg";
 //				    String intro = "For test";
