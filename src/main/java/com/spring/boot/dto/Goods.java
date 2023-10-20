@@ -58,14 +58,8 @@ public class Goods {
     @Column(name = "image3", length = 100)
     private String image3;
 
-    @Column(name = "image4", length = 100)
-    private String image4;
-
     @Column(name = "category", length = 30)
     private String category;
-
-    @Column(name = "tag", length = 30)
-    private String tag;
     
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "date")

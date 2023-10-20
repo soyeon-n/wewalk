@@ -491,22 +491,26 @@ button{
 }
 
 
-.product-container {
-    display: flex; /* 플렉스박스 레이아웃 사용 */
-    align-items: center; /* 수직 가운데 정렬 */
+.product-container {     /*물품 출력 박스*/
+    align-items: center; 
     border: 1px solid #ccc;
     padding: 10px;
     margin: 10px;
+    max-width: 250px;
+    max-height: 250px;
+    width: calc(32% - 10px); /* 가로 정렬 */
+    float: left;
+    text-align: center;
 }
 
 .product-image {
-    flex: 0 0 100px; /* 이미지 영역 너비 조절 */
-    margin-right: 10px; /* 이미지와 텍스트 사이 간격 */
+    display: inline-block;
 }
 
 .product-image img {
-    max-width: 100%; /* 이미지 크기 조절 */
-    height: auto;
+    height: 180px;
+    width: 300px;
+    object-fit: cover;
 }
 
 .product-details {
@@ -516,6 +520,7 @@ button{
 .product-name {
     font-size: 18px;
     font-weight: bold;
+   
 }
 
 .product-price {

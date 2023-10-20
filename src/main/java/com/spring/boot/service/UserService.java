@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.spring.boot.config.DataNotFoundException;
 import com.spring.boot.dao.UserRepository;
@@ -69,12 +70,6 @@ public class UserService {
 	}
 	
 
-	public Optional<SiteUser> getUserById(Long id) {
-		
-        return userRepository.findById(id);
-    }
-	
-
 	//userName으로 불러오기
 	public SiteUser getUserByUserName(String userName) {
 			
@@ -105,5 +100,10 @@ public class UserService {
 	 public void deleteUserById(Long userId) {
 	        userRepository.deleteById(userId);
 	    }
-
+	 
+	 //수정
+	 public void updateUser(SiteUser user) {
+	        userRepository.save(user);
+	    }
+	 
 }

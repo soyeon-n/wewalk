@@ -115,9 +115,9 @@ table {
 }
 
 .type_form .btn.default {
-    border: 1px solid #5f0080;
+    border: 1px solid #1EC800;
     background-color: #fff;
-    color: #5f0080;
+    color: #1EC800;
 }
 
 #main .member_join .btn {
@@ -176,7 +176,7 @@ table {
     overflow: hidden;
     width: 332px;
     height: 44px;
-    border: 1px solid #5f0080;
+    border: 1px solid #1EC800;
     border-radius: 3px;
     text-align: center;
 }
@@ -188,7 +188,7 @@ table {
     padding-left: 24px;
     font-weight: 700;
     font-size: 14px;
-    color: #5f0080;
+    color: #1EC800;
     line-height: 40px;
     background: url(https://res.kurly.com/pc/service/common/2006/ico_search.svg) no-repeat 0 50%;
     background-size: 25px 24px;
@@ -240,8 +240,8 @@ table {
 }
 
 .type_form .btn.active {
-    border: 1px solid #5f0081;
-    background-color: #5f0080;
+    border: 1px solid #1EC801;
+    background-color: #1EC800;
     color: #fff;
 }
 

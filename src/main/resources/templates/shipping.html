@@ -94,8 +94,8 @@
                                     </div>
                                 </div>
                                 <div class="next">
-                                    <a href="#" class="total_grade">전체등급 보기</a>
-                                    <a href="#" class="next_month">다음 달 예상등급 보기</a>
+                                    <a href="/user/mypage/grade" class="total_grade">전체등급 보기</a>
+                                    <a href="/user/mypage/mygrade" class="next_month">다음 달 예상등급 보기</a>
                                 </div>
                             </div>
 
@@ -198,49 +198,40 @@
                                 </thead>
 
                                 <tbody id="addrList">
-                                    <tr th:each="shipping : ${shippingList}">
-                                        <td class="select type_radio">
-                                            <label class="skin_checkbox">
-                                                <input type="radio" name="addrNo" checked="">
-                                                <span class="ico"></span>
-                                                <span class="blind">
-                                                    선택하기
-                                                </span>
-                                            </label>
-                                        </td>
-
-                                        <td class="address">
-                                            <span class="badge_default">
-                                                기본 배송지
-                                            </span>
-                                            <p class="addr" th:text="${shipping.address01 + ', ' + shipping.address02}"></p>
-                                        </td>
-
-                                        <td class="name" th:text="${shipping.receiverName}"></td>
-
-                                        <td class="phone" th:text="${shipping.phone}"></td>
-
-                                        <td>
-                                            <span class="delivery star" th:text="${shipping.type}">
-                                            </span>
-                                        </td>
-
-										<!-- 
-                                        <td>
-                                            <button type="button" class="ico modify" onclick="popup_change()">
-                                                수정하기
-                                            </button>
-                                        </td>
-                                         -->
-                                        
-                                        <td>
-											<form th:action="@{|/user/mypage/shipping/delete/${shipping.ano}|}" method="post" id="deleteForm">
-											  <button type="button" class="ico delete" onclick="confirmDelete()">삭제하기</button>
-											 </form> 
-
-                                        </td>
-                                    </tr>
-                                </tbody>
+								    <tr th:each="shipping, iterStat : ${shippingList}">
+								        <td class="select type_radio">
+								            <label class="skin_checkbox">
+								                <input type="radio" name="addrNo" checked="">
+								                <span class="ico"></span>
+								                <span class="blind">
+								                    선택하기
+								                </span>
+								            </label>
+								        </td>
+								
+								        <td class="address">
+								            <span th:if="${iterStat.index == 0}" class="badge_default">
+								                기본 배송지
+								            </span>
+								            <p class="addr" th:text="${shipping.address01 + ', ' + shipping.address02}"></p>
+								        </td>
+								
+								        <td class="name" th:text="${shipping.receiverName}"></td>
+								
+								        <td class="phone" th:text="${shipping.phone}"></td>
+								
+								        <td>
+								            <span class="delivery star" th:text="${shipping.type}">
+								            </span>
+								        </td>
+								
+								        <td>
+								            <form th:action="@{|/user/mypage/shipping/delete/${shipping.ano}|}" method="post" id="deleteForm">
+								                <button type="button" class="ico delete" onclick="confirmDelete()">삭제하기</button>
+								            </form>
+								        </td>
+								    </tr>
+								</tbody>
                             </table>
                         </div>
                     </div>

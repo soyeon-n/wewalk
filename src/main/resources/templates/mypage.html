@@ -41,8 +41,8 @@
                                     </div>
                                 </div>
                                 <div class="next">
-                                    <a href="#" class="total_grade">전체등급 보기</a>
-                                    <a href="#" class="next_month">다음 달 예상등급 보기</a>
+                                    <a href="/user/mypage/grade" class="total_grade">전체등급 보기</a>
+                                    <a href="/user/mypage/mygrade" class="next_month">다음 달 예상등급 보기</a>
                                 </div>
                             </div>
 
@@ -144,19 +144,25 @@
 												</div>
 												
 												<div th:each="goods : ${goods}">
-											        <div class="product-container">
-											            <div class="product-image">
-											                <img src="@{'file://C:/sts-bundle/image/' + ${goods.image}}" alt="Product Image">
-											            </div>
-											            <div class="product-details">
-											                <div class="product-name" th:text="${goods.name}"></div>
-											                <div class="product-price" th:text="${goods.price}+'원'"></div>
-											            </div>
-											        </div>
-											    </div>
+												    <div class="product-container">
+												        <div class="product-image">
+												            <img th:src="@{'/product/' + ${goods.image}}">
+												        </div>
+												        <div class="product-details">
+												            <div class="product-name" th:text="${goods.name}"></div>
+												            <div class="product-price" th:text="${goods.price} + '원'"></div>
+												        </div>
+												    </div>
+												</div>
+
+												<div class="page-numbers">
+												    <span th:each="page, stat : ${pageList}">
+													    <span th:if="${currentPage == page}" class="current-page" th:text="${page}"></span>
+													    <a th:unless="${currentPage == page}" th:href="@{/user/mypage(pageNum=${page})}" th:text="${page}"></a>
+													</span>
+												</div>
 												
-											</div>
-											
+											</div>	
 										</div>		
 									</div>    
 								</div>
@@ -167,7 +173,5 @@
         </div>
     </div>
 </body>
-<script>
 
-</script>
 </html>

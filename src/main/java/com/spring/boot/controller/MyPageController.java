@@ -1,6 +1,7 @@
 package com.spring.boot.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -20,17 +21,18 @@ import com.spring.boot.service.PayService;
 import com.spring.boot.service.ShippingService;
 import com.spring.boot.service.UserService;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -58,21 +60,60 @@ public class MyPageController {
     }
 
     @GetMapping("/mypage")
-    public String myPage(Model model, Authentication authentication) {
+    public String myPage(Model model, Authentication authentication, @RequestParam(name = "pageNum", defaultValue = "1") int pageNum) {
     	
         if (authentication != null) {
         	
         	SiteUser user = userService.getUserByEmail(authentication.getName());
-        	model.addAttribute("user", user);
-        	
-        	List<Goods> goods = goodsService.getAllProducts();
+            model.addAttribute("user", user);
+            
+            int itemsPerPage = 9; // 페이지당 항목 수
+            Page<Goods> goodsPage = goodsService.getProductsPaged(pageNum, itemsPerPage);
+            List<Goods> goods = goodsPage.getContent();
             model.addAttribute("goods", goods);
+            
+            int totalItemCount = (int) goodsService.getTotalItemCount();
+            int totalPages = (int) Math.ceil((double) totalItemCount / itemsPerPage);
+
+            List<Integer> pageList = IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList());
+
+            String listUrl = "/user/mypage/"; 
+            model.addAttribute("totalPages", totalPages);
+            model.addAttribute("currentPage", pageNum);
+            model.addAttribute("pageList", pageList);
+            model.addAttribute("listUrl", listUrl); // listUrl 변수를 모델에 추가
         	
         	return "myPage";
 
         }
         
         return "login";
+    }
+    
+    @GetMapping("/mypage/sale")
+    public String myPageSale(Model model, Authentication authentication) {
+
+    	SiteUser user = userService.getUserByEmail(authentication.getName());
+        model.addAttribute("user", user);
+
+        List<Goods> saleGoods = goodsService.getSaleProducts();
+        model.addAttribute("goods", saleGoods);
+
+        return "sale";
+
+    }
+    
+    @GetMapping("/mypage/soldout")
+    public String myPageSoldout(Model model, Authentication authentication) {
+
+    	SiteUser user = userService.getUserByEmail(authentication.getName());
+        model.addAttribute("user", user);
+
+        List<Goods> soldoutGoods = goodsService.getSoldoutProducts();
+        model.addAttribute("goods", soldoutGoods);
+
+        return "soldout";
+
     }
     
 
@@ -162,8 +203,6 @@ public class MyPageController {
     }	
   
     
-
-    
     @GetMapping("/mypage/shipping")
     public String shipping(Model model, HttpServletRequest request, Authentication authentication) {
         
@@ -183,7 +222,6 @@ public class MyPageController {
     
     @PostMapping("/mypage/shipping")
     public String shipping(@ModelAttribute("ShippingForm") @Valid ShippingForm shippingForm, Model model, Authentication authentication) {
-    	
     	
 
     	return "shipping";
@@ -247,25 +285,22 @@ public class MyPageController {
         // Shipping 정보를 서비스를 통해 저장
         shippingService.saveShipping(shipping);
         
+        /* 창이 달라서 새로고침 기능 불가능
+        boolean success = shippingService.saveShipping(shipping); // 성공 여부 확인
+
+        if (success) {
+            // 배송지 추가 후, 사용자 ID를 사용하여 새로운 배송지 목록을 가져옵니다.
+            long userId = user.getId();
+            List<Shipping> shippingList = shippingService.getShippingListByUserId(userId); // 오름차순 정렬
+            model.addAttribute("shippingList", shippingList);
+        }
+        */
+        
         //배송지 등록 성공 페이지
         return "shipping_success";
     	
     }
     	
-    
-    @GetMapping("/mypage/myshop")
-    public String myShop(Model model, Authentication authentication) {
-        
-    	SiteUser user = userService.getUserByEmail(authentication.getName());
-    	model.addAttribute("user", user);
-        
-        // user에 있는 사용자 ID를 기반으로 상품리스트(product 테이블) 가져오기
-        //List<Goods> goodsList = GoodsRepository.findByAddedByUserId(id);
-    	//model.addAttribute("goodsList", goodsList);
-    	
-        
-        return "myshop";
-    }
     
     @GetMapping("/mypage/myshop/add")
     public String myShopAdd(Model model, Authentication authentication) {
@@ -281,7 +316,7 @@ public class MyPageController {
         
         return "myshop_add";
     }
-    
+  
 
     @PostMapping("/mypage/myshop/add")
     public String myShopCreate(@ModelAttribute("GoodsForm") @Valid GoodsForm goodsForm, Model model, Authentication authentication, BindingResult bindingResult) {
@@ -315,7 +350,6 @@ public class MyPageController {
         goods.setImage1(imagePaths.size() >= 2 ? imagePaths.get(1) : null);
         goods.setImage2(imagePaths.size() >= 3 ? imagePaths.get(2) : null);
         goods.setImage3(imagePaths.size() >= 4 ? imagePaths.get(3) : null);
-        goods.setImage4(imagePaths.size() >= 5 ? imagePaths.get(4) : null);
 
         // 상품 등록 로직
         //현재 사용자의 user_id 가져오기
@@ -332,7 +366,7 @@ public class MyPageController {
     private String saveImage(MultipartFile image) {
         // 이미지를 저장할 디렉토리 경로 설정 (application.properties에 설정한 경로 사용)
     	
-        String uploadDirectory = "/src/main/resources/static/product/";
+    	String uploadDirectory = "src/main/resources/static/product";
         
 
         // 업로드한 이미지 파일의 원래 파일 이름
@@ -341,21 +375,18 @@ public class MyPageController {
         // 이미지 파일 이름에 UUID 추가하여 고유한 이름 생성
         String uniqueFileName = UUID.randomUUID().toString() + "_" + originalFilename;
 
-        Path imagePath = null; // 이미지 파일의 경로를 저장할 변수
-
+        //Path imagePath = Paths.get(uploadDirectory, uniqueFileName);
+        //Path imagePath = Paths.get(uniqueFileName);
+        
         try {
             // 이미지를 저장할 디렉토리가 없으면 생성
             Files.createDirectories(Paths.get(uploadDirectory));
 
-            // 이미지 파일을 저장할 경로 설정
-            //imagePath = Paths.get(uploadDirectory, uniqueFileName);
-            imagePath = Paths.get(uniqueFileName);
-
-            // 이미지 파일을 서버에 저장
-            Files.copy(image.getInputStream(), imagePath, StandardCopyOption.REPLACE_EXISTING);
+         // 서버에 이미지 파일 저장 (경로를 생략하여 저장)
+            Files.copy(image.getInputStream(), Paths.get(uploadDirectory, uniqueFileName), StandardCopyOption.REPLACE_EXISTING);
 
             // 저장된 이미지 파일의 경로를 반환
-            return imagePath.toString();
+            return uniqueFileName;
             
         } catch (IOException e) {
             e.printStackTrace();
@@ -364,6 +395,51 @@ public class MyPageController {
         }
     }
     
+    @GetMapping("/mypage/myshop/edit/{pno}")
+    public String myShopEdit(@PathVariable int pno, Model model, Principal principal) {
+        
+        // Principal 객체를 통해 현재 사용자의 ID를 가져옵니다.
+        String currentUserId = principal.getName(); // 사용자의 ID를 가져옴
+
+        // 상품 정보를 데이터베이스에서 가져옵니다.
+        List<Goods> goodsList = goodsService.getSaleProducts();
+        
+        Goods targetGoods = null;
+
+        // 상품 목록에서 pno와 일치하는 상품을 찾습니다.
+        for (Goods goods : goodsList) {
+            if (goods.getPno() == pno) {
+                targetGoods = goods;
+                break;
+            }
+        }
+
+        // pno에 해당하는 상품을 찾지 못한 경우에 대한 오류 처리
+        if (targetGoods == null) {
+            return "redirect:/error-page"; // 에러 페이지로 리디렉션 또는 다른 처리
+        }
+
+        // 상품의 소유자(사용자 ID)와 현재 로그인한 사용자의 ID를 비교하여 검증
+        if (!currentUserId.equals(targetGoods.getUser().getId())) {
+            return "redirect:/user/mypage"; // 액세스 거부 페이지로 리디렉션 또는 다른 처리
+        }
+
+        // 사용자가 상품을 수정할 수 있으므로 정보를 모델에 추가
+        model.addAttribute("goods", targetGoods);
+        model.addAttribute("goodsForm", new GoodsForm());
+        
+        return "myshop_edit";
+    }
+    
+    
+    @PostMapping("/mypage/myshop/edit/{pno}")
+    public String updateGoods(@PathVariable int pno, GoodsForm goodsForm) {
+        // 상품 정보 업데이트를 수행하는 서비스 호출
+        goodsService.updateGoods(pno, goodsForm);
+        return "redirect:/user/mypage"; // 수정 후 다시 마이 페이지로 이동
+        
+    }
+
     
     @GetMapping("/mypage/mybuyhistory")
     public String myBuyHistory(Model model, Authentication authentication) {
@@ -401,10 +477,15 @@ public class MyPageController {
     }
     
     @PostMapping("/mypage/pay")
-    public String pay(Model model, HttpServletRequest request, Authentication authentication, @ModelAttribute("user") SiteUser user, @RequestParam("paymoney") Integer paymoney) {
+    public String pay(Model model, HttpServletRequest request, Authentication authentication, @RequestParam("paymoney") Integer paymoney) {
 
         // pay 충전 페이지
         try {
+        	
+        	// 사용자 정보 가져오기
+        	SiteUser user = userService.getUserByEmail(authentication.getName());
+        	model.addAttribute("user", user);
+        	
             Pay pay = new Pay();
             
             pay.setUser(user);
@@ -414,6 +495,11 @@ public class MyPageController {
 
             // 결제 정보를 데이터베이스에 저장
             payService.save(pay);
+            
+            //사용자의 paymoney 업데이트
+            user.setPaymoney(user.getPaymoney() + paymoney);
+
+            
         } catch (Exception e) {
             // 결제 실패 시 화면에 메시지 전달
             e.printStackTrace();
@@ -459,19 +545,23 @@ public class MyPageController {
     }
     
     @GetMapping("/mypage/grade")
-    public String grade(Model model, HttpServletRequest request) {
+    public String grade(Model model, Authentication authentication) {
     	
     	//구매등급 안내 페이지
+    	SiteUser user = userService.getUserByEmail(authentication.getName());
+    	model.addAttribute("user", user);
     	
     	return "grade";
     }
     
-    @GetMapping("/mypage/shippingList")
-    public String shippingList(Model model, HttpServletRequest request) {
+    @GetMapping("/mypage/mygrade")
+    public String myGrade(Model model, Authentication authentication) {
     	
-    	//구매등급 안내 페이지
+    	//다음 달 나의 예상 등급 보기 페이지
+    	SiteUser user = userService.getUserByEmail(authentication.getName());
+    	model.addAttribute("user", user);
     
-    	return "shipping_list";
+    	return "mygrade";
     }
     
     @GetMapping("/mypage/withdraw")
@@ -502,56 +592,6 @@ public class MyPageController {
             return "redirect:/user/mypage/withdraw";
         }
     }
-    
-    
-    /*
-    @GetMapping("/mypage/Paytest")
-    public String Pay_test(Model model, Pay pay, Principal principal) {
-    	
-    	//Pay test
-    	//사용자 정보 가져오기
-    	String name = principal.getName();
-        Member.rpMemberAll member = payService.findAll(name);
-        //로그인이 되어있는 정보에서 모든 정보를 끌어옴
-        //이후 모델에 넣고 값을 던져줌
-        model.addAttribute("member", member);
-        //스토어 객체를 스토어에 있는 모든 정보를 끌고와야댐
-        Store realStore = store;
-        model.addAttribute("store", realStore);
-    
-    	return "Pay_test";
-    }
-    
-    @PostMapping("/mypage/Paytest")
-    public String Pay_test(PayRequest payRequest, SiteUser user, Pay pay) {
-     
-    	//payRequestVO가 값이 비어있다면 no
-        //값이 비어있지않다면 yes를 반환한다.
-        String res = "no";
-        System.out.println(payRequest.getImp_uid().toString());
-        Member.rpMemberAll resMember = payService.findAll(member.getEmailId());
-        //나중에 db에 여러가지 정보들이 들어갔을때 불러오기
-        Store resStore = store;
-        if(payRequest.getImp_uid() != null && payRequest.getMerchant_uid() != null){
-            //값이 잘 들어와있다면 resMember, resStore를
-            //payMember, payStore에 저장
-            payMember = resMember;
-            payStore = resStore;
-            res = "yes";
-        }
-        return res;
-    	
-    }
-    
-    //결제 완료 확인후 값을 db에 저장
-    @GetMapping(value = "/payclear")
-    public String payClear(){
-        //db에 결제정보를 저장한다
-        System.out.println("결제 정보 저장 완료");
-        return "/user/mypage/paytest";
-    }
-    
-	*/
     
 }
 

@@ -26,35 +26,31 @@ public class ShippingService {
         this.shippingRepository = shippingRepository;
     }
 
-    /*
-    public void registerShippingAddress(int userId, Shipping shipping) {
-    	
-    	// 주어진 userId로 사용자를 찾아옵니다.
-        SiteUser user = UserRepository.findUserById(userId);
-
-        if (user != null) {
-            // Shipping 엔티티에 사용자 정보를 설정합니다.
-            shipping.setUser(user);
-            // Shipping 정보를 저장합니다.
-            shippingRepository.save(shipping);
-        } else {
-            // 사용자를 찾지 못한 경우 예외 처리 또는 오류 처리를 수행할 수 있습니다.
-            // 예: throw new UserNotFoundException("User not found with ID: " + userId);
-        }
-    }
-    */
 
     public void saveShipping(Shipping shipping) {
     	
     	 // Shipping 정보를 저장합니다.
         shippingRepository.save(shipping);
     }
+    
+    /* 창이 달라서 새로고침 불가능
+    public boolean saveShipping(Shipping shipping) {
+        try {
+            // 배송지 정보를 저장합니다.
+            shippingRepository.save(shipping);
+            return true; // 성공했을 때 true 반환
+        } catch (Exception e) {
+            // 실패한 경우 false 반환
+            return false;
+        }
+    }
+    */
 
     @Transactional
     public List<Shipping> getShippingListByUserId(Long userId) {
     	
-        // ShippingRepository를 사용하여 사용자 이메일에 해당하는 배송지 목록을 조회
-    	return shippingRepository.findByUserIdOrderByAnoDesc(userId);
+        // ShippingRepository를 사용하여 사용자 이메일에 해당하는 배송지 목록을 조회 (오름차순)
+    	return shippingRepository.findByUserIdOrderByAnoAsc(userId);
     }
     
     public boolean deleteAddress(Integer ano) {

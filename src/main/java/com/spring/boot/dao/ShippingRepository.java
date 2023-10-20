@@ -12,8 +12,9 @@ import com.spring.boot.dto.Shipping;
 @Repository
 public interface ShippingRepository extends JpaRepository<Shipping, Integer>{
 
-	// 사용자 이메일에 해당하는 배송지 목록 조회
-	List<Shipping> findByUserIdOrderByAnoDesc(Long userId);
+	// 사용자 이메일에 해당하는 배송지 목록 조회 (오름차순)
+	List<Shipping> findByUserIdOrderByAnoAsc(Long userId);
+	//List<Shipping> findByUserIdOrderByAnoDesc(Long userId);
     
     //Shipping findByAno(int ano);
 

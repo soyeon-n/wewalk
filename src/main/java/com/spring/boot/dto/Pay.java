@@ -2,7 +2,6 @@ package com.spring.boot.dto;
 
 import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,14 +20,14 @@ import lombok.Setter;
 @Entity
 @Table(name = "PAY")
 public class Pay {
-		
+	
+	@ManyToOne
+	private SiteUser user;
+	
 	@Id
 	@Column(name = "orderno")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer orderNo;
-	
-	@ManyToOne
-	private SiteUser user;
 
     @Column(name = "paymoney")
     private Integer payMoney;

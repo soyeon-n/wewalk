@@ -10,17 +10,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 public class GoodsForm {
 	
-	@NotEmpty(message = "상품명을 입력해주세요.")
     private String name; // 필드 이름 수정
 
-    @NotEmpty(message = "상품 설명을 입력해주세요.")
     private String content;
 
-    @NotNull(message = "가격을 입력해주세요.")
     @PositiveOrZero(message = "가격은 0 이상이어야 합니다.")
     private Integer price; // 필드 이름 수정
     
-    @NotNull(message = "재고를 입력해주세요.")
     @PositiveOrZero(message = "재고는 0개 이상이어야 합니다.")
     private Integer stock;
     
@@ -87,6 +83,7 @@ public class GoodsForm {
 	public void setStock(Integer stock) {
 	    this.stock = stock;
 	}
+	
 
 	
 }
