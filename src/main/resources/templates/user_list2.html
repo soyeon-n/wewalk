@@ -66,22 +66,26 @@
 			<!-- 리스트를 화면에 띄우고 비활성화까지는 잘 되지만 실시간으로 isActivated의 값이 변동되지 않음 -->
 			<!-- 검색 기능 추가 예정 -->
 	<script type="text/javascript">
-		function confirmDeactivateOrReactivate(userName, isActivated) {
-			
-			var result; 
-			if(isActivated) {
-		        result = confirm(userName + " 사용자를 비활성화하시겠습니까?");
-		    } else {
-		        result = confirm(userName + " 사용자를 활성화하시겠습니까?");
-		    }
-		    
-			// '예'를 클릭했을 때의 처리. 예를 들면, 삭제 처리를 위한 페이지로 리다이렉트.
-		    if (result) {
-		        window.location.href = "/admin/deactivateOrReactivate/" + userName;  // 해당 URL을 삭제 처리 페이지의 URL로 변경하세요.
-		    } 
-		    
-		    // '아니오'를 클릭했을 때는 아무런 동작을 하지 않습니다.
-		}
+	function confirmDeactivateOrReactivate(userName, isActivated) {
+	    var message = isActivated ? (userName + " 사용자를 비활성화하시겠습니까?") : (userName + " 사용자를 활성화하시겠습니까?");
+	    var result = confirm(message);
+	    
+	    if (result) {
+	        // AJAX 호출
+	        $.ajax({
+	            url: "/admin/deactivateOrReactivate/" + userName,
+	            type: 'GET',
+	            success: function(response) {
+	                // 성공적으로 응답을 받았을 때 실행되는 코드
+	                location.reload();  // 페이지 새로 고침
+	            },
+	            error: function(error) {
+	                // 에러 발생 시 실행되는 코드
+	                alert("Error occurred!");
+	            }
+	        });
+	    }
+	}
 	</script>
 		</tr>
 	</tbody>

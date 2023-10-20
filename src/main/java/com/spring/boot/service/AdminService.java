@@ -271,6 +271,7 @@ public class AdminService {
 	
 	//논리적 삭제
 	//비활성화 또는 활성화 모두 가능하게 함
+	@Transactional
 	public void deactivateOrReactivate(SiteUser siteUser) {
 		
 
