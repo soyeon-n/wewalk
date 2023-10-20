@@ -30,7 +30,7 @@ public class Question {//wewalk
 
 	//private SiteUser author;//=author_ID
 	@ManyToOne
-	private SiteUser siteUser;//문의자 >> fk 여부 고민중 그냥set 할까 
+	private SiteUser user;//문의자 >> fk 여부 고민중 그냥set 할까 
 	 
 	
 	@ManyToOne

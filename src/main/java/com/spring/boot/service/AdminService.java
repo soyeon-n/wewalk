@@ -181,7 +181,7 @@ public class AdminService {
 	public SiteUser create(UserRole role, String email, String password, String userName, 
     		String name, LocalDate birthDate, String postcode, 
     		String address, String detailAddress, String tel, boolean seller,
-    		String picture, Long point) {
+    		String picture, Integer point) {
 		
 		SiteUser user = SiteUser.builder()
 				.role(role)

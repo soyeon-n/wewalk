@@ -48,7 +48,7 @@
     
                                 <div class="name">
                                     <div class="inner_name">
-                                        <a href="#" class="package " th:text="${item.name}"></a>
+                                        <a href="#" class="package " th:text="${item.pname}"></a>
                                         <span th:if="${#strings.equals(item.selling,'F') || item.stock<1}"><font color="red">현재 구매할수 없는 상품입니다</font></span>
                                         
                                         <div class="info"></div>

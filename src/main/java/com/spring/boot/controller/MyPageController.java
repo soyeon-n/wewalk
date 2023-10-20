@@ -10,15 +10,15 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.spring.boot.dto.Goods;
 import com.spring.boot.dto.GoodsForm;
-import com.spring.boot.dto.Pay;
+import com.spring.boot.model.Pay;
+import com.spring.boot.model.Product;
+import com.spring.boot.model.Address;
 import com.spring.boot.model.SiteUser;
-import com.spring.boot.dto.Shipping;
 import com.spring.boot.dto.ShippingForm;
 import com.spring.boot.service.GoodsService;
 import com.spring.boot.service.PayService;
-import com.spring.boot.service.ShippingService;
+import com.spring.boot.service.AddressService;
 import com.spring.boot.service.UserService;
 
 import java.io.IOException;
@@ -45,17 +45,17 @@ public class MyPageController {
     
     private final PayService payService;
     private final UserService userService;
-    private final ShippingService shippingService;
+    private final AddressService addressService;
     private final GoodsService goodsService;
     
     @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public MyPageController(PayService payService, UserService userService, ShippingService shippingService, GoodsService goodsService) {
+    public MyPageController(PayService payService, UserService userService, AddressService shippingService, GoodsService goodsService) {
         this.payService = payService;
         this.userService = userService;
-        this.shippingService = shippingService;
+        this.addressService = shippingService;
         this.goodsService = goodsService;
     }
 
@@ -68,8 +68,8 @@ public class MyPageController {
             model.addAttribute("user", user);
             
             int itemsPerPage = 9; // 페이지당 항목 수
-            Page<Goods> goodsPage = goodsService.getProductsPaged(pageNum, itemsPerPage);
-            List<Goods> goods = goodsPage.getContent();
+            Page<Product> goodsPage = goodsService.getProductsPaged(pageNum, itemsPerPage);
+            List<Product> goods = goodsPage.getContent();
             model.addAttribute("goods", goods);
             
             int totalItemCount = (int) goodsService.getTotalItemCount();
@@ -96,7 +96,7 @@ public class MyPageController {
     	SiteUser user = userService.getUserByEmail(authentication.getName());
         model.addAttribute("user", user);
 
-        List<Goods> saleGoods = goodsService.getSaleProducts();
+        List<Product> saleGoods = goodsService.getSaleProducts();
         model.addAttribute("goods", saleGoods);
 
         return "sale";
@@ -109,7 +109,7 @@ public class MyPageController {
     	SiteUser user = userService.getUserByEmail(authentication.getName());
         model.addAttribute("user", user);
 
-        List<Goods> soldoutGoods = goodsService.getSoldoutProducts();
+        List<Product> soldoutGoods = goodsService.getSoldoutProducts();
         model.addAttribute("goods", soldoutGoods);
 
         return "soldout";
@@ -212,7 +212,7 @@ public class MyPageController {
     	SiteUser user = userService.getUserByEmail(authentication.getName());
         long userId = user.getId();
     	
-        List<Shipping> shippingList = shippingService.getShippingListByUserId(userId);
+        List<Address> shippingList = addressService.getAddressListByUserId(userId);
 
         model.addAttribute("user", user);
         model.addAttribute("shippingList", shippingList);
@@ -230,10 +230,10 @@ public class MyPageController {
     
     
     @PostMapping("/mypage/shipping/delete/{ano}")
-    public String deleteShipping(@PathVariable("ano") Integer ano, Model model, Authentication authentication) {
+    public String deleteShipping(@PathVariable("ano") Long ano, Model model, Authentication authentication) {
     	
         // 주소 삭제 로직을 구현
-        boolean deleted = shippingService.deleteAddress(ano);
+        boolean deleted = addressService.deleteAddress(ano);
         System.out.println(deleted);
 
         if (deleted) {
@@ -241,7 +241,7 @@ public class MyPageController {
         	SiteUser user = userService.getUserByEmail(authentication.getName());
             long userId = user.getId();
         	
-            List<Shipping> shippingList = shippingService.getShippingListByUserId(userId);
+            List<Address> shippingList = addressService.getAddressListByUserId(userId);
             
             model.addAttribute("user", user);
             model.addAttribute("shippingList", shippingList);
@@ -268,7 +268,7 @@ public class MyPageController {
     	
     	//배송지 정보 관리
         // ShippingForm에서 Shipping 엔티티로 데이터 복사
-    	Shipping shipping = new Shipping();
+    	Address shipping = new Address();
     	shipping.setReceiverName(shippingForm.getReceivername());
     	shipping.setType(shippingForm.getType());
         shipping.setPhone(shippingForm.getPhone());
@@ -283,7 +283,7 @@ public class MyPageController {
         shipping.setUser(user);
         
         // Shipping 정보를 서비스를 통해 저장
-        shippingService.saveShipping(shipping);
+        addressService.saveAddress(shipping);
         
         /* 창이 달라서 새로고침 기능 불가능
         boolean success = shippingService.saveShipping(shipping); // 성공 여부 확인
@@ -344,8 +344,8 @@ public class MyPageController {
             }
         }
                 
-        // Goods 엔티티에 이미지 경로 저장
-        Goods goods = new Goods();
+        // Product 엔티티에 이미지 경로 저장
+        Product goods = new Product();
         goods.setImage(imagePaths.size() >= 1 ? imagePaths.get(0) : null);
         goods.setImage1(imagePaths.size() >= 2 ? imagePaths.get(1) : null);
         goods.setImage2(imagePaths.size() >= 3 ? imagePaths.get(2) : null);
@@ -402,13 +402,13 @@ public class MyPageController {
         String currentUserId = principal.getName(); // 사용자의 ID를 가져옴
 
         // 상품 정보를 데이터베이스에서 가져옵니다.
-        List<Goods> goodsList = goodsService.getSaleProducts();
+        List<Product> goodsList = goodsService.getSaleProducts();
         
-        Goods targetGoods = null;
+        Product targetGoods = null;
 
         // 상품 목록에서 pno와 일치하는 상품을 찾습니다.
-        for (Goods goods : goodsList) {
-            if (goods.getPno() == pno) {
+        for (Product goods : goodsList) {
+            if (goods.getId() == pno) {
                 targetGoods = goods;
                 break;
             }

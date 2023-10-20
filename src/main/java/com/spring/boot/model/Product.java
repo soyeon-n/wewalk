@@ -39,23 +39,18 @@ import lombok.Setter;
 @Entity
 @NoArgsConstructor
 public class Product{
-	//은별 product. 상품 - 리뷰 임시 확인
-	
 	
 	@Id//primaryKey. 
 	@GeneratedValue(strategy = GenerationType.IDENTITY)//1씩 증가
 	//@OneToMany//상품고유번호로 리뷰와 연결 안했음,,,
-	private Integer id;//상품고유번호
+	private Long id;//상품고유번호
 	//id 로 바꾸기 
-	
-	
+
 	@ManyToOne
 	@JoinColumn(nullable = false)
-	private SiteUser siteUser;//상품판매자? many to one 으로 연결 
+	private SiteUser user;//상품판매자? many to one 으로 연결 
 	//bigint id 회원가입시 no 로 고유값아이디가 생긴다 
-	
-	
-	
+
 	private String category;// 상품카테고리.꼭정해진카테고리테이블에서만.
 	@Column(nullable = false)
 	private String pname;//상품명
@@ -74,7 +69,6 @@ public class Product{
 	private String image1;//이미지1
 	private String image2;//이미지2
 	private String image3;//이미지3
-	private String image4;//이미지4
 	
 	//review fk랑연결 
 	@OneToMany(mappedBy = "product",cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
@@ -97,12 +91,7 @@ public class Product{
 		this.image1 = image1;
 		this.image2 = image2;
 		this.image3 = image3;
-		this.image4 = image4;
-		
-		
-		
-				
-		
+
 				
 	}
 	

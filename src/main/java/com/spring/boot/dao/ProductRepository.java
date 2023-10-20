@@ -21,12 +21,12 @@ public interface ProductRepository extends JpaRepository<Product, Integer>{
 	
 	
 	//판매자id 로 product상품List 찾는 메소드
-	Page<Product> findBySiteUserId(long userId,Pageable pageable);
+	Page<Product> findByUserId(long userId,Pageable pageable);
 	//매개변수id 랑 pageable 둘다 줘야하나????????
 	//이거아직 안씀
 	
 	//productno로 상품 detail 찾는 메소드 
-	Optional<Product> findById(Integer productNo);
+	Optional<Product> findById(Long long1);
 	//Question findBySubjectAndContent(String subject, String content);//두개의조건으로셀렉하기
 	
 	//검색어-상품이름name으로 상품찾는 메소드 
@@ -38,7 +38,8 @@ public interface ProductRepository extends JpaRepository<Product, Integer>{
 	//검색-카테고리검색
 	List<Product> findByCategoryLike(String category);
 	
-	
+	List<Product> findByStockGreaterThan(int stock);
+    List<Product> findByStockEquals(int stock);
 	
 	
 	

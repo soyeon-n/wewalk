@@ -58,7 +58,7 @@ public class QuestionService {
 		question.setTitle(title);
 		question.setContent(content);
 		question.setDate(LocalDateTime.now());
-		question.setSiteUser(siteUser);
+		question.setUser(siteUser);
 		question.setProduct(product);
 		
 		questionRepository.save(question);

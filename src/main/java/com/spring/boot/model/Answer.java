@@ -30,7 +30,7 @@ public class Answer {
 	private Question question;
 	
 	@ManyToOne
-	private SiteUser siteUser;//리뷰작성자 =판매자 >> fk 여부 고민중 
+	private SiteUser user;//리뷰작성자 =판매자 >> fk 여부 고민중 
 	
 	private String content;
 	

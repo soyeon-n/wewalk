@@ -1,4 +1,4 @@
-package com.spring.boot.dto;
+package com.spring.boot.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,8 +9,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.spring.boot.model.SiteUser;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,12 +16,11 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "address")
-public class Shipping {
+public class Address {
 	
 		@Id
 		@GeneratedValue(strategy = GenerationType.IDENTITY)
-	    @Column(name = "ano")
-	    private Integer ano;
+	    private Long id;
 	    
 	    @ManyToOne
 	    private SiteUser user;

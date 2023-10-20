@@ -15,13 +15,15 @@ public class OrderList {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer Id;
+	private Long Id;
 	
-	private int productno;
+	private String orderNo;
 	
-	private int sellerid;
+	private Long productno;
 	
-	private int userid;
+	private Long sellerid;
+	
+	private Long userid;
 	
 	private int count;
 	
@@ -39,5 +41,5 @@ public class OrderList {
 	
 	private String addr_detail;
 	
-	
+	private String request;
 }

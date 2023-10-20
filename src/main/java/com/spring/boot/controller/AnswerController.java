@@ -65,7 +65,7 @@ public class AnswerController {
 		
 		
 		Product product =question.getProduct();
-		Integer pno=product.getId();
+		Long pno=product.getId();
 		
 		//다시 상품페이지detail 로 돌아오기
 		return String.format("redirect:/product/detail/%s", pno);

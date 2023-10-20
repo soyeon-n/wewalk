@@ -9,10 +9,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.spring.boot.config.DataNotFoundException;
-<<<<<<< HEAD
+
 import com.spring.boot.dao.SellerRequestRepository;
-=======
->>>>>>> SY
+
 import com.spring.boot.dao.UserRepository;
 import com.spring.boot.model.SellerRequest;
 import com.spring.boot.model.SiteUser;
@@ -91,23 +90,17 @@ public class UserService {
 
 	//userName으로 불러오기
 	public SiteUser getUserByUserName(String userName) {
-<<<<<<< HEAD
-		
-		Optional<SiteUser> siteUser = 
-				userRepository.findByUserName(userName);
-		
-=======
-			
+	
 		Optional<SiteUser> siteUser = 
 				userRepository.findByUserName(userName);
 			
->>>>>>> SY
+
 		if(siteUser.isPresent()) {
 			return siteUser.get();
 		}else {
 			throw new DataNotFoundException("User not found!");
 		}
-<<<<<<< HEAD
+
 		
 	}
 	
@@ -218,10 +211,7 @@ public class UserService {
 	}
 	  
 	 */
-=======
-			
-	}
-		
+
 	
 	//비밀번호 업데이트
 	public void updatePassword(SiteUser user, String newPassword) {
@@ -244,5 +234,4 @@ public class UserService {
 	        userRepository.save(user);
 	    }
 	 
->>>>>>> SY
 }

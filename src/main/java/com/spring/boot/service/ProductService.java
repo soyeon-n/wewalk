@@ -25,7 +25,6 @@ public class ProductService {
 	
 	private final ProductRepository productRepository;//서비스와 레포 연결
 	
-	
 	//최신글부터 전체셀렉
 	public Page<Product> getTotalLists(Pageable pageable){
 		
@@ -80,7 +79,7 @@ public class ProductService {
 	
 	//상품삭제 
 	//희주님 꺼 
-	public Product gerProductById(Integer id) {
+	public Product getProductById(Integer id) {
 		Product product = productRepository.findById(id).get();
 		return product;
 	}

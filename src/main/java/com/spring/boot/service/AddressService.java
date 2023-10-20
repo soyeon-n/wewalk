@@ -8,29 +8,29 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.spring.boot.dao.ShippingRepository;
+import com.spring.boot.dao.AddressRepository;
 import com.spring.boot.dao.UserRepository;
-import com.spring.boot.dto.Shipping;
+import com.spring.boot.model.Address;
 import com.spring.boot.model.SiteUser;
 
 
 @Service
-public class ShippingService {
+public class AddressService {
 
     private final UserRepository userRepository;
-    private final ShippingRepository shippingRepository;
+    private final AddressRepository addressRepository;
 
     @Autowired
-    public ShippingService(UserRepository userRepository, ShippingRepository shippingRepository) {
+    public AddressService(UserRepository userRepository, AddressRepository addressRepository) {
         this.userRepository = userRepository;
-        this.shippingRepository = shippingRepository;
+        this.addressRepository = addressRepository;
     }
 
 
-    public void saveShipping(Shipping shipping) {
+    public void saveAddress(Address address) {
     	
     	 // Shipping 정보를 저장합니다.
-        shippingRepository.save(shipping);
+    	addressRepository.save(address);
     }
     
     /* 창이 달라서 새로고침 불가능
@@ -47,17 +47,17 @@ public class ShippingService {
     */
 
     @Transactional
-    public List<Shipping> getShippingListByUserId(Long userId) {
+    public List<Address> getAddressListByUserId(Long userId) {
     	
         // ShippingRepository를 사용하여 사용자 이메일에 해당하는 배송지 목록을 조회 (오름차순)
-    	return shippingRepository.findByUserIdOrderByAnoAsc(userId);
+    	return addressRepository.findByUserIdOrderByIdAsc(userId);
     }
     
-    public boolean deleteAddress(Integer ano) {
+    public boolean deleteAddress(Long id) {
     	
         try {
             // 배송지 정보를 삭제합니다.
-            shippingRepository.deleteById(ano);;
+        	addressRepository.deleteById(id);;
             return true;
             
         } catch (Exception e) {

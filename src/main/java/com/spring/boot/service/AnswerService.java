@@ -26,7 +26,7 @@ public class AnswerService {
 		answer.setContent(content);
 		answer.setDate(LocalDateTime.now());
 		answer.setQuestion(question);
-		answer.setSiteUser(siteUser);
+		answer.setUser(siteUser);
 		
 		answerRepository.save(answer);
 		

@@ -9,21 +9,21 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.spring.boot.dao.GoodsRepository;
-import com.spring.boot.dto.Goods;
+import com.spring.boot.dao.ProductRepository;
 import com.spring.boot.dto.GoodsForm;
+import com.spring.boot.model.Product;
 import com.spring.boot.model.SiteUser;
 
 @Service
 public class GoodsService {
 	
 	@Autowired
-	private GoodsRepository goodsRepository;
+	private ProductRepository productRepository;
 	
 	@Transactional
-    public void registerProduct(GoodsForm goodsForm, Goods goods, Long userId) {
+    public void registerProduct(GoodsForm goodsForm, Product goods, Long userId) {
         // Goods 엔티티에 나머지 정보 설정
-        goods.setName(goodsForm.getName());
+        goods.setPname(goodsForm.getName());
         goods.setContent(goodsForm.getContent());
         goods.setPrice(goodsForm.getPrice());
         goods.setCategory(goodsForm.getCategory());
@@ -35,54 +35,54 @@ public class GoodsService {
         goods.setUser(user);
 
         // 상품 등록
-        goodsRepository.save(goods);
+        productRepository.save(goods);
     }
 	
 	//상품 출력
-	public List<Goods> getAllProducts() {
+	public List<Product> getAllProducts() {
         // 모든 상품을 가져오는 로직
-        return goodsRepository.findAll();
+        return productRepository.findAll();
     }
 	
 	//Sale 출력
-	public List<Goods> getSaleProducts() {
-	    return goodsRepository.findByStockGreaterThan(0);
+	public List<Product> getSaleProducts() {
+	    return productRepository.findByStockGreaterThan(0);
 	}
 	
 	//Soldout 출력
-	public List<Goods> getSoldoutProducts() {
-	    return goodsRepository.findByStockEquals(0);
+	public List<Product> getSoldoutProducts() {
+	    return productRepository.findByStockEquals(0);
 	}
 	
-	public Page<Goods> getProductsPaged(int pageNum, int itemsPerPage) {
+	public Page<Product> getProductsPaged(int pageNum, int itemsPerPage) {
         Pageable pageable = PageRequest.of(pageNum - 1, itemsPerPage);
-        return goodsRepository.findAll(pageable);
+        return productRepository.findAll(pageable);
     }
 
     public long getTotalItemCount() {
-        return goodsRepository.count();
+        return productRepository.count();
     }
     
-    public Goods getGoodsById(int pno) {
+    public Product getGoodsById(int pno) {
         // 상품 ID를 사용하여 데이터베이스에서 상품 가져오기
-        return goodsRepository.findById(pno).orElse(null);
+        return productRepository.findById(pno).orElse(null);
     }
     
     @Transactional
     public void updateGoods(int pno, GoodsForm goodsForm) {
         // 상품 ID를 사용하여 데이터베이스에서 상품을 가져옵니다.
-        Goods existingGoods = goodsRepository.findById(pno).orElse(null);
+    	Product existingGoods = productRepository.findById(pno).orElse(null);
         
         if (existingGoods != null) {
             // 상품 정보 업데이트
-            existingGoods.setName(goodsForm.getName());
+            existingGoods.setPname(goodsForm.getName());
             existingGoods.setContent(goodsForm.getContent());
             existingGoods.setPrice(goodsForm.getPrice());
             existingGoods.setCategory(goodsForm.getCategory());
             existingGoods.setStock(goodsForm.getStock());
             
             // 상품 업데이트
-            goodsRepository.save(existingGoods);
+            productRepository.save(existingGoods);
         }
     }
    

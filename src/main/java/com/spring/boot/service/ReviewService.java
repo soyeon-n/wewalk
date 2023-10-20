@@ -134,7 +134,7 @@ public class ReviewService {
 		reviews.setProduct(product);//리뷰한 상품번호 넣기
 		//fk 인 동시에 insert 하려고해서 지금안들어가나 이게타입이 지금 int 가 아님 
 		//reviews.setRNo(rNo);//리뷰글 번호 알아서 set 됨 
-		reviews.setSiteUser(siteUser);
+		reviews.setUser(siteUser);
 		reviews.setPname(pname);
 		reviews.setStar(star);
 		reviews.setDate(LocalDateTime.now());
@@ -165,7 +165,7 @@ public class ReviewService {
 				pageable.getPageSize(),Sort.by(sorts));
 
 
-		return reviewRepository.findBySiteUser(siteUser, pageable);
+		return reviewRepository.findByUserId(siteUser, pageable);
 
 
 

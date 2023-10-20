@@ -1,4 +1,4 @@
-package com.spring.boot.dto;
+package com.spring.boot.model;
 
 import java.util.Date;
 
@@ -9,8 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import com.spring.boot.model.SiteUser;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -25,13 +25,13 @@ public class Pay {
 	private SiteUser user;
 	
 	@Id
-	@Column(name = "orderno")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer orderNo;
+    private Long id;
 
     @Column(name = "paymoney")
     private Integer payMoney;
     
+	@Temporal(TemporalType.TIMESTAMP)
     @Column(name = "payDate")
     private Date payDate;
     
