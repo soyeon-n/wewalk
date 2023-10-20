@@ -111,7 +111,6 @@ public class SiteUser implements Serializable{
 	private Integer point;
 
 	//충전해서쓰는페이머니 잔액
-	@ColumnDefault("0")
 	private Integer paymoney;
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -147,9 +146,7 @@ public class SiteUser implements Serializable{
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<Answer> answerList;
     
-    
-    
-    
+
 	//회원정보 수정(자동 반영)
 	public SiteUser update(String userName, String picture) {
 		this.userName = userName;
@@ -169,7 +166,7 @@ public class SiteUser implements Serializable{
     public SiteUser(Long id, UserRole role, String email, String password, String userName, 
     		String provider, String providerId, String name, LocalDateTime createdDate, 
     		LocalDate birthDate, String postcode, String address, String detailAddress, boolean isActivated,
-    		String tel, String picture, boolean seller, String intro,
+    		String tel, String picture, boolean seller, String intro, Integer paymoney, String grade,
     		Integer point, Interest interest1, Interest interest2, Interest interest3, LocalDateTime modifyDate) {
   		
   		this.id = id;
@@ -190,7 +187,9 @@ public class SiteUser implements Serializable{
         this.picture = picture;
         this.seller = seller;
         this.intro = intro;
+        this.paymoney = paymoney;
         this.point = point;
+        this.grade = grade;
         this.interest1 = interest1;
         this.interest2 = interest2;
         this.interest3 = interest3;

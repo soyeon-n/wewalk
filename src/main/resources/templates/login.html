@@ -9,7 +9,13 @@
 
     <body>
         <div id="container" class="container">
-
+		<input type="hidden" id="alertMessage" th:value="${alertMessage}" />
+		<script th:inline="javascript">
+		    var message = /*[[${alertMessage}]]*/ 'defaultMessage';
+		    if (message && message !== 'defaultMessage') {
+		        alert(message);
+		    }
+		</script>
 
             <div id="main">
                 <div id="content">

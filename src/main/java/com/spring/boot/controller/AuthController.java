@@ -66,7 +66,7 @@ public class AuthController {
 	@PreAuthorize("isAnonymous()")
 	@PostMapping("/signup")
 	//@PreAuthorize("isAnonymous()") // 로그인되지 않은 사용자에게만 허용
-	public String signup(@Valid UserCreateForm userCreateForm, BindingResult bindResult) {
+	public String signup(@Valid UserCreateForm userCreateForm, BindingResult bindResult, RedirectAttributes redirectAttributes) {
 		
 		//입력값 검증
 		if(bindResult.hasErrors()) {
@@ -96,7 +96,8 @@ public class AuthController {
 		    
 		    UserRole role;
 		    boolean seller;
-		    
+		    String grade = "B";
+		    		
 		    //static에 있는 이미지 사용하기 위한 코드(사진 기본값)
 		    Resource resource = new ClassPathResource("static/images/flower-8173829_640.jpg");
 		    String picture = "/images/flower-8173829_640.jpg";
@@ -113,7 +114,8 @@ public class AuthController {
 		    //UserRole을 지정해서 넣어줘야 하고 거기에 추가로 UserCreateForm과 UserService, SiteUser에서의 데이터 입력 순서를 맞춰줘야 함
 			userService.create(role, userCreateForm.getEmail(), userCreateForm.getPassword1(), userCreateForm.getUserName(), 
 						userCreateForm.getName(), birthDate, userCreateForm.getPostcode(),
-						userCreateForm.getAddress(), userCreateForm.getDetailAddress(), userCreateForm.getTel(), picture, seller, true);
+						userCreateForm.getAddress(), userCreateForm.getDetailAddress(), userCreateForm.getTel(), 
+						picture, seller, true, grade, 0, 0);
 		
 			SiteUser newUser = userService.getUserByUserName(userCreateForm.getUserName());
 			
@@ -141,6 +143,7 @@ public class AuthController {
 			return "signup_form";
 			
 		}
+		redirectAttributes.addFlashAttribute("alertMessage", "회원가입을 환영합니다!");
 		return "redirect:/auth/login";
 	}
 	
@@ -163,8 +166,9 @@ public class AuthController {
 		
 	}
 	
-	@PostMapping("/oauthSignup")	
-	public String oauthSignup(@Valid OAuthUserCreateForm oAuthUserCreateForm, BindingResult bindResult) {
+	
+	@PostMapping("/oauthSignup")
+	public String oauthSignup(@Valid OAuthUserCreateForm oAuthUserCreateForm, BindingResult bindResult, RedirectAttributes redirectAttributes) {
 		
 		//입력값 검증
 		if(bindResult.hasErrors()) {
@@ -193,8 +197,11 @@ public class AuthController {
 		    String detailAddress = oAuthUserCreateForm.getDetailAddress();
 		    String tel = oAuthUserCreateForm.getTel();
 		    
+		    String grade = "B";
+		    
 		    userService.oauthSignup(oauthUser, role, name, 
-		    		birthDate, createdDate, postcode, address, detailAddress, tel, true);		    
+		    		birthDate, createdDate, postcode, address, detailAddress, 
+		    		tel, true, grade, 0, 0);		    
 			
 			//새로 생성한 유저의 카트 생성
 			cartService.create(oauthUser);
@@ -220,6 +227,7 @@ public class AuthController {
 			return "oauth_signup_form";
 			
 		}
+		redirectAttributes.addFlashAttribute("alertMessage", "회원가입을 환영합니다!");
 		return "redirect:/auth/login";
 	}
 	
@@ -262,6 +270,7 @@ public class AuthController {
             
         } else {
             // 정보가 충분한 경우 홈페이지로 리다이렉트
+        	redirectAttributes.addFlashAttribute("alertMessage", "처음 오셨군요! 회원 가입을 완료해주세요.");
             return "redirect:/"; // 홈페이지로 이동
         }
 	}
@@ -288,14 +297,19 @@ public class AuthController {
 	
 	//login은 security가 처리하므로 post방식의 로그인 처리 메소드는 없어도 됨
 	@GetMapping("/login")
-	public String login(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+	public String login(@AuthenticationPrincipal PrincipalDetails principalDetails, 
+			@RequestParam(value = "error", required = false) String error, Model model) {
 		
 		if (principalDetails != null) {
 	        return "redirect:/";  // 로그인되어 있다면 메인 페이지로 리다이렉트
-	    }else {	    	
-	    	return "login";
 	    }
 		
+		if ("disabled".equals(error)) {
+	        model.addAttribute("alertMessage", "비활성화된 계정입니다");
+	    } else if ("true".equals(error)) {
+	        model.addAttribute("alertMessage", "로그인에 실패하였습니다");
+	    }		
+	    return "login";		
 	}
 	
 }
