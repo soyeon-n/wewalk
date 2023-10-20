@@ -17,6 +17,15 @@
 		    }
 		</script>
 
+		<div th:if="${reactivatePrompt}">
+		    <script>
+		        var result = confirm("활성화하시겠습니까?");
+		        if (result) {
+		            window.location.href = "/reactivateAccount";
+		        }
+		    </script>
+		</div>
+
             <div id="main">
                 <div id="content">
                     <div class="section_login">
