@@ -2,7 +2,7 @@ var product_cost = 0;
 var delivery_cost = 0;
 
 function al() {
-var emoney = Number($('#paper_reserves2').text().replace(/[^0-9]/g, ''));
+var emoney = $('#paper_reserves2').text().replace(/[^0-9]/g, '');
 
 alert(emoney);
 }
@@ -278,33 +278,82 @@ function requestPay() {
 	var buyer_addr_detail = $('#detailAddress').val();
 	var request = $('#request').val();
 
-	var lastPrice = $('#paper_settlement').text().replace(/[^0-9]/g, '');
 	var pointPay = $('#paper_reserves').text().replace(/[^0-9]/g, '');
-
+	var payMoney = $('#paper_reserves2').text().replace(/[^0-9]/g, '');
 	
-	IMP.init('imp56668363');
-    IMP.request_pay({
-    
-	    pg : 'html5_inicis.INIpayTest', //테스트 시 html5_inicis.INIpayTest 기재 
-        merchant_uid: merchant_uid,   // 주문번호
-        name: name,
-        amount: amount,               // 금액(숫자 타입)
-        buyer_email: buyer_email,
-        buyer_name: buyer_name,
-        buyer_tel: buyer_tel,
-        buyer_addr: buyer_addr,
-        buyer_postcode: buyer_postcode
-        
-	}, function(rsp) { // callback 로직
-		if (rsp.success) {
-            
-            var paymentData = {
-            
-	            merchant_uid: rsp.merchant_uid,
+	//결제금액이 있을경우
+	if(amount>0){
+	
+		IMP.init('imp56668363');
+	    IMP.request_pay({
+	    
+		    pg : 'html5_inicis.INIpayTest', //테스트 시 html5_inicis.INIpayTest 기재 
+	        merchant_uid: merchant_uid,   // 주문번호
+	        name: name,
+	        amount: amount,               // 금액(숫자 타입)
+	        buyer_email: buyer_email,
+	        buyer_name: buyer_name,
+	        buyer_tel: buyer_tel,
+	        buyer_addr: buyer_addr,
+	        buyer_postcode: buyer_postcode
+	        
+		}, function(rsp) { // callback 로직
+			if (rsp.success) {
+	            
+	            var paymentData = {
+	            
+		            merchant_uid: rsp.merchant_uid,
+		            name: name,
+		            paid_amount: rsp.paid_amount,
+		            pay_method: rsp.pay_method,
+		            apply_num: rsp.apply_num,
+		            buyer_name: buyer_name,
+		            buyer_tel: buyer_tel,
+		            buyer_addr: buyer_addr,
+		            buyer_addr_detail: buyer_addr_detail,
+		            buyer_postcode: buyer_postcode,
+		            request: request,
+		            pointPay: pointPay,
+		            payMoney: payMoney,
+		            itemIds: itemIds,
+	       		};
+	            
+	            $.ajax({
+		            type: "POST",
+		            url: "/order/checkout",
+		            contentType: "application/json", 
+		            data: JSON.stringify(paymentData),
+		            success: function (response) {
+		                console.log(response);
+		            	window.location.href = response;
+		            	
+		            },
+		            error: function (xhr, status, error) {
+				        console.log(xhr.responseText);
+				        alert("error");
+				    }
+	            });
+	            
+				
+	
+				
+	        } else {
+	        	var message = '결제에 실패했습니다.\n'+rsp.error_msg;
+	            alert(message);
+	        }
+			
+		});
+	
+	}else{
+	
+	    //전부 포인트or페이머니로 결제했을경우
+		var paymentData = {
+	            
+	            merchant_uid: merchant_uid,
 	            name: name,
-	            paid_amount: rsp.paid_amount,
-	            pay_method: rsp.pay_method,
-	            apply_num: rsp.apply_num,
+	            paid_amount: amount,
+	            pay_method: '페이머니및포인트',
+	            apply_num: '',
 	            buyer_name: buyer_name,
 	            buyer_tel: buyer_tel,
 	            buyer_addr: buyer_addr,
@@ -312,6 +361,7 @@ function requestPay() {
 	            buyer_postcode: buyer_postcode,
 	            request: request,
 	            pointPay: pointPay,
+	            payMoney: payMoney,
 	            itemIds: itemIds,
        		};
             
@@ -321,26 +371,21 @@ function requestPay() {
 	            contentType: "application/json", 
 	            data: JSON.stringify(paymentData),
 	            success: function (response) {
-	                
-	            	
-	            	window.location.href = "/";
-	            	
+	                console.log(response);
+	            	alert('성공');
+	            	$('#paymentsData').val(JSON.stringify(response.paymentsData));
+       				$('#resultForm').submit();
+
 	            },
 	            error: function (xhr, status, error) {
 			        console.log(xhr.responseText);
 			        alert("error");
+
+   
 			    }
             });
-            
-			
-
-			
-        } else {
-        	var message = '결제에 실패했습니다.\n'+rsp.error_msg;
-            alert(message);
-        }
-		
-	});
+	
+	}
 	
   }
 
