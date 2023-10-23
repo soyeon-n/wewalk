@@ -65,5 +65,26 @@ public class CartItemService {
 		cartItemRepository.save(cartItem);
 		
 	}
+	//장바구니에 내가담으려는 product가 있는지 검색
+	public boolean searchProduct(Product product,Cart cartId) {
+		//optional 해야 할것같음 
+		
+		Optional<CartItem> op = cartItemRepository.findByCartAndProduct(cartId, product);
+		
+		if(op.isPresent()) {
+			return true;
+		}else {
+			return false;
+		}
+		
+		
+		
+	}
+	
+	
+	
+	
+	
+	
 	
 }

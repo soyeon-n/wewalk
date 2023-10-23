@@ -1,5 +1,7 @@
 package com.spring.boot.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.data.domain.Page;
@@ -22,6 +24,7 @@ import com.spring.boot.dto.PrincipalDetails;
 import com.spring.boot.dto.ProductForm;
 import com.spring.boot.dto.QuestionForm;
 import com.spring.boot.model.Cart;
+import com.spring.boot.model.CartItem;
 import com.spring.boot.model.Product;
 import com.spring.boot.model.Question;
 import com.spring.boot.model.Review;
@@ -141,9 +144,27 @@ public class ProductController {
 		
 		SiteUser user = userService.getUserByUserName(principalDetails.getUsername());
 		
-		Cart cart=cartService.getOneCart(user);//siteuser 를 넣어주면 cart 를 반환한다 
+		Cart cart=cartService.getOneCart(user);//siteuser 를 넣어주면 유저의 cart 를 반환한다 
 		
-		cartItemService.addCartItem(product, number, cart);
+		//근데 db 에 product 번호가 존재한다면 
+		//long cartId=cart.getId();//그 카트의 id 번호를 가지고 내 카트 item 을 찾아 
+		
+		
+		//나의 cartitem 에 productNo 가 있는 지 검사한다 
+		boolean mycart =cartItemService.searchProduct(product, cart);
+		
+		//내CartItem 에 product 가이미 들어있다면 
+		if(mycart) {
+			
+			//다시 돌려보내 
+			return ResponseEntity.badRequest().body("Item is already in the cart");
+			
+			
+		}
+		
+		//null 이면 아직 product no 가 담긴적이 없으니 담으면 된다 
+		
+		cartItemService.addCartItem(product, number, cart);//실질적 insert
 		
 		return ResponseEntity.ok("Cart item added successfully");
 	}
