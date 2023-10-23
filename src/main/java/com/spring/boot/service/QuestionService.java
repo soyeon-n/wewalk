@@ -30,9 +30,12 @@ public class QuestionService {
 		List<Sort.Order> sorts = new ArrayList<Sort.Order>();
 		sorts.add(Sort.Order.desc("Date"));
 				
+		//먼가여기를 기존의 페이징을 쓰면 안될거같은데,,,,,,,
 		//pageable 페이징 추가
 		pageable = PageRequest.of(pageable.getPageNumber()<=0 ? 0 : pageable.getPageNumber()-1,
 				pageable.getPageSize(),Sort.by(sorts));
+		
+		
 		
 		return questionRepository.findByProduct(product, pageable);
 		

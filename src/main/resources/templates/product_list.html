@@ -9,22 +9,21 @@
    
     <link rel="stylesheet" href="/good_view01.css">
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-    <script src="./js/good_view01.js"></script>
-    <script src="./js/common.js"></script>
+    <script src="/good_view.js"></script>
+    <script src="/common.js"></script>
     
     
-   <!-- review script css 적용위해 상단에 넣음  -->
+   <!-- review script css 적용위해 상단에 넣음 --> 
     <link rel="stylesheet" href="/mykurly_order_list.css">
     <link rel="stylesheet" href="/mykurly_review.css">
-    <script src="./js/mykurly.js"></script>
-    <script src="../main/js/common.js"></script>
+    <script src="/mykurly.js"></script>
+    
     
     <!-- qna css -->
-    <link rel="stylesheet" href="/reset.css">
-    <link rel="stylesheet" href="/common.css">
+    
     <link rel="stylesheet" href="/good_review_list.css">
-    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-    <script src="./js/good_view.js"></script>
+    
+    
     
     
     
@@ -351,17 +350,28 @@
                                     <button id="btnShare">공유하기</button>
                                 </span>
                                 <strong class="name" th:text="${product.pname}">[김구원선생] 무농약 콩나물 200g</strong>
-                                <span class="short_desc" >무농약 콩으로 재배한 콩나물(1봉/200g)</span>
+                                  <input type="hidden" th:value="${product.id}" id="productNo">
+                                  <!-- 이걸로 값을 넘긴다 ajax --> 
+                                                                <span class="short_desc" >무농약 콩으로 재배한 콩나물(1봉/200g)</span>
                             </p>
                             <p class="goods_price">
                                 <span class="position">
                                     <span class="dc">
-                                        <span class="dc_price" th:text="${product.price}">
-                                            1,300
-                                            <input type="hidden" value=1300>
+                                        <span class="dc_price" >
+                                        <b class="dc_price" th:text="${product.price}"></b>
+                                        
+                                        
+                                            
+                                            <input type="hidden" th:value="${product.price}">
+                                            <!-- 여기에 가격을 넣어줘여한다는데  -->
+                                            
+                                            
+                                            
+                                            
                                             
                                         </span>
                                         <span class="won">원</span>
+                                        
                                     </span>
                                     
                                 </span>
@@ -451,6 +461,7 @@
                                     <div class="view_function">
                                         <button type="button" class="btn btn_save">늘 사는 것</button>
                                     </div>
+                                    <!-- 장바구니 담기버튼  -->
                                     <span class="btn_type1">
                                         <button type="button" class="txt_type">장바구니 담기</button>
                                     </span>

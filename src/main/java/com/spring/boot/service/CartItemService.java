@@ -12,6 +12,7 @@ import com.spring.boot.dao.ProductRepository;
 import com.spring.boot.model.Cart;
 import com.spring.boot.model.CartItem;
 import com.spring.boot.model.Product;
+import com.spring.boot.model.SiteUser;
 
 import lombok.RequiredArgsConstructor;
 
@@ -48,6 +49,20 @@ public class CartItemService {
 	public void deleteCartItem(Long cartItemId) {
 		
 		cartItemRepository.deleteById(cartItemId);
+		
+	}
+	
+	
+	//은별 장바구니에 담아버리기 
+	public void addCartItem(Product product,Integer count,Cart cart) {
+		
+		CartItem cartItem = new CartItem();
+		
+		cartItem.setProduct(product);//물건번호
+		cartItem.setCount(count);//갯수 넣기 
+		cartItem.setCart(cart);
+		//siteuser 정보도 넣어야 하는데 ??? 
+		cartItemRepository.save(cartItem);
 		
 	}
 	

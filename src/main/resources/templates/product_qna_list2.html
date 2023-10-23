@@ -9,13 +9,49 @@
     <link rel="stylesheet" href="/good_review_list.css">
     <link rel="stylesheet" href="/aco.css">
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
     <script src="./js/good_view.js"></script>
     
 
-    <script>
-        function going(){
-            window.parent.location.href = "http://127.0.0.1:5500/mykurly_review_register.html";
-        }
+    <script type="text/javascript">
+    
+    /* 이거는 qna내용 펼칠 아코디언바*/
+    $(document).ready(function() {
+		$(".que").click(function() {
+			$(this).next(".anw").stop().slideToggle(300);
+			$(this).toggleClass('on').siblings().removeClass('on');
+			$(this).next(".anw").siblings(".anw").slideUp(300); // 1개씩 펼치기
+		});
+	});
+    
+    
+    function loadEntities(page) {
+        $.ajax({
+            url: '/product/detail/'+productNo+'?page=' + page,
+            type: 'GET',
+            success: function (data) {
+                // Handle the data, update your UI with the received entities
+                console.log(data);
+                // Implement logic to update UI with entities data
+            },
+            error: function (error) {
+                console.error('Error loading entities: ' + error.responseText);
+            }
+        });
+    }
+    
+    
+    
+    
+    
+    
+    
+    
     </script>
 
 
@@ -83,39 +119,7 @@
                         </tbody>
                     </table>
                     
-                    <!-- 아코디언바 추가 -->
-                    <div class="accordion accordion-flush" id="accordionFlushExample">
-					  <div class="accordion-item">
-					    <h2 class="accordion-header">
-					      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-					        Accordion Item #1
-					      </button>
-					    </h2>
-					    <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-					      <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the first item's accordion body.</div>
-					    </div>
-					  </div>
-					  <div class="accordion-item">
-					    <h2 class="accordion-header">
-					      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
-					        Accordion Item #2
-					      </button>
-					    </h2>
-					    <div id="flush-collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-					      <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the second item's accordion body. Let's imagine this being filled with some actual content.</div>
-					    </div>
-					  </div>
-					  <div class="accordion-item">
-					    <h2 class="accordion-header">
-					      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
-					        Accordion Item #3
-					      </button>
-					    </h2>
-					    <div id="flush-collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-					      <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the third item's accordion body. Nothing more exciting happening here in terms of content, but just filling up the space to make it look, at least at first glance, a bit more representative of how this would look in a real-world application.</div>
-					    </div>
-					  </div>
-					</div>
+                    
                     
                     
                     
@@ -138,7 +142,7 @@
                                 <col style="width:80px;">
     
                             </colgroup>
-                            <tr th:each="question,loop: ${paging1}">
+                            <tr th:each="question,loop: ${entities}">
                             
                             
                                 <td align="center">글번호글번호
@@ -282,12 +286,12 @@
 
                 <p class="btnArea after">
                     <a  onclick="going()">
-                        <span class="bhs_button" style="line-height:30px; width:130px;">문의 쓰기</span>
+                    <!--  
+                        <span class="bhs_button" style="line-height:30px; width:130px;">문의 쓰기</span>-->
                         
                     </a>
-                    <!-- <button value="문의쓰기" 
-                    onclick="location.href='http://localhost:8080/question/create/${product.id}'"></button>-->
-                    <a th:href="@{|/question/create/${product.id}|}">문의쓰기</a> 
+                    
+                    <a th:href="@{|/question/create/${product.id}|}" class="bhs_button" style="line-height:30px; width:130px;">문의쓰기</a> 
                     <!-- <a th:href="@{|/product/detail/${product.id}/question/create|}">문의쓰기</a> -->
                     
                     
@@ -297,17 +301,43 @@
 
             </div>
         </div>
+        <!-- 아코디언바 추가 -->
+            <div id="Accordion_wrap">
+			    <div class="que">
+			     <span>This is first question.</span>
+			      <div class="arrow-wrap">
+			        <span class="arrow-top">↑</span>
+			       <span class="arrow-bottom">↓</span>
+			      </div>
+			     
+			    </div>
+			    <div class="anw">
+			     <span>This is first answer.</span>
+			    </div>
+			     <div class="que">
+			     <span>This is second question.</span>
+			    </div>
+			    <div class="anw">
+			     <span>This is second answer.</span>
+			    </div>
+			     <div class="que">
+			     <span>This is third question.</span>
+			    </div>
+			    <div class="anw">
+			     <span>This is third answer.</span>
+			    </div>
+            </div>   
+        
         <div class="board_pg_area">
         
-        
             <!-- 페이징처리 -->
-	        <div th:if="${!paging1.isEmpty()}">
+	        <div th:if="${!entities.isEmpty()}">
 		
 				<nav aria-label="Page navigation">
 				     <ul class="pagination justify-content-center"
-				          th:with="startNumber=${(paging1.number/10)}*10+1, 
-				          endNumber=(${paging1.totalPages}>${startNumber}+9)?
-				          ${startNumber}+9 : ${paging1.totalPages}">
+				          th:with="startNumber=${(entities.number/10)}*10+1, 
+				          endNumber=(${entities.totalPages}>${startNumber}+9)?
+				          ${startNumber}+9 : ${entities.totalPages}">
 				          
 				          <!-- << -->
 				          <li>
@@ -317,25 +347,28 @@
 				          </li>
 				          
 				          <!-- < -->
-				          <li class="layout-pagination-button layout-pagination-prev-page" th:style ="${paging1.first}?'display:none'">
+				          <li class="layout-pagination-button layout-pagination-prev-page" 
+				          th:style ="${entities.first}?'display:none'">
 					          <a class="layout-pagination-button layout-pagination-prev-page" 
-					          th:href="@{|/product/detail/${product.id}?page=${paging1.number}|}">
+					          th:href="@{|/product/detail/${product.id}?page=${entities.number}|}">
 					          &lsaquo;				          
 					          </a>
 				          </li>
 				          <!-- 1 2 3 4 5 -->
-				          <li class="layout-pagination-button layout-pagination-number" th:each="page : ${#numbers.sequence(startNumber,endNumber)}"
-				              th:classappend="(${page}==${paging1.number}+1) ? 'active'">
+				          <li class="layout-pagination-button layout-pagination-number" 
+				          th:each="page : ${#numbers.sequence(startNumber,endNumber)}"
+				              th:classappend="(${page}==${entities.number}+1) ? 'active'">
 				              <a class="layout-pagination-button layout-pagination-number" 
 				              th:href="@{|/product/detail/${product.id}?page=${page}|}" th:text="${page}">
 				            
 				              </a>
-				              <!-- 페이징 주소 수정중 <a th:href="@{|/question/detail/${question.id}|}" -->
+				              <!-- 일단 넘겨받는것을 paging1 에서 entities 로 바꿔주고 -->
 				          </li>
 				          <!-- > -->
 				          <!-- th:href="@{'/question/list/' + productNo + '?page=' + page}" th:text="${page}" -->
-				          <li class="layout-pagination-button layout-pagination-next-page" th:style="${paging1.last}?'display:none'">
-					          <a class="page-link" th:href="@{|/product/detail/${product.id}?page=${paging1.number}+2}">
+				          <li class="layout-pagination-button layout-pagination-next-page" 
+				          th:style="${entities.last}?'display:none'">
+					          <a class="page-link" th:href="@{|/product/detail/${product.id}?page=${entities.number}+2}">
 					          &rsaquo;
 					          <!-- 여기만 paging 쿼리 수정함 확인해봐  -->
 					          
@@ -345,7 +378,7 @@
 				          <!-- >> -->
 				          <li>
 				          <a class="layout-pagination-button layout-pagination-last-page" 
-				          th:href="@{|/product/detail/${product.id}?page=${paging1.totalPages}|}">
+				          th:href="@{|/product/detail/${product.id}?page=${entities.totalPages}|}">
 				          &raquo;
 				          </a>
 				          </li>
@@ -356,6 +389,13 @@
 				</nav>
 			
 			</div>
+			
+			 <button onclick="loadEntities(0)">First Page</button>
+			 <button onclick="loadEntities(currentPage - 1)">Previous Page</button>
+			 <button onclick="loadEntities(currentPage + 1)">Next Page</button>
+			 <button onclick="loadEntities(totalPages - 1)">Last Page</button>
+			 
+			 <br/>
         
         
         
@@ -378,9 +418,19 @@
             
         </div>
         
+   
+        
+        
 	
     </div>
-</nav>    
+    
+   
+    
+    
+    
+    
+</nav> 
+
     
 </body>
 </html>
