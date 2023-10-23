@@ -34,10 +34,8 @@ public class Review {
 	private SiteUser user;//리뷰작성자 = 여기에 현재로그인된 id 를 set 해야함  
 	//왜 연결이 안도ㅐ 지 ㅜㅜ 
 	
-	
 	@ManyToOne
 	private Product product;
-	
 	
 	private String pname;//상품명--product 테이블에서가져오기
 	

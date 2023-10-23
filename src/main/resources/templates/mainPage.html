@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>INU Kurly</title>
+    <title>WeWalkShop</title>
     <link rel="stylesheet" href="/main/reset.css">
     <link rel="stylesheet" href="/main/common.css">
     <link rel="stylesheet" href="/main/visual.css">
@@ -31,11 +31,12 @@
                 </a>
                 <ul class="sign_menu"> <!--login class 추가-->
                     <li class="link">
-                        <a href="#" class="item after join">회원가입</a>
+                        <a sec:authorize="isAnonymous()" th:href="@{/auth/signup}" class="item after join">회원가입</a>
+                        <a sec:authorize="isAuthenticated()" th:href="@{/user/mypage}" class="item after join" th:text="|${userName} 님 환영합니다|"></a>                        
                     </li>
                     <li class="link">
-                        <a href="#" class="item after login_none">로그인</a>
-                        
+                        <a sec:authorize="isAnonymous()" th:href="@{/auth/login}" class="item after login_none">로그인</a>
+                        <a sec:authorize="isAuthenticated()" th:href="@{/logout}" class="item after login_none">로그아웃</a>                        
                         
                     </li>
                     <li class="link">
@@ -124,9 +125,10 @@
                         </li>
 
                         <div class="gnb_search">
-                            <form action="/wewalk/search" method="get" id="searchForm">
+                            <form th:action="@{/wewalk/search}" method="get" id="searchForm">
                                 <input type="text" id="keyword" name="keyword" title="검색어입력" class="inp_search">
                                 <input type="image" src="https://res.kurly.com/pc/service/common/1908/ico_search_x2.png" class="btn_search">
+                                
                                 <div class="init">
                                     <button type="button" id="search_init" class="btn_delete">검색어 삭제하기</button>
                                 </div>

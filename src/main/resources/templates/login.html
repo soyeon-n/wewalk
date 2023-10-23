@@ -19,9 +19,11 @@
 
 		<div th:if="${reactivatePrompt}">
 		    <script>
-		        var result = confirm("활성화하시겠습니까?");
+		        var result = confirm("탈퇴한 유저입니다. 재가입하시겠습니까?");
 		        if (result) {
-		            window.location.href = "/reactivateAccount";
+		            window.location.href = "/auth/reactivate";
+		        }else {
+		            window.location.href = "/auth/login";  // 로그인 페이지로 리다이렉트
 		        }
 		    </script>
 		</div>

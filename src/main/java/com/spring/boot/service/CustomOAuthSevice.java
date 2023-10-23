@@ -58,9 +58,6 @@ public class CustomOAuthSevice extends DefaultOAuth2UserService{
         if(userRequest.getClientRegistration().getRegistrationId().equals("google")) {
             oAuth2UserInfo = new GoogleUserInfo(oAuth2User.getAttributes());
         }
-//        else if(userRequest.getClientRegistration().getRegistrationId().equals("facebook")) {
-//            oAuth2UserInfo = new FacebookUserInfo(oAuth2User.getAttributes());
-//        }
         else if(userRequest.getClientRegistration().getRegistrationId().equals("naver")) {
             oAuth2UserInfo = new NaverUserInfo((Map<String, Object>)oAuth2User.getAttributes().get("response"));
         }

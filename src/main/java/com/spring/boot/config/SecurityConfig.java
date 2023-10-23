@@ -26,7 +26,6 @@ import lombok.RequiredArgsConstructor;
 public class SecurityConfig {
 	
 	private final PrincipalService principalService;
-    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
     private final CustomAccessDeniedHandler customAccessDeniedHandler;
 	private final CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
 
@@ -54,7 +53,6 @@ public class SecurityConfig {
 		        .anyRequest().permitAll()
 	        .and()
 	        .exceptionHandling()
-            .authenticationEntryPoint(customAuthenticationEntryPoint) //로그인 과정에서 비활성화된 계정에 대한 처리
             .accessDeniedHandler(customAccessDeniedHandler)
             .and()
             	.sessionManagement()

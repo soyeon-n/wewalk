@@ -7,11 +7,11 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import com.spring.boot.model.Product;
 
-public interface ProductRepository extends JpaRepository<Product, Integer>{
+public interface ProductRepository extends JpaRepository<Product, Integer>, JpaSpecificationExecutor<Product>{
 	//주의: 여기 레포에서 하나라도 안돌아가면 에러남 
 	
 	
@@ -40,9 +40,5 @@ public interface ProductRepository extends JpaRepository<Product, Integer>{
 	
 	List<Product> findByStockGreaterThan(int stock);
     List<Product> findByStockEquals(int stock);
-	
-	
-	
-
 
 }

@@ -270,7 +270,7 @@ public class AuthController {
             
         } else {
             // 정보가 충분한 경우 홈페이지로 리다이렉트
-        	redirectAttributes.addFlashAttribute("alertMessage", "처음 오셨군요! 회원 가입을 완료해주세요.");
+//        	redirectAttributes.addFlashAttribute("alertMessage", "처음 오셨군요! 회원 가입을 완료해주세요.");
             return "redirect:/"; // 홈페이지로 이동
         }
 	}

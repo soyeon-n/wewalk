@@ -70,7 +70,6 @@ public class ProductController {
 		model.addAttribute("paging1",paging1);//문의하기의페이징
 		model.addAttribute("paging",paging);//상품리뷰의 페이징
 		
-		
 		return "product_list";//html연결
 		
 		
