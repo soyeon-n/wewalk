@@ -45,7 +45,7 @@ public class MainController {
     		@AuthenticationPrincipal PrincipalDetails principalDetails) {
         
     	model.addAttribute("paging", productService.getSearchList(pageRequestDTO, sort));
-    	
+    	model.addAttribute("keyword", pageRequestDTO.getKeyword());
         return "search";
     }
 	

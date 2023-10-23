@@ -28,7 +28,8 @@
 <body class="noBody">
     <div id="container" class="container">
         <div><input type="text" id="sort" th:value="${sort} == null ? '등록일 순' : ${sort}" /></div>
-
+        <div><input type="text" id="keyword" th:value="${keyword} == null ? '' : ${keyword}" /></div>
+		
         <div id="main">
             <div id="content">
                 <div class="page_aticle">
@@ -107,8 +108,8 @@
 	                            <div class="inner_listgoods">
 	                                <ul class="list">                                   
 	                                    <li>
-	                                        <div class="item">
-	                                            <div class="thumb">
+	                                        <div class="item"><!-- 반복문 써야할 부분 -->
+	                                            <div class="thumb"><!-- thumbnail picture -->
 	                                                <a href="file:///C:/Users/Admin/Desktop/e-commerce-clone-main/good_view01.html" class="img" style="background-image: url(https://img-cf.kurly.com/shop/data/goods/1567574126435l0.jpg);">
 	                                                    <img src="https://img-cf.kurly.com/shop/data/goods/1567574126435l0.jpg" alt="무농약 콩으로 재배한 콩나물(1봉/200g)" onerror="this.src='https://res.kurly.com/mobile/img/1808/img_none_x2.png'" width="308" height="396">
 	                                                
@@ -125,7 +126,7 @@
 	                                                    </span>
 	                                                </span>
 	
-	                                                <div class="group_btn">
+	                                                <div class="group_btn"><!-- paging.dtoList.id -->
 	                                                    <button type="button" name="chk" value="여기다가 프로덕트 아이디 적어주삼" class="btn btn_cart">
 	                                                        <span class="screen_out">38300</span>
 	                                                    </button>
@@ -136,22 +137,20 @@
 	                                            </div>
 	
 	                                            <a class="info">
-	                                                <span class="name">
+	                                                <span class="name"><!-- pname -->
 	                                                    [김구원선생] 무농약 콩나물 200g
 	                                                </span>
 	                                                <span class="cost">
-	                                                    <span class="price">1,300</span>
+	                                                    <span class="price">1,300</span><!-- price -->
 	                                                    <input type="hidden"  id="product_cost1" value= 1300 >
 	                                                    <span class="dodo">원</span>
 	                                                </span>
 	
-	                                                <span class="desc">무농약 콩으로 재배한 콩나물(1봉/200g)</span>
+	                                                <span class="desc">무농약 콩으로 재배한 콩나물(1봉/200g)</span><!-- description -->
 	                                                <span class="tag"></span>
 	                                            </a>
 	                                        </div>
 	                                    </li>
-	
-	
 	
 	                                    <li>
 	                                        <div class="item">

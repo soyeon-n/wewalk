@@ -269,7 +269,7 @@ window.addEventListener('DOMContentLoaded',function(){
 		        var sortText = $(this).text();
 		        
 		        // .name_select에 클릭한 항목의 텍스트를 설정
-		        $('.name_select').text(sortText);
+		        $('.name_select').css('color', '#5f0080').text(sortText);
 		
 		        // 클릭한 항목에 'on' 클래스를 추가하고 다른 항목들에서 'on' 클래스 제거
 		        $('.list.checked a').removeClass('on');
