@@ -1,6 +1,5 @@
 package com.spring.boot.service;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -14,7 +13,12 @@ import org.springframework.stereotype.Service;
 import com.spring.boot.config.DataNotFoundException;
 
 import com.spring.boot.dao.ProductRepository;
+import com.spring.boot.dao.UserRepository;
+import com.spring.boot.dto.ItemDataForm;
+import com.spring.boot.dto.OrderResultForm;
+import com.spring.boot.model.OrderList;
 import com.spring.boot.model.Product;
+import com.spring.boot.model.SiteUser;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,6 +28,7 @@ import lombok.RequiredArgsConstructor;
 public class ProductService {
 	
 	private final ProductRepository productRepository;//서비스와 레포 연결
+	private final UserRepository userRepository;
 	
 	//최신글부터 전체셀렉
 	public Page<Product> getTotalLists(Pageable pageable){
@@ -79,10 +84,45 @@ public class ProductService {
 	
 	//상품삭제 
 	//희주님 꺼 
-	public Product getProductById(Integer id) {
+	public Product getProductById(Long id) {
 		Product product = productRepository.findById(id).get();
 		return product;
 	}
+	
+	public void updateProductStock(List<ItemDataForm> list) {
+		
+		for(ItemDataForm productData : list) {
+			Long id = productData.getId();
+			
+			Product product = productRepository.findById(id).get();
+			int newstock = product.getStock()-productData.getCount();
+			product.setStock(newstock);
+			
+			productRepository.save(product);
+		}
+		
+	}
+	
+	public List<OrderResultForm> getResultForm(List<OrderList> orderLists){
+		List<OrderResultForm> lists = new ArrayList<OrderResultForm>();
+		
+		for (OrderList OrderListData : orderLists) {
+			OrderResultForm orderResultForm = new OrderResultForm();
+			SiteUser seller = userRepository.findById(OrderListData.getSellerid()).get();
+			Product product = productRepository.findById(OrderListData.getProductno()).get();
+			orderResultForm.setOrderNo(OrderListData.getOrderNo());
+			orderResultForm.setProductName(product.getPname());
+			orderResultForm.setImage(product.getImage());
+			orderResultForm.setSellerId(seller.getUserName());
+			orderResultForm.setCount(OrderListData.getCount());
+			orderResultForm.setPrice(OrderListData.getPrice());
+			
+			lists.add(orderResultForm);
+		}
+		
+		return lists;
+	}
+
 }
 	
 	

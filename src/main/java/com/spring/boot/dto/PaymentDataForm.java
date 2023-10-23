@@ -21,6 +21,7 @@ public class PaymentDataForm {
     private String buyer_postcode;
     private String request;
     private int pointPay;
+    private int payMoney;
     private List<ItemDataForm> itemIds;
 }
 
