@@ -2,6 +2,7 @@ package com.spring.boot.service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -9,10 +10,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.spring.boot.config.DataNotFoundException;
-
+import com.spring.boot.dao.OrderListRepository;
 import com.spring.boot.dao.SellerRequestRepository;
 
 import com.spring.boot.dao.UserRepository;
+import com.spring.boot.model.OrderList;
 import com.spring.boot.model.SellerRequest;
 import com.spring.boot.model.SiteUser;
 import com.spring.boot.model.UserRole;
@@ -25,6 +27,7 @@ public class UserService {
 	
 	private final UserRepository userRepository;
 	private final SellerRequestRepository sellerRequestRepository;
+	private final OrderListRepository orderListRepository;
 	
 	//BCrypt해시 함수 호출
 	private final PasswordEncoder passwordEncoder;
@@ -241,5 +244,39 @@ public class UserService {
 	 public void updateUser(SiteUser user) {
 	        userRepository.save(user);
 	    }
+	 
+	 //거래후 등급,적립금,페이머니 조정
+	 public int updateAfterOrder(SiteUser user, int point, int payMoney, int amount, int accumulate) {
+		 
+		 if(!user.getGrade().equals("P")) {
+			 List<OrderList> lists = orderListRepository.findByUserid(user.getId());
+			 
+			 int purchaseAmount = 0;
+			 
+			 for(OrderList orderlist : lists) {
+				 purchaseAmount+=orderlist.getPrice();
+			 }
+			 
+			 if(purchaseAmount>=500000) {
+				 user.setGrade("P");
+			 }else if(purchaseAmount>=300000) {
+				 user.setGrade("G");
+			 }else if(purchaseAmount>=100000) {
+				 user.setGrade("S");
+			 }
+			 
+		 }
+		 
+		 int allAmount = amount + point + payMoney;
+		 int getPoint = allAmount * accumulate / 100; //적립금액
+		 
+		 user.setPoint(user.getPoint()-point+getPoint);
+		 user.setPaymoney(user.getPaymoney()-payMoney);
+		 userRepository.save(user);
+		 
+		 return getPoint;
+	 }
+	 
+	 
 	 
 }

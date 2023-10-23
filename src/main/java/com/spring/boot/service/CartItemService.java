@@ -5,13 +5,17 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.spring.boot.dao.CartItemRepository;
 import com.spring.boot.dao.CartRepository;
 import com.spring.boot.dao.ProductRepository;
+import com.spring.boot.dto.ItemDataForm;
+import com.spring.boot.dto.PaymentDataForm;
 import com.spring.boot.model.Cart;
 import com.spring.boot.model.CartItem;
 import com.spring.boot.model.Product;
+import com.spring.boot.model.SiteUser;
 
 import lombok.RequiredArgsConstructor;
 
@@ -21,7 +25,7 @@ public class CartItemService {
 
 	private final CartItemRepository cartItemRepository;
 	private final ProductRepository productRepository;
-	//private final CartRepository cartRepository;
+	private final CartRepository cartRepository;
 	
 	public List<Product> getCartItemList(Long cart_id){
 		
@@ -44,10 +48,25 @@ public class CartItemService {
 			cartItemRepository.save(item);
 		}
 	}
-
+	
+	@Transactional
 	public void deleteCartItem(Long cartItemId) {
 		
 		cartItemRepository.deleteById(cartItemId);
+		
+	}
+	
+	@Transactional
+	public void deleteBuyItems(PaymentDataForm paymentDateForm, SiteUser user) {
+		
+		List<ItemDataForm> lists = paymentDateForm.getItemIds();
+		Cart cart = cartRepository.findByUserId(user.getId());
+		
+		for(ItemDataForm data : lists) {
+			Product product = productRepository.findById(data.getId()).get();
+			
+			cartItemRepository.deleteByProductAndCart(product, cart);
+		}
 		
 	}
 	

@@ -528,6 +528,26 @@ body .data_payment th {
     text-align: center;
 }
 
+.data_payment .emoney_use .paymoney_chkbox {
+    display: inline-block;
+    padding: 0.5em 1em;
+    margin-bottom: 1em;
+    border: 1px solid #ccc;
+    border-color: #dbdbdb #d2d2d2 #b2b2b2 #d2d2d3;
+    cursor: pointer;
+    color: #464646;
+    border-radius: 0.2em;
+    vertical-align: middle;
+    font-size: 15px;
+    line-height: 1.25em;
+    background-image: -webkit-gradient(linear,left top,left bottom,from(#fff),to(#f2f2f2));
+    background-image: -moz-linear-gradient(top,#fff,#f2f2f2);
+    background-image: -o-gradient(top,#fff,#f2f2f2);
+    background-image: linear-gradient(top,#fff,#f2f2f2);
+    height: 20px;
+    text-align: center;
+}
+
 
 
 .data_payment .emoney_use input[type="checkbox"] {

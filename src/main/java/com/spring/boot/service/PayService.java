@@ -29,12 +29,12 @@ public class PayService {
         }
     }
 	
-	public void savePointHistory(SiteUser user, int point, String usePay) {
+	public void savePayHistory(SiteUser user, int point, String name) {
 		Pay pay = new Pay();
 		pay.setUser(user);
-		pay.setPayMoney(point);
+		pay.setPayMoney(-point);
 		pay.setPayDate(new Date());
-		pay.setType(usePay);
+		pay.setType(name);
 		payRepository.save(pay);
 	}
 	
