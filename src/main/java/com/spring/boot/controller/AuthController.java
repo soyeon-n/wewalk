@@ -275,15 +275,15 @@ public class AuthController {
         }
 	}
 	
-	@GetMapping("/reactivateUser")
-	public String reactivateUser(@RequestParam String userName, Model model) {
+	@GetMapping("/reactivate")
+	public String reactivate(@RequestParam String userName, Model model) {
 	
 		return "reActivate";
 		
 	}
 	
-	@PostMapping("/reactivateUser")
-	public String reactivateUser(@RequestParam String userName) {
+	@PostMapping("/reactivate")
+	public String reactivate(@RequestParam String userName) {
 	
 		SiteUser siteUser = userService.getUserByUserName(userName);
 		
