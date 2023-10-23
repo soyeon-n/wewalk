@@ -2,6 +2,8 @@
 
 @charset "utf-8";
 
+/* 배너 움직이는부분 */
+
 /* visual */
 #visual {
     position: relative; /* position: absolute의 경우 우측 플로팅 배너가 올라옴*/
@@ -34,4 +36,74 @@
     
 }
 
+.user_grade_bronze {
+	display: inline-block;
+    min-width: 48px;
+    height: 16px;
+    margin-right: 6px;
+    padding: 0px 4px;
+    border-radius: 30px;
+    font-size: 10px;
+    line-height: 14px;
+    text-align: center;
+    letter-spacing: -0.3px;
+    vertical-align: 0px;
+    color: #F8FFFF;
+    border: 1px solid #993800;
+    background-color: #993800;
+    font-weight: bold;
+}
 
+.user_grade_silver {
+	display: inline-block;
+    min-width: 48px;
+    height: 16px;
+    margin-right: 6px;
+    padding: 0px 4px;
+    border-radius: 30px;
+    font-size: 10px;
+    line-height: 14px;
+    text-align: center;
+    letter-spacing: -0.3px;
+    vertical-align: 0px;
+    color: #F8FFFF;
+    border: 1px solid #D5D5D5;
+    background-color: #A6A6A6;
+    font-weight: bold;
+}
+
+.user_grade_gold {
+	display: inline-block;
+    min-width: 48px;
+    height: 16px;
+    margin-right: 6px;
+    padding: 0px 4px;
+    border-radius: 30px;
+    font-size: 10px;
+    line-height: 14px;
+    text-align: center;
+    letter-spacing: -0.3px;
+    vertical-align: 0px;
+    color: #F8FFFF;
+    border: 1px solid #F2CB61;
+    background-color: #F2CB61;
+    font-weight: bold;
+}
+
+.user_grade_platinum {
+	display: inline-block;
+    min-width: 48px;
+    height: 16px;
+    margin-right: 6px;
+    padding: 0px 4px;
+    border-radius: 30px;
+    font-size: 10px;
+    line-height: 14px;
+    text-align: center;
+    letter-spacing: -0.3px;
+    vertical-align: 0px;
+    color: #58919A;
+    border: 1px solid #BDBDBD;
+    background-color: #EBE7E1;
+    font-weight: bold;
+}

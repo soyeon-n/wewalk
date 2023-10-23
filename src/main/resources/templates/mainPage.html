@@ -18,23 +18,19 @@
     
 </head>
 <body>
-<!-- 규칙:
-    축약형(link, emph, gnb 등)을 먼저 사용)
-    alt로 적절한 대체 텍스트 제공, 너무 긴 경우 공통클래스 blind로 제공-->
+
     <div id="wrap">
-        
-        <div id="header">
+        <!-- 로그인 하지않은경우 -->
+        <div id="header" th:if="${user==null}">
             <div class="user_menu">
                 <!-- bnr = banner -->
-                <a href="#" class="bnr_delivery">
-                    
-                </a>
+                
                 <ul class="sign_menu"> <!--login class 추가-->
                     <li class="link">
-                        <a href="#" class="item after join">회원가입</a>
+                        <a th:href="@{/auth/signup}" class="item after join">회원가입</a>
                     </li>
                     <li class="link">
-                        <a href="#" class="item after login_none">로그인</a>
+                        <a th:href="@{/auth/login}" class="item after login_none">로그인</a>
                         
                         
                     </li>
@@ -51,12 +47,146 @@
                             <li class="list">
                                 <a href="#" class="list_item">1:1 문의</a>
                             </li>
+                            
+                        </ul>
+                    </li> 
+                </ul>
+                <!-- .sign_menu -->
+            </div>
+            <div class="header_logo">
+                <h1 class="logo">
+                    <a href="#" class="link_main">
+                        <span class="gnb_logo_container"></span>
+                        <img src="/img/logo.png" alt="마켓컬리 로고" class="logo_img">
+                    </a>
+                </h1>
+            </div>
+            <div class="gnb">
+            <!-- gnb = global nav bar = 최상위 메뉴  -->
+                <h2 class="blind">메뉴</h2>
+                    <ul class="gnb_menu">
+                        <li class="list gnb_main">
+                            <a href="#" class="link">
+                                <span class="ico"></span>
+                                <!-- ico는 css에서 bg url로 처리 -->
+                                <span class="txt">전체 카테고리</span>
+                            </a>
+                            <div class="gnb_sub">
+                                <ul class="menu">
+                                    <li class="current">
+                                        <!-- hover나 active시 current가 옮겨가도록 설정해야 함 -->
+                                        <a href="#" class="main_item">
+                                            <span class="ico">
+                                                <img src="https://img-cf.kurly.com/shop/data/category/icon_newyear_inactive_pc@2x.1609722514.png" alt="" class="ico off">
+                                                <img src="https://img-cf.kurly.com/shop/data/category/icon_newyear_active_pc@2x.1609722514.png" alt="" class="ico on">
+                                                <!--카테고리 별 아이콘은 직관적이게 img src로 바로 삽입 
+                                                클릭X(off): 기본, 클릭(on): 보라색 아이콘-->
+                                            </span>
+                                            <span class="tit">
+                                                <span class="txt">블라블라블라</span>
+                                                <span class="ico_new" alt="new"></span>
+                                                <!-- ico_nex: bg url로 처리 -->
+                                            </span>
+                                            <!-- tit: text + ico -->
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="list">
+                            <a href="#" class="link">
+                                <span class="txt">신상품</span>
+                            </a>
+                        </li>
+                        <li class="list">
+                            <a href="#" class="link">
+                                <span class="txt">베스트</span>
+                            </a>
+                        </li>
+                        
+
+                        <div class="gnb_search">
+                            <form action="/wewalk/search" method="get" id="searchForm">
+                                <input type="text" id="keyword" name="keyword" title="검색어입력" class="inp_search">
+                                <input type="image" src="https://res.kurly.com/pc/service/common/1908/ico_search_x2.png" class="btn_search">
+                                <div class="init">
+                                    <button type="button" id="search_init" class="btn_delete">검색어 삭제하기</button>
+                                </div>
+                            </form>
+                        </div>
+                            
+                        <div class="location_login">
+                            <!-- 버튼 뒤로 넘기기, 가상요소 선택자로 bg url 아이콘 처리-->
+                            <button type="button" class="btn_location on">배송지 등록</button>
+                            
+                            <div class="location_notice">
+                                <!-- 첫 홈페이지 화면에 몇 초간 notice 띄우고 자동으로 off -->
+                                <span class="emph">배송지를 등록</span>하고<br>
+                                <span class="txt">구매가능한 상품을 확인하세요!</span>
+                                <div class="group_button">
+                                    <button type="button" class="btn login" onclick="gotologin()">로그인</button>
+                                    <button type="button" class="btn search_address" onclick="gotologin()">
+                                        <span class="ico"></span>
+                                        주소검색
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="cart_count">
+						    <a th:href="@{/order/cart}" class="btn_cart">
+						        <span class="blind">장바구니</span>
+						    </a>
+						</div>  
+                    </ul>
+            </div>
+        </div>
+        
+        <!-- 로그인 했을경우 -->
+        <div id="header" th:if="${user!=null}">
+            <div class="user_menu">
+                <!-- bnr = banner -->
+                
+                <ul class="sign_menu"> <!--login class 추가-->
+                    <li class="link">
+                        <span class="user_grade_bronze" th:text="Bronze" th:if="${user.grade == 'B'}" style="margin-top: 10px;">유저등급</span>
+                        <span class="user_grade_silver" th:text="Silver" th:if="${user.grade == 'S'}" style="margin-top: 10px;">유저등급</span>
+     					<span class="user_grade_gold" th:text="Gold" th:if="${user.grade == 'G'}" style="margin-top: 10px;">유저등급</span>
+     					<span class="user_grade_platinum" th:text="Platinum" th:if="${user.grade == 'P'}" style="margin-top: 10px;">유저등급</span>
+                    </li>
+                    <li class="link">
+                        <a href="#" class="item service2" th:text="${user.name}+' 님'" id="namehov" style="font-size: 14px;">이름</a>
+                        <!-- 이름 hover 시 sub_menu 등장 -->
+                        <ul class="sub_menu2">
                             <li class="list">
-                                <a href="#" class="list_item">상품 제안</a>
+                                <a href="#" class="list_item">마이페이지</a>
                             </li>
                             <li class="list">
-                                <a href="#" class="list_item">에코포장 피드백</a>
+                                <a href="#" class="list_item">장바구니</a>
                             </li>
+                            <li class="list">
+                                <a href="#" class="list_item">로그아웃</a>
+                            </li>
+                            
+                            
+                        </ul>
+                    </li>
+                    
+                    <li class="link">
+                        <a href="#" class="item service" style="font-size: 14px;">고객센터</a>
+                        <!-- 고객센터 hover 시 sub_menu 등장 -->
+                        <ul class="sub_menu">
+                            <li class="list">
+                                <a href="#" class="list_item">공지사항</a>
+                            </li>
+                            <li class="list">
+                                <a href="#" class="list_item">자주하는 질문</a>
+                            </li>
+                            <li class="list">
+                                <a href="#" class="list_item">1:1 문의</a>
+                            </li>
+                            
+                            
                         </ul>
                     </li> 
                 </ul>
@@ -139,6 +269,9 @@
                             
                             <div class="location_notice">
                                 <!-- 첫 홈페이지 화면에 몇 초간 notice 띄우고 자동으로 off -->
+                                <ul>
+                                	<li th:each=item:${user.adressList} th:text="${item.type}"></li>
+                                </ul>
                                 <span class="emph">배송지를 등록</span>하고<br>
                                 <span class="txt">구매가능한 상품을 확인하세요!</span>
                                 <div class="group_button">
@@ -152,11 +285,10 @@
                         </div>
 
                         <div class="cart_count">
-                            <!-- bg url 아이콘 추가 -->
-                            <a href="#" class="btn_cart">
-                                <span class="blind">장바구니</span>
-                            </a>
-                        </div>    
+						    <a th:href="@{/order/cart}" class="btn_cart">
+						        <span class="blind">장바구니</span>
+						    </a>
+						</div>  
                     </ul>
             </div>
         </div>
@@ -167,10 +299,10 @@
             <div class="swipe">
                 <ul class="promotions">
                     <li data-index="1" class="slide_list">
-                        <a href="#" class="thumb" style="background-image: url('/img/aann.jpg'');" ></a> <!--이미지 오류. bg color로 대체-->
+                        <a href="#" class="thumb" th:style="'background-image: url(' + @{/img/aann.jpg} + ');'"></a>
                     </li>
                     <li data-index="2" class="slide_list">
-                        <a href="#" class="thumb" style="background-image: url('/img/aamm.png');"></a>
+                        <a href="#" class="thumb" th:style="'background-image: url(' + @{/img/aamm.jpg} + ');'"></a>
                     </li>
                    
                 </ul>

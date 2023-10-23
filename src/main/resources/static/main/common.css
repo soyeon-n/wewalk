@@ -3,7 +3,7 @@
 @charset "utf-8";
 
 
-/* 이도현이 추가한거 */
+
 
 textarea::placeholder, input::placeholder{
     color:rgb(173, 173, 173);
@@ -138,7 +138,6 @@ textarea::placeholder, input::placeholder{
     width: 8px;
     height: 5px;
 }
-
 .sign_menu.login .link .service::before {
     position: absolute;
     top: 15px;
@@ -148,6 +147,8 @@ textarea::placeholder, input::placeholder{
     width: 8px;
     height: 5px;
 }
+
+
 
 .sign_menu.login .link:nth-child(2) {
     position: relative;
@@ -183,6 +184,68 @@ textarea::placeholder, input::placeholder{
     display: block;
     z-index: 200;
 }
+
+
+.sub_menu2 {
+    display: none;
+    position: absolute;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    width: 100px;
+    padding: 8px;
+    line-height: 25px;
+    top: 34px;
+    font-size: 16px;
+
+}
+.item.service2:hover + .sub_menu2,
+
+li:hover .sub_menu2 {
+    display: block;
+    z-index: 200;
+}
+
+.item.service2:hover + .sub_menu2 {
+    display: block;
+	z-index: 200;
+}
+
+.sub_menu2 .list_item {
+  font-size: 12px;
+    color: #404040;
+    line-height: 24px;
+    white-space: nowrap;
+}
+
+
+.item.service2::after {
+    content: "";
+    display: inline-block;
+    width: 8px; 
+    height: 5px;
+    background-image: url('https://res.kurly.com/pc/ico/1908/ico_down_8x5.png');
+    background-repeat: no-repeat;
+    margin-left: 2px; 
+    margin-bottom: 4px;
+}
+
+.sign_menu .link:last-child .sub_menu2 {
+    display: none;
+    position: absolute;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    width: 100px;
+    top: 34px;
+    right: 0px;
+    padding: 8px;
+    line-height: 25px;
+}
+.sign_menu .link.item-service2:hover + .sub_menu2 {
+    display: block;
+    z-index: 200;
+    top: 100%; 
+}
+
 /* 로그인: sign_menu 끝 */
 
 
@@ -527,9 +590,11 @@ textarea::placeholder, input::placeholder{
 
 .gnb .gnb_search {
     position: absolute;
-    right: 108px;
+    right: 158px;
     top: 10px;
-    width: 238px;
+    width: 438px;
+    border: 1px #BDBDBD solid;
+    border-radius: 25px;
 }
 
 .gnb_search .inp_search {
@@ -540,7 +605,7 @@ textarea::placeholder, input::placeholder{
     border-radius: 18px;
     background-color: #f7f7f7;
     font-weight: 400;
-    font-size: 12px;
+    font-size: 14px;
     color: #666;
     line-height: 36px;
     transition: background-color .3s ease-in-out;
@@ -563,7 +628,7 @@ textarea::placeholder, input::placeholder{
     display: none;
     position: absolute;
     overflow: hidden;
-    left: 170px;
+    left: 370px;
     top: -36px;
     width: 36px;
     height: 36px;

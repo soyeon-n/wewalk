@@ -53,13 +53,16 @@ public class OrderController {
 	public String cart(Model model ,@AuthenticationPrincipal PrincipalDetails principalDetails) {
 		
 		//시큐리티 로그인된 사용자의 cartItem(장바구니목록)가져와 장바구니페이지로 이동
-		
+		if(principalDetails!=null) {
 		List<Product> productList = cartService.getProductList(principalDetails.getUsername()); //로그인할때id 계정명
 		
 		model.addAttribute("cartItemList",cartService.getCartItemList(principalDetails.getUsername()));
 		model.addAttribute("productList", productList);
 		
 		return "cart";
+		}
+		//비로그인계정은 로그인으로
+		return "redirect:/auth/login";
 	}
 	
 	@PostMapping("/cartItemUpdate")
