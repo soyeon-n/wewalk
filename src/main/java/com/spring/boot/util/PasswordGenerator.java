@@ -2,6 +2,9 @@ package com.spring.boot.util;
 
 import java.util.Random;
 
+import org.springframework.stereotype.Service;
+
+@Service
 public class PasswordGenerator {
 	// 랜덤 비밀번호 길이
     private static final int PASSWORD_LENGTH = 12;
