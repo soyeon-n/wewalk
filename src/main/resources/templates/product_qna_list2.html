@@ -9,49 +9,46 @@
     <link rel="stylesheet" href="/good_review_list.css">
     <link rel="stylesheet" href="/aco.css">
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-    
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    
-    
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    
-    <script src="./js/good_view.js"></script>
+    <script src="/good_view.js"></script>
     
 
     <script type="text/javascript">
     
-    /* 이거는 qna내용 펼칠 아코디언바
-    $(document).ready(function() {
-		$(".que").click(function() {
-			$(this).next(".anw").stop().slideToggle(300);
-			$(this).toggleClass('on').siblings().removeClass('on');
-			$(this).next(".anw").siblings(".anw").slideUp(300); // 1개씩 펼치기
-		});
-	});*/
+  
+        /*
+	    $('#toggleButton').click(function () {
+	    		
+	    		alert('dd');
+	            //$('#contentToToggle').toggle(); // This will toggle the visibility of the content
+	            const btn1 = document.getElementById('contentToToggle');
+	            
+	            if(btn1.style.display != 'none') {
+	                btn1.style.display = 'none';
+	              }
+	            else {
+	                btn1.style.display = 'block';
+	              }
+	              
+	       });      
+    */
+   /*
+			function read() {
+				alert('dd');
+	            //$('#contentToToggle').toggle(); // This will toggle the visibility of the content
+	            const btn1 = document.getElementById('contentToToggle');
+	            
+	            if(btn1.style.display != 'none') {
+	                btn1.style.display = 'none';
+	              }
+	            else {
+	                btn1.style.display = 'block';
+	              }
+			} 여기있는것은 작동안한다 good_view 에만 작동합니다 */
+		
+       
+      
     
-    
-    function loadEntities(page) {
-        $.ajax({
-            url: '/product/detail/'+productNo+'?page=' + page,
-            type: 'GET',
-            success: function (data) {
-                // Handle the data, update your UI with the received entities
-                console.log(data);
-                // Implement logic to update UI with entities data
-            },
-            error: function (error) {
-                console.error('Error loading entities: ' + error.responseText);
-            }
-        });
-    }
-    $(document).ready(function() {
-        $(".clickable").click(function() {
-            // Find the next <div> element and toggle its visibility
-            $(this).next("div").toggleClass("hidden");
-        });
-    });
-    
-    
+   
     
     
     
@@ -66,12 +63,12 @@
 
 <body style="overflow-y: hidden">
 <nav th:fragment="qnaFragment">
-
+<!-- form 제거 -->
     <div id="contents-wrapper" class="goods_board" >
         <div class="xans-element- xans-product xans-product-additional detail_board">
             <div class="board">
                 <span class="line"></span>
-                <form action="" name=frmList>
+                
                     <div class="title_txt">
                         <h2>PRODUCT REVIEW</h2>
                         <div class="sort-wrap">
@@ -83,7 +80,7 @@
                                 <li>
                                     <span class="ico"></span>
                                     <p class="txt">배송관련, 주문(취소/교환/환불)관련 문의 및 요청사항은 마이컬리 내 
-                                        <a href="#none" class="emph">1:1문의</a>
+                                        <a href="#none">1:1문의</a>
                                         에 남겨주세요.
                                     </p>
                                 </li>
@@ -119,7 +116,7 @@
                                 <th scope="col" class="input_txt" align="left">작성자</th>
                                 <th scope="col" class="input_txt">작성일</th>
                                 <th scope="col" class="input_txt">답변상태</th>
-                                <th scope="col" class="input_txt">조회</th>
+                                <th scope="col" class="input_txt">-</th>
                             </tr>
                         </tbody>
                     </table>
@@ -141,9 +138,9 @@
                                 <col style="width:70px;">
                                 <col style="width:auto;">
                                 <col style="width:51px;">
-                                <col style="width:77px;">
+                                <col style="width:70px;">
                                 <col style="width:100px;">
-                                <col style="width:40px;">
+                                <col style="width:55px;">
                                 <col style="width:80px;">
     
                             </colgroup>
@@ -154,28 +151,31 @@
                                 <a th:href="@{|/question/detail/${question.id}|}" th:text="${question.id}"></a>
                                 </td>
                                 <td class="subject">
-                                
-                                    <a th:href="@{|/question/detail/${question.id}|}" th:text="${question.title}" class="clickable"></a>
-                                    <br/>
-                                    <div th:text="${question.content}" class="hidden"></div>
+                                <!-- 왜 첫번쨰 글만 onclick 이 먹는가   -->
+                                <!--  
+                                    <a th:href="@{|/question/detail/${question.id}|}" th:text="${question.title}"></a>-->
+                                    <!-- 그니까 제목을누르면 제목밑에 내용이 나와야하는게 맞아 그러면 제목이 
+                                    버튼이 되는게 맞고 대상이 content div 가 되던가 아니면 click 하면 visable 하던가 
+                                    타임리프 if 를 한 div 에 주면 그것만  -->
+                                    <button th:id="'toggleButton_'+${question.id}" th:text="${question.title}">이게 제목</button>
                                     
-                                    
-                                    
+                                        <div th:id="'contentToToggle_'+${question.id}" th:text="${question.content}" style="display: none;" ></div>
+                                        <!-- answer 이미지 넣어주고  넘겨받은 answer 출력해준다 
+                                        <div th:text="${question.content}" style="display: none;" ></div>
+                                    -->
                                     
                                     
                                 </td>
                                 <td class="user_grade grade_comm"></td>
-                                <td class="user_grade" th:text="${question.user.userName}">Marketkurly</td>
-                                
-
-                                
-                                
-                                <td class="time" th:text="${#temporals.format(question.date,'yyyy-MM-dd HH:mm')}">작성일</td>
+                                <td class="user_grade" th:text="${question.user.userName}">Marketkurly</td>                                                              
+                                <td class="time" th:text="${#temporals.format(question.date,'yyyy-MM-dd')}">작성일</td>
                                 <td>
                                 <!-- done 이 true 일 시 답변완료로 바뀌는 버튼  -->
-                                    <span class="review-like-cnt"></span>
+                                    <span class="review-like-cnt" ></span>
                                     <a th:if="${question.done==true}"
                                     th:text="답변완료"></a>
+                                    <a th:if="${question.done==false}"
+                                    th:text="답변대기"></a>
                                 </td>
                                 <td>
                                     <span class="review-hit-cnt"></span>
@@ -296,7 +296,7 @@
                             </div>
                         </div>
                     </div>
-                </form>
+               
                 
                 <!-- 문의쓰기버튼에 productNo 넘겨주어야함 이거는 productController 가면 넘겨줄수있을듯 ? nav 통합하고 넘겨주자 -->
 
@@ -318,31 +318,7 @@
             </div>
         </div>
         <!-- 아코디언바 추가 -->
-            <div id="Accordion_wrap">
-			    <div class="que">
-			     <span>This is first question.</span>
-			      <div class="arrow-wrap">
-			        <span class="arrow-top">↑</span>
-			       <span class="arrow-bottom">↓</span>
-			      </div>
-			     
-			    </div>
-			    <div class="anw">
-			     <span>This is first answer.</span>
-			    </div>
-			     <div class="que">
-			     <span>This is second question.</span>
-			    </div>
-			    <div class="anw">
-			     <span>This is second answer.</span>
-			    </div>
-			     <div class="que">
-			     <span>This is third question.</span>
-			    </div>
-			    <div class="anw">
-			     <span>This is third answer.</span>
-			    </div>
-            </div>   
+       
         
         <div class="board_pg_area">
         

@@ -1,13 +1,45 @@
 
 
-
 window.addEventListener('DOMContentLoaded',function(){ 
 
 
-
-
-
-    $(document).ready(function() {
+/*
+    $(document).ready(function(){
+    
+		    $('#toggleButton').click(function () {
+		    		
+		    		alert('dd');
+		            //$('#contentToToggle').toggle(); // This will toggle the visibility of the content
+		            var conetnt = document.getElementById('contentToToggle');
+		            
+		            if(btn1.style.display != 'none') {
+		                btn1.style.display = 'none';
+		              }
+		            else {
+		                btn1.style.display = 'block';
+		              }
+		              
+		       });      여기있는거만 작동해 지우면 안됨 */
+		       
+		       
+		 
+		 //이게 게시글 toggle 출력하는 2버전 스크립트 
+		 $(document).ready(function() {
+		    $('[id^=toggleButton_]').click(function () {
+		        alert('ffff');
+		        var questionId  = this.id.split('_')[1];// Extract the question ID from the button's ID
+		        alert(questionId);
+		        var contentElementId = $('#contentToToggle_' + questionId); //버튼과 id 합쳐 
+		        contentElementId.toggle();
+		        
+		    });
+		      
+				         
+    
+    
+    
+    
+    
 
        
 
@@ -157,6 +189,10 @@ window.addEventListener('DOMContentLoaded',function(){
         }
         
         
+ 
+
+        
+        
         
         
         
@@ -192,11 +228,6 @@ window.addEventListener('DOMContentLoaded',function(){
             });
             
         
-        
-        
-        
-
-
         }
     })
 });

@@ -118,14 +118,30 @@ public class ProductController {
 		
 		Page<Question> paging1 = questionService.getQuestionList(pageable, product);
 		
+		
+		
+		
 		//ajax 페이징을 위한 코딩 여기 추가 
 		PageRequest pageable1 = PageRequest.of(page, size);
 		Page<Question> entities = questionService.getQuestionList(pageable1, product);
 	    model1.addAttribute("entities", entities);
 		
+	    //answer 도 넘겨야 뿌려준다 questionid 가 있어야 answer 찾을수있는데..???
+	    //question id 를 ajax 로 가져와서 ...????? 이걸다시 넘겨서 그걸로 여기서 attribute가능 .. ? 
+	    
+	    
+	    //answer service 에서 question id 로 질문글에 대한 답변글 id 를 구한다 
+	    
+	    
+	    
+	    
 		
 		model1.addAttribute("paging1",paging1);//qna문의하기의페이징 qna_list layout
 		model1.addAttribute("paging",paging);//상품리뷰의 페이징
+		
+		
+		
+		
 		
 		//??????아놔 근데 이러면 보안이 너무 허술해지잖아 ??
 		model1.addAttribute("principalDetails",principalDetails);//auth 넘겨야 권한에 접근가능 principal
