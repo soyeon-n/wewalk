@@ -37,12 +37,12 @@ window.addEventListener('DOMContentLoaded',function(){
     }, true);
 
 
+	//검색버튼 활성화
     var search = document.getElementsByClassName("btn_search");
     search[0].addEventListener("click", function () {
 		document.getElementById("searchForm").submit();
 	});
 
-	
 	
 	
 	//상품 이미지슬라이드
@@ -52,8 +52,8 @@ window.addEventListener('DOMContentLoaded',function(){
 	imgs = $('.list_goods_ul li'); // 이미지는 .list_goods_ul 안에 있는 li 태그
 	img_count = imgs.length; // slide ul의 자식, 즉 li의 갯수 = 이미지의 갯수
 	
-	var currentIndex = 0; // To keep track of the currently displayed items
-	updateDisplay(); // Initialize the display
+	var currentIndex = 0;
+	updateDisplay();
 	
 	$('.bx-prev').click(function () {
 	    slide_left();
@@ -78,7 +78,7 @@ window.addEventListener('DOMContentLoaded',function(){
 	}
 	
 	function updateDisplay() {
-	    var leftPosition = -currentIndex * 267; // Assuming each item is 267px wide (249px width + 18px margin-right)
+	    var leftPosition = -currentIndex * 267;
 	    $('.list_goods_ul').css("left", leftPosition + "px");
 	}
 

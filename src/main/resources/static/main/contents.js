@@ -1,5 +1,13 @@
 
-
+//로그인버튼
+	function goLogin(){
+		window.location.href = '/auth/login';
+	}
+	
+//회원가입버튼
+function goSignup(){
+	window.location.href = '/auth/signup';
+}
 
 function hideAni () {    //안내 메세지 사라지게 하기
   const tooltip = $('.location_notice');
