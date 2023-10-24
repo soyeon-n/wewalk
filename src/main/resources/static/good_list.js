@@ -13,9 +13,6 @@ window.addEventListener('DOMContentLoaded',function(){
         var product_cost = [];        //상품 수량변경할떄 쓰는 가격 변수 리스트
         var product_id = [];          //상품 아이디값 가져오기
 
- 
-
-
         for(i=0; i < $('.list_goods .inner_listgoods ul li').length+1; i++){
             product_name[i] = $('li:nth-child('+ i +') .name').text();    //포문으로 리스트 에다가 값을 대입함
             
@@ -254,40 +251,10 @@ window.addEventListener('DOMContentLoaded',function(){
         $('.name_select').click(function(){
             $(".checked").toggle(function(){
                 $('.name_select').css('color', '#5f0080');
-                
-                $.ajax({
-                  type: "GET",
-                  url: ,
-                  data: {//여기에 sort를 보내는건가?
-                  
-                  }
             });
         });
 
-		$('.list.checked a').on('click', function() {
-		        var sortValue = $(this).attr('data-sort');
-		        var sortText = $(this).text();
-		        
-		        // .name_select에 클릭한 항목의 텍스트를 설정
-		        $('.name_select').text(sortText);
-		
-		        // 클릭한 항목에 'on' 클래스를 추가하고 다른 항목들에서 'on' 클래스 제거
-		        $('.list.checked a').removeClass('on');
-		        $(this).addClass('on');
-		
-		        // 서버에 정렬 방식을 전송하고 결과를 가져와서 처리
-		        $.ajax({
-		            type: 'GET',
-		            url: '/search', 
-		            data: { 
-		                sort: sortValue 
-		            },
-		            success: function(response) {
-		                // 서버로부터 받은 응답으로 적절한 부분의 HTML을 업데이트 (이 경우에는 #goodsList 부분)
-		                $('#goodsList').html(response);
-		            }
-		        });
-		    });
+
 
 
         // $('.btn_type1 .txt_type').click(function(){
