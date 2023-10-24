@@ -24,7 +24,7 @@ public class PageResultDTO <DTO,EN>{
  // 총 페이지 번호
  private int totalPages;
 
- // 현재 페이지 번호
+ // 현재 페이지 번호(1부터 시작)
  private int number;
 
  // 목록 사이즈

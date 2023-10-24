@@ -34,7 +34,7 @@ public class ProductDTO {
 	private String image1;//이미지1
 	private String image2;//이미지2
 	private String image3;//이미지3
-	private List<Review> reviewList;
+	private List<Review> reviewList;//참조된 리뷰
 	
 	@Builder
 	public ProductDTO(Long id, SiteUser seller, String category, String pname, 
