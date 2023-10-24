@@ -37,13 +37,13 @@ public class AnswerController {
 	
 	//답변작성
 	@GetMapping("/answer/create/{id}")
-	public String createAnswer(Model model,@PathVariable("id") Integer id,@Valid AnswerForm answerForm,BindingResult bindResult) {
+	public String createAnswer(Model model,@PathVariable("id") long id,@Valid AnswerForm answerForm,BindingResult bindResult) {
 		
 		return "product_qna_answerForm";
 	}
 	
 	@PostMapping("/answer/create/{id}")//질문한 글의 고유번호 question.id 를 가져옴
-	public String createAnswer(Model model,@PathVariable("id") Integer id,
+	public String createAnswer(Model model,@PathVariable("id") long id,
 			@Valid AnswerForm answerForm ,
 			@AuthenticationPrincipal PrincipalDetails principalDetails,
 			BindingResult bindResult ) {
@@ -56,18 +56,25 @@ public class AnswerController {
 			model.addAttribute("question",question);
 			return "product_qna_list";
 		}
+
+		
 		//답변작성
-		Answer answer = answerService.answerCreate(question, answerForm.getContent(), siteUser);
+		answerService.answerCreate(question, answerForm.getContent(), siteUser);
+		
 		
 		//답변작성과 동시에 답변완료 로 바뀌게하는것 done
 		//set 을 내가 가져온 id에 따른 question 에 바꿔야함 
-		//questionService.ansDone();
+		 
+				
+		//1. 지금 작성중인 상대의 question 찾기 
+				
+		//2. 그 기존의 question 가져와서 done = true 로 set 하기
+		questionService.ansDone(question);
 		
-		
+		//다시 상품페이지detail 로 돌아오기
 		Product product =question.getProduct();
 		Long pno=product.getId();
 		
-		//다시 상품페이지detail 로 돌아오기
 		return String.format("redirect:/product/detail/%s", pno);
 		
 	}

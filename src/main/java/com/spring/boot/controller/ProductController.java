@@ -100,7 +100,7 @@ public class ProductController {
 	@GetMapping("/detail/{productNo}")
 	public String detail(Model model, @PathVariable("productNo") long productNo
 			,ProductForm productForm , @PageableDefault Pageable pageable,
-			
+			@AuthenticationPrincipal PrincipalDetails principalDetails,
 			
 			@RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "10") int size, Model model1) {
@@ -126,6 +126,9 @@ public class ProductController {
 		
 		model1.addAttribute("paging1",paging1);//qna문의하기의페이징 qna_list layout
 		model1.addAttribute("paging",paging);//상품리뷰의 페이징
+		
+		//??????아놔 근데 이러면 보안이 너무 허술해지잖아 ??
+		model1.addAttribute("principalDetails",principalDetails);//auth 넘겨야 권한에 접근가능 principal
 		
 		return "product_list";//html연결
 		

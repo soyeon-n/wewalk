@@ -68,11 +68,13 @@ public class QuestionService {
 		
 	}
 	//답변작성시 question 답변작성완료로 바뀌게되는것 추가
-	/*
-	public void ansDone(String true, Question question) {
-		Question question = 
-		question.setd
-	}*/
+	//여기에 답글이 되는 question 이 들어와야함 
+	public void ansDone(Question question) {
+		
+		question.setDone(true);
+		
+		questionRepository.save(question);
+	}
 	
 	
 	

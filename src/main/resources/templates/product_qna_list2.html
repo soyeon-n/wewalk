@@ -20,14 +20,14 @@
 
     <script type="text/javascript">
     
-    /* 이거는 qna내용 펼칠 아코디언바*/
+    /* 이거는 qna내용 펼칠 아코디언바
     $(document).ready(function() {
 		$(".que").click(function() {
 			$(this).next(".anw").stop().slideToggle(300);
 			$(this).toggleClass('on').siblings().removeClass('on');
 			$(this).next(".anw").siblings(".anw").slideUp(300); // 1개씩 펼치기
 		});
-	});
+	});*/
     
     
     function loadEntities(page) {
@@ -44,7 +44,12 @@
             }
         });
     }
-    
+    $(document).ready(function() {
+        $(".clickable").click(function() {
+            // Find the next <div> element and toggle its visibility
+            $(this).next("div").toggleClass("hidden");
+        });
+    });
     
     
     
@@ -150,13 +155,10 @@
                                 </td>
                                 <td class="subject">
                                 
-                                    <a th:href="@{|/question/detail/${question.id}|}" th:text="${question.title}"></a>
+                                    <a th:href="@{|/question/detail/${question.id}|}" th:text="${question.title}" class="clickable"></a>
                                     <br/>
-                                    <!-- product.siteuserid== siteuser login id 같아야지만 답변쓰기가능 -->
-                                     <!--  
-                                    <a th:href="@{|/answer/create/${product.id}|}"
-                                    th:if="${product.siteUser.id == #authentication.getPrincipalDetails().getId()}"
-                                    th:text="답변쓰기"></a>-->
+                                    <div th:text="${question.content}" class="hidden"></div>
+                                    
                                     
                                     
                                     
@@ -171,13 +173,27 @@
                                 <td class="time" th:text="${#temporals.format(question.date,'yyyy-MM-dd HH:mm')}">작성일</td>
                                 <td>
                                 <!-- done 이 true 일 시 답변완료로 바뀌는 버튼  -->
-                                    <span class="review-like-cnt">0</span>
+                                    <span class="review-like-cnt"></span>
                                     <a th:if="${question.done==true}"
                                     th:text="답변완료"></a>
                                 </td>
                                 <td>
-                                    <span class="review-hit-cnt">0</span>
-                                    <a th:href="@{|/answer/create/${question.id}|}">답변쓰기</a>
+                                    <span class="review-hit-cnt"></span>
+                                    <!--  
+                                    <a th:href="@{|/answer/create/${question.id}|}">답변쓰기</a>-->
+                                    <!-- product.siteuserid== siteuser login id 같아야지만 답변쓰기가능 -->
+                                     <!--  
+                                    <a th:href="@{|/answer/create/${product.id}|}"
+                                    sec:authorize="isAuthenticated()"
+                                    th:if="${product.user.id == #authentication.getPrincipaldetails().getUserid()}"
+                                    th:text="답변쓰기"></a>-->
+                                    <!-- 일단야매로 하긴했거든요 직접 principalDetails 을 보내준걸로 -->
+                                    <a th:href="@{|/answer/create/${question.id}|}"
+                                    th:if="${product.user.id == principalDetails.user.id}"
+                                    th:text="답변쓰기"></a>
+                                    <!-- product.user.id이거는 번호고  principalDetails.user.id이것도 번호여야해 -->
+                                    <!--  
+                                    <a sec:authorize="isAuthenticated()" sec:authentication="name"></a>-->
                                 </td>
                                
                             </tr>
