@@ -27,8 +27,8 @@
 </head>
 <body class="noBody">
     <div id="container" class="container">
-        <div><input type="text" id="sort" th:value="${sort} == null ? '등록일 순' : ${sort}" /></div>
-        <div><input type="text" id="keyword" th:value="${keyword} == null ? '' : ${keyword}" /></div>
+        <input type="hidden" id="sort" th:value="${sort} == null ? 'newest' : ${sort}" />
+        <input type="hidden" id="keyword" th:value="${keyword} == null ? '' : ${keyword}" />
 		
         <div id="main">
             <div id="content">
@@ -107,13 +107,11 @@
 	                        <div class="list_goods">
 	                            <div class="inner_listgoods">
 	                                <ul class="list">                                   
-	                                    <li>
+	                                    <li th:each="productDTO, loop : ${paging.dtoList}">
 	                                        <div class="item"><!-- 반복문 써야할 부분 -->
 	                                            <div class="thumb"><!-- thumbnail picture -->
-	                                                <a href="file:///C:/Users/Admin/Desktop/e-commerce-clone-main/good_view01.html" class="img" style="background-image: url(https://img-cf.kurly.com/shop/data/goods/1567574126435l0.jpg);">
+	                                                <a th:href="@{|/product/images/${productDTO.image}|}"><!-- 상품 상세 페이지 -->
 	                                                    <img src="https://img-cf.kurly.com/shop/data/goods/1567574126435l0.jpg" alt="무농약 콩으로 재배한 콩나물(1봉/200g)" onerror="this.src='https://res.kurly.com/mobile/img/1808/img_none_x2.png'" width="308" height="396">
-	                                                
-	                                                
 	                                                </a>
 	                                                <span class="global_sticker" style="display: none;">
 	                                                    <span class="inner_sticker">
@@ -127,609 +125,50 @@
 	                                                </span>
 	
 	                                                <div class="group_btn"><!-- paging.dtoList.id -->
-	                                                    <button type="button" name="chk" value="여기다가 프로덕트 아이디 적어주삼" class="btn btn_cart">
+	                                                    <button type="button" name="chk" th:value="${productDTO.id}" class="btn btn_cart">
 	                                                        <span class="screen_out">38300</span>
 	                                                    </button>
 	                                                </div>
-	                                                
-	
-	
+
 	                                            </div>
-	
+
 	                                            <a class="info">
-	                                                <span class="name"><!-- pname -->
-	                                                    [김구원선생] 무농약 콩나물 200g
+	                                                <span class="name" th:text="${productDTO.pname}"><!-- pname -->
+	                                                    <!-- [김구원선생] 무농약 콩나물 200g -->
 	                                                </span>
 	                                                <span class="cost">
-	                                                    <span class="price">1,300</span><!-- price -->
-	                                                    <input type="hidden"  id="product_cost1" value= 1300 >
+	                                                    <span class="price" th:text="${#numbers.formatInteger(productDTO.price, 1, 'COMMA')}"><!-- 1,300 --></span><!-- price -->
+	                                                    <input type="hidden"  id="|product_cost${productDTO.id}|" th:value="${productDTO.price}">
 	                                                    <span class="dodo">원</span>
 	                                                </span>
 	
-	                                                <span class="desc">무농약 콩으로 재배한 콩나물(1봉/200g)</span><!-- description -->
+	                                                <span class="desc" th:text="${productDTO.content}"><!-- 무농약 콩으로 재배한 콩나물(1봉/200g) --></span><!-- content -->
 	                                                <span class="tag"></span>
 	                                            </a>
 	                                        </div>
-	                                    </li>
-	
-	                                    <li>
-	                                        <div class="item">
-	                                            <div class="thumb">
-	                                                <a class="img" style="background-image: url(https://img-cf.kurly.com/shop/data/goods/1567574126435l0.jpg);">
-	                                                    <img src="https://img-cf.kurly.com/shop/data/goods/1530172373295l0.jpg" alt="믿고 먹을 수 있는 상품을 합리적인 가격에, KF365" onerror="this.src='https://res.kurly.com/mobile/img/1808/img_none_x2.png'" width="308" height="396">
-	                                                
-	                                                
-	                                                </a>
-	                                                <span class="global_sticker" style="display: none;">
-	                                                    <span class="inner_sticker">
-	                                                        <span class="bg_sticker"></span>
-	                                                        <span class="txt_sticker">
-	                                                            <span class="emph_sticker">1+2
-	                                                            </span>
-	                                                            이벤트
-	                                                        </span>
-	                                                    </span>
-	                                                </span>
-	
-	                                                <div class="group_btn">
-	                                                    <button type="button" name="chk" value="3345" class="btn btn_cart">
-	                                                        <span class="screen_out">38300</span>
-	                                                    </button>
-	                                                </div>
-	                                                
-	
-	
-	                                            </div>
-	
-	                                            <a class="info">
-	                                                <span class="name">
-	                                                    [KF365] 감자 1kg
-	                                                </span>
-	                                                <span class="cost">
-	                                                    <span class="price">2,500</span>
-	                                                    <input type="hidden"  id="product_cost2" value= 2500 >
-	                                                    <span class="dodo">원</span>
-	                                                </span>
-	
-	                                                <span class="desc">믿고 먹을 수 있는 상품을 합리적인 가격에, KF365</span>
-	                                                <span class="tag"></span>
-	                                            </a>
-	                                        </div>
-	                                    </li>
-	
-	
-	
-	                                    <li>
-	                                        <div class="item">
-	                                            <div class="thumb">
-	                                                <a href="file:///C:/Users/Admin/Desktop/e-commerce-clone-main/good_view02.html" class="img">
-	                                                    <img src="" alt="" onerror="this.src='https://res.kurly.com/mobile/img/1808/img_none_x2.png'" width="308" height="396">
-	                                                
-	                                                
-	                                                </a>
-	                                                <span class="global_sticker" style="display: none;">
-	                                                    <span class="inner_sticker">
-	                                                        <span class="bg_sticker"></span>
-	                                                        <span class="txt_sticker">
-	                                                            <span class="emph_sticker">1+2
-	                                                            </span>
-	                                                            이벤트
-	                                                        </span>
-	                                                    </span>
-	                                                </span>
-	
-	                                                <div class="group_btn">
-	                                                    <button type="button" name="chk" class="btn btn_cart">
-	                                                        <span class="screen_out">38300</span>
-	                                                    </button>
-	                                                </div>
-	                                                
-	
-	
-	                                            </div>
-	
-	                                            <a class="info">
-	                                                <span class="name">
-	                                                    고구마
-	                                                </span>
-	                                                <span class="cost">
-	                                                    <span class="price">500</span>
-	                                                    <input type="hidden"  id="product_cost2" value= 500 >
-	                                                    <span class="dodo">원</span>
-	                                                </span>
-	
-	                                                <span class="desc">[한줄 소개]</span>
-	                                                <span class="tag"></span>
-	                                            </a>
-	                                        </div>
-	                                    </li>
-	
-	                                    <li>
-	                                        <div class="item">
-	                                            <div class="thumb">
-	                                                <a href="file:///C:/Users/Admin/Desktop/e-commerce-clone-main/good_view02.html" class="img">
-	                                                    <img src="" alt="" onerror="this.src='https://res.kurly.com/mobile/img/1808/img_none_x2.png'" width="308" height="396">
-	                                                
-	                                                
-	                                                </a>
-	                                                <span class="global_sticker" style="display: none;">
-	                                                    <span class="inner_sticker">
-	                                                        <span class="bg_sticker"></span>
-	                                                        <span class="txt_sticker">
-	                                                            <span class="emph_sticker">1+2
-	                                                            </span>
-	                                                            이벤트
-	                                                        </span>
-	                                                    </span>
-	                                                </span>
-	
-	                                                <div class="group_btn">
-	                                                    <button type="button" name="chk" class="btn btn_cart">
-	                                                        <span class="screen_out">38300</span>
-	                                                    </button>
-	                                                </div>
-	                                                
-	
-	
-	                                            </div>
-	
-	                                            <a class="info">
-	                                                <span class="name">
-	                                                    츄파츕스
-	                                                </span>
-	                                                <span class="cost">
-	                                                    <span class="price">200</span>
-	                                                    <input type="hidden"  id="product_cost2" value= 200 >
-	                                                    <span class="dodo">원</span>
-	                                                </span>
-	
-	                                                <span class="desc">맛있다</span>
-	                                                <span class="tag"></span>
-	                                            </a>
-	                                        </div>
-	                                    </li>
-	
-	
-	                                    <li>
-	                                        <div class="item">
-	                                            <div class="thumb">
-	                                                <a class="img">
-	                                                    <img src="" alt="" onerror="this.src='https://res.kurly.com/mobile/img/1808/img_none_x2.png'" width="308" height="396">
-	                                                
-	                                                
-	                                                </a>
-	                                                <span class="global_sticker" style="display: none;">
-	                                                    <span class="inner_sticker">
-	                                                        <span class="bg_sticker"></span>
-	                                                        <span class="txt_sticker">
-	                                                            <span class="emph_sticker">1+2
-	                                                            </span>
-	                                                            이벤트
-	                                                        </span>
-	                                                    </span>
-	                                                </span>
-	
-	                                                <div class="group_btn">
-	                                                    <button type="button" name="chk" class="btn btn_cart">
-	                                                        <span class="screen_out">38300</span>
-	                                                    </button>
-	                                                </div>
-	                                                
-	
-	
-	                                            </div>
-	
-	                                            <a class="info">
-	                                                <span class="name">
-	                                                    당근
-	                                                </span>
-	                                                <span class="cost">
-	                                                    <span class="price">200</span>
-	                                                    <input type="hidden"  id="product_cost2" value= 200 >
-	                                                    <span class="dodo">원</span>
-	                                                </span>
-	
-	                                                <span class="desc">[한줄 소개]</span>
-	                                                <span class="tag"></span>
-	                                            </a>
-	                                        </div>
-	                                    </li>
-	
-	
-	                                    <li>
-	                                        <div class="item">
-	                                            <div class="thumb">
-	                                                <a class="img">
-	                                                    <img src="" alt="" onerror="this.src='https://res.kurly.com/mobile/img/1808/img_none_x2.png'" width="308" height="396">
-	                                                
-	                                                
-	                                                </a>
-	                                                <span class="global_sticker" style="display: none;">
-	                                                    <span class="inner_sticker">
-	                                                        <span class="bg_sticker"></span>
-	                                                        <span class="txt_sticker">
-	                                                            <span class="emph_sticker">1+2
-	                                                            </span>
-	                                                            이벤트
-	                                                        </span>
-	                                                    </span>
-	                                                </span>
-	
-	                                                <div class="group_btn">
-	                                                    <button type="button" name="chk" class="btn btn_cart">
-	                                                        <span class="screen_out">38300</span>
-	                                                    </button>
-	                                                </div>
-	                                                
-	
-	
-	                                            </div>
-	
-	                                            <a class="info">
-	                                                <span class="name">
-	                                                    사과
-	                                                </span>
-	                                                <span class="cost">
-	                                                    <span class="price">1,500</span>
-	                                                    <input type="hidden"  id="product_cost2" value= 1500 >
-	                                                    <span class="dodo">원</span>
-	                                                </span>
-	
-	                                                <span class="desc">[한줄 소개]</span>
-	                                                <span class="tag"></span>
-	                                            </a>
-	                                        </div>
-	                                    </li>
-	
-	
-	                                    <li>
-	                                        <div class="item">
-	                                            <div class="thumb">
-	                                                <a class="img">
-	                                                    <img src="" alt="" onerror="this.src='https://res.kurly.com/mobile/img/1808/img_none_x2.png'" width="308" height="396">
-	                                                
-	                                                
-	                                                </a>
-	                                                <span class="global_sticker" style="display: none;">
-	                                                    <span class="inner_sticker">
-	                                                        <span class="bg_sticker"></span>
-	                                                        <span class="txt_sticker">
-	                                                            <span class="emph_sticker">1+2
-	                                                            </span>
-	                                                            이벤트
-	                                                        </span>
-	                                                    </span>
-	                                                </span>
-	
-	                                                <div class="group_btn">
-	                                                    <button type="button" name="chk" class="btn btn_cart">
-	                                                        <span class="screen_out">38300</span>
-	                                                    </button>
-	                                                </div>
-	                                                
-	
-	
-	                                            </div>
-	
-	                                            <a class="info">
-	                                                <span class="name">
-	                                                    딸기
-	                                                </span>
-	                                                <span class="cost">
-	                                                    <span class="price">900</span>
-	                                                    <input type="hidden"  id="product_cost2" value= 900 >
-	                                                    <span class="dodo">원</span>
-	                                                </span>
-	
-	                                                <span class="desc">[한줄 소개]</span>
-	                                                <span class="tag"></span>
-	                                            </a>
-	                                        </div>
-	                                    </li>
-	
-	
-	                                    <li>
-	                                        <div class="item">
-	                                            <div class="thumb">
-	                                                <a class="img">
-	                                                    <img src="" alt=")" onerror="this.src='https://res.kurly.com/mobile/img/1808/img_none_x2.png'" width="308" height="396">
-	                                                
-	                                                
-	                                                </a>
-	                                                <span class="global_sticker" style="display: none;">
-	                                                    <span class="inner_sticker">
-	                                                        <span class="bg_sticker"></span>
-	                                                        <span class="txt_sticker">
-	                                                            <span class="emph_sticker">1+2
-	                                                            </span>
-	                                                            이벤트
-	                                                        </span>
-	                                                    </span>
-	                                                </span>
-	
-	                                                <div class="group_btn">
-	                                                    <button type="button" name="chk" class="btn btn_cart">
-	                                                        <span class="screen_out">38300</span>
-	                                                    </button>
-	                                                </div>
-	                                                
-	
-	
-	                                            </div>
-	
-	                                            <a class="info">
-	                                                <span class="name">
-	                                                    유과
-	                                                </span>
-	                                                <span class="cost">
-	                                                    <span class="price">300</span>
-	                                                    <input type="hidden"  id="product_cost2" value= 300 >
-	                                                    <span class="dodo">원</span>
-	                                                </span>
-	
-	                                                <span class="desc">[한줄 소개]</span>
-	                                                <span class="tag"></span>
-	                                            </a>
-	                                        </div>
-	                                    </li>
-	
-	
-	                                    <li>
-	                                        <div class="item">
-	                                            <div class="thumb">
-	                                                <a class="img">
-	                                                    <img src="" alt="" onerror="this.src='https://res.kurly.com/mobile/img/1808/img_none_x2.png'" width="308" height="396">
-	                                                
-	                                                
-	                                                </a>
-	                                                <span class="global_sticker" style="display: none;">
-	                                                    <span class="inner_sticker">
-	                                                        <span class="bg_sticker"></span>
-	                                                        <span class="txt_sticker">
-	                                                            <span class="emph_sticker">1+2
-	                                                            </span>
-	                                                            이벤트
-	                                                        </span>
-	                                                    </span>
-	                                                </span>
-	
-	                                                <div class="group_btn">
-	                                                    <button type="button" name="chk" class="btn btn_cart">
-	                                                        <span class="screen_out">38300</span>
-	                                                    </button>
-	                                                </div>
-	                                                
-	
-	
-	                                            </div>
-	
-	                                            <a class="info">
-	                                                <span class="name">
-	                                                    배
-	                                                </span>
-	                                                <span class="cost">
-	                                                    <span class="price">5,000</span>
-	                                                    <input type="hidden"  id="product_cost2" value= 5000 >
-	                                                    <span class="dodo">원</span>
-	                                                </span>
-	
-	                                                <span class="desc">[한줄 소개]</span>
-	                                                <span class="tag"></span>
-	                                            </a>
-	                                        </div>
-	                                    </li>
-	
-	
-	                                    <li>
-	                                        <div class="item">
-	                                            <div class="thumb">
-	                                                <a class="img">
-	                                                    <img src="" alt="" onerror="this.src='https://res.kurly.com/mobile/img/1808/img_none_x2.png'" width="308" height="396">
-	                                                
-	                                                
-	                                                </a>
-	                                                <span class="global_sticker" style="display: none;">
-	                                                    <span class="inner_sticker">
-	                                                        <span class="bg_sticker"></span>
-	                                                        <span class="txt_sticker">
-	                                                            <span class="emph_sticker">1+2
-	                                                            </span>
-	                                                            이벤트
-	                                                        </span>
-	                                                    </span>
-	                                                </span>
-	
-	                                                <div class="group_btn">
-	                                                    <button type="button" name="chk" class="btn btn_cart">
-	                                                        <span class="screen_out">38300</span>
-	                                                    </button>
-	                                                </div>
-	                                                
-	
-	
-	                                            </div>
-	
-	                                            <a class="info">
-	                                                <span class="name">
-	                                                    수박
-	                                                </span>
-	                                                <span class="cost">
-	                                                    <span class="price">10,000</span>
-	                                                    <input type="hidden"  id="product_cost2" value= 10000 >
-	                                                    <span class="dodo">원</span>
-	                                                </span>
-	
-	                                                <span class="desc">[한줄 소개]</span>
-	                                                <span class="tag"></span>
-	                                            </a>
-	                                        </div>
-	                                    </li>
-	
-	
-	                                    <li>
-	                                        <div class="item">
-	                                            <div class="thumb">
-	                                                <a class="img">
-	                                                    <img src="" alt="" onerror="this.src='https://res.kurly.com/mobile/img/1808/img_none_x2.png'" width="308" height="396">
-	                                            
-	                                                
-	                                                </a>
-	                                                <span class="global_sticker" style="display: none;">
-	                                                    <span class="inner_sticker">
-	                                                        <span class="bg_sticker"></span>
-	                                                        <span class="txt_sticker">
-	                                                            <span class="emph_sticker">1+2
-	                                                            </span>
-	                                                            이벤트
-	                                                        </span>
-	                                                    </span>
-	                                                </span>
-	
-	                                                <div class="group_btn">
-	                                                    <button type="button" name="chk" class="btn btn_cart">
-	                                                        <span class="screen_out">38300</span>
-	                                                    </button>
-	                                                </div>
-	                                                
-	
-	
-	                                            </div>
-	
-	                                            <a class="info">
-	                                                <span class="name">
-	                                                    오이
-	                                                </span>
-	                                                <span class="cost">
-	                                                    <span class="price">700</span>
-	                                                    <input type="hidden"  id="product_cost2" value= 700 >
-	                                                    <span class="dodo">원</span>
-	                                                </span>
-	
-	                                                <span class="desc">[한줄 소개]</span>
-	                                                <span class="tag"></span>
-	                                            </a>
-	                                        </div>
-	                                    </li>
-	
-	                                    <li>
-	                                        <div class="item">
-	                                            <div class="thumb">
-	                                                <a class="img">
-	                                                    <img src="" alt="" onerror="this.src='https://res.kurly.com/mobile/img/1808/img_none_x2.png'" width="308" height="396">
-	                                                
-	                                                
-	                                                </a>
-	                                                <span class="global_sticker" style="display: none;">
-	                                                    <span class="inner_sticker">
-	                                                        <span class="bg_sticker"></span>
-	                                                        <span class="txt_sticker">
-	                                                            <span class="emph_sticker">1+2
-	                                                            </span>
-	                                                            이벤트
-	                                                        </span>
-	                                                    </span>
-	                                                </span>
-	
-	                                                <div class="group_btn">
-	                                                    <button type="button" name="chk" class="btn btn_cart">
-	                                                        <span class="screen_out">38300</span>
-	                                                    </button>
-	                                                </div>
-	                                                
-	
-	
-	                                            </div>
-	
-	                                            <a class="info">
-	                                                <span class="name">
-	                                                    귤
-	                                                </span>
-	                                                <span class="cost">
-	                                                    <span class="price">100</span>
-	                                                    <input type="hidden"  id="product_cost2" value= 100 >
-	                                                    <span class="dodo">원</span>
-	                                                </span>
-	
-	                                                <span class="desc">[한줄 소개]</span>
-	                                                <span class="tag"></span>
-	                                            </a>
-	                                        </div>
-	                                    </li>
-	
-	                                    <li>
-	                                        <div class="item">
-	                                            <div class="thumb">
-	                                                <a class="img">
-	                                                    <img src="" alt="" onerror="this.src='https://res.kurly.com/mobile/img/1808/img_none_x2.png'" width="308" height="396">
-	                                                
-	                                                
-	                                                </a>
-	                                                <span class="global_sticker" style="display: none;">
-	                                                    <span class="inner_sticker">
-	                                                        <span class="bg_sticker"></span>
-	                                                        <span class="txt_sticker">
-	                                                            <span class="emph_sticker">1+2
-	                                                            </span>
-	                                                            이벤트
-	                                                        </span>
-	                                                    </span>
-	                                                </span>
-	
-	                                                <div class="group_btn">
-	                                                    <button type="button" name="chk" class="btn btn_cart">
-	                                                        <span class="screen_out">38300</span>
-	                                                    </button>
-	                                                </div>
-	                                                
-	
-	
-	                                            </div>
-	
-	                                            <a class="info">
-	                                                <span class="name">
-	                                                    콩
-	                                                </span>
-	                                                <span class="cost">
-	                                                    <span class="price">30</span>
-	                                                    <input type="hidden"  id="product_cost2" value= 30 >
-	                                                    <span class="dodo">원</span>
-	                                                </span>
-	
-	                                                <span class="desc">[한줄 소개]</span>
-	                                                <span class="tag"></span>
-	                                            </a>
-	                                        </div>
-	                                    </li>
+	                                    </li>	                    
 	                                </ul>
 	                            </div>
 	                        </div>
 						</div>
 
-
-                        <div class="layout-pagination">
-                            <div class="pagediv">
-                                <a href="#main" class="layout-pagination-button layout-pagination-first-page">맨 처음 페이지로 가기</a>
-                                <a href="#main" class="layout-pagination-button layout-pagination-prev-page">이전 페이지로 가기</a>
-                                <a href="#">
+						<!-- 페이징 처리 시 keyword, sort 값 추가 -->
+                        <div class="layout-pagination" th:if="${!paging.isEmpty}">
+                            <div class="pagediv" 
+                            th:with="startNumber=${(paging.number/5)} * 5 + 1,
+							endNumber=(${paging.totalPages}>${startNumber}+4)?
+							${startNumber}+4 : ${paging.totalPages}">
+                                <a th:style="${paging.number == paging.start} ? 'display:none'" th:href="@{/wewalk/search?page=1}" class="layout-pagination-button layout-pagination-first-page">맨 처음 페이지로 가기</a>
+                                <a th:style="${paging.number == paging.start}?'display:none'" th:href="@{/wewalk/search(page=${paging.number-1})}" class="layout-pagination-button layout-pagination-prev-page">이전 페이지로 가기</a>
+                                <a th:each="page : ${#numbers.sequence(startNumber, endNumber)}"
+									th:classappend="(${page}==${paging.number}) ? 'active'" 
+									th:href="@{/wewalk/search(page=${page})}">
                                     <span>
-                                        <strong class="layout-pagination-button layout-pagination-number __active">1</strong>
+                                        <strong class="layout-pagination-button layout-pagination-number __active" th:text="${page}"></strong>
                                     </span>
-                                </a>
-                                
-                                <span>
-                                    <strong class="layout-pagination-button layout-pagination-number">2</strong>
-                                </span>
-                                <span>
-                                    <strong class="layout-pagination-button layout-pagination-number">3</strong>
-                                </span>
-                                <span>
-                                    <strong class="layout-pagination-button layout-pagination-number">4</strong>
-                                </span>
-                                <span>
-                                    <strong class="layout-pagination-button layout-pagination-number">5</strong>
-                                </span>
-                                <a href="#main" class="layout-pagination-button layout-pagination-next-page">다음 페이지로 가기</a>
-                                <a href="#main" class="layout-pagination-button layout-pagination-last-page">맨 끝 페이지로 가기</a>
+                                </a>                                
+                                <a th:style="${paging.number == paging.end} ? 'display:none'" th:href="@{/wewalk/search(page=${paging.number+1})}" class="layout-pagination-button layout-pagination-next-page">다음 페이지로 가기</a>
+                                <a th:style="${paging.number == paging.end} ? 'display:none'" th:href="@{/wewalk/search(page=${paging.totalPages})}" class="layout-pagination-button layout-pagination-last-page">맨 끝 페이지로 가기</a>
                                 
                             </div>
                         </div>

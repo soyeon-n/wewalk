@@ -34,12 +34,12 @@ public class ProductDTO {
 	private String image1;//이미지1
 	private String image2;//이미지2
 	private String image3;//이미지3
-	private List<Review> reviewList;//참조된 리뷰
+//	private List<Review> reviewList;//참조된 리뷰
 	
 	@Builder
 	public ProductDTO(Long id, SiteUser seller, String category, String pname, 
 			String content, Integer price, LocalDateTime date, Integer stock, String selling, 
-			String image, String image1, String image2, String image3, List<Review> reviewList) {
+			String image, String image1, String image2, String image3) {
 		
 		this.id = id;
 		this.seller = seller;
@@ -54,7 +54,7 @@ public class ProductDTO {
 		this.image1 = image1;
 		this.image2 = image2;
 		this.image3 = image3;
-		this.reviewList = reviewList;
+//		this.reviewList = reviewList;
 		
 	}
 	

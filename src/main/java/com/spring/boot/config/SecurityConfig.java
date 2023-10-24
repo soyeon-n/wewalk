@@ -44,19 +44,17 @@ public class SecurityConfig {
         // 권한에 따라 허용하는 url 설정
         // /login, /signup 페이지는 모두 허용, 다른 페이지는 인증된 사용자만 허용
         http
-	        .authorizeRequests()
-	//        .antMatchers("/auth/oauthSignup", "/auth/signup", "/auth/login").access("not hasRole('USER') and not hasRole('SELLER')")
-//		        .antMatchers("/auth/oauthSignup").hasRole(UserRole.OAUTH.name())
-		        .antMatchers("/admin/**").hasRole(UserRole.ADMIN.name())
-		        .antMatchers("/user/**").hasRole(UserRole.USER.name())
-		        .antMatchers("/seller/**").hasRole(UserRole.SELLER.name())
-		        .anyRequest().permitAll()
-	        .and()
-	        .exceptionHandling()
+        .authorizeRequests()
+            .antMatchers("/user/mypage/myshop/**").hasAnyRole(UserRole.SELLER.name(), UserRole.ADMIN.name()) // SELLER만 myshop에 접근 가능
+            .antMatchers("/user/**").hasAnyRole(UserRole.USER.name(), UserRole.SELLER.name(), UserRole.ADMIN.name()) // USER와 SELLER는 나머지 /user/**에 접근 가능
+            .antMatchers("/admin/**").hasRole(UserRole.ADMIN.name())
+            .anyRequest().permitAll()
+        .and()
+        .exceptionHandling()
             .accessDeniedHandler(customAccessDeniedHandler)
-            .and()
-            	.sessionManagement()
-                	.invalidSessionUrl("/auth/login"); //로그인 후 접근 권한이 없는 경우에 대한 처리
+        .and()
+        .sessionManagement()
+            .invalidSessionUrl("/auth/login");
         
 //        , "/oauth2/authorization/**"
 		// login 설정

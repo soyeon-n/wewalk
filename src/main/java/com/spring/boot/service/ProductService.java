@@ -140,9 +140,9 @@ public class ProductService {
 		}else if(sort == "highPrice"){ //높은 가격 순		
 			pageable = requestDTO.getPageable(Sort.by("price").descending());
 		}else if(sort == "reviewCount") { //리뷰 많은 순
-			pageable = requestDTO.getPageable(Sort.by("reviewCount").descending());			
-		}else if(sort == "discount") { //할인율 높은 순
-			pageable = requestDTO.getPageable(Sort.by("discountRate").descending());			
+			pageable = requestDTO.getPageable(Sort.by("reviewList").descending());			
+//		}else if(sort == "discount") { //할인율 높은 순
+//			pageable = requestDTO.getPageable(Sort.by("discountRate").descending());			
 		}else { //기본 값은 신상품순
 			pageable = requestDTO.getPageable(Sort.by("date").descending());
 		}
@@ -172,7 +172,6 @@ public class ProductService {
                 .image1(dto.getImage1())
                 .image2(dto.getImage2())
                 .image3(dto.getImage3())
-                .reviewList(dto.getReviewList())
                 .build();
         return entity;
     }
@@ -192,7 +191,6 @@ public class ProductService {
                 .image1(entity.getImage1())
                 .image2(entity.getImage2())
                 .image3(entity.getImage3())
-                .reviewList(entity.getReviewList())
                 .build();
 
         return dto;

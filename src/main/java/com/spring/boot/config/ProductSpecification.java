@@ -16,7 +16,8 @@ public class ProductSpecification {
 
             Predicate pnamePredicate = cb.like(root.get("pname"), "%" + keyword + "%");
             Predicate categoryPredicate = cb.like(root.get("category"), "%" + keyword + "%");
-                        
+            
+            //상품명 또는 상품 카테고리로 검색
             return cb.or(pnamePredicate, categoryPredicate); // pname 또는 category로 검색
                      
         };

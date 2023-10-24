@@ -40,13 +40,25 @@ public class MainController {
 	
     @GetMapping("/search")
     public String Search(@PageableDefault Pageable pageable, 
+    		@RequestParam(value = "keyword", required = false) String keyword,
     		@RequestParam(value = "sort", required = false) String sort, 
 			@ModelAttribute PageRequestDTO pageRequestDTO, Model model, 
     		@AuthenticationPrincipal PrincipalDetails principalDetails) {
+
+    	sort = "reviewCount";
         
     	model.addAttribute("paging", productService.getSearchList(pageRequestDTO, sort));
-    	model.addAttribute("keyword", pageRequestDTO.getKeyword());
-        return "search";
+    	
+    	if(sort != null && !sort.isEmpty()) {
+            model.addAttribute("sort", sort);
+        }
+    	
+    	if(pageRequestDTO.getKeyword() != null && !pageRequestDTO.getKeyword().isEmpty()) {
+    		model.addAttribute("keyword", pageRequestDTO.getKeyword());
+    	}
+        
+    	return "search";
+        
     }
 	
     private String renderFragment(String template, Object payload) {
@@ -54,5 +66,5 @@ public class MainController {
         context.setVariable("payload", payload);
         return templateEngine.process(template, context);
     }
-
+    
 }
