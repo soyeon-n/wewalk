@@ -1,12 +1,6 @@
 window.addEventListener('DOMContentLoaded',function(){
 
 
-
-    $('.top_event_close').click(function(){
-        $("#top_event").slideUp(200)
-    });
-
-
     const gnb = document.querySelector('.gnb');
     const gnbTopOffset = gnb.offsetTop;
     window.addEventListener('scroll', e =>{
@@ -42,7 +36,51 @@ window.addEventListener('DOMContentLoaded',function(){
         this.style.backgroundColor = '';
     }, true);
 
-    
+
+    var search = document.getElementsByClassName("btn_search");
+    search[0].addEventListener("click", function () {
+		document.getElementById("searchForm").submit();
+	});
+
+	
+	
+	
+	//상품 이미지슬라이드
+    var imgs; // 사용할 이미지들
+	var img_count; // 카운트 변수
+	
+	imgs = $('.list_goods_ul li'); // 이미지는 .list_goods_ul 안에 있는 li 태그
+	img_count = imgs.length; // slide ul의 자식, 즉 li의 갯수 = 이미지의 갯수
+	
+	var currentIndex = 0; // To keep track of the currently displayed items
+	updateDisplay(); // Initialize the display
+	
+	$('.bx-prev').click(function () {
+	    slide_left();
+	});
+	
+	$('.bx-next').click(function () {
+	    slide_right();
+	});
+	
+	function slide_left() {
+	    if (currentIndex > 0) {
+	        currentIndex--;
+	        updateDisplay();
+	    }
+	}
+	
+	function slide_right() {
+	    if (currentIndex < img_count - 4) {
+	        currentIndex++;
+	        updateDisplay();
+	    }
+	}
+	
+	function updateDisplay() {
+	    var leftPosition = -currentIndex * 267; // Assuming each item is 267px wide (249px width + 18px margin-right)
+	    $('.list_goods_ul').css("left", leftPosition + "px");
+	}
 
 
 });

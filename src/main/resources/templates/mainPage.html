@@ -12,7 +12,6 @@
     <script defer src="/main/common.js"></script>
     <script defer src="/main/contents.js"></script>
     <script defer src="/main/visual.js"></script>
-    <script src="/main/mainpage.js"></script>
     <link rel="shortcut icon" href="/img/favicon.png">
     <link rel="icon" href="/img/favicon.png">
     
@@ -74,20 +73,81 @@
                             <div class="gnb_sub">
                                 <ul class="menu">
                                     <li class="current">
-                                        <!-- hover나 active시 current가 옮겨가도록 설정해야 함 -->
-                                        <a href="#" class="main_item">
+                                         <a href="#" class="main_item">
                                             <span class="ico">
-                                                <img src="https://img-cf.kurly.com/shop/data/category/icon_newyear_inactive_pc@2x.1609722514.png" alt="" class="ico off">
-                                                <img src="https://img-cf.kurly.com/shop/data/category/icon_newyear_active_pc@2x.1609722514.png" alt="" class="ico on">
-                                                <!--카테고리 별 아이콘은 직관적이게 img src로 바로 삽입 
-                                                클릭X(off): 기본, 클릭(on): 보라색 아이콘-->
+                                                <img src="/img/category/mobile_1967020.png" alt="" class="ico off">
                                             </span>
                                             <span class="tit">
-                                                <span class="txt">블라블라블라</span>
-                                                <span class="ico_new" alt="new"></span>
-                                                <!-- ico_nex: bg url로 처리 -->
+                                                <span class="txt">디지털 기기</span>
                                             </span>
-                                            <!-- tit: text + ico -->
+                                            
+                                        </a>
+                                    </li>
+                                    
+                                    <li class="current">
+                                         <a href="#" class="main_item">
+                                            <span class="ico">
+                                                <img src="/img/category/free-icon-washing-machine-3003984.png" alt="" class="ico off">  
+                                            </span>
+                                            <span class="tit">
+                                                <span class="txt">생활 가전</span>
+                                            </span>
+                                        </a>
+                                    </li>
+                                    
+                                    <li class="current">
+                                         <a href="#" class="main_item">
+                                            <span class="ico">
+                                                <img src="/img/category/free-icon-armchair-5955637.png" alt="" class="ico off">
+                                                
+                                            </span>
+                                            <span class="tit">
+                                                <span class="txt">패션·잡화·뷰티</span>
+                                            </span>
+                                        </a>
+                                    </li>
+                                    
+                                    <li class="current">
+                                         <a href="#" class="main_item">
+                                            <span class="ico">
+                                                <img src="/img/category/free-icon-child-adoption-11008479.png" alt="" class="ico off">  
+                                            </span>
+                                            <span class="tit">
+                                                <span class="txt">홈데코·문구·취미/반려</span>
+                                            </span>
+                                        </a>
+                                    </li>
+                                    
+                                    <li class="current">
+                                         <a href="#" class="main_item">
+                                            <span class="ico">
+                                                <img src="/img/category/free-icon-woman-clothes-5029370.png" alt="" class="ico off">
+                                            </span>
+                                            <span class="tit">
+                                                <span class="txt">스포츠·건강</span>
+                                            </span>
+                                        </a>
+                                    </li>
+                                    
+                                    <li class="current">
+                                         <a href="#" class="main_item">
+                                            <span class="ico">
+                                                <img src="/img/category/free-icon-hoodie-1452081.png" alt="" class="ico off">
+                                            </span>
+                                            <span class="tit">
+                                                <span class="txt">도서·쿠폰</span>
+                                            </span>
+                                        </a>
+                                    </li>
+                                    
+                                    <li class="current">
+                                         <a href="#" class="main_item">
+                                            <span class="ico">
+                                                <img src="/img/category/free-icon-folder-164372.png" alt="" class="ico off">
+                                            </span>
+                                            <span class="tit">
+                                                <span class="txt">기타</span>
+                                            </span>
                                         </a>
                                     </li>
                                 </ul>
@@ -141,6 +201,10 @@
                     </ul>
             </div>
         </div>
+        
+        
+        
+        
         
         <!-- 로그인 했을경우 -->
         <div id="header" th:if="${user!=null}">
@@ -213,20 +277,383 @@
                             <div class="gnb_sub">
                                 <ul class="menu">
                                     <li class="current">
-                                        <!-- hover나 active시 current가 옮겨가도록 설정해야 함 -->
-                                        <a href="#" class="main_item">
+				                        <a href="#" class="main_item">
+				                            <span class="ico">
+				                                <img src="/img/category/mobile_1967020.png" alt="" class="ico off">
+				                            </span>
+				                            <span class="tit">
+				                                <span class="txt">디지털 기기</span>
+				                            </span>
+				                        </a>
+				                        <!-- 하위메뉴 -->
+				                        <div class="submenu-right">
+				                        	<ul>
+					                            <li class="current">
+					                            	<a href="#" class="main_item">
+					                            		<span class="tit">
+							                                <span class="txt">데스크탑·모니터</span>
+							                            </span>
+					                            	</a>
+					                            </li>
+					                            <li class="current">
+					                            	<a href="#" class="main_item">
+					                            		<span class="tit">
+							                                <span class="txt">노트북</span>
+							                            </span>
+					                            	</a>
+					                            </li>
+					                            <li class="current">
+					                            	<a href="#" class="main_item">
+					                            		<span class="tit">
+							                                <span class="txt">PC주변기기·저장장치</span>
+							                            </span>
+					                            	</a>
+					                            </li>
+					                            <li class="current">
+					                            	<a href="#" class="main_item">
+					                            		<span class="tit">
+							                                <span class="txt">모바일·태블릿</span>
+							                            </span>
+					                            	</a>
+					                            </li>
+					                            <li class="current">
+					                            	<a href="#" class="main_item">
+					                            		<span class="tit">
+							                                <span class="txt">카메라·게임</span>
+							                            </span>
+					                            	</a>
+					                            </li>
+					                            <li class="current">
+					                            	<span class="main_item"></span>
+					                            </li>
+				                            </ul>
+				                        </div>
+				                    </li>
+				                    
+                                    <li class="current">
+				                        <a href="#" class="main_item">
+				                            <span class="ico">
+				                                <img src="free-icon-organic-food-2713569.png" alt="" class="ico off">
+				                            </span>
+				                            <span class="tit">
+				                                <span class="txt">식품</span>
+				                            </span>
+				                        </a>
+				                        <!-- 하위메뉴 -->
+				                        <div class="submenu-right">
+				                        	<ul>
+					                            <li class="current">
+					                            	<a href="#" class="main_item">
+					                            		<span class="tit">
+							                                <span class="txt">신선식품</span>
+							                            </span>
+					                            	</a>
+					                            </li>
+					                            <li class="current">
+					                            	<a href="#" class="main_item">
+					                            		<span class="tit">
+							                                <span class="txt">가공식품</span>
+							                            </span>
+					                            	</a>
+					                            </li>
+					                            <li class="current">
+					                            	<a href="#" class="main_item">
+					                            		<span class="tit">
+							                                <span class="txt">건강식품</span>
+							                            </span>
+					                            	</a>
+					                            </li>
+				                            </ul>
+				                        </div>
+				                    </li>
+				                    
+                                    <li class="current">
+                                         <a href="#" class="main_item">
                                             <span class="ico">
-                                                <img src="https://img-cf.kurly.com/shop/data/category/icon_newyear_inactive_pc@2x.1609722514.png" alt="" class="ico off">
-                                                <img src="https://img-cf.kurly.com/shop/data/category/icon_newyear_active_pc@2x.1609722514.png" alt="" class="ico on">
-                                                <!--카테고리 별 아이콘은 직관적이게 img src로 바로 삽입 
-                                                클릭X(off): 기본, 클릭(on): 보라색 아이콘-->
+                                                <img src="/img/category/free-icon-washing-machine-3003984.png" alt="" class="ico off">  
                                             </span>
                                             <span class="tit">
-                                                <span class="txt">블라블라블라</span>
-                                                <span class="ico_new" alt="new"></span>
-                                                <!-- ico_nex: bg url로 처리 -->
+                                                <span class="txt">생활 가전</span>
                                             </span>
-                                            <!-- tit: text + ico -->
+                                        </a>
+                                        <div class="submenu-right">
+				                        	<ul>
+					                            <li class="current">
+					                            	<a href="#" class="main_item">
+					                            		<span class="tit">
+							                                <span class="txt">영상·음향</span>
+							                            </span>
+					                            	</a>
+					                            </li>
+					                            <li class="current">
+					                            	<a href="#" class="main_item">
+					                            		<span class="tit">
+							                                <span class="txt">주방</span>
+							                            </span>
+					                            	</a>
+					                            </li>
+					                            <li class="current">
+					                            	<a href="#" class="main_item">
+					                            		<span class="tit">
+							                                <span class="txt">계절</span>
+							                            </span>
+					                            	</a>
+					                            </li>
+					                            <li class="current">
+					                            	<a href="#" class="main_item">
+					                            		<span class="tit">
+							                                <span class="txt">미용</span>
+							                            </span>
+					                            	</a>
+					                            </li>
+					                            <li class="current">
+					                            	<a href="#" class="main_item">
+					                            		<span class="tit">
+							                                <span class="txt">건강</span>
+							                            </span>
+					                            	</a>
+					                            </li>
+				                            </ul>
+				                        </div>
+                                    </li>
+                                    
+                                    <li class="current">
+                                         <a href="#" class="main_item">
+                                            <span class="ico">
+                                                <img src="/img/category/free-icon-armchair-5955637.png" alt="" class="ico off">
+                                                
+                                            </span>
+                                            <span class="tit">
+                                                <span class="txt">패션·잡화·뷰티</span>
+                                            </span>
+                                        </a>
+                                        <div class="submenu-right">
+				                        	<ul>
+					                            <li class="current">
+					                            	<a href="#" class="main_item">
+					                            		<span class="tit">
+							                                <span class="txt">여성 의류</span>
+							                            </span>
+					                            	</a>
+					                            </li>
+					                            <li class="current">
+					                            	<a href="#" class="main_item">
+					                            		<span class="tit">
+							                                <span class="txt">남성 의류</span>
+							                            </span>
+					                            	</a>
+					                            </li>
+					                            <li class="current">
+					                            	<a href="#" class="main_item">
+					                            		<span class="tit">
+							                                <span class="txt">아동 의류</span>
+							                            </span>
+					                            	</a>
+					                            </li>
+					                            <li class="current">
+					                            	<a href="#" class="main_item">
+					                            		<span class="tit">
+							                                <span class="txt">신발·가방·잡화</span>
+							                            </span>
+					                            	</a>
+					                            </li>
+					                            <li class="current">
+					                            	<a href="#" class="main_item">
+					                            		<span class="tit">
+							                                <span class="txt">쥬얼리·시계</span>
+							                            </span>
+					                            	</a>
+					                            </li>
+					                            <li class="current">
+					                            	<a href="#" class="main_item">
+					                            		<span class="tit">
+							                                <span class="txt">화장품·향수</span>
+							                            </span>
+					                            	</a>
+					                            </li>
+					                            <li class="current">
+					                            	<a href="#" class="main_item">
+					                            		<span class="tit">
+							                                <span class="txt">바디·헤어</span>
+							                            </span>
+					                            	</a>
+					                            </li>
+				                            </ul>
+				                        </div>
+                                    </li>
+                                    
+                                    
+                                    <li class="current">
+                                         <a href="#" class="main_item">
+                                            <span class="ico">
+                                                <img src="/img/category/free-icon-child-adoption-11008479.png" alt="" class="ico off">  
+                                            </span>
+                                            <span class="tit">
+                                                <span class="txt">홈데코·문구·취미/반려</span>
+                                            </span>
+                                        </a>
+                                        <div class="submenu-right">
+				                        	<ul>
+					                            <li class="current">
+					                            	<a href="#" class="main_item">
+					                            		<span class="tit">
+							                                <span class="txt">가구·DIY</span>
+							                            </span>
+					                            	</a>
+					                            </li>
+					                            <li class="current">
+					                            	<a href="#" class="main_item">
+					                            		<span class="tit">
+							                                <span class="txt">침구·조명·인테리어</span>
+							                            </span>
+					                            	</a>
+					                            </li>
+					                            <li class="current">
+					                            	<a href="#" class="main_item">
+					                            		<span class="tit">
+							                                <span class="txt">생활·주방 용품</span>
+							                            </span>
+					                            	</a>
+					                            </li>
+					                            <li class="current">
+					                            	<a href="#" class="main_item">
+					                            		<span class="tit">
+							                                <span class="txt">신발·가방·잡화</span>
+							                            </span>
+					                            	</a>
+					                            </li>
+					                            <li class="current">
+					                            	<a href="#" class="main_item">
+					                            		<span class="tit">
+							                                <span class="txt">이벤트 용품</span>
+							                            </span>
+					                            	</a>
+					                            </li>
+					                            <li class="current">
+					                            	<a href="#" class="main_item">
+					                            		<span class="tit">
+							                                <span class="txt">문구·사무 용품</span>
+							                            </span>
+					                            	</a>
+					                            </li>
+					                            <li class="current">
+					                            	<a href="#" class="main_item">
+					                            		<span class="tit">
+							                                <span class="txt">악기·취미</span>
+							                            </span>
+					                            	</a>
+					                            </li>
+					                            <li class="current">
+					                            	<a href="#" class="main_item">
+					                            		<span class="tit">
+							                                <span class="txt">반려동물용품</span>
+							                            </span>
+					                            	</a>
+					                            </li>
+				                            </ul>
+				                        </div>
+                                    </li>
+                                    
+                                    <li class="current">
+                                         <a href="#" class="main_item">
+                                            <span class="ico">
+                                                <img src="/img/category/free-icon-woman-clothes-5029370.png" alt="" class="ico off">
+                                            </span>
+                                            <span class="tit">
+                                                <span class="txt">스포츠·건강</span>
+                                            </span>
+                                        </a>
+                                        <div class="submenu-right">
+				                        	<ul>
+					                            <li class="current">
+					                            	<a href="#" class="main_item">
+					                            		<span class="tit">
+							                                <span class="txt">스포츠의류·운동화</span>
+							                            </span>
+					                            	</a>
+					                            </li>
+					                            <li class="current">
+					                            	<a href="#" class="main_item">
+					                            		<span class="tit">
+							                                <span class="txt">자전거·기타</span>
+							                            </span>
+					                            	</a>
+					                            </li>
+					                            <li class="current">
+					                            	<a href="#" class="main_item">
+					                            		<span class="tit">
+							                                <span class="txt">낚시·캠핑·등산</span>
+							                            </span>
+					                            	</a>
+					                            </li>
+					                            <li class="current">
+					                            	<a href="#" class="main_item_null"></a>
+					                            </li>
+					                            <li class="current">
+					                            	<a href="#" class="main_item_null"></a>
+					                            </li>
+				                            </ul>
+				                        </div>
+                                    </li>
+                                    
+                                    <li class="current">
+                                         <a href="#" class="main_item">
+                                            <span class="ico">
+                                                <img src="/img/category/free-icon-hoodie-1452081.png" alt="" class="ico off">
+                                            </span>
+                                            <span class="tit">
+                                                <span class="txt">도서·쿠폰</span>
+                                            </span>
+                                        </a>
+                                        <div class="submenu-right">
+				                        	<ul>
+					                            <li class="current">
+					                            	<a href="#" class="main_item">
+					                            		<span class="tit">
+							                                <span class="txt">국내도서·외국도서</span>
+							                            </span>
+					                            	</a>
+					                            </li>
+					                            <li class="current">
+					                            	<a href="#" class="main_item">
+					                            		<span class="tit">
+							                                <span class="txt">아동도서</span>
+							                            </span>
+					                            	</a>
+					                            </li>
+					                            <li class="current">
+					                            	<a href="#" class="main_item">
+					                            		<span class="tit">
+							                                <span class="txt">학습·교육</span>
+							                            </span>
+					                            	</a>
+					                            </li>
+					                            <li class="current">
+					                            	<a href="#" class="main_item">
+					                            		<span class="tit">
+							                                <span class="txt">음반</span>
+							                            </span>
+					                            	</a>
+					                            </li>
+					                            <li class="current">
+					                            	<a href="#" class="main_item">
+					                            		<span class="tit">
+							                                <span class="txt">쿠폰</span>
+							                            </span>
+					                            	</a>
+					                            </li>
+				                            </ul>
+				                        </div>
+                                    </li>
+                                    
+                                    <li class="current">
+                                         <a href="#" class="main_item">
+                                            <span class="ico">
+                                                <img src="/img/category/free-icon-folder-164372.png" alt="" class="ico off">
+                                            </span>
+                                            <span class="tit">
+                                                <span class="txt">기타</span>
+                                            </span>
                                         </a>
                                     </li>
                                 </ul>
@@ -270,15 +697,15 @@
                             <div class="location_notice">
                                 <!-- 첫 홈페이지 화면에 몇 초간 notice 띄우고 자동으로 off -->
                                 <ul>
-                                	<li th:each=item:${user.adressList} th:text="${item.type}"></li>
+                                	<li>등록된 주소</li>
+                                	<li th:each=item:${user.adressList} th:text="${item.type}+' - '+${item.address01}+'...'"></li>
                                 </ul>
-                                <span class="emph">배송지를 등록</span>하고<br>
-                                <span class="txt">구매가능한 상품을 확인하세요!</span>
+                                
                                 <div class="group_button">
-                                    <button type="button" class="btn login">로그인</button>
-                                    <button type="button" class="btn search_address">
+                                    
+                                    <button type="button" class="btn search_address" style="width: 300px;">
                                         <span class="ico"></span>
-                                        주소검색
+                                        주소등록
                                     </button>
                                 </div>
                             </div>
@@ -299,7 +726,7 @@
             <div class="swipe">
                 <ul class="promotions">
                     <li data-index="1" class="slide_list">
-                        <a href="#" class="thumb" th:style="'background-image: url(' + @{/img/aann.jpg} + ');'"></a>
+                        <a href="#" class="thumb" ></a>
                     </li>
                     <li data-index="2" class="slide_list">
                         <a href="#" class="thumb" th:style="'background-image: url(' + @{/img/aamm.jpg} + ');'"></a>
@@ -353,9 +780,9 @@
                                         <li data-index="1" data-name="today_recommendation" class="list_item"
                                         style="float: left; position: relative; width: 249px; margin-right: 18px;">
                                         <a class="thumb_goods">
-                                            <img src="https://img-cf.kurly.com/shop/data/my_icon/icon_save_10.png" alt="SALE" class="ico">
+                                            
                                             <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAG0AAACRCAQAAABjof6/AAAANUlEQVR4Ae3BgQAAAADDoPtTT+AI1QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAnfAsAAe7+tYwAAAAASUVORK5CYII=" alt="상품이미지" class="thumb"
-                                            style="background-image: url('https://img-cf.kurly.com/shop/data/goods/1466488979157l0.jpg');">
+                                            >
                                             <!-- 상품 이미지 임시값임. src는 데이터로 받아오기 -->
                                         </a>
                                         <div class="info_goods">
@@ -368,6 +795,7 @@
                                             <span class="cost">12,000원</span>
                                         </div>
                                         </li>
+                                        
                                         <li data-index="2" data-name="today_recommendation" class="list_item"
                                         style="float: left; position: relative; width: 249px; margin-right: 18px;">
                                         <a class="thumb_goods">
@@ -712,9 +1140,8 @@
                                     <li data-index="1">
                                         <a class="thumb_goods">
                                             <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAF4AAABeCAQAAAAA22vlAAAAAXNSR0IArs4c6QAAACdJREFUeAHtwQENAAAAwiD7p34PBwwAAAAAAAAAAAAAAAAAAAAA4FpFZgABkfKClwAAAABJRU5ErkJggg==" alt="상품이미지" class="thumb"
-                                            style="background-image: url('https://img-cf.kurly.com/shop/data/main/3/pc_img_1611247553.jpg');">
-                                            <!-- 상품 이미지 임시값임. src는 데이터로 받아오기 -->
-                                        </a>
+                                            >
+                                            </a>
                                         <div class="info_goods">
                                             <div class="inner_info">
                                                 <span class="name">
@@ -731,8 +1158,7 @@
                                     <li data-index="2">
                                         <a class="thumb_goods">
                                             <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAF4AAABeCAQAAAAA22vlAAAAAXNSR0IArs4c6QAAACdJREFUeAHtwQENAAAAwiD7p34PBwwAAAAAAAAAAAAAAAAAAAAA4FpFZgABkfKClwAAAABJRU5ErkJggg==" alt="상품이미지" class="thumb"
-                                            style="background-image: url('https://img-cf.kurly.com/shop/data/main/3/pc_img_1611317260.jpg');">
-                                            <!-- 상품 이미지 임시값임. src는 데이터로 받아오기 -->
+                                            >
                                         </a>
                                         <div class="info_goods">
                                             <div class="inner_info">
@@ -750,9 +1176,8 @@
                                     <li data-index="3">
                                         <a class="thumb_goods">
                                             <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAF4AAABeCAQAAAAA22vlAAAAAXNSR0IArs4c6QAAACdJREFUeAHtwQENAAAAwiD7p34PBwwAAAAAAAAAAAAAAAAAAAAA4FpFZgABkfKClwAAAABJRU5ErkJggg==" alt="상품이미지" class="thumb"
-                                            style="background-image: url('https://img-cf.kurly.com/shop/data/main/3/pc_img_1611553491.jpg');">
-                                            <!-- 상품 이미지 임시값임. src는 데이터로 받아오기 -->
-                                        </a>
+                                            >
+                                            </a>
                                         <div class="info_goods">
                                             <div class="inner_info">
                                                 <span class="name">

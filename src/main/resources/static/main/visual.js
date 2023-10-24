@@ -74,7 +74,7 @@ $(document).ready(function(){                                  // 브라우저�
 
 	});
 	
-
+	
 		var $banner = $(".swipe").find("ul");
 
 		var $bannerWidth = $banner.children().outerWidth();//배너 이미지의 폭

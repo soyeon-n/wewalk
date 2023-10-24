@@ -340,7 +340,7 @@ li:hover .sub_menu2 {
 }
 
 .sign_menu .join {
-    color: #5f0080;
+    color: #1EC800;
 }
 
 .sign_menu .item {
@@ -462,12 +462,12 @@ li:hover .sub_menu2 {
 
 .gnb_menu .list:active .link,
 .gnb_menu .list:hover .link {
-    color: #5f0080;
+    color: #1EC800;
 }
 
 .gnb_menu .list + .list:active .txt,
 .gnb_menu .list + .list:hover .txt{
-    border-bottom: 1px solid #5f0080;
+    border-bottom: 1px solid #1EC800;
 }
 
 /* 추후 전체 카테고리 앞 메뉴 아이콘 컬러 변경 */
@@ -509,10 +509,9 @@ li:hover .sub_menu2 {
 .gnb .gnb_sub {
     display: none;
     position: absolute;
-    overflow-x: hidden;
-    overflow-y: auto;
-    width: 210px;
-    height: 380px;
+    width: 220px;
+    height: auto;
+    overflow:visible;
     top: 55px;
     left: 0;
     border: 1px solid #ddd;
@@ -520,22 +519,42 @@ li:hover .sub_menu2 {
     z-index: 9999;
 }
 
-.gnb_sub .main_item .ico.on {
-    display: none;
+
+.gnb .gnb_sub .current .submenu-right {
+  	display: none;
+  	width: 210px;
+    height: auto;
+    position: absolute;
+    top: 0;
+    left: 100%; 
+    background-color: #fff;
+    border: 1px solid #ddd;
 }
 
-.gnb_sub .main_item:active .ico.on,
-.gnb_sub .main_item:hover .ico.on {
+.gnb .gnb_sub .current:hover .submenu-right {
     display: block;
 }
 
-.gnb_sub .main_item:active .ico.off,
-.gnb_sub .main_item:hover .ico.off {
-    display: none;
+.submenu-right .current .txt{
+    float: left;
+    padding: 0 10px 0 24px;
+    font-weight: 400;
+    font-size: 14px;
+    color: #333;
+    line-height: 22px;
+    white-space: nowrap;
+}
+
+.gnb_sub .menu .submenu-right {
+    background-color: #f7f7f7;
+}
+
+.gnb_sub .menu .submenu-right :hover {
+    background-color: #D5D5D5;
 }
 
 .gnb_sub .tit:hover .txt {
-    color: #5f0080;
+    font-weight: bolder;
 }
 
 .gnb_main:active .gnb_sub,
@@ -547,9 +566,15 @@ li:hover .sub_menu2 {
 .gnb_main:hover .gnb_sub {
     display: block;
 }
+
+
 
 .gnb_sub .menu .current {
     background-color: #f7f7f7;
+}
+
+.gnb_sub .menu .current:hover {
+    background-color: #D5D5D5;
 }
 
 .gnb_sub .main_item {
@@ -570,7 +595,7 @@ li:hover .sub_menu2 {
     float: left;
     padding: 0 10px 0 24px;
     font-weight: 400;
-    font-size: 15px;
+    font-size: 14px;
     color: #333;
     line-height: 22px;
     white-space: nowrap;
@@ -697,9 +722,6 @@ li:hover .sub_menu2 {
 >> z-index 추가해서 수정 완료*/
 /* js로 location_login에 3초간 active 붙게 설정*/
 
-.gnb .location_notice .emph {
-    color: #5f0080;
-}
 
 .gnb .group_button .btn {
     display: block;
@@ -707,22 +729,23 @@ li:hover .sub_menu2 {
     margin-top: 17px;
     padding-bottom: 2px;
     border-radius: 3px;
-    font-size: 12px;
+    font-size: 13px;
+    font-weight: bold;
 }
 
 .gnb .group_button .login {
     float: left;
     width: 104px;
-    border: 1px solid #5f0080;
+    border: 1px solid #1EC800;
     background-color: #fff;
-    color: #5f0080;
+    color: #1EC800;
 }
 
 .gnb .group_button .search_address {
     float: right;
     width: 158px;
-    border: 1px solid #5f0081;
-    background-color: #5f0080;
+    border: 1px solid #1EC800;
+    background-color: #1EC800;
     color: #fff;
 }
 
