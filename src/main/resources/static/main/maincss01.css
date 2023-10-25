@@ -978,13 +978,6 @@ li:hover .sub_menu2 {
     box-sizing: border-box;
 }
 
-/*브라우저스크롤없애버림*/
-body{-ms-overflow-style:none; }
-body::-webkit-scrollbar { display:none; }
-
-
-
-
 
 
 /* 공통 클래스 */

@@ -619,7 +619,4 @@ li {
     text-align: -webkit-match-parent;
     display: list-item;
 }
-::-webkit-scrollbar{
-    display:none;
-    -ms-overflow-style: none;
-}
+
