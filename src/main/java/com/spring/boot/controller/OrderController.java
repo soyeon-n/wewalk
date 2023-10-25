@@ -56,9 +56,11 @@ public class OrderController {
 		if(principalDetails!=null) {
 		List<Product> productList = cartService.getProductList(principalDetails.getUsername()); //로그인할때id 계정명
 		
+		SiteUser user = userService.getUserByUserName(principalDetails.getUsername());
+		
 		model.addAttribute("cartItemList",cartService.getCartItemList(principalDetails.getUsername()));
 		model.addAttribute("productList", productList);
-		
+		model.addAttribute("user",user);
 		return "cart";
 		}
 		//비로그인계정은 로그인으로

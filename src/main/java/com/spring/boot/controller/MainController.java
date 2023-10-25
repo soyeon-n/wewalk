@@ -21,6 +21,23 @@ public class MainController {
 
 	private final UserService userService;
 	
+	@GetMapping("/test")
+	public String testpage(@AuthenticationPrincipal PrincipalDetails principalDetails, Model model) {
+		
+		
+		if(principalDetails != null) {
+			SiteUser user = userService.getUserByUserName(principalDetails.getUsername());
+			
+			model.addAttribute("user",user);
+		
+		}
+		
+		//프로덕트에서 검색해서 가장많이팔린거 8개 리스트 들고감 model.add
+		
+		return "test";
+	}
+	
+	
 	@GetMapping("/main")
 	public String mainPage(@AuthenticationPrincipal PrincipalDetails principalDetails, Model model) {
 		

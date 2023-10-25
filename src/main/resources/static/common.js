@@ -47,21 +47,6 @@ window.addEventListener('DOMContentLoaded',function(){
         this.style.backgroundColor = '';
     }, true);
 
-    //퀵 베너 따라 내려오기
-    $(window).scroll(function(){
-        var scrollTop = $(document).scrollTop();
-        if (scrollTop < 70) {
-         scrollTop = 70;
-        }
-        $(".qnb").stop();
-        $(".qnb").animate( { "top" : scrollTop });
-        });
-
-    
-
-
-    
-
 
 
 });

@@ -972,24 +972,15 @@ li:hover .sub_menu2 {
 
 
 
+.onlyApplyHeader {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/*브라우저스크롤없애버림*/
+body{-ms-overflow-style:none; }
+body::-webkit-scrollbar { display:none; }
 
 
 
