@@ -81,7 +81,9 @@ public class MainController {
     		@AuthenticationPrincipal PrincipalDetails principalDetails) {
         
     	String sortText = "";
+    	SiteUser user = userService.getUserByUserName(principalDetails.getUsername());
     	
+    	model.addAttribute("user", user);
     	model.addAttribute("paging", productService.getSearchList(pageRequestDTO, sort));
     	
     	if(sort != null && !sort.isEmpty()) {

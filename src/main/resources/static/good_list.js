@@ -12,17 +12,25 @@ window.addEventListener('DOMContentLoaded',function(){
         var product_price = [];       //썸네일 가격 변수 리스트
         var product_cost = [];        //상품 수량변경할떄 쓰는 가격 변수 리스트
         var product_id = [];          //상품 아이디값 가져오기
+		var product_selling = [];     //판매 여부
+		var product_stock = [];		  //재고 갯수
+
+		var index = /*[[${loop.count}]]*/ '1';
 
         for(i=0; i < $('.list_goods .inner_listgoods ul li').length+1; i++){
             product_name[i] = $('li:nth-child('+ i +') .name').text();    //포문으로 리스트 에다가 값을 대입함
             
             product_price[i] = $('li:nth-child('+ i +') .price').text();
             
-            product_cost[i] = $(' li:nth-child('+ i +') input').val();
+            //product_cost[i] = $(' li:nth-child('+ i +') .price').val();
             
             product_id[i] = $('li:nth-child('+ i +') .btn_cart').val();
+            
+            product_selling[i] = $('li:nth-child('+ i +') .selling').val();
+            
+            product_stock[i] = $('li:nth-child('+ i +') .stock').val();
+			
         }
-
         
 
         function cart_button(i){                                // 장바구니 버튼 클릭했을떄 수량,적립금 설정함수
@@ -32,7 +40,7 @@ window.addEventListener('DOMContentLoaded',function(){
             $('#cartPut .name').text(product_name[i]);      //초기 이름 설정
             $('#cartPut .dc_price').text(product_price[i]);  // 초기 가격설정
             $('#cartPut .num').text(product_price[i]);  // 초기 가격설정
-
+			
             $('.count_num').text(i);
     
             noBody.addClass('noBody_on');
@@ -44,9 +52,34 @@ window.addEventListener('DOMContentLoaded',function(){
         
         
             var number = $('.inp').val();   //수량
-            var cost = product_cost[i];   // 상품의 가격을 설정해줘야됨.
-            $('.emph').text((number*cost)/20 + '원 적립');
+            var cost = parseInt(product_price[i]);   // 상품의 가격을 설정해줘야됨.
+            //$('.emph').text((number*cost)/20 + '원 적립');
         
+        	$('.inp').on('input', function() {
+		        const input = $(this);
+		        const enteredValue = input.val().trim();
+		        const stock = parseInt(product_stock[i]);
+		
+		         if (/^\d+$/.test(enteredValue)) {
+		            
+		            const enteredQuantity = parseInt(enteredValue);
+		            
+		            if (enteredQuantity > stock) {
+		                alert("재고부족! 현재재고는 " + stock + "개입니다.");
+		                input.val(stock);
+		            } else if (enteredQuantity <= 0) {
+		                
+		                input.val(1);
+		            }
+		            
+		        } else {
+		            
+		            input.val(1);
+		        }
+		
+		        //input.trigger('change');
+		
+		    });
         
             $('.down').click(function(){
                 if(number > 0){
@@ -80,7 +113,7 @@ window.addEventListener('DOMContentLoaded',function(){
         
         
                 // $('.emph').text((number*cost)/20 + '원 적립');
-                $('.emph').text(comma((number*cost)/20) + '원 적립');
+                //$('.emph').text(comma((number*cost)/20) + '원 적립');
             
                 
                 
@@ -113,7 +146,7 @@ window.addEventListener('DOMContentLoaded',function(){
         
                 
                 // $('.emph').text((number*cost)/20 + '원 적립');
-                $('.emph').text(comma((number*cost)/20) + '원 적립');
+                //$('.emph').text(comma((number*cost)/20) + '원 적립');
                 
         
                 
@@ -179,7 +212,7 @@ window.addEventListener('DOMContentLoaded',function(){
             cart_button(_index+1);
         });
 
-
+/*
         //카테고리 클릭시 활성화되면서 움직이는 bar
 
         $('li[name=cate_gory]').click(function(){                  // li태그에서 name이 cate_gory인걸 클릭했을 때
@@ -215,7 +248,7 @@ window.addEventListener('DOMContentLoaded',function(){
 
 
         });
-
+*/
         function comma(num){          //콤마찍는 함수
             var len, point, str; 
                
@@ -234,9 +267,10 @@ window.addEventListener('DOMContentLoaded',function(){
          
         }
         
+        //sort 토글
         $('.name_select').click(function(){
 		    $(".checked").toggle();
-		    $('.name_select').css('color', '#5f0080');
+		    $('.name_select').css('color', '#1EC800');
 		});
 
 

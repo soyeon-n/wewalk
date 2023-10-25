@@ -55,7 +55,7 @@ public class ProductController {
 	
 	//상품을 눌렀을떄 상품번호에 따른 주소가 달라짐 
 	//상품 눌렀을떄 상세주소로 이동하는 주소
-	
+	//productNo를 long 형의 id로 변경해줘야 함
 	@RequestMapping("/detail/{productNo}")
 	public String detail(Model model, @PathVariable("productNo") Integer productNo
 			,ProductForm productForm , @PageableDefault Pageable pageable) {

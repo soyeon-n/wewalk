@@ -49,14 +49,14 @@
                             <div class="item" th:each="item : ${productList}" >
                                 <label class="check" th:for="'chkItem_' + ${item.id}">
 							        <input type="checkbox"  th:id="'chkItem_' + ${item.id}" name="checkOne" class="checkOne" 
-							        th:disabled="${#strings.equals(item.selling,'F') || item.stock<1} ? 'disabled'">
+							        th:disabled="${(item.selling =='false') || (item.stock<1)} ? 'disabled'">
 							        <span class="ico"></span>
 							    </label>
     
                                 <div class="name">
                                     <div class="inner_name">
                                         <a href="#" class="package " th:text="${item.pname}"></a>
-                                        <span th:if="${#strings.equals(item.selling,'F') || item.stock<1}"><font color="red">현재 구매할수 없는 상품입니다</font></span>
+                                        <span th:if="${(item.selling =='false') || (item.stock<1)}"><font color="red">현재 구매할수 없는 상품입니다</font></span>
                                         
                                         <div class="info"></div>
                                     </div>
@@ -77,13 +77,13 @@
                                             
                                             
                                             <div class="stamper count">
-                                                <button type="button" class="btn minus off" th:disabled="${#strings.equals(item.selling,'F') || item.stock<1} ? 'disabled'">감소</button>
+                                                <button type="button" class="btn minus off" th:disabled="${(item.selling =='false') || (item.stock<1)} ? 'disabled'">감소</button>
                                                 <input type="text" class="stepperCounter num" th:each="cartItem : ${cartItemList}"
 											       th:if="${cartItem.product.id == item.id}" th:value="${cartItem.count}" 
 											       th:data-stock="${item.stock}" th:data-cartItemId="${cartItem.id}" th:data-product-id="${item.id}"
-											       th:disabled="${#strings.equals(item.selling,'F') || item.stock<1} ? 'disabled'">
+											       th:disabled="${(item.selling =='false') || (item.stock<1)} ? 'disabled'">
 
-                                                <button type="button" class="btn plus" th:disabled="${#strings.equals(item.selling,'F') || item.stock<1} ? 'disabled'">추가</button>
+                                                <button type="button" class="btn plus" th:disabled="${(item.selling =='false') || (item.stock<1)} ? 'disabled'">추가</button>
                                             </div>
                                         </div>
                                     </div>

@@ -20,10 +20,10 @@ public class PageRequestDTO {
     private String keyword;
 
     //기본 생성자
-    //기본 페이지는 첫 페이지, 한 페이지에 보여주는 데이터 10개
+    //기본 페이지는 첫 페이지, 한 페이지에 보여주는 데이터 9개
     public PageRequestDTO(){
         this.page = 1;
-        this.size = 10;
+        this.size = 9;
     }
 
     public Pageable getPageable(Sort sort){

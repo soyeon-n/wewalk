@@ -52,9 +52,7 @@ $(document).ready(function() {
 			item.remove();
 
         }
-        
-        
-        
+
 	});
     
     $('#deleteSelected').click(function() {

@@ -6,11 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>상품 리스트</title>
     <link rel="stylesheet" href="/reset.css">
-    <link rel="stylesheet" href="/common.css">
     <link rel="stylesheet" href="/good_list.css">
+    <link rel="stylesheet" href="/header/header.css">
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <script src="/common.js"></script>
     <script src="/good_list.js"></script>
+    <script src="/header/header.js"></script>
 
     <SCRIPT LANGUAGE="JavaScript">            
                                             
@@ -26,6 +27,8 @@
     </SCRIPT>
 </head>
 <body class="noBody">
+
+<div th:insert="header :: headerFragment"></div>
     <div id="container" class="container">
         <input type="hidden" id="sort" th:value="${sort} == null ? 'newest' : ${sort}" />
 		
@@ -33,7 +36,7 @@
             <div id="content">
                 <div class="page_aticle">
                     <div id="lnbMenu" class="lnb_menu">
-                        <div class="inner_lnb">
+                        <!-- <div class="inner_lnb">
                             <div class="ico_cate">
                                 <span class="ico" style="display:block;">
                                 <img src="https://img-cf.kurly.com/shop/data/category/icon_veggies_active_pc@2x.1586324570.png" id="goodsListIconView" alt="카테고리 아이콘"> </span>
@@ -62,9 +65,9 @@
                                 <li name="cate_gory">
                                     <a class=>콩나물·버섯</a>
                                 </li>
-                                <!-- <li class="bg" style="top: 78px; width: 68px; left: 29px; opacity: 1;"></li> -->                                                                
+                                <li class="bg" style="top: 78px; width: 68px; left: 29px; opacity: 1;"></li>                                                                
                             </ul>
-                        </div>
+                        </div> -->
                     </div>
 
                     <div id="goodsList" class="page_section section_goodslist">
@@ -103,15 +106,15 @@
                         </div>
 
 						<!-- 여기서 부터 물건 리스트-->
-						<div th:fragment="productListFragment">
+						
 	                        <div class="list_goods">
 	                            <div class="inner_listgoods">
 	                                <ul class="list">                                   
 	                                    <li th:each="productDTO, loop : ${paging.dtoList}">
 	                                        <div class="item"><!-- 반복문 써야할 부분 -->
 	                                            <div class="thumb"><!-- thumbnail picture -->
-	                                                <a th:href="@{|/product/images/${productDTO.image}|}"><!-- 상품 상세 페이지 -->
-	                                                    <img src="https://img-cf.kurly.com/shop/data/goods/1567574126435l0.jpg" alt="무농약 콩으로 재배한 콩나물(1봉/200g)" onerror="this.src='https://res.kurly.com/mobile/img/1808/img_none_x2.png'" width="308" height="396">
+	                                                <a th:href="@{|/product/detail/${productDTO.id}|}"><!-- 상품 상세 페이지 -->
+	                                                    <img th:src="@{'/product/' + ${productDTO.image}}" onerror="this.src='https://res.kurly.com/mobile/img/1808/img_none_x2.png'" width="308" height="396">
 	                                                </a>
 	                                                <span class="global_sticker" style="display: none;">
 	                                                    <span class="inner_sticker">
@@ -138,10 +141,12 @@
 	                                                </span>
 	                                                <span class="cost">
 	                                                    <span class="price" th:text="${#numbers.formatInteger(productDTO.price, 1, 'COMMA')}"><!-- 1,300 --></span><!-- price -->
-	                                                    <input type="hidden"  id="|product_cost${productDTO.id}|" th:value="${productDTO.price}">
+	                                                    <!-- <input type="hidden"  th:id="|product_cost${productDTO.id}|" th:value="${productDTO.price}"> -->
 	                                                    <span class="dodo">원</span>
 	                                                </span>
 	
+	                                                    <input type="text" class="selling" th:value="${productDTO.selling}">
+	                                                    <input type="text" class="stock" th:value="${productDTO.stock}">
 	                                                <span class="desc" th:text="${productDTO.content}"><!-- 무농약 콩으로 재배한 콩나물(1봉/200g) --></span><!-- content -->
 	                                                <span class="tag"></span>
 	                                            </a>
@@ -150,7 +155,7 @@
 	                                </ul>
 	                            </div>
 	                        </div>
-						</div>
+						
 
 						<!-- 페이징 처리 시 keyword, sort 값 추가 -->
                         <div class="layout-pagination" th:if="${!paging.isEmpty}">
@@ -210,7 +215,7 @@
 
     <div id="cartPut">
         <div class="cart_option cart_type3" style="opacity: 1;">
-            <form action="" method="POST" id="contactsForm">
+            <form action="/product/addCart" method="POST" id="contactsForm">
                 <div class="inner_option">
                     <div class="in_option">
                         <div class="list_goods">
@@ -222,7 +227,7 @@
                                     <div class="option">
                                         <span class="count">
                                             <button type="button" class="btn down on">수량내리기</button>
-                                            <input type="text" readonly="readonly" name="count" value = 1 class="inp">
+                                            <input type="text" name="count" th:value="1" class="inp">
                                             <div style="display:none;">
                                                 <input type="hidden" class="count_num" >1
                                             </div>
@@ -246,13 +251,13 @@
                                 </span>
                             </div>
 
-                            <p class="txt_point">
+                            <!-- <p class="txt_point">
                                 <span class="ico">적립</span>
                                 <span class="point">
                                     구매 시
                                     <strong class="emph">65원 적립</strong>
                                 </span>
-                            </p>
+                            </p> -->
                         </div>
                     </div>
 
