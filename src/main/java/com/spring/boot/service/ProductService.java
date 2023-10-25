@@ -15,6 +15,7 @@ import com.spring.boot.config.DataNotFoundException;
 
 import com.spring.boot.dao.ProductRepository;
 import com.spring.boot.model.Product;
+import com.spring.boot.model.SiteUser;
 
 import lombok.RequiredArgsConstructor;
 
@@ -40,23 +41,15 @@ public class ProductService {
 	}
 	
 	
-	//판매자 id 로 판매자의 상품 전체셀렉
-	/*
-	public Page<Product> getListsById(Pageable pageable){
+	//판매자 id 로 판매자의 상품 전체리스트 셀렉	
+	public List<Product> getListsById(SiteUser siteUser){
+		long userid =  siteUser.getId();
+		List<Product> product= productRepository.findByUserId(userid);
 		
-		//최신글부터 전체셀렉
-		List<Sort.Order> sorts = new ArrayList<Sort.Order>();
-		sorts.add(Sort.Order.desc("date"));
 		
-		//pageable 페이징 추가
-		pageable = PageRequest.of(pageable.getPageNumber()<=0 ? 0: pageable.getPageNumber()-1,
-				pageable.getPageSize(),Sort.by(sorts));
-		
-		//return productRepository.findByUserId(pageable);//뭘 넘겨줘야할지 
-		//모르겠어 
-		
+		return product;
 	}
-	*/
+	
 	//상품번호만으로 상품에대한 detail 조회하기 
 	public Product getProductDetailByNo(long productNo){
 		
@@ -71,6 +64,9 @@ public class ProductService {
 		
 	}
 	
+	//현재조회한 상품을  팔고있는 판매자를 찾기 
+	//public SiteUser getSeller()
+	
 	
 	//소연언니
 	//새상품 등록하기 
@@ -79,7 +75,7 @@ public class ProductService {
 	
 	//상품삭제 
 	//희주님 꺼 
-	public Product getProductById(Integer id) {
+	public Product getProductById(long id) {
 		Product product = productRepository.findById(id).get();
 		return product;
 	}

@@ -103,12 +103,12 @@ public class ProductController {
 			@AuthenticationPrincipal PrincipalDetails principalDetails,
 			
 			@RequestParam(name = "page", defaultValue = "0") int page,
-            @RequestParam(name = "size", defaultValue = "10") int size, Model model1) {
+            @RequestParam(name = "size", defaultValue = "10") int size) {
 		
 		
 		Product product = productService.getProductDetailByNo(productNo);
 		
-		model1.addAttribute("product",product);
+		model.addAttribute("product",product);
 		
 		
 		//상품리뷰 페이징을 위한 값 넘김
@@ -118,33 +118,25 @@ public class ProductController {
 		
 		Page<Question> paging1 = questionService.getQuestionList(pageable, product);
 		
-		
-		
-		
 		//ajax 페이징을 위한 코딩 여기 추가 
 		PageRequest pageable1 = PageRequest.of(page, size);
 		Page<Question> entities = questionService.getQuestionList(pageable1, product);
-	    model1.addAttribute("entities", entities);
+	    model.addAttribute("entities", entities);
 		
-	    //answer 도 넘겨야 뿌려준다 questionid 가 있어야 answer 찾을수있는데..???
-	    //question id 를 ajax 로 가져와서 ...????? 이걸다시 넘겨서 그걸로 여기서 attribute가능 .. ? 
-	    
-	    
-	    //answer service 에서 question id 로 질문글에 대한 답변글 id 를 구한다 
-	    
-	    
-	    
 	    
 		
-		model1.addAttribute("paging1",paging1);//qna문의하기의페이징 qna_list layout
-		model1.addAttribute("paging",paging);//상품리뷰의 페이징
+		model.addAttribute("paging1",paging1);//qna문의하기의페이징 qna_list layout
+		model.addAttribute("paging",paging);//상품리뷰의 페이징
 		
+		//pno 의 판매자를 찾기 
+		SiteUser seller = product.getUser();
+		//product id 와 관련된 siteuser 의 id 에서 product list 가져와서 관련된상품으로 뿌려주기 
+		List<Product> products =productService.getListsById(seller);
 		
-		
-		
-		
+		model.addAttribute("products",products);
+		model.addAttribute("seller",seller);//판매자정보확인
 		//??????아놔 근데 이러면 보안이 너무 허술해지잖아 ??
-		model1.addAttribute("principalDetails",principalDetails);//auth 넘겨야 권한에 접근가능 principal
+		model.addAttribute("principalDetails",principalDetails);//auth 넘겨야 권한에 접근가능 principal
 		
 		return "product_list";//html연결
 		

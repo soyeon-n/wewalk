@@ -77,19 +77,6 @@ public class QuestionController {
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	//하나의 문의글 자세히 보기 >> 근데 난 모달창으로 할거임 주소만 만들어놓기 
 	@RequestMapping("/detail/{id}")
 	public String detail(Model model, @PathVariable("id") long id , AnswerForm answerForm) {

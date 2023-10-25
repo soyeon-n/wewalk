@@ -148,22 +148,34 @@
                             
                             
                                 <td align="center">글번호글번호
-                                <a th:href="@{|/question/detail/${question.id}|}" th:text="${question.id}"></a>
+                                  <a th:href="@{|/question/detail/${question.id}|}" th:text="${question.id}"></a>
                                 </td>
                                 <td class="subject">
                                 <!-- 왜 첫번쨰 글만 onclick 이 먹는가   -->
                                 <!--  
                                     <a th:href="@{|/question/detail/${question.id}|}" th:text="${question.title}"></a>-->
-                                    <!-- 그니까 제목을누르면 제목밑에 내용이 나와야하는게 맞아 그러면 제목이 
-                                    버튼이 되는게 맞고 대상이 content div 가 되던가 아니면 click 하면 visable 하던가 
-                                    타임리프 if 를 한 div 에 주면 그것만  -->
-                                    <button th:id="'toggleButton_'+${question.id}" th:text="${question.title}">이게 제목</button>
                                     
-                                        <div th:id="'contentToToggle_'+${question.id}" th:text="${question.content}" style="display: none;" ></div>
-                                        <!-- answer 이미지 넣어주고  넘겨받은 answer 출력해준다 
-                                        <div th:text="${question.content}" style="display: none;" ></div>
-                                    -->
-                                    
+	                                    <button th:id="'toggleButton_'+${question.id}" th:text="${question.title}">이게 제목</button>
+	                                        
+	                                        <div th:id="'contentToToggle_'+${question.id}" th:text="${question.content}" style="display: none;" >
+	                                        <!-- answer 이미지 넣어주고  넘겨받은 answer 출력해준다 -->
+	                                            <p th:text="${question.content}"></p>
+	                                        <!-- 답변 반복문 이게왜안나올까요,,,,,,,,
+	                                           <ul>
+	                                              <li th:each="answer : ${question.answerList}">
+	                                                 <p th:text="${answer.content}"></p>
+	                                              
+	                                              </li>
+	                                           
+	                                           </ul> -->
+	                                           
+	                                                                  
+	                                        </div>
+	                                        <!---->
+	                                        <div th:each="answer : ${question.answerList}">
+											   <div th:text=${answer.content}></div>
+										    </div>
+	                                         
                                     
                                 </td>
                                 <td class="user_grade grade_comm"></td>

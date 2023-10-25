@@ -223,7 +223,7 @@ window.addEventListener('DOMContentLoaded',function(){
                 },
                 error: function(){
                 //badrequest
-                alert(productNo + '상품이 이미 장바구니에 담겨있습니다. 장바구니로 이동하기');
+                alert(productNo + '상품이 이미 장바구니에 담겨있습니다.');
                 }
             });
             

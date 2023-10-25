@@ -10,30 +10,21 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 
 import com.spring.boot.model.Product;
+import com.spring.boot.model.SiteUser;
 
 public interface ProductRepository extends JpaRepository<Product, Long>{
 	//주의: 여기 레포에서 하나라도 안돌아가면 에러남 
-	
 	
 	//전체상품 찾는 메소드
 	Page<Product> findAll(Pageable pageable);//
 	//pageable 을 돌려줘야함 대신 
 	
 	
-	//판매자id 로 product상품List 찾는 메소드
-	Page<Product> findByUserId(long userId,Pageable pageable);
-	//매개변수id 랑 pageable 둘다 줘야하나????????
-	//이거아직 안씀
-	
 	//productno로 상품 detail 찾는 메소드 
 	Optional<Product> findById(long productNo);
 	//Question findBySubjectAndContent(String subject, String content);//두개의조건으로셀렉하기
 	
-	//검색어-상품이름name으로 상품찾는 메소드 
-	//List<Product> findByNameLike(String name);
 	
-	//검색어-판매자이름으로 상품찾기
-	//List<Product> findByUserIdLike(long id);
 	
 	//검색-카테고리검색
 	List<Product> findByCategoryLike(String category);
@@ -41,7 +32,8 @@ public interface ProductRepository extends JpaRepository<Product, Long>{
 	List<Product> findByStockGreaterThan(int stock);
     List<Product> findByStockEquals(int stock);
 	
-	
+	//productlist-상품id 로 관련된 판매자siteuser의 다른상품추천하기 
+    List<Product> findByUserId(long siteuser);
 	
 
 
