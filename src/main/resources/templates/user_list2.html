@@ -47,7 +47,7 @@
 		<tr class="text-center" th:each="siteUserDTO, loop : ${paging.dtoList}">
 			<td th:text="${((paging.number - 1) * paging.size) + loop.index + 1}"></td>
 			<td th:text="${siteUserDTO.userName}"></td>
-			<td class="text-start">
+			<td class="text-start"> 
 				<!-- <a th:href="@{/user/login}" sec:authorize="isAnonymous()" th:text="${question.subject}"></a> -->
 				<a th:href="@{|/admin/modifyUser/${siteUserDTO.id}|}" th:text="${siteUserDTO.email}"></a>
 				
@@ -66,26 +66,26 @@
 			<!-- 리스트를 화면에 띄우고 비활성화까지는 잘 되지만 실시간으로 isActivated의 값이 변동되지 않음 -->
 			<!-- 검색 기능 추가 예정 -->
 	<script type="text/javascript">
-	function confirmDeactivateOrReactivate(userName, isActivated) {
-	    var message = isActivated ? (userName + " 사용자를 비활성화하시겠습니까?") : (userName + " 사용자를 활성화하시겠습니까?");
-	    var result = confirm(message);
-	    
-	    if (result) {
-	        // AJAX 호출
-	        $.ajax({
-	            url: "/admin/deactivateOrReactivate/" + userName,
-	            type: 'GET',
-	            success: function(response) {
-	                // 성공적으로 응답을 받았을 때 실행되는 코드
-	               	location.reload();  // 페이지 새로 고침
-	            },
-	            error: function(error) {
-	                // 에러 발생 시 실행되는 코드
-	                alert("Error occurred!");
-	            }
-	        });
-	    }
-	}
+		function confirmDeactivateOrReactivate(userName, isActivated) {
+		    var message = isActivated ? (userName + " 사용자를 비활성화하시겠습니까?") : (userName + " 사용자를 활성화하시겠습니까?");
+		    var result = confirm(message);
+		    
+		    if (result) {
+		        // AJAX 호출
+		        $.ajax({
+		            url: "/admin/deactivateOrReactivate/" + userName,
+		            type: 'GET',
+		            success: function(response) {
+		                // 성공적으로 응답을 받았을 때 실행되는 코드
+		               	location.reload();  // 페이지 새로 고침
+		            },
+		            error: function(error) {
+		                // 에러 발생 시 실행되는 코드
+		                alert("Error occurred!");
+		            }
+		        });
+		    }
+		}
 	</script>
 		</tr>
 	</tbody>

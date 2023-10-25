@@ -304,17 +304,4 @@ public class AdminController {
 //	    return response;
 //	}
 	
-//	@PreAuthorize("isAuthenticated")
-//	@GetMapping("/reactivateUser/{id}")
-//	public String reactivateUser(@PathVariable("id") Long id) {
-//	
-//		//질문글 데이터 받아옴
-//		SiteUser siteUser = userService.getUser(id);
-//		
-//		adminService.deactivateOrReactivate(siteUser);
-//		
-//		return "redirect:/admin/userList";
-//		
-//	}
-	
 }

@@ -24,7 +24,7 @@ public class PageResultDTO <DTO,EN>{
  // 총 페이지 번호
  private int totalPages;
 
- // 현재 페이지 번호
+ // 현재 페이지 번호(1부터 시작)
  private int number;
 
  // 목록 사이즈
@@ -48,7 +48,7 @@ public class PageResultDTO <DTO,EN>{
      isEmpty = result.isEmpty();
      totalElements = dtoList.size();
      totalPages = result.getTotalPages();
-
+     
      makePageList(result.getPageable());
  }
 
@@ -58,10 +58,13 @@ public class PageResultDTO <DTO,EN>{
 
      // temp end page
      // 끝번호를 미리 계산하는 이유 : 시작번호 계산 수월하게 하기위해
+     //10개 페이지씩 묶음
      int tempEnd = (int)(Math.ceil(number / 10.0)) * 10;
 
+     //첫 번째 번호는 tempEnd - 9(1, 11, 21, ...)
      start = tempEnd - 9;
 
+     //
      prev = start > 1;
 
 //     end = totalPage > tempEnd ? tempEnd : totalPage;

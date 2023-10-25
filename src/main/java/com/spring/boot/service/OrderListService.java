@@ -2,14 +2,19 @@ package com.spring.boot.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.spring.boot.config.OrderListSpecifications;
 import com.spring.boot.dao.OrderListRepository;
 import com.spring.boot.dao.ProductRepository;
 import com.spring.boot.dto.ItemDataForm;
 import com.spring.boot.dto.PaymentDataForm;
 import com.spring.boot.model.OrderList;
+import com.spring.boot.model.Product;
 import com.spring.boot.model.SiteUser;
 
 import lombok.RequiredArgsConstructor;
@@ -53,7 +58,20 @@ public class OrderListService {
 		
 	}
 	
-	
-	
+	//판매량 상위 8개 제품 데이터 가져오기
+	public List<Product> getTop8SellingProducts() {
+	    // Specification을 사용하여 상위 판매 상품의 productno를 조회합니다.
+	    Pageable top8 = PageRequest.of(0, 8);
+	    
+	    //판매량 상위 8개에 대한 데이터를 주문내역
+	    List<OrderList> orderLists = orderListRepository.findAll(OrderListSpecifications.topSoldProducts(), top8).getContent();
+
+	    List<Long> productnoList = orderLists.stream()
+	                                .map(OrderList::getProductno) //OrderList 엔티티의 productno를 반복문으로 꺼냄
+	                                .collect(Collectors.toList()); //꺼낸 데이터를 넣어줌
+
+	    // 해당 productno로 Product 엔티티에서 상품 정보를 조회합니다.
+	    return productRepository.findByIdIn(productnoList);
+	}
 	
 }

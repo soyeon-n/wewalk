@@ -3,6 +3,7 @@ package com.spring.boot.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.spring.boot.dto.GoodsForm;
+import com.spring.boot.dto.PrincipalDetails;
 import com.spring.boot.model.Pay;
 import com.spring.boot.model.Product;
 import com.spring.boot.model.Address;
@@ -60,11 +62,12 @@ public class MyPageController {
     }
 
     @GetMapping("/mypage")
-    public String myPage(Model model, Authentication authentication, @RequestParam(name = "pageNum", defaultValue = "1") int pageNum) {
+    public String myPage(Model model, @AuthenticationPrincipal PrincipalDetails principalDetails, 
+    		@RequestParam(name = "pageNum", defaultValue = "1") int pageNum) {
     	
-        if (authentication != null) {
+        if (principalDetails != null) {
         	
-        	SiteUser user = userService.getUserByEmail(authentication.getName());
+        	SiteUser user = userService.getUser(principalDetails.getUser().getId());
             model.addAttribute("user", user);
             
             int itemsPerPage = 9; // 페이지당 항목 수
@@ -91,9 +94,10 @@ public class MyPageController {
     }
     
     @GetMapping("/mypage/sale")
-    public String myPageSale(Model model, Authentication authentication) {
+    public String myPageSale(Model model, 
+    		@AuthenticationPrincipal PrincipalDetails principalDetails) {
 
-    	SiteUser user = userService.getUserByEmail(authentication.getName());
+    	SiteUser user = userService.getUser(principalDetails.getUser().getId());
         model.addAttribute("user", user);
 
         List<Product> saleGoods = goodsService.getSaleProducts();
@@ -104,9 +108,10 @@ public class MyPageController {
     }
     
     @GetMapping("/mypage/soldout")
-    public String myPageSoldout(Model model, Authentication authentication) {
+    public String myPageSoldout(Model model, 
+    		@AuthenticationPrincipal PrincipalDetails principalDetails) {
 
-    	SiteUser user = userService.getUserByEmail(authentication.getName());
+    	SiteUser user = userService.getUser(principalDetails.getUser().getId());
         model.addAttribute("user", user);
 
         List<Product> soldoutGoods = goodsService.getSoldoutProducts();
@@ -118,9 +123,9 @@ public class MyPageController {
     
 
 	@GetMapping("/mypage/change")
-    public String change(Model model, Authentication authentication) {
+    public String change(Model model, @AuthenticationPrincipal PrincipalDetails principalDetails) {
        
-		SiteUser user = userService.getUserByEmail(authentication.getName());
+		SiteUser user = userService.getUser(principalDetails.getUser().getId());
     	model.addAttribute("user", user);
 		
     	//회원정보 수정 하기 전 비밀 번호 확인
@@ -129,10 +134,11 @@ public class MyPageController {
     }
 	
 	@PostMapping("/mypage/checkPassword")
-	public String checkPassword(@RequestParam("userPassword") String enteredPassword, Authentication authentication, Model model) {
+	public String checkPassword(@RequestParam("userPassword") String enteredPassword, 
+			@AuthenticationPrincipal PrincipalDetails principalDetails, Model model) {
 	    
 		// 사용자가 입력한 비밀번호와 서버에서 가져온 암호화된 비밀번호를 비교
-	    SiteUser user = userService.getUserByEmail(authentication.getName());
+	    SiteUser user = userService.getUser(principalDetails.getUser().getId());
 	    
 	    if (passwordEncoder.matches(enteredPassword, user.getPassword())) {
 	        // 비밀번호가 일치하면 원하는 페이지로 리디렉션
@@ -146,12 +152,12 @@ public class MyPageController {
 	    }
 	}
 	
-	
     @GetMapping("/mypage/change/changeInfo")
-    public String changeInfo(Model model, Authentication authentication) {
+    public String changeInfo(Model model, 
+    		@AuthenticationPrincipal PrincipalDetails principalDetails) {
        
     	//회원정보 수정탭
-    	SiteUser user = userService.getUserByEmail(authentication.getName());
+    	SiteUser user = userService.getUser(principalDetails.getUser().getId());
     	
     	model.addAttribute("birthYear", user.getBirthDate().getYear());
     	model.addAttribute("birthMonth", user.getBirthDate().getMonth().getValue());
@@ -164,10 +170,11 @@ public class MyPageController {
     }
     
     @PostMapping("/mypage/change/changeInfo")
-    public String changeInfo(Model model, Authentication authentication, @RequestParam String originalPassword, @RequestParam String newPassword) {
+    public String changeInfo(Model model, @AuthenticationPrincipal PrincipalDetails principalDetails, 
+    		@RequestParam String originalPassword, @RequestParam String newPassword) {
         
     	// 현재 사용자 정보 가져오기
-        SiteUser user = userService.getUserByEmail(authentication.getName());
+        SiteUser user = userService.getUser(principalDetails.getUser().getId());
 
         if (isPasswordValid(newPassword)) {
         	
@@ -204,12 +211,13 @@ public class MyPageController {
   
     
     @GetMapping("/mypage/shipping")
-    public String shipping(Model model, HttpServletRequest request, Authentication authentication) {
+    public String shipping(Model model, HttpServletRequest request, 
+    		@AuthenticationPrincipal PrincipalDetails principalDetails) {
         
     	// 배송지 관리 페이지
     	// 사용자의 배송지 목록을 가져오는 서비스 또는 메서드 호출
     	
-    	SiteUser user = userService.getUserByEmail(authentication.getName());
+    	SiteUser user = userService.getUser(principalDetails.getUser().getId());
         long userId = user.getId();
     	
         List<Address> shippingList = addressService.getAddressListByUserId(userId);
@@ -221,7 +229,8 @@ public class MyPageController {
     }
     
     @PostMapping("/mypage/shipping")
-    public String shipping(@ModelAttribute("ShippingForm") @Valid ShippingForm shippingForm, Model model, Authentication authentication) {
+    public String shipping(@ModelAttribute("ShippingForm") @Valid ShippingForm shippingForm, 
+    		Model model, @AuthenticationPrincipal PrincipalDetails principalDetails) {
     	
 
     	return "shipping";
@@ -230,7 +239,8 @@ public class MyPageController {
     
     
     @PostMapping("/mypage/shipping/delete/{ano}")
-    public String deleteShipping(@PathVariable("ano") Long ano, Model model, Authentication authentication) {
+    public String deleteShipping(@PathVariable("ano") Long ano, 
+    		Model model, @AuthenticationPrincipal PrincipalDetails principalDetails) {
     	
         // 주소 삭제 로직을 구현
         boolean deleted = addressService.deleteAddress(ano);
@@ -238,7 +248,7 @@ public class MyPageController {
 
         if (deleted) {
             // 삭제가 성공하면 배송지 목록을 다시 가져옵니다.
-        	SiteUser user = userService.getUserByEmail(authentication.getName());
+        	SiteUser user = userService.getUser(principalDetails.getUser().getId());
             long userId = user.getId();
         	
             List<Address> shippingList = addressService.getAddressListByUserId(userId);
@@ -264,7 +274,8 @@ public class MyPageController {
     }
     
     @PostMapping("/mypage/shipping_popup")
-    public String shippingPopup(@ModelAttribute("ShippingForm") @Valid ShippingForm shippingForm, Model model, Authentication authentication) {
+    public String shippingPopup(@ModelAttribute("ShippingForm") @Valid ShippingForm shippingForm, 
+    		Model model, @AuthenticationPrincipal PrincipalDetails principalDetails) {
     	
     	//배송지 정보 관리
         // ShippingForm에서 Shipping 엔티티로 데이터 복사
@@ -277,7 +288,7 @@ public class MyPageController {
         shipping.setAddress02(shippingForm.getAddress02());
 
         // 현재 로그인한 사용자 정보 가져오기
-        SiteUser user = userService.getUserByEmail(authentication.getName());
+    	SiteUser user = userService.getUser(principalDetails.getUser().getId());
 
         // Shipping 엔티티에 현재 로그인한 사용자 설정
         shipping.setUser(user);
@@ -301,13 +312,13 @@ public class MyPageController {
     	
     }
     	
-    
     @GetMapping("/mypage/myshop/add")
-    public String myShopAdd(Model model, Authentication authentication) {
+    public String myShopAdd(Model model, 
+    		@AuthenticationPrincipal PrincipalDetails principalDetails) {
         
         //물건 등록 페이지
     	//현재 사용자의 user_id 가져오기
-    	SiteUser user = userService.getUserByEmail(authentication.getName());
+    	SiteUser user = userService.getUser(principalDetails.getUser().getId());
         long userId = user.getId();
         
         model.addAttribute("goodsForm", new GoodsForm());
@@ -319,7 +330,9 @@ public class MyPageController {
   
 
     @PostMapping("/mypage/myshop/add")
-    public String myShopCreate(@ModelAttribute("GoodsForm") @Valid GoodsForm goodsForm, Model model, Authentication authentication, BindingResult bindingResult) {
+    public String myShopCreate(@ModelAttribute("GoodsForm") @Valid GoodsForm goodsForm, 
+    		Model model, @AuthenticationPrincipal PrincipalDetails principalDetails, 
+    		BindingResult bindingResult) {
        
     	
     	// 상품을 등록하기 위한 POST 요청 처리
@@ -353,7 +366,7 @@ public class MyPageController {
 
         // 상품 등록 로직
         //현재 사용자의 user_id 가져오기
-        SiteUser user = userService.getUserByEmail(authentication.getName());
+    	SiteUser user = userService.getUser(principalDetails.getUser().getId());
         long userId = user.getId();
         goodsService.registerProduct(goodsForm, goods, userId);
 
@@ -396,10 +409,12 @@ public class MyPageController {
     }
     
     @GetMapping("/mypage/myshop/edit/{pno}")
-    public String myShopEdit(@PathVariable int pno, Model model, Principal principal) {
+    public String myShopEdit(@PathVariable int pno, Model model, 
+    		@AuthenticationPrincipal PrincipalDetails principalDetails) {
         
         // Principal 객체를 통해 현재 사용자의 ID를 가져옵니다.
-        String currentUserId = principal.getName(); // 사용자의 ID를 가져옴
+    	SiteUser user = userService.getUser(principalDetails.getUser().getId());
+    	long currentUserId =user.getId(); // 사용자의 ID를 가져옴
 
         // 상품 정보를 데이터베이스에서 가져옵니다.
         List<Product> goodsList = goodsService.getSaleProducts();
@@ -420,7 +435,7 @@ public class MyPageController {
         }
 
         // 상품의 소유자(사용자 ID)와 현재 로그인한 사용자의 ID를 비교하여 검증
-        if (!currentUserId.equals(targetGoods.getUser().getId())) {
+        if (currentUserId != targetGoods.getUser().getId()) {
             return "redirect:/user/mypage"; // 액세스 거부 페이지로 리디렉션 또는 다른 처리
         }
 
@@ -442,11 +457,12 @@ public class MyPageController {
 
     
     @GetMapping("/mypage/mybuyhistory")
-    public String myBuyHistory(Model model, Authentication authentication) {
+    public String myBuyHistory(Model model, 
+    		@AuthenticationPrincipal PrincipalDetails principalDetails) {
         
         //구매 내역 페이지
 
-    	SiteUser user = userService.getUserByEmail(authentication.getName());
+    	SiteUser user = userService.getUser(principalDetails.getUser().getId());
         long userId = user.getId();
         
         model.addAttribute("goodsForm", new GoodsForm());
@@ -456,34 +472,37 @@ public class MyPageController {
         return "myBuyHistory";
     }
     
-
     @PostMapping("/mypage/mybuyhistory")
-    public String myBuyHistory(@ModelAttribute("GoodsForm") @Valid GoodsForm goodsForm, Model model, Authentication authentication, BindingResult bindingResult) {
+    public String myBuyHistory(@ModelAttribute("GoodsForm") @Valid GoodsForm goodsForm, 
+    		Model model, @AuthenticationPrincipal PrincipalDetails principalDetails, 
+    		BindingResult bindingResult) {
     	
     	return "myBuyHistory";
     	
     }
        
-
     @GetMapping("/mypage/pay")
-    public String Pay (Model model, HttpServletRequest request, Authentication authentication) {
+    public String Pay (Model model, HttpServletRequest request, 
+    		@AuthenticationPrincipal PrincipalDetails principalDetails) {
     	
     	//pay 충전 페이지
     	//사용자 정보 user에 담아서 model에 추가
-    	SiteUser user = userService.getUserByEmail(authentication.getName());
+    	SiteUser user = userService.getUser(principalDetails.getUser().getId());
     	model.addAttribute("user", user);
     	
         return "pay"; // payment.html 또는 결제 페이지 템플릿을 반환
     }
     
     @PostMapping("/mypage/pay")
-    public String pay(Model model, HttpServletRequest request, Authentication authentication, @RequestParam("paymoney") Integer paymoney) {
+    public String pay(Model model, HttpServletRequest request, 
+    		@AuthenticationPrincipal PrincipalDetails principalDetails, 
+    		@RequestParam("paymoney") Integer paymoney) {
 
         // pay 충전 페이지
         try {
         	
         	// 사용자 정보 가져오기
-        	SiteUser user = userService.getUserByEmail(authentication.getName());
+        	SiteUser user = userService.getUser(principalDetails.getUser().getId());
         	model.addAttribute("user", user);
         	
             Pay pay = new Pay();
@@ -545,39 +564,43 @@ public class MyPageController {
     }
     
     @GetMapping("/mypage/grade")
-    public String grade(Model model, Authentication authentication) {
+    public String grade(Model model, 
+    		@AuthenticationPrincipal PrincipalDetails principalDetails) {
     	
     	//구매등급 안내 페이지
-    	SiteUser user = userService.getUserByEmail(authentication.getName());
+    	SiteUser user = userService.getUser(principalDetails.getUser().getId());
     	model.addAttribute("user", user);
     	
     	return "grade";
     }
     
     @GetMapping("/mypage/mygrade")
-    public String myGrade(Model model, Authentication authentication) {
+    public String myGrade(Model model, 
+    		@AuthenticationPrincipal PrincipalDetails principalDetails) {
     	
     	//다음 달 나의 예상 등급 보기 페이지
-    	SiteUser user = userService.getUserByEmail(authentication.getName());
+    	SiteUser user = userService.getUser(principalDetails.getUser().getId());
     	model.addAttribute("user", user);
     
     	return "mygrade";
     }
     
     @GetMapping("/mypage/withdraw")
-    public String withdraw(Model model, Authentication authentication) {
+    public String withdraw(Model model, 
+    		@AuthenticationPrincipal PrincipalDetails principalDetails) {
     	
     	//회원 탈퇴 페이지
     	//사용자 정보 가져오기 (비밀번호 일치 할 경우 탈퇴 처리를 위해)
-    	SiteUser user = userService.getUserByEmail(authentication.getName());
+    	SiteUser user = userService.getUser(principalDetails.getUser().getId());
     	model.addAttribute("user", user);
     
     	return "withdraw";
     }
     
     @PostMapping("/mypage/withdraw")
-    public String withDraw(@RequestParam("userPassword") String enteredPassword, Authentication authentication, Model model) {
-        SiteUser user = userService.getUserByEmail(authentication.getName());
+    public String withDraw(@RequestParam("userPassword") String enteredPassword, 
+    		@AuthenticationPrincipal PrincipalDetails principalDetails, Model model) {
+    	SiteUser user = userService.getUser(principalDetails.getUser().getId());
 
         if (passwordEncoder.matches(enteredPassword, user.getPassword())) {
             // 비밀번호가 일치할 경우 사용자 삭제

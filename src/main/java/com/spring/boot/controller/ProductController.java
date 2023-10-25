@@ -1,7 +1,11 @@
 package com.spring.boot.controller;
 
+import java.net.MalformedURLException;
+
 import javax.validation.Valid;
 
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -14,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.spring.boot.dto.PrincipalDetails;
 import com.spring.boot.dto.ProductForm;
@@ -70,13 +75,16 @@ public class ProductController {
 		model.addAttribute("paging1",paging1);//문의하기의페이징
 		model.addAttribute("paging",paging);//상품리뷰의 페이징
 		
-		
 		return "product_list";//html연결
 		
 		
 	}
 	
-	
+	@ResponseBody
+    @GetMapping("/images/{image}")
+    public Resource processImg(@PathVariable String image) throws MalformedURLException {
+        return new UrlResource("file:src/main/resources/static/product/" + image);
+    }
 		
 	
 	

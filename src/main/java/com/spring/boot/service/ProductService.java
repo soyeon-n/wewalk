@@ -3,19 +3,26 @@ package com.spring.boot.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.spring.boot.config.DataNotFoundException;
-
+import com.spring.boot.config.ProductSpecification;
+import com.spring.boot.config.SiteUserSpecification;
 import com.spring.boot.dao.ProductRepository;
 import com.spring.boot.dao.UserRepository;
 import com.spring.boot.dto.ItemDataForm;
 import com.spring.boot.dto.OrderResultForm;
+import com.spring.boot.dto.PageRequestDTO;
+import com.spring.boot.dto.PageResultDTO;
+import com.spring.boot.dto.ProductDTO;
+import com.spring.boot.dto.SiteUserDTO;
 import com.spring.boot.model.OrderList;
 import com.spring.boot.model.Product;
 import com.spring.boot.model.SiteUser;
@@ -123,6 +130,67 @@ public class ProductService {
 		return lists;
 	}
 
+	//검색기능을 포함한 상품 리스트(검색 방식에 따라 sorting 다르게 적용)
+	public PageResultDTO<ProductDTO, Product> getSearchList(PageRequestDTO requestDTO, String sort) {
+	    
+		Pageable pageable;
+		
+		if("priceAsc".equals(sort)) { //낮은 가격 순			
+			pageable = requestDTO.getPageable(Sort.by("price").ascending());
+		}else if("priceDesc".equals(sort)){ //높은 가격 순		
+			pageable = requestDTO.getPageable(Sort.by("price").descending());
+		}else { //기본 값은 신상품순
+			pageable = requestDTO.getPageable(Sort.by("date").descending());
+		}
+	    
+	    Specification<Product> spec = ProductSpecification.isGreaterThanZero();
+	    	  
+	    spec = spec.and(ProductSpecification.hasKeyword(requestDTO.getKeyword()));
+
+	    Page<Product> result = productRepository.findAll(spec, pageable);
+	    
+	    Function<Product, ProductDTO> fn = (entity -> entityToDto(entity));
+	    
+	    return new PageResultDTO<>(result, fn);
+	}
+	
+	public Product dtoToEntity(ProductDTO dto){
+		Product entity = Product.builder()
+                .id(dto.getId())
+                .category(dto.getCategory())
+                .pname(dto.getPname())
+                .content(dto.getContent())
+                .price(dto.getPrice())
+                .date(dto.getDate())
+                .stock(dto.getStock())
+                .selling(dto.getSelling())
+                .image(dto.getImage())
+                .image1(dto.getImage1())
+                .image2(dto.getImage2())
+                .image3(dto.getImage3())
+                .build();
+        return entity;
+    }
+	
+	public ProductDTO entityToDto(Product entity){
+
+		ProductDTO dto = ProductDTO.builder()
+				.id(entity.getId())
+                .category(entity.getCategory())
+                .pname(entity.getPname())
+                .content(entity.getContent())
+                .price(entity.getPrice())
+                .date(entity.getDate())
+                .stock(entity.getStock())
+                .selling(entity.getSelling())
+                .image(entity.getImage())
+                .image1(entity.getImage1())
+                .image2(entity.getImage2())
+                .image3(entity.getImage3())
+                .build();
+
+        return dto;
+    }
 }
 	
 	

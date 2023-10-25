@@ -87,8 +87,7 @@ public class OrderController {
             cartItemService.deleteCartItem(itemId);
         }
         return ResponseEntity.ok("Selected items deleted successfully");
-	    
-		
+
 	}
 	
 	

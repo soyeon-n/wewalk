@@ -8,7 +8,6 @@ window.addEventListener('DOMContentLoaded',function(){
 
         var noBody = $('.noBody');
 
-
         var product_name = [];        //이름 변수 리스트
         var product_price = [];       //썸네일 가격 변수 리스트
         var product_cost = [];        //상품 수량변경할떄 쓰는 가격 변수 리스트
@@ -26,10 +25,6 @@ window.addEventListener('DOMContentLoaded',function(){
 
         
 
-        
-        
-
-        
         function cart_button(i){                                // 장바구니 버튼 클릭했을떄 수량,적립금 설정함수
             // $('#cartPut').css('display','block');
             $('#cartPut').fadeIn(300);                 // 서서히 보이게 설정 완료
@@ -183,14 +178,6 @@ window.addEventListener('DOMContentLoaded',function(){
             var _index =$('button[name=chk]').index(this);
             cart_button(_index+1);
         });
-            
-           
-        
-
-
-
-
-
 
 
         //카테고리 클릭시 활성화되면서 움직이는 bar
@@ -218,10 +205,6 @@ window.addEventListener('DOMContentLoaded',function(){
                 $('.bg_loading').css('display', 'none');  //0.5초 뒤에 다시 로딩창 display none 하기
             }, 500);
 
-            
-
-
-
 
             // $('.bg').stop().animate({    //bg막대 이동 animate실행
             //     "left": pos.left + "px",  //left값은 위에서 구한 pos의 left값 만큼 이동
@@ -232,8 +215,6 @@ window.addEventListener('DOMContentLoaded',function(){
 
 
         });
-
-
 
         function comma(num){          //콤마찍는 함수
             var len, point, str; 
@@ -253,44 +234,10 @@ window.addEventListener('DOMContentLoaded',function(){
          
         }
         
-
-        
-
-       
-        
-        
-
-
-       
-        
-
-        
-
-       
-
-
-
-       
-
-
-
-
-
-        
-
-
-
-        
-
-        
-
-        
-
         $('.name_select').click(function(){
-            $(".checked").toggle(function(){
-                $('.name_select').css('color', '#5f0080');
-            });
-        });
+		    $(".checked").toggle();
+		    $('.name_select').css('color', '#5f0080');
+		});
 
 
 

@@ -270,20 +270,20 @@ public class AuthController {
             
         } else {
             // 정보가 충분한 경우 홈페이지로 리다이렉트
-        	redirectAttributes.addFlashAttribute("alertMessage", "처음 오셨군요! 회원 가입을 완료해주세요.");
+//        	redirectAttributes.addFlashAttribute("alertMessage", "처음 오셨군요! 회원 가입을 완료해주세요.");
             return "redirect:/"; // 홈페이지로 이동
         }
 	}
 	
-	@GetMapping("/reactivateUser")
-	public String reactivateUser(@RequestParam String userName, Model model) {
+	@GetMapping("/reactivate")
+	public String reactivate(@RequestParam String userName, Model model) {
 	
 		return "reActivate";
 		
 	}
 	
-	@PostMapping("/reactivateUser")
-	public String reactivateUser(@RequestParam String userName) {
+	@PostMapping("/reactivate")
+	public String reactivate(@RequestParam String userName) {
 	
 		SiteUser siteUser = userService.getUserByUserName(userName);
 		
@@ -296,16 +296,17 @@ public class AuthController {
 	}
 	
 	//login은 security가 처리하므로 post방식의 로그인 처리 메소드는 없어도 됨
+	@PreAuthorize("isAnonymous()")
 	@GetMapping("/login")
 	public String login(@AuthenticationPrincipal PrincipalDetails principalDetails, 
 			@RequestParam(value = "error", required = false) String error, Model model) {
 		
-		if (principalDetails != null) {
-	        return "redirect:/";  // 로그인되어 있다면 메인 페이지로 리다이렉트
-	    }
+//		if (principalDetails != null) {
+//	        return "redirect:/";  // 로그인되어 있다면 메인 페이지로 리다이렉트
+//	    }
 		
 		if ("disabled".equals(error)) {
-	        model.addAttribute("alertMessage", "비활성화된 계정입니다");
+			model.addAttribute("reactivatePrompt", true);
 	    } else if ("true".equals(error)) {
 	        model.addAttribute("alertMessage", "로그인에 실패하였습니다");
 	    }		

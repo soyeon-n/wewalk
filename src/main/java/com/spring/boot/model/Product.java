@@ -73,13 +73,18 @@ public class Product{
 	//review fk랑연결 
 	@OneToMany(mappedBy = "product",cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
 	private List<Review> reviewList;
-	
-	
 	 
+	public Integer getReviewCount() {
+	    if (reviewList == null) return 0;
+	    return reviewList.size();
+	}
+	
 	@Builder
-	public Product(String category, String pname,String content,Integer price,
-			LocalDateTime date,Integer stock,String selling,
-			String image,String image1,String image2,String image3,String image4) {
+	public Product(Long id, String category, String pname,String content,Integer price,
+			LocalDateTime date,Integer stock,String selling, List<Review> reviewList,
+			String image,String image1,String image2,String image3) {
+		
+		this.id = id;
 		this.category = category;
 		this.pname = pname;
 		this.content = content;
@@ -87,11 +92,11 @@ public class Product{
 		this.date = date;
 		this.stock = stock;
 		this.selling = selling;
+		this.reviewList = reviewList;
 		this.image = image;
 		this.image1 = image1;
 		this.image2 = image2;
 		this.image3 = image3;
-
 				
 	}
 	

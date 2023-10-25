@@ -1,5 +1,6 @@
 package com.spring.boot.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,7 @@ public class GoodsService {
         goods.setPrice(goodsForm.getPrice());
         goods.setCategory(goodsForm.getCategory());
         goods.setStock(goodsForm.getStock());
+        goods.setDate(LocalDateTime.now());
 
         // 사용자 정보 설정 (글 작성시 product 테이블에 사용자 id 값도 넣기)
         SiteUser user = new SiteUser();
