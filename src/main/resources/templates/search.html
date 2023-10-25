@@ -28,7 +28,6 @@
 <body class="noBody">
     <div id="container" class="container">
         <input type="hidden" id="sort" th:value="${sort} == null ? 'newest' : ${sort}" />
-        <input type="hidden" id="keyword" th:value="${keyword} == null ? '' : ${keyword}" />
 		
         <div id="main">
             <div id="content">
@@ -73,28 +72,29 @@
                             <div class="sort_menu">
                                 <div class>
                                     <div class="select_type user_sort">
-                                        <a class="name_select">
-                                            신상품순
-                                        </a>
+                                        <a class="name_select" th:text="${sortText}"></a>
 
                                         <ul class="list checked">
                                             <!-- <li>
                                                 <a class="on" >추천순</a>
                                             </li> -->
                                             <li>
-                                                <a class="on" data-sort="newest">신상품순</a>
+                                                <a th:class="${sort == 'newest' || sort == '' ? 'on' : ''}" data-sort="newest"
+                                                th:href="@{/wewalk/search(keyword=${keyword}, sort='newest')}">신상품순</a>
+                                            </li>
+                                            <!-- <li>
+                                                <a class="sort-option" data-sort="reviewCount">리뷰 많은순</a>
                                             </li>
                                             <li>
-                                                <a class data-sort="reviewCount">리뷰 많은순</a>
+                                                <a class="sort-option" data-sort="discount">혜택순</a>
+                                            </li> -->
+                                            <li>
+                                                <a th:class="${sort == 'priceAsc' ? 'on' : ''}" data-sort="priceAsc"
+                                                th:href="@{/wewalk/search(keyword=${keyword}, sort='priceAsc')}">낮은 가격순</a>
                                             </li>
                                             <li>
-                                                <a class data-sort="discount">혜택순</a>
-                                            </li>
-                                            <li>
-                                                <a class data-sort="lowPrice">낮은 가격순</a>
-                                            </li>
-                                            <li>
-                                                <a class data-sort="highPrice">높은 가격순</a>
+                                                <a th:class="${sort == 'priceDesc' ? 'on' : ''}" data-sort="priceDesc"
+                                                th:href="@{/wewalk/search(keyword=${keyword}, sort='priceDesc')}">높은 가격순</a>
                                             </li>
                                         </ul>
                                     </div>
@@ -158,17 +158,17 @@
                             th:with="startNumber=${(paging.number/5)} * 5 + 1,
 							endNumber=(${paging.totalPages}>${startNumber}+4)?
 							${startNumber}+4 : ${paging.totalPages}">
-                                <a th:style="${paging.number == paging.start} ? 'display:none'" th:href="@{/wewalk/search?page=1}" class="layout-pagination-button layout-pagination-first-page">맨 처음 페이지로 가기</a>
-                                <a th:style="${paging.number == paging.start}?'display:none'" th:href="@{/wewalk/search(page=${paging.number-1})}" class="layout-pagination-button layout-pagination-prev-page">이전 페이지로 가기</a>
+                                <a th:style="${paging.number == paging.start} ? 'display:none'" th:href="@{/wewalk/search(page=1, keyword=${keyword}, sort=${sort})}" class="layout-pagination-button layout-pagination-first-page">맨 처음 페이지로 가기</a>
+                                <a th:style="${paging.number == paging.start}?'display:none'" th:href="@{/wewalk/search(page=${paging.number-1}, keyword=${keyword}, sort=${sort})}" class="layout-pagination-button layout-pagination-prev-page">이전 페이지로 가기</a>
                                 <a th:each="page : ${#numbers.sequence(startNumber, endNumber)}"
 									th:classappend="(${page}==${paging.number}) ? 'active'" 
-									th:href="@{/wewalk/search(page=${page})}">
+									th:href="@{/wewalk/search(page=${page}, keyword=${keyword}, sort=${sort})}">
                                     <span>
-                                        <strong class="layout-pagination-button layout-pagination-number __active" th:text="${page}"></strong>
+                                        <strong class="layout-pagination-button layout-pagination-number" th:classappend="(${page}==${paging.number}) ? '__active'" th:text="${page}"></strong>
                                     </span>
                                 </a>                                
-                                <a th:style="${paging.number == paging.end} ? 'display:none'" th:href="@{/wewalk/search(page=${paging.number+1})}" class="layout-pagination-button layout-pagination-next-page">다음 페이지로 가기</a>
-                                <a th:style="${paging.number == paging.end} ? 'display:none'" th:href="@{/wewalk/search(page=${paging.totalPages})}" class="layout-pagination-button layout-pagination-last-page">맨 끝 페이지로 가기</a>
+                                <a th:style="${paging.number == paging.end} ? 'display:none'" th:href="@{/wewalk/search(page=${paging.number+1}, keyword=${keyword}, sort=${sort})}" class="layout-pagination-button layout-pagination-next-page">다음 페이지로 가기</a>
+                                <a th:style="${paging.number == paging.end} ? 'display:none'" th:href="@{/wewalk/search(page=${paging.totalPages}, keyword=${keyword}, sort=${sort})}" class="layout-pagination-button layout-pagination-last-page">맨 끝 페이지로 가기</a>
                                 
                             </div>
                         </div>

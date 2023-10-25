@@ -135,14 +135,10 @@ public class ProductService {
 	    
 		Pageable pageable;
 		
-		if(sort == "lowPrice") { //낮은 가격 순			
+		if("priceAsc".equals(sort)) { //낮은 가격 순			
 			pageable = requestDTO.getPageable(Sort.by("price").ascending());
-		}else if(sort == "highPrice"){ //높은 가격 순		
+		}else if("priceDesc".equals(sort)){ //높은 가격 순		
 			pageable = requestDTO.getPageable(Sort.by("price").descending());
-		}else if(sort == "reviewCount") { //리뷰 많은 순
-			pageable = requestDTO.getPageable(Sort.by("reviewList").descending());			
-//		}else if(sort == "discount") { //할인율 높은 순
-//			pageable = requestDTO.getPageable(Sort.by("discountRate").descending());			
 		}else { //기본 값은 신상품순
 			pageable = requestDTO.getPageable(Sort.by("date").descending());
 		}

@@ -134,6 +134,16 @@ const sendIt = () => {
         fields[i].field.value = str;
     }
 
+/*
+	// userName 값이 6~16자 이내의 영문 또는 영문 숫자 혼용인지 확인
+    const userNameRegex = /^(?=.*[a-zA-Z])([a-zA-Z0-9]{6,16})$/;
+    
+    if (!userNameRegex.test(f.userName.value)) {
+        alert("\n계정명은 6~16자 이내의 영문 또는 영문 숫자 혼용이어야 합니다.");
+        f.userName.focus();
+        return false;
+    }
+*/
     if (!isValidEmail(f.email.value)) {
         alert("\n정상적인 E-Mail을 입력하세요.");
         f.email.focus();
@@ -153,6 +163,12 @@ const sendIt = () => {
 const sendOAuth = () => {
 	
     let f = document.myForm;
+
+    if (!isValidEmail(f.email.value)) {
+        alert("\n정상적인 E-Mail을 입력하세요.");
+        f.email.focus();
+        return false;
+    }
 
     let fields = [
         { field: f.userName, message: "계정명을 입력하세요." },
@@ -175,12 +191,6 @@ const sendOAuth = () => {
             return false;
         }
         fields[i].field.value = str;
-    }
-
-    if (!isValidEmail(f.email.value)) {
-        alert("\n정상적인 E-Mail을 입력하세요.");
-        f.email.focus();
-        return false;
     }
 
     if (f.password1.value !== f.password2.value) {

@@ -14,8 +14,9 @@ import lombok.Setter;
 @Setter
 public class UserCreateForm {
 
-	@Size(min = 6, max = 16, message = "닉네임은 6~16자 이내로 생성해주세요!")
 	@NotEmpty(message = "계정명은 필수 항목입니다.")
+	@Pattern(regexp = "^(?=.*[a-zA-Z])([a-zA-Z0-9]{6,16})$", 
+			message = "계정명은 6~16자 이내의 영문 또는 영문 숫자 혼용이어야 합니다.")
 	private String userName;
 	
 	@NotEmpty(message = "이메일은 필수 항목입니다.")

@@ -1,7 +1,12 @@
 package com.spring.boot.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -44,13 +49,25 @@ public class MainController {
     		@RequestParam(value = "sort", required = false) String sort, 
 			@ModelAttribute PageRequestDTO pageRequestDTO, Model model, 
     		@AuthenticationPrincipal PrincipalDetails principalDetails) {
-
-    	sort = "reviewCount";
         
+    	String sortText = "";
+    	
     	model.addAttribute("paging", productService.getSearchList(pageRequestDTO, sort));
     	
     	if(sort != null && !sort.isEmpty()) {
+    		if(sort.equals("newest")) {
+    			sortText = "신상품순";
+    		}else if(sort.equals("priceAsc")) {
+    			sortText = "낮은 가격순";
+    		}else if(sort.equals("priceDesc")) {
+    			sortText = "높은 가격순";
+    		}
+    		
             model.addAttribute("sort", sort);
+            model.addAttribute("sortText", sortText);
+        }else {
+        	model.addAttribute("sort", "newest");
+        	model.addAttribute("sortText", "신상품순");
         }
     	
     	if(pageRequestDTO.getKeyword() != null && !pageRequestDTO.getKeyword().isEmpty()) {
@@ -59,12 +76,6 @@ public class MainController {
         
     	return "search";
         
-    }
-	
-    private String renderFragment(String template, Object payload) {
-        Context context = new Context();
-        context.setVariable("payload", payload);
-        return templateEngine.process(template, context);
     }
     
 }

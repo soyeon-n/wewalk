@@ -40,5 +40,8 @@ public interface ProductRepository extends JpaRepository<Product, Integer>, JpaS
 	
 	List<Product> findByStockGreaterThan(int stock);
     List<Product> findByStockEquals(int stock);
+    
+    //판매량 순으로 검색(8개)
+    List<Product> findByIdIn(List<Long> productnoList);
 
 }
