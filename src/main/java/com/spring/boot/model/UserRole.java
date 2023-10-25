@@ -1,21 +1,26 @@
 package com.spring.boot.model;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 //클래스를 enum으로 바꿔줌
 //Getter만 필요함
 @Getter
+@RequiredArgsConstructor
 public enum UserRole {
 
 	//시큐리티 권한 코드는 접두사 ROLE_로 시작함
-	ADMIN("ROLE_ADMIN"),
-	USER("ROLE_USER");
+	ADMIN("ROLE_ADMIN", "관리자"),
+	SELLER("ROLE_SELLER", "판매자"),
+	USER("ROLE_USER", "회원"),
+	OAUTH("ROLE_OAUTH", "소셜미가입 회원");
 	
-	private String value;
+	private final String key;
+	private final String title;
 	
-	UserRole(String value) {
-		this.value = value;
-	}
+//	UserRole(String value) {
+//		this.value = value;
+//	}
 	
 }
 /*

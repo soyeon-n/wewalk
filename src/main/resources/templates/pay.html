@@ -176,7 +176,7 @@
                                     <span class="blind">등급</span>
                                     <span class="ico_grade class0">
                                         <span class="inner_grade">
-                                            <span class="in_grade">일반</span>
+                                            <span class="in_grade" th:text="${user.grade}"></span>
                                         </span>
                                     </span>
                                     <div class="grade_bnenfit">
@@ -185,14 +185,18 @@
     										<span class="txt">님</span>
 										</div>
                                         <div class="benefit">
-                                            <strong class="tit"></strong>
-                                            적립 0.5%
-                                        </div>
+										    <strong class="tit"></strong>
+										    <span th:text="|적립 ${user.membership == 1 ? '10%' : 
+										        user.grade == 'B' ? '1%' : 
+										        user.grade == 'S' ? '3%' : 
+										        user.grade == 'G' ? '5%' : 
+										        user.grade == 'P' ? '8%' : ''}|"></span>
+										</div>
                                     </div>
                                 </div>
                                 <div class="next">
-                                    <a href="/user/mypage/grade" class="total_grade">전체등급 보기</a>
-                                    <a href="/user/mypage/mygrade" class="next_month">다음 달 예상등급 보기</a>
+                                    <a href="/user/mypage/myInterest" class="next_month">나의 관심 분야 설정하기</a>
+                                    <a href="/user/mypage/grade" class="total_grade">등급 별 할인혜택</a>
                                 </div>
                             </div>
 
@@ -215,7 +219,7 @@
                                         <div class="tit">
                                             적립금
                                         </div>
-                                        <a href="#" class="info">
+                                        <a href="/user/mypage/point" class="info">
                                             <span th:if="${user.point != null}" th:text="${user.point + ' 원'}"></span>
    											<span th:if="${user.point == null}">0 원</span>
                                             <img src="https://res.kurly.com/pc/service/common/1905/ico_arrow_56x56.png" alt="자세히보기">
@@ -285,19 +289,26 @@
                         </div> 
                         <br/>
                         <div class="card-body bg-white mt-0 shadow">
-						     <p style="font-weight: bold">카드결제 현재 사용가능</p><br/>
-						     <label class="box-radio-input"><input type="radio" name="cp_item" value="1"><span>1원</span></label>
-						     <label class="box-radio-input"><input type="radio" name="cp_item" value="10000"><span>10,000원</span></label>
-						     <label class="box-radio-input"><input type="radio" name="cp_item" value="15000"><span>15,000원</span></label>
-						     <label class="box-radio-input"><input type="radio" name="cp_item" value="20000"><span>20,000원</span></label>
-						     <label class="box-radio-input"><input type="radio" name="cp_item" value="25000"><span>25,000원</span></label>
-						     <label class="box-radio-input"><input type="radio" name="cp_item" value="30000"><span>30,000원</span></label>
-						     <label class="box-radio-input"><input type="radio" name="cp_item" value="35000"><span>35,000원</span></label>
-						     <label class="box-radio-input"><input type="radio" name="cp_item" value="40000"><span>40,000원</span></label>
-						     <label class="box-radio-input"><input type="radio" name="cp_item" value="45000"><span>45,000원</span></label>
-						     <label class="box-radio-input"><input type="radio" name="cp_item" value="50000"><span>50,000원</span></label>
-						     <p style="color: #ac2925; margin-top: 30px">카드결제의 최소 충전금액은 5,000원이며 최대 충전금액은 50,000원 입니다.</p><br/>
-						     	<button class="btn active" onclick="requestPay()">카드결제로 충전하기</button>
+						     <p style="font-weight: bold">카드결제 현재 사용가능</p><br/><br/>
+						     <input type="radio" name="cp_item" id="radio-pink" value="5000"/>
+						      	<label for="radio-pink">5,000원</label>
+						     <input type="radio" name="cp_item" id="radio-deep-orange" value="10000"/>
+						     	<label for="radio-deep-orange">10,000원</label>
+						     <input type="radio" name="cp_item" id="radio-yellow" value="15000"/>
+						     	<label for="radio-yellow">15,000원</label>
+						     <input type="radio" name="cp_item" id="radio-lime" value="20000"/>
+						     	<label for="radio-lime">20,000원</label>
+						     <input type="radio" name="cp_item" id="radio-teal" value="25000"/>
+						     	<label for="radio-teal">25,000원</label>
+						     <input type="radio" name="cp_item" id="radio-cyan" value="30000"/>
+						     	<label for="radio-cyan">30,000원</label>
+						     <input type="radio" name="cp_item" id="radio-indigo" value="35000"/>
+						     	<label for="radio-indigo">35,000원</label>
+						     <input type="radio" name="cp_item" id="radio-purple" value="40000"/>
+						     	<label for="radio-purple">40,000원</label>
+
+						     <p style="color: #ac2925; margin-top: 30px">카드결제의 최소 충전금액은 5,000원이며 최대 충전금액은 40,000원 입니다.</p><br/>
+						     	<button class="btn active3" onclick="requestPay()">카드결제로 충전하기</button>
 						 </div>
 						 <br/>
 						 <div id="tblParent" class="type_select">
@@ -312,19 +323,25 @@
                         </div> 
                         <br/>
                         <div class="card-body bg-white mt-0 shadow">
-						     <p style="font-weight: bold">카카오페이 현재 사용가능</p><br/>
-						     <label class="box-radio-input"><input type="radio" name="cp_item" value="5000"><span>5,000원</span></label>
-						     <label class="box-radio-input"><input type="radio" name="cp_item" value="10000"><span>10,000원</span></label>
-						     <label class="box-radio-input"><input type="radio" name="cp_item" value="15000"><span>15,000원</span></label>
-						     <label class="box-radio-input"><input type="radio" name="cp_item" value="20000"><span>20,000원</span></label>
-						     <label class="box-radio-input"><input type="radio" name="cp_item" value="25000"><span>25,000원</span></label>
-						     <label class="box-radio-input"><input type="radio" name="cp_item" value="30000"><span>30,000원</span></label>
-						     <label class="box-radio-input"><input type="radio" name="cp_item" value="35000"><span>35,000원</span></label>
-						     <label class="box-radio-input"><input type="radio" name="cp_item" value="40000"><span>40,000원</span></label>
-						     <label class="box-radio-input"><input type="radio" name="cp_item" value="45000"><span>45,000원</span></label>
-						     <label class="box-radio-input"><input type="radio" name="cp_item" value="50000"><span>50,000원</span></label>
-						     <p style="color: #ac2925; margin-top: 30px">카카오페이의 최소 충전금액은 5,000원이며 최대 충전금액은 50,000원 입니다.</p><br/>
-						     <button class="btn active" onclick="requestPayKaKao()">카카오페이로 충전하기</button>
+						     <p style="font-weight: bold">카카오페이 현재 사용가능</p><br/><br/>
+						     <input type="radio" name="cp_item" id="radio-pink2" value="5000"/>
+						      	<label for="radio-pink2">5,000원</label>
+						     <input type="radio" name="cp_item" id="radio-deep-orange2" value="10000"/>
+						     	<label for="radio-deep-orange2">10,000원</label>
+						     <input type="radio" name="cp_item" id="radio-yellow2" value="15000"/>
+						     	<label for="radio-yellow2">15,000원</label>
+						     <input type="radio" name="cp_item" id="radio-lime2" value="20000"/>
+						     	<label for="radio-lime2">20,000원</label>
+						     <input type="radio" name="cp_item" id="radio-teal2" value="25000"/>
+						     	<label for="radio-teal2">25,000원</label>
+						     <input type="radio" name="cp_item" id="radio-cyan2" value="30000"/>
+						     	<label for="radio-cyan2">30,000원</label>
+						     <input type="radio" name="cp_item" id="radio-indigo2" value="35000"/>
+						     	<label for="radio-indigo2">35,000원</label>
+						     <input type="radio" name="cp_item" id="radio-purple2" value="40000"/>
+						     	<label for="radio-purple2">40,000원</label>
+						     <p style="color: #ac2925; margin-top: 30px">카카오페이의 최소 충전금액은 5,000원이며 최대 충전금액은 40,000원 입니다.</p><br/>
+						     <button class="btn active4" onclick="requestPayKaKao()">카카오페이로 충전하기</button>
 						 </div>
 						 <br/>
                         

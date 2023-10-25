@@ -2,7 +2,10 @@ package com.spring.boot.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,23 +13,27 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.spring.boot.dto.Goods;
-import com.spring.boot.dto.GoodsForm;
-import com.spring.boot.dto.Pay;
+import com.spring.boot.model.Pay;
+import com.spring.boot.model.Point;
+import com.spring.boot.model.Product;
+import com.spring.boot.model.Address;
+import com.spring.boot.model.OrderList;
 import com.spring.boot.model.SiteUser;
-import com.spring.boot.dto.Shipping;
-import com.spring.boot.dto.ShippingForm;
-import com.spring.boot.service.GoodsService;
+import com.spring.boot.dto.PrincipalDetails;
+import com.spring.boot.dto.ProductForm;
+import com.spring.boot.dto.AddressForm;
 import com.spring.boot.service.PayService;
-import com.spring.boot.service.ShippingService;
+import com.spring.boot.service.PointService;
+import com.spring.boot.service.ProductService;
+import com.spring.boot.service.AddressService;
+import com.spring.boot.service.MembershipService;
+import com.spring.boot.service.OrderListService;
 import com.spring.boot.service.UserService;
 
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -45,34 +52,43 @@ public class MyPageController {
     
     private final PayService payService;
     private final UserService userService;
-    private final ShippingService shippingService;
-    private final GoodsService goodsService;
+    private final AddressService addressService;
+    private final ProductService productService;
+    private final MembershipService membershipService;
+    private final PointService pointService;
+    private final OrderListService orderListService;
     
     @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public MyPageController(PayService payService, UserService userService, ShippingService shippingService, GoodsService goodsService) {
+    public MyPageController(PayService payService, UserService userService, AddressService shippingService, ProductService productService, MembershipService membershipService,
+    		PointService pointService, OrderListService orderListService) {
         this.payService = payService;
         this.userService = userService;
-        this.shippingService = shippingService;
-        this.goodsService = goodsService;
+        this.addressService = shippingService;
+        this.productService = productService;
+        this.membershipService = membershipService;
+        this.pointService = pointService;
+        this.orderListService = orderListService;
     }
 
     @GetMapping("/mypage")
-    public String myPage(Model model, Authentication authentication, @RequestParam(name = "pageNum", defaultValue = "1") int pageNum) {
+    public String myPage(Model model, @AuthenticationPrincipal PrincipalDetails principalDetails, @RequestParam(name = "pageNum", defaultValue = "1") int pageNum) {
     	
-        if (authentication != null) {
+        if (principalDetails != null) {
         	
-        	SiteUser user = userService.getUserByEmail(authentication.getName());
+        	SiteUser user = userService.getUserByUserName(principalDetails.getUsername());
             model.addAttribute("user", user);
             
             int itemsPerPage = 9; // 페이지당 항목 수
-            Page<Goods> goodsPage = goodsService.getProductsPaged(user.getId(), pageNum, itemsPerPage);
-            List<Goods> goods = goodsPage.getContent();
-            model.addAttribute("goods", goods);
+
+            Page<Product> productPage = productService.getProductsPaged(user.getId(), pageNum, itemsPerPage);
+            List<Product> product = productPage.getContent();
+
+            model.addAttribute("product", product);
             
-            int totalItemCount = (int) goodsService.getTotalItemCount();
+            int totalItemCount = (int) productService.getTotalItemCount(principalDetails.getId());
             int totalPages = (int) Math.ceil((double) totalItemCount / itemsPerPage);
 
             List<Integer> pageList = IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList());
@@ -91,21 +107,21 @@ public class MyPageController {
     }
     
     @GetMapping("/mypage/sale")
-    public String myPageSale(Model model, Authentication authentication, @RequestParam(name = "pageNum", defaultValue = "1") int pageNum) {
+    public String myPageSale(Model model, @AuthenticationPrincipal PrincipalDetails principalDetails, @RequestParam(name = "pageNum", defaultValue = "1") int pageNum) {
 
-    	SiteUser user = userService.getUserByEmail(authentication.getName());
+    	SiteUser user = userService.getUserByUserName(principalDetails.getUsername());
         model.addAttribute("user", user);
 
         int itemsPerPage = 9;
-        Page<Goods> saleGoodsPage = goodsService.getSaleProductsPaged(user.getId(), pageNum, itemsPerPage);
-        List<Goods> saleGoods = saleGoodsPage.getContent();
+        Page<Product> saleProductPage = productService.getSaleProductsPaged(user.getId(), pageNum, itemsPerPage);
+        List<Product> saleProduct = saleProductPage.getContent();
 
-        int totalItemCount = (int) goodsService.getSaleCount(); // Sale 상품의 총 개수
+        int totalItemCount = (int) productService.getSaleCount(); // Sale 상품의 총 개수
         int totalPages = (int) Math.ceil((double) totalItemCount / itemsPerPage);
 
         List<Integer> pageList = IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList());
 
-        model.addAttribute("goods", saleGoods);
+        model.addAttribute("product", saleProduct);
         model.addAttribute("totalPages", totalPages);
         model.addAttribute("currentPage", pageNum);
         model.addAttribute("pageList", pageList);
@@ -115,21 +131,21 @@ public class MyPageController {
     }
     
     @GetMapping("/mypage/soldout")
-    public String myPageSoldout(Model model, Authentication authentication, @RequestParam(name = "pageNum", defaultValue = "1") int pageNum) {
+    public String myPageSoldout(Model model, @AuthenticationPrincipal PrincipalDetails principalDetails, @RequestParam(name = "pageNum", defaultValue = "1") int pageNum) {
 
-    	SiteUser user = userService.getUserByEmail(authentication.getName());
+    	SiteUser user = userService.getUserByUserName(principalDetails.getUsername());
         model.addAttribute("user", user);
 
         int itemsPerPage = 9;
-        Page<Goods> soldGoodsPage = goodsService.getSoldoutProductsPaged(user.getId(), pageNum, itemsPerPage);
-        List<Goods> soldGoods = soldGoodsPage.getContent();
+        Page<Product> soldProductPage = productService.getSoldoutProductsPaged(user.getId(), pageNum, itemsPerPage);
+        List<Product> soldProduct = soldProductPage.getContent();
 
-        int totalItemCount = (int) goodsService.getSoldoutCount(); 
+        int totalItemCount = (int) productService.getSoldoutCount(); 
         int totalPages = (int) Math.ceil((double) totalItemCount / itemsPerPage);
 
         List<Integer> pageList = IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList());
 
-        model.addAttribute("goods", soldGoods);
+        model.addAttribute("product", soldProduct);
         model.addAttribute("totalPages", totalPages);
         model.addAttribute("currentPage", pageNum);
         model.addAttribute("pageList", pageList);
@@ -138,11 +154,22 @@ public class MyPageController {
 
     }
     
+    @GetMapping("/mypage/wishlist")
+    public String myWishList(Model model, @AuthenticationPrincipal PrincipalDetails principalDetails, @RequestParam(name = "pageNum", defaultValue = "1") int pageNum) {
+
+    	//찜한 상품 목록
+    	SiteUser user = userService.getUserByUserName(principalDetails.getUsername());
+    	model.addAttribute("user", user);
+    	
+    	
+    	return "wishList";
+    }
+    
 
 	@GetMapping("/mypage/change")
-    public String change(Model model, Authentication authentication) {
+    public String change(Model model, @AuthenticationPrincipal PrincipalDetails principalDetails) {
        
-		SiteUser user = userService.getUserByEmail(authentication.getName());
+		SiteUser user = userService.getUserByUserName(principalDetails.getUsername());
     	model.addAttribute("user", user);
 		
     	//회원정보 수정 하기 전 비밀 번호 확인
@@ -151,10 +178,9 @@ public class MyPageController {
     }
 	
 	@PostMapping("/mypage/checkPassword")
-	public String checkPassword(@RequestParam("userPassword") String enteredPassword, Authentication authentication, Model model) {
+	public String checkPassword(@RequestParam("userPassword") String enteredPassword, @AuthenticationPrincipal PrincipalDetails principalDetails, Model model) {
 	    
-		// 사용자가 입력한 비밀번호와 서버에서 가져온 암호화된 비밀번호를 비교
-	    SiteUser user = userService.getUserByEmail(authentication.getName());
+		SiteUser user = userService.getUserByUserName(principalDetails.getUsername());
 	    
 	    if (passwordEncoder.matches(enteredPassword, user.getPassword())) {
 	        // 비밀번호가 일치하면 원하는 페이지로 리디렉션
@@ -170,10 +196,10 @@ public class MyPageController {
 	
 	
     @GetMapping("/mypage/change/changeInfo")
-    public String changeInfo(Model model, Authentication authentication) {
+    public String changeInfo(Model model, @AuthenticationPrincipal PrincipalDetails principalDetails) {
        
     	//회원정보 수정탭
-    	SiteUser user = userService.getUserByEmail(authentication.getName());
+    	SiteUser user = userService.getUserByUserName(principalDetails.getUsername());
     	
     	model.addAttribute("birthYear", user.getBirthDate().getYear());
     	model.addAttribute("birthMonth", user.getBirthDate().getMonth().getValue());
@@ -186,10 +212,10 @@ public class MyPageController {
     }
     
     @PostMapping("/mypage/change/changeInfo")
-    public String changeInfo(Model model, Authentication authentication, @RequestParam String originalPassword, @RequestParam String newPassword) {
+    public String changeInfo(Model model, @AuthenticationPrincipal PrincipalDetails principalDetails, @RequestParam String originalPassword, @RequestParam String newPassword) {
         
     	// 현재 사용자 정보 가져오기
-        SiteUser user = userService.getUserByEmail(authentication.getName());
+    	SiteUser user = userService.getUserByUserName(principalDetails.getUsername());
 
         if (isPasswordValid(newPassword)) {
         	
@@ -202,7 +228,7 @@ public class MyPageController {
                 // SiteUser 업데이트
                 userService.updatePassword(user, newPassword);
 
-                return "redirect:/user/mypage";
+                return "redirect:/user/mypage/changeSuccess";
                 
             } else {
                 
@@ -212,6 +238,18 @@ public class MyPageController {
 
             return "redirect:/user/mypage/change/changeInfo";
         }
+    }
+    
+    @GetMapping("/mypage/changeSuccess")
+    public String changeSuccess(Model model, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+    	
+    	// 현재 사용자 정보 가져오기
+    	SiteUser user = userService.getUserByUserName(principalDetails.getUsername());
+    	model.addAttribute("user", user);
+    	
+    	return "changeSuccess";
+    	
+    	
     }
     	
 
@@ -226,24 +264,24 @@ public class MyPageController {
   
     
     @GetMapping("/mypage/shipping")
-    public String shipping(Model model, HttpServletRequest request, Authentication authentication) {
+    public String shipping(Model model, HttpServletRequest request, @AuthenticationPrincipal PrincipalDetails principalDetails) {
         
     	// 배송지 관리 페이지
     	// 사용자의 배송지 목록을 가져오는 서비스 또는 메서드 호출
     	
-    	SiteUser user = userService.getUserByEmail(authentication.getName());
+    	SiteUser user = userService.getUserByUserName(principalDetails.getUsername());
         long userId = user.getId();
     	
-        List<Shipping> shippingList = shippingService.getShippingListByUserId(userId);
+        List<Address> addressList = addressService.getAddressListByUserId(userId);
 
         model.addAttribute("user", user);
-        model.addAttribute("shippingList", shippingList);
+        model.addAttribute("addressList", addressList);
     	
         return "shipping";
     }
     
     @PostMapping("/mypage/shipping")
-    public String shipping(@ModelAttribute("ShippingForm") @Valid ShippingForm shippingForm, Model model, Authentication authentication) {
+    public String shipping(@ModelAttribute("addressForm") @Valid AddressForm addressForm, Model model, Authentication authentication) {
     	
 
     	return "shipping";
@@ -251,22 +289,21 @@ public class MyPageController {
     }
     
     
-    @PostMapping("/mypage/shipping/delete/{ano}")
-    public String deleteShipping(@PathVariable("ano") Integer ano, Model model, Authentication authentication) {
+    @PostMapping("/mypage/shipping/delete/{id}")
+    public String deleteShipping(@PathVariable("id") Long id, Model model, @AuthenticationPrincipal PrincipalDetails principalDetails) {
     	
         // 주소 삭제 로직을 구현
-        boolean deleted = shippingService.deleteAddress(ano);
-        System.out.println(deleted);
+        boolean deleted = addressService.deleteAddress(id);
 
         if (deleted) {
             // 삭제가 성공하면 배송지 목록을 다시 가져옵니다.
-        	SiteUser user = userService.getUserByEmail(authentication.getName());
+        	SiteUser user = userService.getUserByUserName(principalDetails.getUsername());
             long userId = user.getId();
         	
-            List<Shipping> shippingList = shippingService.getShippingListByUserId(userId);
+            List<Address> addressList = addressService.getAddressListByUserId(userId);
             
             model.addAttribute("user", user);
-            model.addAttribute("shippingList", shippingList);
+            model.addAttribute("addressList", addressList);
     
             
         } else {
@@ -286,26 +323,26 @@ public class MyPageController {
     }
     
     @PostMapping("/mypage/shipping_popup")
-    public String shippingPopup(@ModelAttribute("ShippingForm") @Valid ShippingForm shippingForm, Model model, Authentication authentication) {
+    public String shippingPopup(@ModelAttribute("addressForm") @Valid AddressForm addressForm, Model model, @AuthenticationPrincipal PrincipalDetails principalDetails) {
     	
     	//배송지 정보 관리
         // ShippingForm에서 Shipping 엔티티로 데이터 복사
-    	Shipping shipping = new Shipping();
-    	shipping.setReceiverName(shippingForm.getReceivername());
-    	shipping.setType(shippingForm.getType());
-        shipping.setPhone(shippingForm.getPhone());
-        shipping.setZipcode(shippingForm.getZipcode());
-        shipping.setAddress01(shippingForm.getAddress01());
-        shipping.setAddress02(shippingForm.getAddress02());
+    	Address address = new Address();
+    	address.setReceiverName(addressForm.getReceivername());
+    	address.setType(addressForm.getType());
+    	address.setPhone(addressForm.getPhone());
+    	address.setZipcode(addressForm.getZipcode());
+    	address.setAddress01(addressForm.getAddress01());
+    	address.setAddress02(addressForm.getAddress02());
 
         // 현재 로그인한 사용자 정보 가져오기
-        SiteUser user = userService.getUserByEmail(authentication.getName());
+        SiteUser user = userService.getUserByUserName(principalDetails.getUsername());
 
         // Shipping 엔티티에 현재 로그인한 사용자 설정
-        shipping.setUser(user);
+        address.setUser(user);
         
         // Shipping 정보를 서비스를 통해 저장
-        shippingService.saveShipping(shipping);
+        addressService.saveAddress(address);
         
         /* 창이 달라서 새로고침 기능 불가능
         boolean success = shippingService.saveShipping(shipping); // 성공 여부 확인
@@ -325,14 +362,14 @@ public class MyPageController {
     	
     
     @GetMapping("/mypage/myshop/add")
-    public String myShopAdd(Model model, Authentication authentication) {
+    public String myShopAdd(Model model, @AuthenticationPrincipal PrincipalDetails principalDetails) {
         
         //물건 등록 페이지
     	//현재 사용자의 user_id 가져오기
-    	SiteUser user = userService.getUserByEmail(authentication.getName());
+    	SiteUser user = userService.getUserByUserName(principalDetails.getUsername());
         long userId = user.getId();
         
-        model.addAttribute("goodsForm", new GoodsForm());
+        model.addAttribute("productForm", new ProductForm());
         model.addAttribute("user", user);
         model.addAttribute("userId", userId);
         
@@ -341,7 +378,7 @@ public class MyPageController {
   
 
     @PostMapping("/mypage/myshop/add")
-    public String myShopCreate(@ModelAttribute("GoodsForm") @Valid GoodsForm goodsForm, Model model, Authentication authentication, BindingResult bindingResult) {
+    public String myShopCreate(@ModelAttribute("ProductForm") @Valid ProductForm productForm, Model model, @AuthenticationPrincipal PrincipalDetails principalDetails, BindingResult bindingResult) {
        
     	
     	// 상품을 등록하기 위한 POST 요청 처리
@@ -353,7 +390,7 @@ public class MyPageController {
         // 파일 업로드 및 경로 저장
         List<String> imagePaths = new ArrayList<>();
         
-        for (MultipartFile image : goodsForm.getImages()) {
+        for (MultipartFile image : productForm.getImages()) {
             if (image != null && !image.isEmpty()) {
                 
                 String imagePath = saveImage(image);
@@ -363,18 +400,18 @@ public class MyPageController {
             }
         }
                 
-        // Goods 엔티티에 이미지 경로 저장
-        Goods goods = new Goods();
-        goods.setImage(imagePaths.size() >= 1 ? imagePaths.get(0) : null);
-        goods.setImage1(imagePaths.size() >= 2 ? imagePaths.get(1) : null);
-        goods.setImage2(imagePaths.size() >= 3 ? imagePaths.get(2) : null);
-        goods.setImage3(imagePaths.size() >= 4 ? imagePaths.get(3) : null);
+        // Product 엔티티에 이미지 경로 저장
+        Product product = new Product();
+        product.setImage(imagePaths.size() >= 1 ? imagePaths.get(0) : null);
+        product.setImage1(imagePaths.size() >= 2 ? imagePaths.get(1) : null);
+        product.setImage2(imagePaths.size() >= 3 ? imagePaths.get(2) : null);
+        product.setImage3(imagePaths.size() >= 4 ? imagePaths.get(3) : null);
 
         // 상품 등록 로직
         //현재 사용자의 user_id 가져오기
-        SiteUser user = userService.getUserByEmail(authentication.getName());
+        SiteUser user = userService.getUserByUserName(principalDetails.getUsername());
         long userId = user.getId();
-        goodsService.registerProduct(goodsForm, goods, userId);
+        productService.registerProduct(productForm, product, userId);
 
         return "redirect:/user/mypage";
                     
@@ -413,35 +450,35 @@ public class MyPageController {
         }
     }
     
-    @GetMapping("/mypage/myshop/edit/{pno}")
-    public String myShopEdit(@PathVariable int pno, Model model, Principal principal) {
+    @GetMapping("/mypage/myshop/edit/{id}")
+    public String myShopEdit(@PathVariable Long id, Model model, @AuthenticationPrincipal PrincipalDetails principalDetails) {
     	
-    	SiteUser user = userService.getUserByEmail(principal.getName());
+    	SiteUser user = userService.getUserByUserName(principalDetails.getUsername());
     	model.addAttribute("user", user);
     	
         // Principal 객체를 통해 현재 사용자의 ID를 가져오기
-        String userId = principal.getName(); // 사용자의 ID를 가져옴
+        Long userId = principalDetails.getId();
 
-        // pno를 기반으로 수정할 상품을 가져옵니다.
-        Goods editGoods = goodsService.getGoodsById(pno);
+        // id를 기반으로 수정할 상품을 가져옵니다.
+        Product editProduct = productService.getProductById(id);
 
         // 상품이 없는 경우 또는 권한이 없는 경우에 대한 처리
-        if (editGoods == null || !userId.equals(editGoods.getUser().getEmail())) {
+        if (editProduct == null || !userId.equals(editProduct.getUser().getId())) {
             return "redirect:/user/mypage"; // 에러 페이지로 리디렉션 또는 다른 처리
         }
 
         // 사용자가 상품을 수정할 수 있으므로 정보를 모델에 추가
-        model.addAttribute("editGoods", editGoods);
+        model.addAttribute("editProduct", editProduct);
         
         return "myshop_edit";
     }
     
     
-    @PostMapping("/mypage/myshop/edit/{pno}")
-    public String myShopEdit(@PathVariable int pno, GoodsForm goodsForm) {
+    @PostMapping("/mypage/myshop/edit/{id}")
+    public String myShopEdit(@PathVariable Long id, ProductForm productForm) {
 
         // 상품 정보 업데이트를 수행하는 서비스 호출
-        goodsService.updateGoods(pno, goodsForm);
+        productService.updateProduct(id, productForm);
         
         return "redirect:/user/mypage/sale";
         
@@ -449,48 +486,59 @@ public class MyPageController {
 
     
     @GetMapping("/mypage/mybuyhistory")
-    public String myBuyHistory(Model model, Authentication authentication) {
-        
-        //구매 내역 페이지
+    public String myBuyHistory(Model model, @AuthenticationPrincipal PrincipalDetails principalDetails,
+    		@RequestParam(name = "page", defaultValue = "1") int pageNum) {
 
-    	SiteUser user = userService.getUserByEmail(authentication.getName());
-        long userId = user.getId();
-        
-        model.addAttribute("goodsForm", new GoodsForm());
+    	//구매 내역 페이지
+    	//사용자 정보 가져오기
+        SiteUser user = userService.getUserByUserName(principalDetails.getUsername());
         model.addAttribute("user", user);
-        model.addAttribute("userId", userId);
+        
+        //사용자 ID 가져오기
+        Long userId = user.getId();
+        
+        int itemsPerPage = 5; 
+        
+        //거래 목록 가져오기
+        List<OrderList> orderList = orderListService.findOrderByUserId(userId);
+        
+        int totalItemCount = orderList.size();
+        int totalPages = (int) Math.ceil((double) totalItemCount / itemsPerPage);
+        List<Integer> pageList = IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList());
+        
+        int startIndex = (pageNum - 1) * itemsPerPage;
+        int endIndex = Math.min(startIndex + itemsPerPage, totalItemCount);
+        List<OrderList> orderAll = orderList.subList(startIndex, endIndex);
+        
+        model.addAttribute("orderList", orderAll);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("currentPage", pageNum);
+        model.addAttribute("pageList", pageList); 
+        model.addAttribute("listUrl", "/user/mypage/mybuyhistory/");
         
         return "myBuyHistory";
-    }
-    
-
-    @PostMapping("/mypage/mybuyhistory")
-    public String myBuyHistory(@ModelAttribute("GoodsForm") @Valid GoodsForm goodsForm, Model model, Authentication authentication, BindingResult bindingResult) {
-    	
-    	return "myBuyHistory";
-    	
     }
        
 
     @GetMapping("/mypage/pay")
-    public String Pay (Model model, HttpServletRequest request, Authentication authentication) {
+    public String Pay (Model model, HttpServletRequest request, @AuthenticationPrincipal PrincipalDetails principalDetails) {
     	
     	//pay 충전 페이지
     	//사용자 정보 user에 담아서 model에 추가
-    	SiteUser user = userService.getUserByEmail(authentication.getName());
+    	SiteUser user = userService.getUserByUserName(principalDetails.getUsername());
     	model.addAttribute("user", user);
     	
         return "pay"; // payment.html 또는 결제 페이지 템플릿을 반환
     }
     
     @PostMapping("/mypage/pay")
-    public String pay(Model model, HttpServletRequest request, Authentication authentication, @RequestParam("paymoney") Integer paymoney) {
+    public String pay(Model model, HttpServletRequest request, @AuthenticationPrincipal PrincipalDetails principalDetails, @RequestParam("paymoney") Integer paymoney) {
 
         // pay 충전 페이지
         try {
         	
         	// 사용자 정보 가져오기
-        	SiteUser user = userService.getUserByEmail(authentication.getName());
+        	SiteUser user = userService.getUserByUserName(principalDetails.getUsername());
         	model.addAttribute("user", user);
         	
             Pay pay = new Pay();
@@ -514,88 +562,133 @@ public class MyPageController {
         return "pay";
     }
     
+    
+    @GetMapping("/mypage/point")
+    public String point(Model model, @AuthenticationPrincipal PrincipalDetails principalDetails,
+            @RequestParam(name = "page", defaultValue = "1") int pageNum) {
+    	
+        // 사용자 정보 가져오기
+        SiteUser user = userService.getUserByUserName(principalDetails.getUsername());
+        model.addAttribute("user", user);
+
+        // 사용자 ID 가져오기
+        Long userId = user.getId();
+
+        int itemsPerPage = 5; 
+        
+        // 전체 포인트 내역을 가져오기
+        List<Point> pointList = pointService.findPointsByUserId(userId);
+
+        // 페이지네이션 계산
+        int totalItemCount = pointList.size();
+        int totalPages = (int) Math.ceil((double) totalItemCount / itemsPerPage);
+
+        // 페이지 목록 생성
+        List<Integer> pageList = IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList());
+
+        // 페이지에 해당하는 포인트 내역 가져오기
+        int startIndex = (pageNum - 1) * itemsPerPage;
+        int endIndex = Math.min(startIndex + itemsPerPage, totalItemCount);
+        List<Point> pointAll = pointList.subList(startIndex, endIndex);
+
+        model.addAttribute("pointList", pointAll);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("currentPage", pageNum);
+        model.addAttribute("pageList", pageList); // 페이지 목록 추가
+        model.addAttribute("listUrl", "/user/mypage/point/");
+
+        return "point";
+    }
+    
+    
     @GetMapping("/mypage/membership")
-    public String membership(Model model, HttpServletRequest request) {
+    public String membership(Model model, @AuthenticationPrincipal PrincipalDetails principalDetails) {
     	
     	//membership 가입 페이지
+    	SiteUser user = userService.getUserByUserName(principalDetails.getUsername());
+    	model.addAttribute("user", user);
     	
     	return "membership";
     }
     
     @PostMapping("/mypage/membership")
-    public String subscribeMembership(@RequestParam("email") String userEmail, Model model) {
-    	
-    	/*
+    public ResponseEntity<String> membership(
+    	    @RequestBody String data,
+    	    @AuthenticationPrincipal PrincipalDetails principalDetails) {
+    	    try {
+    	        SiteUser user = userService.getUserByUserName(principalDetails.getUsername());
 
-        try {
-        	
-        	
-            // 결제 API 호출 및 결제 정보 가져오기
-            PaymentResponse paymentResponse = MembershipService.processPayment(userEmail);
+    	        if (user == null) {
+    	            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not found.");
+    	        }
 
-            // 결제가 성공하면 멤버쉽 상태를 업데이트
-            if (paymentResponse.isSuccess()) {
-                MembershipService.updateMembershipStatus(userEmail);
-                model.addAttribute("message", "멤버쉽 가입이 완료되었습니다.");
-            } else {
-                model.addAttribute("message", "결제가 실패하였습니다.");
-            }
-        } catch (Exception e) {
-            // 결제 처리 중 예외 발생 시 처리
-            model.addAttribute("message", "결제 처리 중 오류가 발생하였습니다.");
-            e.printStackTrace();
-        }
-		
-*/
-        return "/mypage";
-        
-    }
+    	        if ("success".equals(data)) {
+    	            // "success" 문자열을 받았을 때 사용자 정보 업데이트
+    	            user.setPaymoney(user.getPaymoney() - 5000); // 5000원 차감
+    	            user.setMembership(true);
+
+    	            SiteUser updatedUser = membershipService.save(user);
+
+    	            return ResponseEntity.ok("멤버쉽 가입을 성공했습니다. 기간은 30일입니다.");
+    	            
+    	        } else {
+    	            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("멤버쉽 가입에 실패하였습니다. 잠시 후 다시 시도해주세요.");
+    	        }
+    	    } catch (Exception e) {
+    	        e.printStackTrace();
+    	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("멤버쉽 가입에 실패하였습니다. 잠시 후 다시 시도해주세요.");
+    	    }
+    	}
     
     @GetMapping("/mypage/grade")
-    public String grade(Model model, Authentication authentication) {
+    public String grade(Model model, @AuthenticationPrincipal PrincipalDetails principalDetails) {
     	
     	//구매등급 안내 페이지
-    	SiteUser user = userService.getUserByEmail(authentication.getName());
+    	SiteUser user = userService.getUserByUserName(principalDetails.getUsername());
     	model.addAttribute("user", user);
     	
     	return "grade";
     }
     
-    @GetMapping("/mypage/mygrade")
-    public String myGrade(Model model, Authentication authentication) {
+    @GetMapping("/mypage/myInterest")
+    public String myGrade(Model model, @AuthenticationPrincipal PrincipalDetails principalDetails) {
     	
-    	//다음 달 나의 예상 등급 보기 페이지
-    	SiteUser user = userService.getUserByEmail(authentication.getName());
+    	//나의 관심 분야 설정하기
+    	SiteUser user = userService.getUserByUserName(principalDetails.getUsername());
     	model.addAttribute("user", user);
     
-    	return "mygrade";
+    	return "myInterest";
     }
     
     @GetMapping("/mypage/withdraw")
-    public String withdraw(Model model, Authentication authentication) {
+    public String withdraw(Model model, @AuthenticationPrincipal PrincipalDetails principalDetails) {
     	
     	//회원 탈퇴 페이지
     	//사용자 정보 가져오기 (비밀번호 일치 할 경우 탈퇴 처리를 위해)
-    	SiteUser user = userService.getUserByEmail(authentication.getName());
+    	SiteUser user = userService.getUserByUserName(principalDetails.getUsername());
     	model.addAttribute("user", user);
     
     	return "withdraw";
     }
     
     @PostMapping("/mypage/withdraw")
-    public String withDraw(@RequestParam("userPassword") String enteredPassword, Authentication authentication, Model model) {
-        SiteUser user = userService.getUserByEmail(authentication.getName());
+    public String withDraw(@RequestParam("userPassword") String enteredPassword, @AuthenticationPrincipal PrincipalDetails principalDetails, Model model) {
+    	
+    	SiteUser user = userService.getUserByUserName(principalDetails.getUsername());
 
         if (passwordEncoder.matches(enteredPassword, user.getPassword())) {
-            // 비밀번호가 일치할 경우 사용자 삭제
-            userService.deleteUserById(user.getId());
+        	
+            // 비밀번호가 일치할 경우 사용자 비활성화
+        	user.setActivated(false);
+        	
+            userService.saveUser(user);
             
-            // 다른 테이블의 데이터도 삭제
-            //userService.deleteRelatedDataByUserId(user.getId());
-            return "withdraw_success";
+            return "/logout";      //추후 수정
             
         } else {
+        	
             model.addAttribute("errorMessage", "비밀번호가 올바르지 않습니다. 다시 시도하세요.");
+            
             return "redirect:/user/mypage/withdraw";
         }
     }

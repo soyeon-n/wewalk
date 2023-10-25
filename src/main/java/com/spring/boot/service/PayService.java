@@ -1,13 +1,13 @@
 package com.spring.boot.service;
 
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.spring.boot.dao.PayRepository;
-import com.spring.boot.dao.UserRepository;
-import com.spring.boot.dto.Pay;
+import com.spring.boot.model.Pay;
 import com.spring.boot.model.SiteUser;
 
 @Service
@@ -29,6 +29,15 @@ public class PayService {
         }
     }
 	
+	public void savePointHistory(SiteUser user, int point, String usePay) {
+		Pay pay = new Pay();
+		pay.setUser(user);
+		pay.setPayMoney(point);
+		pay.setPayDate(new Date());
+		pay.setType(usePay);
+		payRepository.save(pay);
+	}
 	
 
 }
+

@@ -8,16 +8,22 @@
     <link rel="stylesheet" href="/css/reset.css">
     <link rel="stylesheet" href="/css/common.css">
     <link rel="stylesheet" href="/css/Withdraw.css">
-    <script src="../main/js/common.js"></script>
+    
     <script type="text/javascript">
+    
+    /*
     function checkPassword(event) {
     	
         // 사용자가 입력한 비밀번호와 서버 또는 로그인 된 비밀번호를 비교합니다.
         const enteredPassword = document.getElementById("userPassword").value;
         var serverPassword = [[${user.password}]];
+        
+        var error = [[${errorMessage}]];
+        console.log(error);
 
         if (enteredPassword === serverPassword) {
         	//진짜 탈퇴할 지 물어보기
+        	
         	
         	//탈퇴한다고 하면 탈퇴시키고 원하는 페이지로 리디렉션
 
@@ -28,8 +34,11 @@
             alert("비밀번호가 올바르지 않습니다. 다시 시도하세요.");
         }
     }
+    */
     
     </script>
+    
+    
     
 </head>
 <body>
@@ -66,13 +75,13 @@
                                                 비밀번호 확인
                                             </th>
                                             <td>
-                                                <input type="password" name="password" size="20">
+                                                <input type="password" name="userPassword" size="16">
                                             </td>
                                         </tr>
                                         
-                                        <div th:if="${errorMessage}" class="error-message">
-            								<p th:text="${errorMessage}"></p>
-        								</div>
+                                        <tr>
+										    <td th:text="${errorMessage}"></td>
+										</tr>
 
                                         <tr>
                                             <th>무엇이 불편하였나요?</th>

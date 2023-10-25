@@ -1,160 +1,193 @@
 $(document).ready(function(){
+	
+	// userName 유효성 검사
+    $('#userNameInput').on('blur', userName_check);
 
-    //아이디 조건 만족 불만족 확인하기
-    var text_id = $('.field_id input');
-    text_id.focus(function(){               //포커스 되면
-        $('.field_id .txt_guide').css('display', 'block');
-    });
-    text_id.blur(function(){              //포커스에서 벗어나면
+    // password1 유효성 검사
+    $('#password1').on('blur', pw_check);
+
+    // password2 유효성 검사
+    $('#password2').on('blur', pw2_check);
+    
+    $('#checkUserNameBtn').on('click', function(e){
+        e.preventDefault();
         
-        id_check();              //id_check() 함수 실행
-        
-    });
-
-    //비밀번호 조건 만족 불만족 확인하기
-    var text_pw = $('.field_pw input');
-    text_pw.focus(function(){               //포커스 되면
-        $('.field_pw .txt_guide').css('display', 'block');
-    });
-    text_pw.blur(function(){              //포커스에서 벗어나면
-        
-        pw_check();              //pw_check() 함수 실행    
-    });
-
-    //비밀번호 확인 조건 만족 불만족 확인하기
-
-    var text_pw2 = $('.field_repw input');
-    text_pw2.focus(function(){
-        $('.field_repw .txt_guide').css('display', 'block');
-    });
-    text_pw2.blur(function(){      
-        pw2_check();
-    });
-    /*
-    //이메일 중복 체크
-    $('.field_email .btn').click(function(){
-
-        if($('.field_email input').val() == '') {    //만약에 아무것도 입력 되지 않은 상태면
-            alert('이메일을 입력해주세요');
+        const userName = $('#userNameInput').val();
+        if(!userName) {
+            $('#userNameValidationMessage').css('color', '#b3130b').text('닉네임을 입력하세요.');
             return;
         }
-
-        email_overlap_input = $('.field_email input').val()
-    
+        
         $.ajax({
-          type: "GET",
-          url: "/checkEmail?email="+email_overlap_input,    //해당 url로 데이터를 넘김
-          data: {
-            'email': email_overlap_input
-          },
-          datatype: 'json',
-          success: function (data) {
-            console.log(data['overlap']);
-            if (data['overlap'] == "fail") {
-              alert("이미 존재하는 이메일 입니다.");
-              email_overlap_input.focus();
-              return;
-            } else {
-              alert("사용가능한 이메일 입니다.");
-              return;
+            url: '/auth/checkUserName',
+            type: 'GET',
+            data: { userName: userName },
+            success: function(response) {
+                if(response.status === 'exists') {
+                    $('#userNameValidationMessage').css('color', '#b3130b').text('이미 존재하는 닉네임입니다.');
+                } else {
+                    $('#userNameValidationMessage').css('color', '#0f851a').text('사용 가능한 닉네임입니다.');
+                }
+            },
+            error: function() {
+                $('#userNameValidationMessage').css('color', '#b3130b').text('닉네임 검사 중 오류가 발생했습니다.');
             }
-          }
         });
     });
+});
 
-    //아이디 중복 체크
-    $('.field_id .btn').click(function(){
+function userName_check(){
+    var userName = $("#userNameInput").val();
+    var userName_txt_case1 = $('.userName_txt_case1');
+    
+    var num = /[0-9]/;
+    var eng = /[a-zA-Z]/;
+    var notNumOrEng = /[^a-zA-Z0-9]/;
+    
+    if(userName.length >= 6 && notNumOrEng.test(userName) == 0 && eng.test(userName) == 1) {
+        $(".userName_txt_case1").css('color', '#0f851a');
+    } else {
+        $(".userName_txt_case1").css('color', '#b3130b');
+    }
+}
 
-        if ($('.field_id input').val() == '') {    //만약에 아무것도 입력 되지 않은 상태면
-            alert('아이디를 입력해주세요');
-            $(".field_id .txt_guide .txt_case2").css('color', '#b3130b');
+function pw_check(){
+
+	var pw1 = $("#password1").val();                   // 변수 pw에 pw값 대입
+	var password1_txt_case1 = $('.password1_txt_case1');
+	var password1_txt_case2 = $('.password1_txt_case2');
+
+	
+    var num = /[0-9]/;
+    var engLower = /[a-z]/;
+    var engUpper = /[A-Z]/;
+    var spe = /[~!@#$%^&*()_+|<>?:{}]/;
+    
+    if(pw1.length < 8){                                  //pw의 길이가 8 미만일 때
+    	password1_txt_case1.css('color', '#b3130b'); // 빨간색
+    }
+
+    if(pw1.length >= 8){                                  //pw의 길이가 10 이상일 때
+    	password1_txt_case1.css('color', '#0f851a'); // 초록색 
+    }
+
+    if(num.test(pw1) == 0 || engLower.test(pw1) == 0 || engUpper.test(pw1) == 0 || spe.test(pw1) == 0){    // pw의 숫자가 없거나 , 소문자가 없거나, 대문자가 없거나, 특수문자가 없을경우 실패
+    	password1_txt_case2.css('color', '#b3130b'); // 빨간색
+    }            
+
+    if(num.test(pw1) == 1 && engLower.test(pw1) == 1 && engUpper.test(pw1) == 1 && spe.test(pw1) == 1){ // pw의 숫자,영어,특수문자가 1개이상씩 있을경우 성공
+    	password1_txt_case2.css('color', '#0f851a'); // 초록색
+    }
+
+}
+
+function pw2_check(){
+	var password1 = $('#password1').val();
+	var password2 = $('#password2').val();
+	var password2_txt_case1 = $('.password2_txt_case1');
+
+    if ( password1 != '' && password2 == '' ) {          //둘다 빈칸일 경우 아무것도 하지 않음
+        null;
+    } else if (password1 != "" || password2 != "") {     // 빈칸이 아닐 경우
+        if (password1 == password2) {                    // 비교해서 같으면
+        	password2_txt_case1.css('color', '#0f851a'); // 초록색                  
+        
+        } else {        // 비교해서 같지 않으면
+        	password2_txt_case1.css('color', '#b3130b'); // 빨간색                          
+        }
+    }
+}
+
+// 이메일 유효성 검사 함수
+const isValidEmail = (email) => {
+    const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    return regex.test(email);
+};
+
+// 화살표 함수
+const sendIt = () => {
+	
+    let f = document.myForm;
+
+    let fields = [
+        { field: f.userName, message: "계정명을 입력하세요." },
+        { field: f.password1, message: "비밀번호를 입력하세요." },
+        { field: f.password2, message: "비밀번호 확인을 입력하세요." },
+        { field: f.email, message: "이메일을 입력하세요." },
+        { field: f.name, message: "이름을 입력하세요." },
+        { field: f.postcode, message: "우편번호를 입력하세요." },
+        { field: f.address, message: "주소를 입력하세요." },
+        { field: f.detailAddress, message: "상세 주소를 입력하세요." },
+        { field: f.tel, message: "전화번호를 입력하세요." },
+        { field: f.birthYear, message: "생년을 입력하세요." },
+        { field: f.birthMonth, message: "생월을 입력하세요." },
+        { field: f.birthDay, message: "생일을 입력하세요." }
+    ];
+
+    for (let i = 0; i < fields.length; i++) {
+        let str = fields[i].field.value.trim();
+        if (!str) {
+            alert(`\n${fields[i].message}`);
+            fields[i].field.focus();
             return false;
         }
+        fields[i].field.value = str;
+    }
 
-        userName_overlap_input = document.querySelector('input[name="userName"]');
-    
-        $.ajax({
-          type: "GET",
-          url: "/checkUserName?userName="+userName_overlap_input,    //해당 url로 데이터를 넘김
-          data: {
-            'userName': $('.field_id input').val()
-          },
-          datatype: 'json',
-          success: function (data) {
-            console.log(data['overlap']);
-            if (data['overlap'] == "fail") {
-              alert("이미 존재하는 아이디 입니다.");
-              $(".field_id .txt_guide .txt_case2").css('color', '#b3130b');
-              userName_overlap_input.focus();
-              return;
-            } else {
-              alert("사용가능한 아이디 입니다.");
-              $(".field_id .txt_guide .txt_case2").css('color', '#0f851a');
-              return;
-            }
-          }
-        });
-    });
-*/
-    $('#addressSearch').click(function(){
-        new daum.Postcode({
-            oncomplete: function(data) {
-                // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+    if (!isValidEmail(f.email.value)) {
+        alert("\n정상적인 E-Mail을 입력하세요.");
+        f.email.focus();
+        return false;
+    }
 
-                // 각 주소의 노출 규칙에 따라 주소를 조합한다.
-                // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
-                var addr = ''; // 주소 변수
-                var extraAddr = ''; // 참고항목 변수
+    if (f.password1.value !== f.password2.value) {
+        alert("\n비밀번호가 일치하지 않습니다.");
+        f.password2.focus();
+        return false;
+    }
 
-                //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
-                if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
-                    addr = data.roadAddress;
-                } else { // 사용자가 지번 주소를 선택했을 경우(J)
-                    addr = data.jibunAddress;
-                }
+    return true;
+}
 
-                // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
-                if(data.userSelectedType === 'R'){
-                    // 법정동명이 있을 경우 추가한다. (법정리는 제외)
-                    // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
-                    if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
-                        extraAddr += data.bname;
-                    }
-                    // 건물명이 있고, 공동주택일 경우 추가한다.
-                    if(data.buildingName !== '' && data.apartment === 'Y'){
-                        extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
-                    }
-                    // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
-                    if(extraAddr !== ''){
-                        extraAddr = ' (' + extraAddr + ')';
-                        addr += ', ' + extraAddr;
-                    }
-                    // 조합된 참고항목을 해당 필드에 넣는다.
-                    
-                
-                } else {
-                    
-                }
+// 화살표 함수
+const sendOAuth = () => {
+	
+    let f = document.myForm;
 
-                // 우편번호와 주소 정보를 해당 필드에 넣는다.               
-                document.getElementById("address").value = addr;      
-                                         
-				// 주소 입력 필드 비활성화
-	            document.getElementById("address").disabled = true;  // 주소 입력 필드 비활성화
-	            
-                //주소 검색이 완료된 후 변하는 css 목록
-                $('.field_address input').css('display', 'block');
-                $('#addressNo').text('재검색')
+    let fields = [
+        { field: f.userName, message: "계정명을 입력하세요." },
+        { field: f.email, message: "이메일을 입력하세요." },
+        { field: f.name, message: "이름을 입력하세요." },
+        { field: f.postcode, message: "우편번호를 입력하세요." },
+        { field: f.address, message: "주소를 입력하세요." },
+        { field: f.detailAddress, message: "상세 주소를 입력하세요." },
+        { field: f.tel, message: "전화번호를 입력하세요." },
+        { field: f.birthYear, message: "생년을 입력하세요." },
+        { field: f.birthMonth, message: "생월을 입력하세요." },
+        { field: f.birthDay, message: "생일을 입력하세요." }
+    ];
 
-                // 커서를 상세주소 필드로 이동한다.
-                document.getElementById("detailAddress").focus();
-    
-                // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분입니다.
-                // 예제를 참고하여 다양한 활용법을 확인해 보세요.
-                // http://postcode.map.daum.net/guide  api주소 
-            }
-        }).open();
+    for (let i = 0; i < fields.length; i++) {
+        let str = fields[i].field.value.trim();
+        if (!str) {
+            alert(`\n${fields[i].message}`);
+            fields[i].field.focus();
+            return false;
+        }
+        fields[i].field.value = str;
+    }
 
-    });
+    if (!isValidEmail(f.email.value)) {
+        alert("\n정상적인 E-Mail을 입력하세요.");
+        f.email.focus();
+        return false;
+    }
 
-});
+    if (f.password1.value !== f.password2.value) {
+        alert("\n비밀번호가 일치하지 않습니다.");
+        f.password2.focus();
+        return false;
+    }
+
+    return true;
+}

@@ -1,23 +1,38 @@
 package com.spring.boot.controller;
 
+import java.security.Principal;
 import java.time.DateTimeException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.validation.Valid;
 
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.spring.boot.dto.PrincipalDetails;
+import com.spring.boot.dto.SellerRequestForm;
 import com.spring.boot.dto.UserCreateForm;
+import com.spring.boot.model.AttachmentType;
+import com.spring.boot.model.SellerRequest;
 import com.spring.boot.model.SiteUser;
+import com.spring.boot.model.UserFiles;
 import com.spring.boot.model.UserRole;
+import com.spring.boot.service.FileService;
 import com.spring.boot.service.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -26,115 +41,73 @@ import lombok.RequiredArgsConstructor;
 @Controller
 @RequestMapping("/user")
 public class UserController {
-
-	private final UserService userService;
 	
-	@GetMapping("signup")
-	public String signup(UserCreateForm userCreateForm) {
+	private final UserService userService;
+	private final FileService fileService;
+
+	//USER로 접근할 수 있는 페이지 관리할 예정
+	@PreAuthorize("isAuthenticated")
+	@GetMapping("/requestSeller")
+	public String requestSeller(SellerRequestForm sellerRequestForm, 
+			@AuthenticationPrincipal PrincipalDetails principalDetails, Model model) {
 		
-		return "signup_form";
+		String userName = principalDetails.getUsername();
+		
+		model.addAttribute("userName", userName);
+		
+		return "request_seller";
 		
 	}
 	
-	
-	@PostMapping("signup")
-	public String signup(@Valid UserCreateForm userCreateForm, BindingResult bindResult) {
+	@PreAuthorize("isAuthenticated")
+	@PostMapping("/requestSeller")
+	public String requestSeller(@Valid SellerRequestForm sellerRequestForm, BindingResult bindResult, 
+			@AuthenticationPrincipal PrincipalDetails principalDetails) {
 		
 		//입력값 검증
 		if(bindResult.hasErrors()) {
-			bindResult.reject("signupFailed", "유효성 검증에 실패했습니다");
-			return "signup_form";
-			
+			return "request_seller";
 		}
-		
-		//패스워드1과 2가 일치하는지 검증
-		if(!userCreateForm.getPassword1()
-				.equals(userCreateForm.getPassword2()) ) {
-			bindResult.rejectValue("password2", "passwordInCorrect",
-					"2개의 패스워드가 일치하지 않습니다!");
-			
-			return "signup_form";
-		}
-		
+				
 		//입력값 DB에 넣으면서 검증(서버사이드)
 		try {
+			// 현재 로그인한 사용자 정보 가져오기
+			SiteUser currentUser = principalDetails.getUser();
 			
-			//날짜 검증 및 날짜 형식으로 변환
-			int year = Integer.parseInt(userCreateForm.getBirthYear());
-		    int month = Integer.parseInt(userCreateForm.getBirthMonth());
-		    int day = Integer.parseInt(userCreateForm.getBirthDay());
+			// 첨부파일 저장
+			Map<AttachmentType, List<MultipartFile>> multipartFiles = sellerRequestForm.getAttachmentTypeListMap();
+			List<UserFiles> savedFiles = fileService.saveAttachments(multipartFiles, currentUser);
 
-		    LocalDate birthDate = LocalDate.of(year, month, day);
-		    
-		    UserRole role;
-		    
-		    //이메일 주소가 admin@wewalkpay.com이면 role에 ADMIN을 주고 아니면 USER
-			if(userCreateForm.getEmail() == "admin@wewalkpay.com" || "admin@wewalkpay.com".equals(userCreateForm.getEmail())) {
-				role = UserRole.ADMIN;
-			}else {
-				role = UserRole.USER;
-			}
+			LocalDateTime requestTime = LocalDateTime.now();
+			boolean isProcessed = false;
 			
-		    //UserRole을 지정해서 넣어줘야 하고 거기에 추가로 UserCreateForm과 UserService, SiteUser에서의 데이터 입력 순서를 맞춰줘야 함
-			userService.create(role, userCreateForm.getEmail(), userCreateForm.getPassword1(), userCreateForm.getUserName(), 
-						userCreateForm.getName(), birthDate, userCreateForm.getPostcode(),
-						userCreateForm.getAddress(), userCreateForm.getDetailAddress(), userCreateForm.getTel());
-		
+			// SellerRequest 저장
+	        SellerRequest sellerRequest = userService.saveSellerRequest(currentUser, 
+	        		sellerRequestForm.getIntro(), requestTime, isProcessed);
+			
 		} catch (DateTimeException e) {
 		    // 유효하지 않은 날짜
 			e.printStackTrace();
-			bindResult.reject("signupFailed", "유효하지 않은 날짜입니다");
-			return "signup_form";
+			bindResult.reject("requestFailed", "유효하지 않은 날짜입니다");
+			return "request_seller";
 			
 		} catch (DataIntegrityViolationException e) {
 			
 			e.printStackTrace();
-			bindResult.reject("signupFailed", "이미 등록된 사용자입니다");
+			bindResult.reject("requestFailed", "이미 등록된 사용자입니다");
 			
-			return "signup_form";
+			return "request_seller";
 			
 		} catch (Exception e) {
 			
 			e.printStackTrace();
-			bindResult.reject("signupFailed", e.getMessage());
+			bindResult.reject("requestFailed", e.getMessage());
 			
-			return "signup_form";
+			return "request_seller";
 			
 		}
-		return "redirect:/user/login";
-	}
-	
-	@GetMapping("/checkEmail")
-    public Map<String, String> checkEmail(@RequestParam String email) {
-
-        SiteUser user = userService.getUserByEmail(email);
-        
-        Map<String, String> result = new HashMap<>();
-        
-        if (user != null) {
-            result.put("overlap", "fail");
-        } else {
-            result.put("overlap", "success");
-        }
-        return result;
-    }
-	
-	@GetMapping("/checkUserName")
-    public Map<String, String> checkUserName(@RequestParam String userName) {
-        SiteUser user = userService.getUserByUserName(userName);
-        Map<String, String> result = new HashMap<>();
-        if (user != null) {
-            result.put("overlap", "fail");
-        } else {
-            result.put("overlap", "success");
-        }
-        return result;
-    }
-
-	//login은 security가 처리하므로 post방식의 로그인 처리 메소드는 없어도 됨
-	@GetMapping("/login")
-	public String login() {
-		return "login";
+		
+		return "redirect:/user/myPage";
 	}
 	
 }

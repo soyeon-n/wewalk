@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="/css/changeInfo.css">
     <link rel="stylesheet" href="/css/myShopList.css">
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script type="text/javascript"></script>
     
 </head>
 <body>
@@ -26,7 +27,7 @@
                                     <span class="blind">등급</span>
                                     <span class="ico_grade class0">
                                         <span class="inner_grade">
-                                            <span class="in_grade">일반</span>
+                                            <span class="in_grade" th:text="${user.grade}"></span>
                                         </span>
                                     </span>
                                     <div class="grade_bnenfit">
@@ -35,14 +36,18 @@
     										<span class="txt">님</span>
 										</div>
                                         <div class="benefit">
-                                            <strong class="tit"></strong>
-                                            적립 0.5%
-                                        </div>
+										    <strong class="tit"></strong>
+										    <span th:text="|적립 ${user.membership == 1 ? '10%' : 
+										        user.grade == 'B' ? '1%' : 
+										        user.grade == 'S' ? '3%' : 
+										        user.grade == 'G' ? '5%' : 
+										        user.grade == 'P' ? '8%' : ''}|"></span>
+										</div>
                                     </div>
                                 </div>
                                 <div class="next">
-                                    <a href="/user/mypage/grade" class="total_grade">전체등급 보기</a>
-                                    <a href="/user/mypage/mygrade" class="next_month">다음 달 예상등급 보기</a>
+                                    <a href="/user/mypage/myInterest" class="next_month">나의 관심 분야 설정하기</a>
+                                    <a href="/user/mypage/grade" class="total_grade">등급 별 할인혜택</a>
                                 </div>
                             </div>
 
@@ -65,7 +70,7 @@
                                         <div class="tit">
                                             적립금
                                         </div>
-                                        <a href="#" class="info">
+                                        <a href="/user/mypage/point" class="info">
                                             <span th:if="${user.point != null}" th:text="${user.point + ' 원'}"></span>
    											<span th:if="${user.point == null}">0 원</span>
                                             <img src="https://res.kurly.com/pc/service/common/1905/ico_arrow_56x56.png" alt="자세히보기">
@@ -125,7 +130,7 @@
                        							<div class="inner_lnb">
                             					<ul class="list">
                                 					<li name="cate_gory">
-                                    				<a class="on">전체보기</a>
+                                    				<a class="on" href="/user/mypage">전체보기</a>
                                 					</li>
                                 					<li name="cate_gory">
                                     				<a class="" href="/user/mypage/sale">판매 중</a>
@@ -134,7 +139,7 @@
                                     				<a class="" href="/user/mypage/soldout">판매 완료</a>
                                 					</li>
                                 					<li name="cate_gory">
-                                    				<a class="" href="/user/mypage/heart">찜한 상품</a>
+                                    				<a class="" href="/user/mypage/wishlist">찜한 상품</a>
                                 					</li>
                                 					<li name="cate_gory">
                                     				<a class="" href="/user/mypage/myshop/add">판매상품등록</a>
@@ -143,24 +148,28 @@
                                 				
 												</div>
 												
-												<div th:each="goods : ${goods}">
-												    <div class="product-container">
-												        <div class="product-image">
-												            <img th:src="@{'/product/' + ${goods.image}}">
+												<div th:if="${user.seller == true}">
+												    <div th:each="product : ${product}">
+												        <div class="product-container">
+												            <div class="product-image">
+												                <img th:src="@{'/product/' + ${product.image}}">
+												            </div>
+												            <div class="product-details">
+												                <div class="product-name" th:text="${product.pname}"></div>
+												                <div class="product-price" th:text="${product.price} + '원'"></div>
+												            </div>
 												        </div>
-												        <div class="product-details">
-												            <div class="product-name" th:text="${goods.name}"></div>
-												            <div class="product-price" th:text="${goods.price} + '원'"></div>
-												        </div>
+												    </div>
+												    <div class="page-numbers">
+												        <span th:each="page, stat : ${pageList}">
+												            <span th:if="${currentPage == page}" class="current-page" th:text="${page}"></span>
+												            <a th:unless="${currentPage == page}" th:href="@{/user/mypage(pageNum=${page})}" th:text="${page}"></a>
+												        </span>
 												    </div>
 												</div>
 												
-
-												<div class="page-numbers">
-												    <span th:each="page, stat : ${pageList}">
-													    <span th:if="${currentPage == page}" class="current-page" th:text="${page}"></span>
-													    <a th:unless="${currentPage == page}" th:href="@{/user/mypage(pageNum=${page})}" th:text="${page}"></a>
-													</span>
+												<div class="centered-text" th:unless="${user.seller == true}">
+												    <p>판매자 등록 후 이용해주세요.</p>
 												</div>
 												
 											</div>	

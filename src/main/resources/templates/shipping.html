@@ -79,23 +79,27 @@
                                     <span class="blind">등급</span>
                                     <span class="ico_grade class0">
                                         <span class="inner_grade">
-                                            <span class="in_grade">일반</span>
+                                            <span class="in_grade" th:text="${user.grade}"></span>
                                         </span>
                                     </span>
                                     <div class="grade_bnenfit">
                                         <div class="user">
-                                            <strong class="name" id="userName" th:text="${user.name}"></strong>
+    										<strong class="name" id="userName" th:text="${user.name}"></strong>
     										<span class="txt">님</span>
-                                        </div>
+										</div>
                                         <div class="benefit">
-                                            <strong class="tit"></strong>
-                                            적립 0.5%
-                                        </div>
+										    <strong class="tit"></strong>
+										    <span th:text="|적립 ${user.membership == 1 ? '10%' : 
+										        user.grade == 'B' ? '1%' : 
+										        user.grade == 'S' ? '3%' : 
+										        user.grade == 'G' ? '5%' : 
+										        user.grade == 'P' ? '8%' : ''}|"></span>
+										</div>
                                     </div>
                                 </div>
                                 <div class="next">
-                                    <a href="/user/mypage/grade" class="total_grade">전체등급 보기</a>
-                                    <a href="/user/mypage/mygrade" class="next_month">다음 달 예상등급 보기</a>
+                                    <a href="/user/mypage/myInterest" class="next_month">나의 관심 분야 설정하기</a>
+                                    <a href="/user/mypage/grade" class="total_grade">등급 별 할인혜택</a>
                                 </div>
                             </div>
 
@@ -118,7 +122,7 @@
                                         <div class="tit">
                                             적립금
                                         </div>
-                                        <a href="#" class="info">
+                                        <a href="/user/mypage/point" class="info">
                                             <span th:if="${user.point != null}" th:text="${user.point + ' 원'}"></span>
    											<span th:if="${user.point == null}">0 원</span>
                                             <img src="https://res.kurly.com/pc/service/common/1905/ico_arrow_56x56.png" alt="자세히보기">
@@ -198,7 +202,7 @@
                                 </thead>
 
                                 <tbody id="addrList">
-								    <tr th:each="shipping, iterStat : ${shippingList}">
+								    <tr th:each="address, iterStat : ${addressList}">
 								        <td class="select type_radio">
 								            <label class="skin_checkbox">
 								                <input type="radio" name="addrNo" checked="">
@@ -213,20 +217,20 @@
 								            <span th:if="${iterStat.index == 0}" class="badge_default">
 								                기본 배송지
 								            </span>
-								            <p class="addr" th:text="${shipping.address01 + ', ' + shipping.address02}"></p>
+								            <p class="addr" th:text="${address.address01 + ', ' + address.address02}"></p>
 								        </td>
 								
-								        <td class="name" th:text="${shipping.receiverName}"></td>
+								        <td class="name" th:text="${address.receiverName}"></td>
 								
-								        <td class="phone" th:text="${shipping.phone}"></td>
+								        <td class="phone" th:text="${address.phone}"></td>
 								
 								        <td>
-								            <span class="delivery star" th:text="${shipping.type}">
+								            <span class="delivery star" th:text="${address.type}">
 								            </span>
 								        </td>
 								
 								        <td>
-								            <form th:action="@{|/user/mypage/shipping/delete/${shipping.ano}|}" method="post" id="deleteForm">
+								            <form th:action="@{|/user/mypage/shipping/delete/${address.id}|}" method="post" id="deleteForm">
 								                <button type="button" class="ico delete" onclick="confirmDelete()">삭제하기</button>
 								            </form>
 								        </td>
