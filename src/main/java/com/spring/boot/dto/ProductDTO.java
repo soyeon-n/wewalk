@@ -1,12 +1,8 @@
 package com.spring.boot.dto;
 
-import java.time.LocalDateTime;
 import java.util.Date;
-import java.util.List;
 
-import com.spring.boot.model.Review;
 import com.spring.boot.model.SiteUser;
-import com.spring.boot.model.UserRole;
 
 import lombok.Builder;
 import lombok.Data;
@@ -29,7 +25,7 @@ public class ProductDTO {
 	
 	private Integer stock;//상품재고
 	
-	private String selling;//상품판매여부(판매중/판매완료)조건식으로 재고가0이면 이값을 F 로 바꾸던가헤야
+	private boolean selling;//상품판매여부(판매중/판매완료)조건식으로 재고가0이면 이값을 F 로 바꾸던가헤야
 	
 	private String image;//대표이미지
 	private String image1;//이미지1
@@ -39,7 +35,7 @@ public class ProductDTO {
 	
 	@Builder
 	public ProductDTO(Long id, SiteUser seller, String category, String pname, 
-			String content, Integer price, Date date, Integer stock, String selling, 
+			String content, Integer price, Date date, Integer stock, boolean selling,  
 			String image, String image1, String image2, String image3) {
 		
 		this.id = id;

@@ -1,15 +1,15 @@
 package com.spring.boot.service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.function.Function;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Function;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,7 +22,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.spring.boot.config.DataNotFoundException;
 import com.spring.boot.config.ProductSpecification;
-import com.spring.boot.config.SiteUserSpecification;
 import com.spring.boot.dao.ProductRepository;
 import com.spring.boot.dao.UserRepository;
 import com.spring.boot.dto.ItemDataForm;
@@ -30,9 +29,8 @@ import com.spring.boot.dto.OrderResultForm;
 import com.spring.boot.dto.PageRequestDTO;
 import com.spring.boot.dto.PageResultDTO;
 import com.spring.boot.dto.ProductDTO;
-import com.spring.boot.dto.SiteUserDTO;
-import com.spring.boot.model.OrderList;
 import com.spring.boot.dto.ProductForm;
+import com.spring.boot.model.OrderList;
 import com.spring.boot.model.Product;
 import com.spring.boot.model.SiteUser;
 
@@ -250,8 +248,8 @@ public class ProductService {
 		
 		return lists;
 	}
-
-	//검색기능을 포함한 상품 리스트(검색 방식에 따라 sorting 다르게 적용)
+	
+	//검색기능을 포함한 상품 리스트(검색 방식에 따라 sorting 다르게 적용 & 카테고리 또는 제품명으로 검색)
 	public PageResultDTO<ProductDTO, Product> getSearchList(PageRequestDTO requestDTO, String sort) {
 	    
 		Pageable pageable;
@@ -284,7 +282,7 @@ public class ProductService {
                 .price(dto.getPrice())
                 .date(dto.getDate())
                 .stock(dto.getStock())
-                .selling(dto.getSelling())
+                .selling(dto.isSelling())
                 .image(dto.getImage())
                 .image1(dto.getImage1())
                 .image2(dto.getImage2())
@@ -303,7 +301,7 @@ public class ProductService {
                 .price(entity.getPrice())
                 .date(entity.getDate())
                 .stock(entity.getStock())
-                .selling(entity.getSelling())
+                .selling(entity.isSelling())
                 .image(entity.getImage())
                 .image1(entity.getImage1())
                 .image2(entity.getImage2())

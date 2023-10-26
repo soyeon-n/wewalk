@@ -1,11 +1,9 @@
 package com.spring.boot.model;
 
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -16,34 +14,28 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
-import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-
-import com.spring.boot.dto.ProductDTO.ProductDTOBuilder;
 
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-
-import lombok.Getter;
-
 import lombok.Setter;
 
 @Getter
 @Setter
 @Entity
+@NamedEntityGraph(
+    name = "Product.withAll",
+    attributeNodes = {
+        @NamedAttributeNode("user"),
+        @NamedAttributeNode("reviewList")
+    }
+)
 @NoArgsConstructor
 public class Product{
 	
@@ -72,7 +64,8 @@ public class Product{
 	
 	private Integer stock;//상품재고
 	
-	private String selling;//상품판매여부(판매중/판매완료)조건식으로 재고가0이면 이값을 F 로 바꾸던가헤야
+	@Column(columnDefinition = "TINYINT(1) default 1")
+	private boolean selling;//상품판매여부(판매중/판매완료)조건식으로 재고가0이면 이값을 F 로 바꾸던가헤야
 	
 	private String image;//대표이미지
 	private String image1;//이미지1
@@ -90,8 +83,9 @@ public class Product{
 
 	@Builder
 	public Product(Long id, String category, String pname,String content,Integer price,
-			Date date,Integer stock,String selling,
-			String image,String image1,String image2,String image3,String image4) {
+			Date date,Integer stock,boolean selling,
+			String image,String image1,String image2,String image3) {
+
 		this.id = id;
 		this.category = category;
 		this.pname = pname;

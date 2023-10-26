@@ -16,7 +16,7 @@
 }
 
 #lnbMenu{
-    padding-top: 26px;
+    padding-top: 45px;
 }
 
 
@@ -96,6 +96,7 @@
 
 #goodsList .list_ability{
     position: relative;
+    padding-top: 26px;
 }
 
 #goodsList .sort_menu{
@@ -161,12 +162,12 @@
 
 
 #goodsList .sort_menu .user_sort .list a.on, #goodsList .sort_menu .user_sort .list a:hover {
-    color: #5f0080;
+    color: #1EC800;
 }
 
 #goodsList .sort_menu .list a:hover, #goodsList .sort_menu .list a.on {
     font-weight: 700;
-    color: #5f0080;
+    color: #1EC800;
 }
 
 #goodsList .sort_menu .user_sort .list a {

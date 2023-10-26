@@ -6,6 +6,8 @@ import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
@@ -21,6 +23,13 @@ public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpec
 	Page<Product> findAll(Pageable pageable);//
 	//pageable 을 돌려줘야함 대신 
 	
+	@EntityGraph(value = "Product.withAll", type = EntityGraph.EntityGraphType.LOAD)
+    Page<Product> findAll(Specification<Product> spec, Pageable pageable);
+
+	//판매자id 로 product상품List 찾는 메소드
+	Page<Product> findByUserId(long userId,Pageable pageable);
+	//매개변수id 랑 pageable 둘다 줘야하나????????
+	//이거아직 안씀
 	
 	//productno로 상품 detail 찾는 메소드 
 	Optional<Product> findById(long productNo);
