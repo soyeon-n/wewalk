@@ -1,9 +1,11 @@
 package com.spring.boot.service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -14,6 +16,7 @@ import com.spring.boot.dao.ProductRepository;
 import com.spring.boot.dao.UserRepository;
 import com.spring.boot.dto.ItemDataForm;
 import com.spring.boot.dto.PaymentDataForm;
+import com.spring.boot.dto.ProductSaleDto;
 import com.spring.boot.model.OrderList;
 import com.spring.boot.model.Product;
 import com.spring.boot.model.SiteUser;
@@ -61,20 +64,28 @@ public class OrderListService {
 		
 	}
 
-	//판매량 상위 8개 제품 데이터 가져오기
+	// 판매량 상위 8개 제품 데이터 가져오기
 	public List<Product> getTop8SellingProducts() {
-	    // Specification을 사용하여 상위 판매 상품의 productno를 조회합니다.
 	    Pageable top8 = PageRequest.of(0, 8);
 	    
-	    //판매량 상위 8개에 대한 데이터를 주문내역
-	    List<OrderList> orderLists = orderListRepository.findAll(OrderListSpecifications.topSoldProducts(), top8).getContent();
+	    // 판매량 상위 8개의 제품 및 판매량 정보 가져오기
+	    Page<Object[]> topSellingProductsPage = orderListRepository.findTopSellingProducts(top8);
+	    
+	    // 상위 판매 제품 ID 리스트 추출
+	    List<Long> productnoList = topSellingProductsPage.getContent().stream()
+	                                        .map(result -> {
+	                                            Product product = (Product) result[0];
+	                                            return product.getId();
+	                                        })
+	                                        .collect(Collectors.toList());
 
-	    List<Long> productnoList = orderLists.stream()
-	                                .map(OrderList::getProductno) //OrderList 엔티티의 productno를 반복문으로 꺼냄
-	                                .collect(Collectors.toList()); //꺼낸 데이터를 넣어줌
-
-	    // 해당 productno로 Product 엔티티에서 상품 정보를 조회합니다.
-	    return productRepository.findByIdIn(productnoList);
+	    // 제품 ID에 해당하는 Product 엔터티 리스트 조회
+	    List<Product> products = productRepository.findByIdIn(productnoList);
+	    
+	    // 판매량 순서대로 Product 엔터티 리스트 정렬
+	    products.sort(Comparator.comparingInt(p -> productnoList.indexOf(p.getId())));
+	    
+	    return products;
 	}
 
 	//페이징

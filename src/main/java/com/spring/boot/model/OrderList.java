@@ -20,6 +20,7 @@ public class OrderList {
 	
 	private String orderNo;
 	
+	//Product랑 ManyToOne으로 묶으면 활용 범위가 넓어질듯
 	private Long productno;
 	
 	private Long sellerid;
