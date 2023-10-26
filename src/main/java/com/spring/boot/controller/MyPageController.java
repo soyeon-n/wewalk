@@ -6,7 +6,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -34,6 +36,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -42,6 +46,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 @RequestMapping("/user")
@@ -624,8 +629,13 @@ public class MyPageController {
 
     	        if ("success".equals(data)) {
     	            // "success" 문자열을 받았을 때 사용자 정보 업데이트
-    	            user.setPaymoney(user.getPaymoney() - 5000); // 5000원 차감
+
+    	        	LocalDate currentDate = LocalDate.now(); // 현재 날짜
+    	            LocalDate membershipEndDate = currentDate.plus(30, ChronoUnit.DAYS); // 30일 후 날짜 계산
+    	        	
+    	        	user.setPaymoney(user.getPaymoney() - 5000); // 5000원 차감
     	            user.setMembership(true);
+    	            user.setMembershipEndDate(membershipEndDate);
 
     	            SiteUser updatedUser = membershipService.save(user);
 
@@ -651,13 +661,49 @@ public class MyPageController {
     }
     
     @GetMapping("/mypage/myInterest")
-    public String myGrade(Model model, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+    public String myInterest(Model model, @AuthenticationPrincipal PrincipalDetails principalDetails) {
     	
     	//나의 관심 분야 설정하기
     	SiteUser user = userService.getUserByUserName(principalDetails.getUsername());
     	model.addAttribute("user", user);
-    
+    	
     	return "myInterest";
+    }
+    
+    @PostMapping("/mypage/myInterest")
+    public String myInterestSave(Model model, @AuthenticationPrincipal PrincipalDetails principalDetails, @RequestParam(value = "interests", required = false) List<String> interests) {
+    	
+    	//나의 관심 분야 설정하기
+    	SiteUser user = userService.getUserByUserName(principalDetails.getUsername());
+    	model.addAttribute("user", user);
+    	
+    	// 선택한 관심 분야 수를 확인하고 최대 3개까지 저장
+        int maxInterests = Math.min(interests.size(), 3);
+        // 기존 값을 초기화하고 새로운 값을 할당
+        user.setInterest1(null);
+        user.setInterest2(null);
+        user.setInterest3(null);
+
+    	if (interests != null) {
+    		
+            for (int i = 0; i < maxInterests; i++) {
+                switch (i) {
+                    case 0:
+                        user.setInterest1(interests.get(0));
+                        break;
+                    case 1:
+                        user.setInterest2(interests.get(1));
+                        break;
+                    case 2:
+                        user.setInterest3(interests.get(2));
+                        break;
+                }
+            }
+        }
+
+        userService.updateUser(user);
+    	
+        return "redirect:/user/mypage/myInterest?s=true";
     }
     
     @GetMapping("/mypage/withdraw")
@@ -672,7 +718,7 @@ public class MyPageController {
     }
     
     @PostMapping("/mypage/withdraw")
-    public String withDraw(@RequestParam("userPassword") String enteredPassword, @AuthenticationPrincipal PrincipalDetails principalDetails, Model model) {
+    public String withDraw(@RequestParam("userPassword") String enteredPassword, @AuthenticationPrincipal PrincipalDetails principalDetails, Model model, HttpServletRequest request, HttpServletResponse response) {
     	
     	SiteUser user = userService.getUserByUserName(principalDetails.getUsername());
 
@@ -683,7 +729,12 @@ public class MyPageController {
         	
             userService.saveUser(user);
             
-            return "/logout";      //추후 수정
+            // 로그아웃 처리
+            SecurityContextLogoutHandler logoutHandler = new SecurityContextLogoutHandler();
+            logoutHandler.setInvalidateHttpSession(true); // 현재 세션 무효화
+            logoutHandler.logout(request, response, SecurityContextHolder.getContext().getAuthentication());
+
+            return "redirect:/withdraw_success";
             
         } else {
         	

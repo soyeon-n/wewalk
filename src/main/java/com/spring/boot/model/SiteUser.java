@@ -3,6 +3,7 @@ package com.spring.boot.model;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -107,6 +108,8 @@ public class SiteUser implements Serializable{
 	@Column(columnDefinition = "TINYINT(1) default 0")
 	private boolean membership;
 	
+	private LocalDate membershipEndDate;
+	
 	//위워크페이 포인트(bigint로 들어가므로 -9,223,372,036,854,775,808부터 9,223,372,036,854,775,807까지의 정수값을 저장할 수 있음)
 	//적립내역 테이블이 필요할 것 같음
 	private Integer point;
@@ -122,14 +125,11 @@ public class SiteUser implements Serializable{
 	    this.paymoney = paymoney;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
-    private Interest interest1;
+    private String interest1;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Interest interest2;
+    private String interest2;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Interest interest3;
+    private String interest3;
     
     private LocalDateTime modifyDate;
 
@@ -179,7 +179,7 @@ public class SiteUser implements Serializable{
     		String provider, String providerId, String name, LocalDateTime createdDate, 
     		LocalDate birthDate, String postcode, String address, String detailAddress, boolean isActivated,
     		String tel, String picture, boolean seller, String intro, Integer paymoney, String grade,
-    		Integer point, Interest interest1, Interest interest2, Interest interest3, LocalDateTime modifyDate) {
+    		Integer point, String interest1, String interest2, String interest3, LocalDateTime modifyDate) {
   		
   		this.id = id;
   		this.role = role;

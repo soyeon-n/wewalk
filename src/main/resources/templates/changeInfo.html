@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="/css/common.css">
     <link rel="stylesheet" href="/css/changeInfo.css">
     <link rel="stylesheet" href="/css/join.css"> 
+    <link rel="stylesheet" href="/header/header.css">
+	<script src="/header/header.js"></script>
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <script src="/js/common2.js"></script>
     <script>
@@ -103,6 +105,7 @@
 <body>
     <div id="container">
         <div id="main">
+        <div th:insert="header :: headerFragment"></div>
             <div id="content">
                 <div id="myPageTop" class="page_aticle mypage_top">
                     <h2 class="blind">마이페이지</h2>
@@ -124,7 +127,7 @@
 										</div>
                                         <div class="benefit">
 										    <strong class="tit"></strong>
-										    <span th:text="|적립 ${user.membership == 1 ? '10%' : 
+										    <span th:text="|적립 ${user.membership == true ? '10%' : 
 										        user.grade == 'B' ? '1%' : 
 										        user.grade == 'S' ? '3%' : 
 										        user.grade == 'G' ? '5%' : 

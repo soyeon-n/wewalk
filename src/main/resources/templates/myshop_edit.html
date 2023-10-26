@@ -10,6 +10,8 @@
  <link rel="stylesheet" href="/css/order_list.css">
  <link rel="stylesheet" href="/css/changeInfo.css">
  <link rel="stylesheet" href="/css/myShopList.css">
+ <link rel="stylesheet" href="/header/header.css">
+ <script src="/header/header.js"></script>
  <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script>
       function chkword_name(obj, maxByte){                      // 상품명 글자수 제한 두기
@@ -167,6 +169,7 @@
 <body>
     <div id="container">
         <div id="main">
+          <div th:insert="header :: headerFragment"></div>
             <div id="content">
                 <div id="myPageTop" class="page_aticle mypage_top">
                     <h2 class="blind">마이페이지</h2>
@@ -188,7 +191,7 @@
 										</div>
                                         <div class="benefit">
 										    <strong class="tit"></strong>
-										    <span th:text="|적립 ${user.membership == 1 ? '10%' : 
+										    <span th:text="|적립 ${user.membership == true ? '10%' : 
 										        user.grade == 'B' ? '1%' : 
 										        user.grade == 'S' ? '3%' : 
 										        user.grade == 'G' ? '5%' : 
@@ -290,7 +293,7 @@
                                     				<a class="" href="/user/mypage/soldout">판매 완료</a>
                                 					</li>
                                 					<li name="cate_gory">
-                                    				<a class="" href="/user/mypage/heart">찜한 상품</a>
+                                    				<a class="" href="/user/mypage/wishlist">찜한 상품</a>
                                 					</li>
                                 					<li name="cate_gory">
                                     				<a class="on" href="">판매상품수정</a>
@@ -359,7 +362,7 @@
 									                                <td>
 									                                    <div>
 									                                        <span>
-									                                            <select id="category" name="category" class="product_category" th:field="*{category}" >
+									                                            <select id="category" name="category" class="product_category" th:field="*{category}">
 									                                                <option value="">- - - - - - - - 선택하세요 - - - - - - - -</option>
 									                                                <optgroup label="디지털 기기" >
 									                                                    <option value="데스크탑">-데스크탑·모니터</option>
@@ -368,6 +371,11 @@
 									                                                    <option value="모바일">-모바일·태블릿</option>
 									                                                    <option value="카메라">-카메라·게임</option>
 									                                                </optgroup>
+									                                                <optgroup label="식품">
+																						<option value="신선식품">-신선식품</option>	
+																						<option value="가공식품">-가공식품</option>
+																						<option value="건강식품">-건강식품</option>
+																					</optgroup>
 									                                                <optgroup label="생활 가전">
 									                                                    <option value="영상">-영상·음향</option>
 									                                                    <option value="주방">-주방</option>
