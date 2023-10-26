@@ -5,12 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>구매 내역</title>
     <link rel="stylesheet" href="/css/reset.css">
-    <link rel="stylesheet" href="/css/common.css">
     <link rel="stylesheet" href="/css/Order_list.css">
     <link rel="stylesheet" href="/css/Shipping_list.css">
     <link rel="stylesheet" href="/header/header.css">
-	<script src="/header/header.js"></script>
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+	<script src="/header/header.js"></script>
     
 </head>
 <body>
@@ -59,7 +58,7 @@
                                             페이 머니
                                         </div>
                                         <a href="/user/mypage/pay" class="info">
-                                            <span th:if="${user.paymoney != null}" th:text="${user.paymoney + ' 원'}"></span>
+                                            <span th:if="${user.paymoney != null}" th:text="${#numbers.formatInteger(user.paymoney, 1, 'COMMA') + '원'}"></span>
    											<span th:if="${user.paymoney == null}">0 원</span>
                                             <img src="https://res.kurly.com/pc/service/common/1905/ico_arrow_56x56.png" alt="자세히 보기">
                                             <span class="date">충전하기</span>
@@ -72,7 +71,7 @@
                                             적립금
                                         </div>
                                         <a href="/user/mypage/point" class="info">
-                                            <span th:if="${user.point != null}" th:text="${user.point + ' 원'}"></span>
+                                            <span th:if="${user.point != null}" th:text="${#numbers.formatInteger(user.point, 1, 'COMMA') + '원'}"></span>
    											<span th:if="${user.point == null}">0 원</span>
                                             <img src="https://res.kurly.com/pc/service/common/1905/ico_arrow_56x56.png" alt="자세히보기">
                                             <span class="date">적립 내역</span>
