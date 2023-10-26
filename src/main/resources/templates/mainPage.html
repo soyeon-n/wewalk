@@ -9,8 +9,8 @@
     <link rel="stylesheet" href="/main/maincss02.css">
     <link rel="stylesheet" href="/main/maincss03.css">
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-    <script defer src="/main/common.js"></script>
-    <script defer src="/main/visual.js"></script>
+    <script src="/main/common.js"></script>
+    <script src="/main/visual.js"></script>
 	<script src="/header/header.js"></script>
     
 </head>
@@ -26,11 +26,9 @@
             <div class="swipe">
                 <ul class="promotions">
                     <li data-index="1" class="slide_list">
-                        <a href="#" class="thumb" ></a>
+                    	<a href="#" class="thumb" th:style="'background-image: url(/img/testimage.png);'"></a>
                     </li>
-                    <li data-index="2" class="slide_list">
-                        <a href="#" class="thumb" th:style="'background-image: url(' + @{/img/aamm.jpg} + ');'"></a>
-                    </li>
+                    
                    
                 </ul>
 
@@ -247,7 +245,7 @@
                             <div class="tit_goods">
                                 <h3 class="tit">
                                     <span class="name">
-                                    이 상품 어때요?
+                                    가장 많이 팔렸어요
                                     </span>
                                     <!-- 아이콘 없는 버전, h3에 링크 없음 -->
                                 </h3>
@@ -430,7 +428,7 @@
                             <h3 class="tit">
                             <!-- 아이콘 있는 버전, h3에 링크 있음 -->
                                 <a href="#" class="name">
-                                    <span class="ico">이벤트 소식</span>
+                                    <span class="ico">관심있을만한 상품</span>
                                 </a>
                             </h3>
                         </div>

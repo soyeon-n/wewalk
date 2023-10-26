@@ -35,7 +35,12 @@
 
  
 $(document).ready(function(){                                  // 브라우저가 로딩이 됐을때 아래 코드 실행!
-
+	
+	$('#go-top').bind('click', function() {
+    $('html, body').animate({scrollTop: '0'}, 680);
+  	});
+	
+	
 	if($(window).width() <= 1900 && $(window).width() > 1050){     // 만약의 현재 브라우저 창의 크기가 1900보다 작고 1050보다 크면
 		$('#visual').css('width', $(window).width());              // visual의 width 값을 현재 브라우저랑 맞춤
 
