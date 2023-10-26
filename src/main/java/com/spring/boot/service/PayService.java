@@ -34,7 +34,7 @@ public class PayService {
 		pay.setUser(user);
 		pay.setPayMoney(-point);
 		pay.setPayDate(new Date());
-		pay.setType(name);
+		pay.setType(name + " 구매");
 		payRepository.save(pay);
 	}
 	

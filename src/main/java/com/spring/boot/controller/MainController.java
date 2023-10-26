@@ -1,6 +1,7 @@
 package com.spring.boot.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.data.domain.Pageable;
@@ -21,9 +22,11 @@ import org.thymeleaf.spring5.SpringTemplateEngine;
 
 import com.spring.boot.dto.PageRequestDTO;
 import com.spring.boot.dto.PrincipalDetails;
+import com.spring.boot.service.OrderListService;
 import com.spring.boot.service.ProductService;
 
 import com.spring.boot.dto.PrincipalDetails;
+import com.spring.boot.model.Product;
 import com.spring.boot.model.SiteUser;
 import com.spring.boot.service.UserService;
 
@@ -37,7 +40,7 @@ public class MainController {
 	private final UserService userService;
 	private final ProductService productService;
 	private final SpringTemplateEngine templateEngine;
-
+	private final OrderListService orderListService;
 	
 	@GetMapping("/main")
 	public String mainPage(@AuthenticationPrincipal PrincipalDetails principalDetails, Model model) {
@@ -50,7 +53,9 @@ public class MainController {
 		
 		}
 		
-		//프로덕트에서 검색해서 가장많이팔린거 8개 리스트 들고감 model.add
+		//프로덕트에서 검색해서 가장많이팔린거 8개 리스트 들고감
+		List<Product> productListTop8 = orderListService.getTop8SellingProducts();
+		model.addAttribute("productListTop8",productListTop8);
 		
 		return "mainPage";
 	}

@@ -1,6 +1,7 @@
 package com.spring.boot.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,7 +73,8 @@ public class OrderListService {
 	    List<Long> productnoList = orderLists.stream()
 	                                .map(OrderList::getProductno) //OrderList 엔티티의 productno를 반복문으로 꺼냄
 	                                .collect(Collectors.toList()); //꺼낸 데이터를 넣어줌
-
+	    Collections.reverse(productnoList);
+	    
 	    // 해당 productno로 Product 엔티티에서 상품 정보를 조회합니다.
 	    return productRepository.findByIdIn(productnoList);
 	}

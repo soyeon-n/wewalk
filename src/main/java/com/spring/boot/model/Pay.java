@@ -37,15 +37,5 @@ public class Pay {
     
     @Column(name = "type")
     private String type;
-    
-    /* 아임포트 결제시 필요한 컬럼
-    @Column(nullable = false, length = 100)
-	private String impUid;
-	
-	@Column(nullable = false, length = 100)
-	private String merchantUid;
-	*/
-
-    
 
 }
