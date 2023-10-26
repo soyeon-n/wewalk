@@ -249,7 +249,7 @@ public class UserService {
 	 public int updateAfterOrder(SiteUser user, int point, int payMoney, int amount, int accumulate) {
 		 
 		 if(!user.getGrade().equals("P")) {
-			 List<OrderList> lists = orderListRepository.findByUserid(user.getId());
+			 List<OrderList> lists = orderListRepository.findByUser(user);
 			 
 			 int purchaseAmount = 0;
 			 
