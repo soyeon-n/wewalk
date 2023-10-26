@@ -737,7 +737,7 @@ public class MyPageController {
             logoutHandler.setInvalidateHttpSession(true); // 현재 세션 무효화
             logoutHandler.logout(request, response, SecurityContextHolder.getContext().getAuthentication());
 
-            return "redirect:/withdraw_success";
+            return "redirect:/user/mypage/withdraw_success";
             
         } else {
         	
