@@ -118,10 +118,10 @@ public class CustomOAuthSevice extends DefaultOAuth2UserService{
         	SiteUser existingUser = userEntity.get();  	        	
         	
         	if(existingUser.getRoleKey().equals("OAUTH")) {
-        		System.out.println(existingUser.getRole().getTitle());
-        	}
-        	
-        	System.out.println("기존 소셜 로그인 회원");
+        		System.out.println("회원가입이 필요한 회원");
+        	}else {        		
+        		System.out.println("기존 소셜 로그인 회원");
+        	}        	
         	
         	existingUser.setUserName(userName);
         	existingUser.setPicture(picture);

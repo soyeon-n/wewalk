@@ -1,135 +1,60 @@
-#main {
-    border-bottom: 1px solid #f7f7f7;
+.mb-3 {
+	width: 450px;
 }
 
-#content {
-    min-width: 1050px;
-    padding-bottom: 120px;
-}
-
-#header, #container, #content {
-    position: relative;
-}
-
-.page_aticle {
-    width: 1050px;
-    margin: 0 auto;
-}
-
-.member_join {
-    width: 640px;
-    margin: 0 auto;
-}
-
-.member_join .field_head .tit {
-    padding-top: 64px;
-    font-weight: 900;
-    font-size: 30px;
-    color: #333;
-    line-height: 40px;
-    text-align: center;
-    letter-spacing: -.5px;
-}
-
-.member_join .field_head .sub {
-    padding: 23px 0 10px;
+.password1_txt_guide {
+    /* display: none; */
+    padding: 10px 0 9px;
     font-size: 12px;
     color: #666;
-    line-height: 17px;
-    text-align: right;
+    line-height: 18px;
+    word-break: break-all;
+    letter-spacing: -.1px;
+    clear: both;
 }
 
-.member_join .field_head .sub .ico {
-    padding-right: 2px;
-    color: #ee6a7b;
-}
-
-.member_join .tbl_comm {
-    width: 100%;
-    border-top: 2px solid #333;
-}
-
-table {
-    border-collapse: collapse;
-    border-spacing: 0;
-}
-
-.member_join .tbl_comm .fst th {
-    padding-top: 29px;
-}
-
-.member_join th {
-    width: 159px;
-    padding: 20px 0 0 20px;
-    font-weight: 700;
-    font-size: 14px;
-    color: #333;
-    line-height: 20px;
-    vertical-align: top;
-    text-align: left;
-}
-
-.member_join th .ico {
-    color: #ee6a7b;
-}
-
-.screen_out {
+.password1_txt_guide .txt_case1 .txt_case2{
     display: block;
-    overflow: hidden;
-    position: absolute;
-    left: -9999px;
-    width: 1px;
-    height: 1px;
-    font-size: 0;
-    line-height: 0;
-    text-indent: -9999px;
 }
 
-.member_join .tbl_comm .fst td {
-    padding-top: 19px;
+.password2_txt_guide {
+    /* display: none; */
+    padding: 10px 0 9px;
+    font-size: 12px;
+    color: #666;
+    line-height: 18px;
+    word-break: break-all;
+    letter-spacing: -.1px;
+    clear: both;
 }
 
-.member_join td {
-    padding: 10px 0;
-    border-top: 0;
-    font-size: 14px;
-    vertical-align: top;
-    text-align: left;
+.password2_txt_guide .txt_case1 {
+    display: block;
 }
 
-.member_join input[type=text], .member_join input[type=password], .member_join input[type=email] {
-    width: 332px;
-}
-
-.type_form textarea, .type_form input[type=text], .type_form input[type=password], .type_form input[type=email] {
-    height: 44px;
-    padding: 0 14px;
-    border: 1px solid #ccc;
-    font-size: 14px;
-    color: #333;
-    line-height: 20px;
-    border-radius: 3px;
-    background: #fff;
-    outline: none;
-    vertical-align: top;
-}
-
-.type_form .btn.default {
-    border: 1px solid #1EC800;
-    background-color: #fff;
-    color: #1EC800;
-}
-
-#main .member_join .btn {
+.type_form .square .txt:before {
+    content: '\2022';
     display: inline-block;
-    width: 120px;
-    margin-left: 5px;
-    vertical-align: top;
+    padding: 0 4px 0 2px;
+    font-size: 12px;
+    vertical-align: 0;
 }
 
-.type_form .btn {
+.btn.default {
+    border: 1px solid #5f0080;
+    background-color: #fff;
+    color: #5f0080;
+    transition: background-color 0.3s, color 0.3s;  /* �ε巯�� ��ȯ ȿ���� ���� �߰� */
+}
+
+.btn.default:hover {
+    background-color: #5f0080;
+    color: #fff;
+}
+
+/* .btn {
     display: block;
-    width: 100%;
+    width: 120px;
     height: 44px;
     border: 0;
     border-radius: 3px;
@@ -240,7 +165,7 @@ table {
 }
 
 .type_form .btn.active {
-    border: 1px solid #1EC801;
+    border: 1px solid #1EC800;
     background-color: #1EC800;
     color: #fff;
 }

@@ -9,7 +9,7 @@
 		</div>
 	</div>
 
-	<form th:action="@{/user/requestSeller}" th:object="${sellerRequestForm}"
+	<form th:action="@{/user/mypage/requestSeller}" th:object="${sellerRequestForm}"
 		name="myForm" method="post" onsubmit="return sendIt();" enctype="multipart/form-data">
 		
 		<!-- html 보안 코드 -->
@@ -126,7 +126,7 @@
 		    }
 		});
 		</script>
-		<button type="submit" class="btn btn-primary" style="border: 1px solid #5f0080; background-color: #5f0080; color: #fff; display: block;">판매자 요청</button>
+		<button type="submit" class="btn btn-primary" style="border: 1px solid #5f0080; background-color: #1EC800; color: #fff; display: block;">판매자 요청</button>
 	</form>
 <script type="text/javascript">
 

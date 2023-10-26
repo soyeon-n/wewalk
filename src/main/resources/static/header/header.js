@@ -8,6 +8,11 @@ function goSignup(){
 	window.location.href = '/auth/signup';
 }
 
+function godesktop(){
+alert('dd');
+//	window.location.href = '/wewalk/search?keyword=c_데스크탑';
+}
+
 $(document).ready(function(){  
 //마우스 hover 하면 안내메세지 보이게하기
 	const hover = document.querySelector('.location_notice');
