@@ -10,7 +10,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.spring.boot.model.Product;
 import com.spring.boot.model.Question;
 
-public interface QuestionRepository extends JpaRepository<Question, Integer>{
+public interface QuestionRepository extends JpaRepository<Question, Long>{
 	
 	//특정상품의 모든 질문 출력
 	Page<Question> findByProduct(Product product,Pageable pageable);//

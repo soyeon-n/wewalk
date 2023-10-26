@@ -165,7 +165,7 @@ public class ReviewService {
 				pageable.getPageSize(),Sort.by(sorts));
 
 
-		return reviewRepository.findByUserId(siteUser, pageable);
+		return reviewRepository.findByUser(siteUser, pageable);
 
 
 
@@ -174,7 +174,7 @@ public class ReviewService {
 
 
 	//하나의 리뷰=id리뷰글번호 가져오기 
-	public Review getOneReview(Integer id) {
+	public Review getOneReview(long id) {
 		Optional<Review> opreview = reviewRepository.findById(id);
 
 		if(opreview.isPresent()) {

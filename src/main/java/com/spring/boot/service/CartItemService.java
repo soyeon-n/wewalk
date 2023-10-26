@@ -55,7 +55,7 @@ public class CartItemService {
 		cartItemRepository.deleteById(cartItemId);
 		
 	}
-	
+
 	@Transactional
 	public void deleteBuyItems(PaymentDataForm paymentDateForm, SiteUser user) {
 		
@@ -70,4 +70,36 @@ public class CartItemService {
 		
 	}
 	
+
+	
+	//은별 장바구니에 담아버리기 
+	public void addCartItem(Product product,Integer count,Cart cart) {
+		
+		CartItem cartItem = new CartItem();
+		
+		cartItem.setProduct(product);//물건번호
+		cartItem.setCount(count);//갯수 넣기 
+		cartItem.setCart(cart);
+		//siteuser 정보도 넣어야 하는데 ??? 
+		cartItemRepository.save(cartItem);
+		
+	}
+	//장바구니에 내가담으려는 product가 있는지 검색
+	public boolean searchProduct(Product product,Cart cartId) {
+		//optional 해야 할것같음 
+		
+		Optional<CartItem> op = cartItemRepository.findByCartAndProduct(cartId, product);
+		
+		if(op.isPresent()) {
+			return true;
+		}else {
+			return false;
+		}
+		
+		
+		
+	}
+	
+	
+
 }

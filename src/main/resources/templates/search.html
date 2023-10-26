@@ -1,5 +1,7 @@
+
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">                 <!-- list 가격 표시하는 곳에 intcomma 로 변경해야 겠음.-->
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -27,8 +29,10 @@
 </head>
 <body class="noBody">
     <div id="container" class="container">
+
         <input type="hidden" id="sort" th:value="${sort} == null ? 'newest' : ${sort}" />
 		
+
         <div id="main">
             <div id="content">
                 <div class="page_aticle">
@@ -62,16 +66,19 @@
                                 <li name="cate_gory">
                                     <a class=>콩나물·버섯</a>
                                 </li>
+
                                 <!-- <li class="bg" style="top: 78px; width: 68px; left: 29px; opacity: 1;"></li> -->                                                                
                             </ul>
                         </div>
                     </div>
+
 
                     <div id="goodsList" class="page_section section_goodslist">
                         <div class="list_ability">
                             <div class="sort_menu">
                                 <div class>
                                     <div class="select_type user_sort">
+
                                         <a class="name_select" th:text="${sortText}"></a>
 
                                         <ul class="list checked">
@@ -169,6 +176,7 @@
                                 </a>                                
                                 <a th:style="${paging.number == paging.end} ? 'display:none'" th:href="@{/wewalk/search(page=${paging.number+1}, keyword=${keyword}, sort=${sort})}" class="layout-pagination-button layout-pagination-next-page">다음 페이지로 가기</a>
                                 <a th:style="${paging.number == paging.end} ? 'display:none'" th:href="@{/wewalk/search(page=${paging.totalPages}, keyword=${keyword}, sort=${sort})}" class="layout-pagination-button layout-pagination-last-page">맨 끝 페이지로 가기</a>
+
                                 
                             </div>
                         </div>

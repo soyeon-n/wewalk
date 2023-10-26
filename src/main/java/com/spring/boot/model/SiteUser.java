@@ -70,14 +70,14 @@ public class SiteUser implements Serializable{
 	private String password;
 
 	@Column(unique = true)
-	private String userName;
+	private String userName;//계정명
 	
 	private String provider; //어떤 OAuth인지(google, naver 등)
 	
 	@JsonIgnore
 	private String providerId; // 해당 OAuth 의 key(id)
 	
-	private String name;
+	private String name;//실명
 
 	//생성 일자(생성일시 추가하는 코드 추가 필요)
 	@Column(nullable = false)

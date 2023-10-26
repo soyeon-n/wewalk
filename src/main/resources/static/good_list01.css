@@ -781,6 +781,7 @@ button{
     border: 0;
     border-radius: 3px;
     background: 0 0;
+    color: #1EC800;
 }
 
 #cartPut .cart_option .group_btn .btn_type2 .txt_type {
@@ -812,6 +813,7 @@ button{
     border-radius: 3px;
     font-size: 0;
     text-align: center;
+    
 }
 
 
@@ -824,7 +826,9 @@ button{
 }
 
 .btn_type1 {
-    border: 1px solid #5f0081;
+    border: 1px solid #1EC800;
+    //#1EC800 #5f0081
+    
     
 }
 

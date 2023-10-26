@@ -1,17 +1,61 @@
+
+
 window.addEventListener('DOMContentLoaded',function(){ 
 
 
-
-
-
-    $(document).ready(function() {
+/*
+    $(document).ready(function(){
+    
+		    $('#toggleButton').click(function () {
+		    		
+		    		alert('dd');
+		            //$('#contentToToggle').toggle(); // This will toggle the visibility of the content
+		            var conetnt = document.getElementById('contentToToggle');
+		            
+		            if(btn1.style.display != 'none') {
+		                btn1.style.display = 'none';
+		              }
+		            else {
+		                btn1.style.display = 'block';
+		              }
+		              
+		       });      여기있는거만 작동해 지우면 안됨 */
+		       
+		       
+		 
+		 //이게 게시글 toggle 출력하는 2버전 스크립트 
+		 $(document).ready(function() {
+		    $('[id^=toggleButton_]').click(function () {
+		        alert('ffff');
+		        var questionId  = this.id.split('_')[1];// Extract the question ID from the button's ID
+		        alert(questionId);
+		        var contentElementId = $('#contentToToggle_' + questionId); //버튼과 id 합쳐 
+		        contentElementId.toggle();
+		         
+		        var answer = $('.answertest_'+answerId).text();//이러면 모든 answer 가 온다고
+		        alert(answer);
+		        answer.toggle();
+		        
+		        
+		    });
+		      
+			//var answer = $('#answertest').val();
+			//$('.hideans').click(function(){
+			
+			 
+			//}	         
+    
+    
+    
+    
+    
 
        
 
         var start_price = $('.goods_price .dc_price').text()  // 개당가격 표시할 변수!
         
         var number = $('.inp').val();                  //구매 수량을 조절할 변수 ! (inp클래스 초기 value값은 1로 헸음! 시작 수량이 1이니깐)
-        var cost = $('.goods_price input').val(); ;    // 상품의 가격을 설정해줘야됨.  goods_price안에있는 input의 value값에 탬플릿 언어로 반찬 가격을 불러와야됨 
+        var cost = $('.goods_price input').val();     // 상품의 가격을 설정해줘야됨.  goods_price안에있는 input의 value값에 탬플릿 언어로 반찬 가격을 불러와야됨 
         $('.emph').text((number*cost)/20 + '원 적립');  // 첫 화면의 emph(적립금) 은  반찬가격(cost)의 0.5%로 출력
         $('.price .num').text(start_price);             // 첫 화면의 총 상품금액 (.price 안에 .num) 에다가 초기 가격을 출력!
         $('.emphh').text((number*cost)/20 + '원 적립'); //첫 화면의 윗쪽 1개당 적립금(변하지않는 값) 출력!
@@ -23,9 +67,9 @@ window.addEventListener('DOMContentLoaded',function(){
             if(number >= 0){                        // 만약에 수량이 0보다 많으면 ?
                 number--;                          // 목적대로 수량을 1 깍음
                 $(".inp").val(number);             // 깍았으니 수량클래스(.inp)의 값을 바꿔줌
-                // if(number == 0){                   // 수량이 0 이면 0원 출력!
-                //     $(".num").text(0);
-                // }
+                 if(number == 0){                   // 수량이 0 이면 0원 출력!
+                     $(".num").text(0);
+                 }
 
                 // else if(number*cost < 1000){       // 만약에 가격x수량 했을때 1000원 이하면?   ( 가격 표시할때 콤마로 구별하기 위해서 넣었음 ex) 1,000   1,000,000 이런식으로)
                 //     $(".num").text(number*cost);   // 그냥 가격x수량으로 출력   
@@ -61,29 +105,21 @@ window.addEventListener('DOMContentLoaded',function(){
         $('.up').click(function(){            // 수량올리기 버튼 클릭하면?
             number++;// 수량을 1 올려줌
             $(".inp").val(number);  // 올렸으니 수량클래스(.inp)의 값을 바꿔줌
-            // if((number*cost % 1000) == 0){  //만약에 수량x가격이 1000으로 나눴을떄 0 이면(ex 3000 4000 5000) 몫 + 콤마 + 000 을 붙임
-            //     $(".num").text(Math.floor(number*cost/1000) + ',' + '000');
-            // }
-
-            // else if(number*cost < 1000){  // 만약에 수량x가격이 1000이하면 그냥 수량x가격으로 추력
-            //     $(".num").text(number*cost);
-            // }
-    
-            // else{  // 그외 나머지는 수량x가격의 몫+ 콤마 + 나머지 로 출력
-            //     $(".num").text(Math.floor(number*cost/1000) + ',' + number*cost%1000);
-                
-    
-            // }
+            
             $(".num").text(comma(number*cost));
     
-    
-    
-            
             $('.emph').text(comma((number*cost)/20) + '원 적립');  // 마찬가지로 적립금 은 가격x수량x0.05로 출력
             
     
             
         });
+        
+        
+        
+        
+        
+        
+        
 
         // 이미지 무한 슬라이드 시작
         var imgs;     // 사용할 이미지들
@@ -118,20 +154,16 @@ window.addEventListener('DOMContentLoaded',function(){
 
         function slide_right() { // 오른쪽 슬라이드 함수  
             if(img_count > 0){
+                
                 $('.__slide-wrapper ul').stop().animate({
                     "left": (-180) + "px"
                 }, 500, function(){ 
                     $('.__slide-wrapper ul li').first().appendTo('.__slide-wrapper ul'); // 다른부분은 위에랑 같고 이부분은 appendTo(마지막에 추가하는 함수)로 첫번째이미지를 마지막에 추가함
-                    $('.__slide-wrapper ul').css("left","0px");
+                    $('.__slide-wrapper ul').css("left",(-180) + "px");
                 })
             }
             return false;
         }
-
-
-
-       
-
 
 
 
@@ -153,17 +185,55 @@ window.addEventListener('DOMContentLoaded',function(){
             return str;
          
         }
+        
+        
+ 
 
-
+        
+        
+        
+        
+        
+        
+        //장바구니에담기버튼 btn_type1
+        $('.btn_type1').click(function(){
+             //함수실행. 구매수량 만큼 product 를 cart 테이블에 담기 
+             go_cart();
+        });
+        
+        
+        function go_cart() {//담은수량 inp 의 값을 가지고 db에 간다 
+        
+         var number = $('.inp').val();
+        //var productNo = element.getAttribute("data-productNo");
+        var productNo = $('#productNo').val();
+            //number 의 값을 가지고              
+               $.ajax({
+               url:'/product/addCart',
+               method:'POST',
+               data:{
+                   number : number,//상품수량
+                   productNo : productNo//상품번호
+               },
+               success: function(response) {
+                    alert(productNo + '상품번호 가 장바구니에 담겼습니다.');
+               
+                },
+                error: function(){
+                //badrequest
+                alert(productNo + '상품이 이미 장바구니에 담겨있습니다.');
+                
+                //overstock 인경우 
+                
+                
+                //내가 판매자인경우 
+                }
+            });
+            
+        
+        }
+    })
+});
 
         
 
-
-
-
-
-
-
-    });
-
-});

@@ -72,5 +72,23 @@ public class CartService {
 		return cart.getCartItemList();
 		
 	}
+	//은별 
+	//로그인된 유저 정보로 내카트 id = cart찾기
+	
+	public Cart getOneCart(SiteUser userName) {
+		
+		long userId=userName.getId();
+		Cart cart = cartRepository.findByUserId(userId);
+		
+		return cart;
+		
+		
+	}
+	
+	
+	
+	
+	
+	
 	
 }

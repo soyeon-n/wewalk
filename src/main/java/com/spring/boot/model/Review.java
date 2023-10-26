@@ -28,11 +28,11 @@ public class Review {
 	
 	@Id//primaryKey. 
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;//리뷰글번호PK 알아서 1씩 증가함 
+	private long id;//리뷰글번호PK 알아서 1씩 증가함 
 	
 	@ManyToOne
 	private SiteUser user;//리뷰작성자 = 여기에 현재로그인된 id 를 set 해야함  
-	//왜 연결이 안도ㅐ 지 ㅜㅜ 
+	 
 	
 	@ManyToOne
 	private Product product;

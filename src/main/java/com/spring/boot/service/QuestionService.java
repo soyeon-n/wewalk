@@ -30,9 +30,12 @@ public class QuestionService {
 		List<Sort.Order> sorts = new ArrayList<Sort.Order>();
 		sorts.add(Sort.Order.desc("Date"));
 				
+		//먼가여기를 기존의 페이징을 쓰면 안될거같은데,,,,,,,
 		//pageable 페이징 추가
 		pageable = PageRequest.of(pageable.getPageNumber()<=0 ? 0 : pageable.getPageNumber()-1,
 				pageable.getPageSize(),Sort.by(sorts));
+		
+		
 		
 		return questionRepository.findByProduct(product, pageable);
 		
@@ -40,7 +43,7 @@ public class QuestionService {
 	
 	
 	//하나의 question 가져오기
-	public Question getOneQuestion(Integer id) {
+	public Question getOneQuestion(long id) {
 		
 		Optional<Question> op = questionRepository.findById(id);
 		
@@ -64,12 +67,14 @@ public class QuestionService {
 		questionRepository.save(question);
 		
 	}
-	//답변작성시 question 이 
-	/*
-	public void ansDone(String true, Question question) {
-		Question question = 
-		question.setd
-	}*/
+	//답변작성시 question 답변작성완료로 바뀌게되는것 추가
+	//여기에 답글이 되는 question 이 들어와야함 
+	public void ansDone(Question question) {
+		
+		question.setDone(true);
+		
+		questionRepository.save(question);
+	}
 	
 	
 	

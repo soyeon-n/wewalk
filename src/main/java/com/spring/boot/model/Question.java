@@ -26,7 +26,7 @@ public class Question {//wewalk
 	@Id//primaryKey. 
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	//@ColumnDefault("1")
-	private Integer Id;//문의글 번호
+	private long id;//문의글 번호
 
 	//private SiteUser author;//=author_ID
 	@ManyToOne

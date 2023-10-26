@@ -9,8 +9,8 @@
     <link rel="stylesheet" href="/mykurly_order_list.css">
     <link rel="stylesheet" href="/mykurly_review.css">
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-    <script src="./js/mykurly.js"></script>
-    <script src="../main/js/common.js"></script>
+    <script src="/mykurly.js"></script>
+    <script src="/common.js"></script>
 </head>
 <body>
     <div id="container">
@@ -31,7 +31,7 @@
                                     </span>
                                     <div class="grade_bnenfit">
                                         <div class="user">
-                                            <strong class="name">멋쟁이</strong>
+                                            <strong class="name" th:text="${user.name}">멋쟁이</strong>
                                             <span class="txt">님</span>
                                         </div>
                                         <div class="benefit">
@@ -151,7 +151,7 @@
                         </div>
 
                         <div id="viewBeforeList" class="before_view" style="display:block;">
-                            <ul class="list_before">
+                            <ul class="list_before" th:if="${paging.isEmpty}">
                                 <li class="no_data">
                                     작성가능 후기 내역이 없습니다.
                                 </li>
@@ -180,8 +180,9 @@
                                         <a class="desc_after">
                                             <span class="subject" th:text="${review.title}">
                                                 그냥 리코타 치즈 ㅇㅇ
-                                                <span class="date" th:text="${#dates.format(review.date,'yyyy-MM-dd HH:mm:ss')}"  >
-                                                    20.05.26 작성
+                                                <span class="date">
+                                                    작성일
+                                                    <a th:text="${#temporals.format(review.date,'yyyy-MM-dd')}"></a> 
                                                     <!-- 지금 date 타입 출력안되고있음?????????  -->
                                                 </span>
                                                 
@@ -226,11 +227,12 @@
                                         </a>
 
                                         <div class="btn_after">
-                                            <button type="button" class="btn_help">도움이 돼요? 0</button>
-                                            <br/>
+                                        <!--  
+                                            <button type="button" class="btn_help">도움이 돼요? 0</button>-->
+                                            
                                             
                                             <a th:href="@{|/review/delete/${review.id}|}" th:text="리뷰삭제"></a>
-                                            
+                                            <br/>
                                             <a th:href="@{|/review/modify/${review.id}|}" th:text="리뷰수정"></a>
                                             
                                             <a class="btn btn_modify">수정</a>
@@ -240,6 +242,7 @@
                                     </div>
                                 </li>
                                 <!-- 한 단락 반복 끝  -->
+                                <!-- 
 
                                 <li>
                                     <div class="tit_after">
@@ -286,8 +289,9 @@
 
                                         </div>
                                     </div>
-                                </li>
+                                </li> -->
                                 <!-- 한 단락 반복 끝  -->
+                                 
 
                                 
                                 
@@ -297,7 +301,6 @@
                         </div>
                         <!-- 여기까지가 게시물 반복문 -->
                         <div th:if="${!paging.isEmpty()}">
-	
 							<nav aria-label="Page navigation">
 							     <ul class="pagination justify-content-center"
 							          th:with="startNumber=${(paging.number/10)}*10+1, 
@@ -307,38 +310,38 @@
 							          <!-- << -->
 							          <!-- th:href="@{|/question/list/${product.id}?page=${page}|}" th:text="${page}" -->
 							          <li>
-							          <a class="page-link" th:href="@{/review/mylist?page=1}">&laquo;</a>
+							          <a class="layout-pagination-button layout-pagination-first-page" 
+							          th:href="@{/review/mylist?page=1}">&laquo;</a>
 							          <!-- <a class="page-link" th:href="@{/question/list?page=1}">&laquo;</a> -->
+							          <!-- < -->
+							          
+							          
+							          <a class="layout-pagination-button layout-pagination-prev-page" 
+							          th:href="@{/review/mylist(page=${paging.number})}" th:style ="${paging.first}?'display:none'">
+							          &lsaquo;</a>
+							          
 							          </li>
 							          
-							          <!-- < -->
-							          <li class="page-item" th:style ="${paging.first}?'display:none'">
-								          <a class="page-link" th:href="@{/review/mylist(page=${paging.number})}">
-								          &lsaquo;
-								          
-								          </a>
-							          </li>
+							          
+						          
 							          <!-- 1 2 3 4 5 -->
-							          <li class="page-item" th:each="page : ${#numbers.sequence(startNumber,endNumber)}"
+							          <li class="layout-pagination-button layout-pagination-number"  th:each="page : ${#numbers.sequence(startNumber,endNumber)}"
 							              th:classappend="(${page}==${paging.number}+1) ? 'active'">
-							              <a class="page-link" th:href="@{/review/mylist(page=${page})}" th:text="${page}">
-							              
+							              <a class="layout-pagination-button layout-pagination-number" 
+							              th:href="@{/review/mylist(page=${page})}" th:text="${page}">
+							              sds
 							              </a>
 							          </li>
-							          <!-- > -->
-							          
-							          <li class="page-item" th:style="${paging.last}?'display:none'">
-								          <a class="page-link" th:href="@{/review/mylist(page=${paging.number}+2)}">
-								          &rsaquo;
+							          <!-- > -->							          
+							          <li th:style="${paging.last}?'display:none'">
+								          <a class="layout-pagination-button layout-pagination-next-page" 
+								          th:href="@{/review/mylist(page=${paging.number}+2)}" >
 								          
 								          </a>
-							          </li>
-							          
-							          <!-- >> -->
-							          <li>
-							          <a class="page-link" th:href="@{/question/mylist(page=${paging.totalPages})}">
-							          &raquo;
-							          </a>
+								          <!-- >> -->
+								          <a class="layout-pagination-button layout-pagination-last-page" 
+									          th:href="@{/review/mylist(page=${paging.totalPages})}"></a>
+								          
 							          </li>
 							          
 							     

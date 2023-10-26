@@ -9,22 +9,21 @@
    
     <link rel="stylesheet" href="/good_view01.css">
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-    <script src="./js/good_view01.js"></script>
-    <script src="./js/common.js"></script>
+    <script src="/good_view.js"></script>
+    <script src="/common.js"></script>
     
     
-   <!-- review script css 적용위해 상단에 넣음  -->
+   <!-- review script css 적용위해 상단에 넣음 --> 
     <link rel="stylesheet" href="/mykurly_order_list.css">
     <link rel="stylesheet" href="/mykurly_review.css">
-    <script src="./js/mykurly.js"></script>
-    <script src="../main/js/common.js"></script>
+    <script src="/mykurly.js"></script>
+    
     
     <!-- qna css -->
-    <link rel="stylesheet" href="/reset.css">
-    <link rel="stylesheet" href="/common.css">
+    
     <link rel="stylesheet" href="/good_review_list.css">
-    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-    <script src="./js/good_view.js"></script>
+    
+    
     
     
     
@@ -332,6 +331,13 @@
         </div>
 
 
+
+
+
+
+<!-- productlist 시작 -->
+
+
         <div id="main">
             <div id="content" style="opacity: 1;">
                 <div class="section_view">
@@ -346,17 +352,31 @@
                                     <button id="btnShare">공유하기</button>
                                 </span>
                                 <strong class="name" th:text="${product.pname}">[김구원선생] 무농약 콩나물 200g</strong>
-                                <span class="short_desc" >무농약 콩으로 재배한 콩나물(1봉/200g)</span>
+                                  <input type="hidden" th:value="${product.id}" id="productNo">
+                                  <!-- 이걸로 값을 넘긴다 ajax --> 
+                                                                <span class="short_desc" th:text="${product.content}">무농약 콩으로 재배한 콩나물(1봉/200g)</span>
                             </p>
                             <p class="goods_price">
                                 <span class="position">
                                     <span class="dc">
-                                        <span class="dc_price" th:text="${product.price}">
-                                            1,300
-                                            <input type="hidden" value=1300>
+                                        <span class="dc_price" >
+                                        <!--  -->
+                                        <b  
+                                        th:text="${#numbers.formatInteger(product.price, 1, 'COMMA')}"></b> 
+                                        
+                                        
+                                            
+                                            <input type="hidden" th:value="${product.price}" >
+                                            <!-- 여기에 가격을 넣어줘여한다는데 style="display: none;" 
+                                            <span class="ea" th:text="${#numbers.formatInteger(item.value, 1, 'COMMA') + ' 원'}">-->
+                                            
+                                            
+                                            
+                                            
                                             
                                         </span>
                                         <span class="won">원</span>
+                                        
                                     </span>
                                     
                                 </span>
@@ -429,7 +449,7 @@
                                         <div class="price">
                                             <strong class="tit">총 상품금액 :</strong>
                                             <span class="sum">
-                                                <span class="num">1,300</span>
+                                                <span class="num" th:text="${product.price}">1,300</span>
                                                 <span class="won">원</span>
                                             </span>
                                         </div>
@@ -444,8 +464,9 @@
                                 </div>
                                 <div class="group_btn off">
                                     <div class="view_function">
-                                        <button type="button" class="btn btn_save">늘 사는 것</button>
+                                        <button type="button" class="btn btn_save">찜이라기에는 버튼이안움직여</button>
                                     </div>
+                                    <!-- 장바구니 담기버튼  -->
                                     <span class="btn_type1">
                                         <button type="button" class="txt_type">장바구니 담기</button>
                                     </span>
@@ -455,9 +476,9 @@
                     </div>
                 </div>
                 <div class="layout-wrapper goods-view-area">
-                    <div class="goods-add-product">
-                        <h3 class="goods-add-product-title">
-                            RELATED PRODUCT
+                    <div class="goods-add-product" >
+                        <h3 class="goods-add-product-title" th:text="${seller.name}+' 님이 판매하는다른 상품'">
+                            SELLER'S RELATED PRODUCT
                         </h3>
                         <div class="goods-add-product-wrapper __slide-wrapper" data-slide-item="5">
                             <button class="goods-add-product-move goods-add-product-move-left __slide-go-left">
@@ -466,49 +487,27 @@
                             <button class="goods-add-product-move goods-add-product-move-right __slide-go-right">
                                 오른쪽으로 슬라이드 이동
                             </button>
-                            <div class="goods-add-product-list-wrapper" style="height:320px;">
+                            <div class="goods-add-product-list-wrapper" style="height:320px;" >
                                 <ul class="goods-add-product-list __slide-mover" style="left: 0px;">
-                                    <li class="goods-add-product-item __slide-item">
-                                        <div class="goods-add-product-item-figure">
+                                <!-- 판매자의 관련된 produsts 상품 추천해주기  -->
+                                    <li class="goods-add-product-item __slide-item" th:each="products : ${products}">
+                                        <div class="goods-add-product-item-figure" >
                                             <a href="#" target="_blank">
                                                 <img src="http://img-cf.kurly.com/shop/data/goods/1581917419401m0.jpg" class="goods-add-product-item-image">
                                             </a>
                                         </div>
                                         <div class="goods-add-product-item-content">
                                             <div class="goods-add-product-item-content-wrapper">
-                                                <p class="goods-add-product-item-name">사과</p>
-                                                <p class="goods-add-product-item-price">1원</p>
+                                                <p class="goods-add-product-item-name" th:text="${products.pname}">사과</p>
+                                                <p class="goods-add-product-item-price" th:text="${products.price}+'원'">1원</p>
+                                                
                                             </div>
                                         </div>
                                     </li>
 
-                                    <li class="goods-add-product-item __slide-item">
-                                        <div class="goods-add-product-item-figure">
-                                            <a href="#" target="_blank">
-                                                <img src="http://img-cf.kurly.com/shop/data/goods/1583301269761m0.jpg" class="goods-add-product-item-image">
-                                            </a>
-                                        </div>
-                                        <div class="goods-add-product-item-content">
-                                            <div class="goods-add-product-item-content-wrapper">
-                                                <p class="goods-add-product-item-name">배</p>
-                                                <p class="goods-add-product-item-price">2원</p>
-                                            </div>
-                                        </div>
-                                    </li>
+                                    
 
-                                    <li class="goods-add-product-item __slide-item">
-                                        <div class="goods-add-product-item-figure">
-                                            <a href="#" target="_blank">
-                                                <img src="http://img-cf.kurly.com/shop/data/goods/1552627723185m0.jpg" class="goods-add-product-item-image">
-                                            </a>
-                                        </div>
-                                        <div class="goods-add-product-item-content">
-                                            <div class="goods-add-product-item-content-wrapper">
-                                                <p class="goods-add-product-item-name">딸기</p>
-                                                <p class="goods-add-product-item-price">3원</p>
-                                            </div>
-                                        </div>
-                                    </li>
+                                    
 
                                     <li class="goods-add-product-item __slide-item">
                                         <div class="goods-add-product-item-figure">
@@ -1014,7 +1013,7 @@
                          
                          <!-- layout 분리 호출 : 상품문의 + 답변  -->
                          
-                         <div th:replace="product_qna_list :: qnaFragment">
+                         <div th:replace="product_qna_list2 :: qnaFragment">
                          </div>
                          
                          
