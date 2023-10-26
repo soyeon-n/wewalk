@@ -151,7 +151,7 @@
                         </div>
 
                         <div id="viewBeforeList" class="before_view" style="display:block;">
-                            <ul class="list_before">
+                            <ul class="list_before" th:if="${paging.isEmpty}">
                                 <li class="no_data">
                                     작성가능 후기 내역이 없습니다.
                                 </li>
@@ -180,8 +180,9 @@
                                         <a class="desc_after">
                                             <span class="subject" th:text="${review.title}">
                                                 그냥 리코타 치즈 ㅇㅇ
-                                                <span class="date" th:text="${#temporals.format(review.date,'yyyy-MM-dd HH:mm')}">
-                                                    작성일 
+                                                <span class="date">
+                                                    작성일
+                                                    <a th:text="${#temporals.format(review.date,'yyyy-MM-dd')}"></a> 
                                                     <!-- 지금 date 타입 출력안되고있음?????????  -->
                                                 </span>
                                                 
@@ -300,7 +301,6 @@
                         </div>
                         <!-- 여기까지가 게시물 반복문 -->
                         <div th:if="${!paging.isEmpty()}">
-	
 							<nav aria-label="Page navigation">
 							     <ul class="pagination justify-content-center"
 							          th:with="startNumber=${(paging.number/10)}*10+1, 
@@ -313,43 +313,35 @@
 							          <a class="layout-pagination-button layout-pagination-first-page" 
 							          th:href="@{/review/mylist?page=1}">&laquo;</a>
 							          <!-- <a class="page-link" th:href="@{/question/list?page=1}">&laquo;</a> -->
+							          <!-- < -->
+							          
+							          
+							          <a class="layout-pagination-button layout-pagination-prev-page" 
+							          th:href="@{/review/mylist(page=${paging.number})}" th:style ="${paging.first}?'display:none'">
+							          &lsaquo;</a>
+							          
 							          </li>
 							          
-							          <!-- < -->
-							          <!-- 어 왜 이전글로 가기가 안돼지 -->
-							          <li class="layout-pagination-button layout-pagination-prev-page" 
-							          th:style ="${paging.first}?'display:none'">
-								          <a class="layout-pagination-button layout-pagination-prev-page" 
-								          th:href="@{/review/mylist(page=${paging.number})}">
-								          &lsaquo;
-								          
-								          </a>
-							          </li>
+							          
+						          
 							          <!-- 1 2 3 4 5 -->
 							          <li class="layout-pagination-button layout-pagination-number"  th:each="page : ${#numbers.sequence(startNumber,endNumber)}"
 							              th:classappend="(${page}==${paging.number}+1) ? 'active'">
 							              <a class="layout-pagination-button layout-pagination-number" 
 							              th:href="@{/review/mylist(page=${page})}" th:text="${page}">
-							              
+							              sds
 							              </a>
 							          </li>
-							          <!-- > -->
-							          
-							          <li class="layout-pagination-button layout-pagination-next-page" 
-							          th:style="${paging.last}?'display:none'">
+							          <!-- > -->							          
+							          <li th:style="${paging.last}?'display:none'">
 								          <a class="layout-pagination-button layout-pagination-next-page" 
-								          th:href="@{/review/mylist(page=${paging.number}+2)}">
-								          
+								          th:href="@{/review/mylist(page=${paging.number}+2)}" >
 								          
 								          </a>
-							          </li>
-							          
-							          <!-- >> -->
-							          <li>
-							          <a class="layout-pagination-button layout-pagination-last-page" 
-							          th:href="@{/review/mylist(page=${paging.totalPages})}">
-							          &raquo;
-							          </a>
+								          <!-- >> -->
+								          <a class="layout-pagination-button layout-pagination-last-page" 
+									          th:href="@{/review/mylist(page=${paging.totalPages})}"></a>
+								          
 							          </li>
 							          
 							     

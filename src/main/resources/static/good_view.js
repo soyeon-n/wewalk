@@ -31,10 +31,19 @@ window.addEventListener('DOMContentLoaded',function(){
 		        alert(questionId);
 		        var contentElementId = $('#contentToToggle_' + questionId); //버튼과 id 합쳐 
 		        contentElementId.toggle();
+		         
+		        var answer = $('.answertest_'+answerId).text();//이러면 모든 answer 가 온다고
+		        alert(answer);
+		        answer.toggle();
+		        
 		        
 		    });
 		      
-				         
+			//var answer = $('#answertest').val();
+			//$('.hideans').click(function(){
+			
+			 
+			//}	         
     
     
     
@@ -96,19 +105,7 @@ window.addEventListener('DOMContentLoaded',function(){
         $('.up').click(function(){            // 수량올리기 버튼 클릭하면?
             number++;// 수량을 1 올려줌
             $(".inp").val(number);  // 올렸으니 수량클래스(.inp)의 값을 바꿔줌
-            // if((number*cost % 1000) == 0){  //만약에 수량x가격이 1000으로 나눴을떄 0 이면(ex 3000 4000 5000) 몫 + 콤마 + 000 을 붙임
-            //     $(".num").text(Math.floor(number*cost/1000) + ',' + '000');
-            // }
-
-            // else if(number*cost < 1000){  // 만약에 수량x가격이 1000이하면 그냥 수량x가격으로 추력
-            //     $(".num").text(number*cost);
-            // }
-    
-            // else{  // 그외 나머지는 수량x가격의 몫+ 콤마 + 나머지 로 출력
-            //     $(".num").text(Math.floor(number*cost/1000) + ',' + number*cost%1000);
-                
-    
-            // }
+            
             $(".num").text(comma(number*cost));
     
             $('.emph').text(comma((number*cost)/20) + '원 적립');  // 마찬가지로 적립금 은 가격x수량x0.05로 출력
@@ -157,11 +154,12 @@ window.addEventListener('DOMContentLoaded',function(){
 
         function slide_right() { // 오른쪽 슬라이드 함수  
             if(img_count > 0){
+                
                 $('.__slide-wrapper ul').stop().animate({
-                    "left": (-60) + "px"
+                    "left": (-180) + "px"
                 }, 500, function(){ 
                     $('.__slide-wrapper ul li').first().appendTo('.__slide-wrapper ul'); // 다른부분은 위에랑 같고 이부분은 appendTo(마지막에 추가하는 함수)로 첫번째이미지를 마지막에 추가함
-                    $('.__slide-wrapper ul').css("left","px");
+                    $('.__slide-wrapper ul').css("left",(-180) + "px");
                 })
             }
             return false;
@@ -224,6 +222,11 @@ window.addEventListener('DOMContentLoaded',function(){
                 error: function(){
                 //badrequest
                 alert(productNo + '상품이 이미 장바구니에 담겨있습니다.');
+                
+                //overstock 인경우 
+                
+                
+                //내가 판매자인경우 
                 }
             });
             

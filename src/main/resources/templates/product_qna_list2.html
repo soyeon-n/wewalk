@@ -63,7 +63,7 @@
 
 <body style="overflow-y: hidden">
 <nav th:fragment="qnaFragment">
-<!-- form 제거 -->
+<!-- form 제거 이거떄문에 자꾸 새로고침 -->
     <div id="contents-wrapper" class="goods_board" >
         <div class="xans-element- xans-product xans-product-additional detail_board">
             <div class="board">
@@ -147,34 +147,29 @@
                             <tr th:each="question,loop: ${entities}">
                             
                             
-                                <td align="center">글번호글번호
+                                <td align="center" >글번호글번호
                                   <a th:href="@{|/question/detail/${question.id}|}" th:text="${question.id}"></a>
                                 </td>
-                                <td class="subject">
-                                <!-- 왜 첫번쨰 글만 onclick 이 먹는가   -->
+                                <td class="subject">                              
                                 <!--  
                                     <a th:href="@{|/question/detail/${question.id}|}" th:text="${question.title}"></a>-->
                                     
 	                                    <button th:id="'toggleButton_'+${question.id}" th:text="${question.title}">이게 제목</button>
 	                                        
-	                                        <div th:id="'contentToToggle_'+${question.id}" th:text="${question.content}" style="display: none;" >
-	                                        <!-- answer 이미지 넣어주고  넘겨받은 answer 출력해준다 -->
-	                                            <p th:text="${question.content}"></p>
-	                                        <!-- 답변 반복문 이게왜안나올까요,,,,,,,,
-	                                           <ul>
-	                                              <li th:each="answer : ${question.answerList}">
-	                                                 <p th:text="${answer.content}"></p>
-	                                              
-	                                              </li>
-	                                           
-	                                           </ul> -->
-	                                           
-	                                                                  
-	                                        </div>
-	                                        <!---->
-	                                        <div th:each="answer : ${question.answerList}">
-											   <div th:text=${answer.content}></div>
-										    </div>
+                                        <div th:id="'contentToToggle_'+${question.id}" th:text="${question.content}" style="display: none;">
+                                        <!-- answer 이미지 넣어주고  넘겨받은 answer 출력해준다 -->
+                                            <p th:text="${question.content}" ></p>
+                                            
+                                        </div>
+                                         <!--  
+                                       <div th:class="answertest" th:each="answer : ${question.answerList}">
+                                           <p th:onclick=hideans(); th:text="${answer.content}" style="display: none;"></p>
+                                       </div>-->
+                                        
+                                       <!-- if 로 돌리던가 th:if="{answer.content.!isEmpty}" style="display: none;" onclick=함수실행 -->  
+                                       <div th:each="answer : ${question.answerList}" >
+									      <div th:text=${answer.content}></div>
+								       </div>
 	                                         
                                     
                                 </td>

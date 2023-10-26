@@ -157,8 +157,7 @@ public class ProductController {
 		
 		Cart cart=cartService.getOneCart(user);//siteuser 를 넣어주면 유저의 cart 를 반환한다 
 		
-		//근데 db 에 product 번호가 존재한다면 
-		//long cartId=cart.getId();//그 카트의 id 번호를 가지고 내 카트 item 을 찾아 
+		
 		
 		
 		//나의 cartitem 에 productNo 가 있는 지 검사한다 
@@ -172,6 +171,25 @@ public class ProductController {
 			
 			
 		}
+		
+		//number 담으려는 수량이 db의 수량보다 많다면 
+		
+		
+		
+		//db의 수량을 가져오기
+		 int nowStock =product.getStock();
+		
+		 //if(number>nowStock) 
+		 if(number>nowStock) {
+				
+				//다시 돌려보내 
+				return ResponseEntity.badRequest().body("stock over");
+				
+				
+			}
+		
+		
+		
 		
 		//null 이면 아직 product no 가 담긴적이 없으니 담으면 된다 
 		
