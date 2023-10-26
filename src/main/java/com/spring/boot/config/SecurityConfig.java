@@ -63,7 +63,7 @@ public class SecurityConfig {
                 .loginPage("/auth/login")    // GET 요청 (login form을 보여줌)
                 .usernameParameter("userName")	// login에 필요한 id 값을 userName으로 설정 (default는 username)
                 .passwordParameter("password")	// login에 필요한 password 값을 password(default)로 설정
-                .defaultSuccessUrl("/")
+                .defaultSuccessUrl("/wewalk/main")
                 .failureHandler(customAuthenticationFailureHandler);
         
         //OAuth 2.0 login 설정
@@ -77,7 +77,7 @@ public class SecurityConfig {
         http
         	.logout()
         		.logoutRequestMatcher(new AntPathRequestMatcher("/logout")) //logout주소가 들어오면 logout시킴
-        		.logoutSuccessUrl("/").invalidateHttpSession(true); //logout되면 메인화면으로 돌려보내고 세션을 invalidate함
+        		.logoutSuccessUrl("/wewalk/main").invalidateHttpSession(true); //logout되면 메인화면으로 돌려보내고 세션을 invalidate함
 
         return http.build();
 

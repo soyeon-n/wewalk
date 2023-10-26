@@ -254,7 +254,7 @@ public class AuthController {
         
 		//로그인 되어있지 않으면 메인화면으로 보내기
 		if(principalDetails.getUser() == null) {
-			return "redirect:/";
+			return "redirect:/wewalk/main";
 		}
 		
 		// PrincipalDetails에서 현재 로그인한 사용자 정보에 접근할 수 있습니다.
@@ -271,7 +271,7 @@ public class AuthController {
         } else {
             // 정보가 충분한 경우 홈페이지로 리다이렉트
 //        	redirectAttributes.addFlashAttribute("alertMessage", "처음 오셨군요! 회원 가입을 완료해주세요.");
-            return "redirect:/"; // 홈페이지로 이동
+            return "redirect:/wewalk/main"; // 홈페이지로 이동
         }
 	}
 	

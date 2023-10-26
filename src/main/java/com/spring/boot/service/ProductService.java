@@ -273,6 +273,10 @@ public class ProductService {
 	    return new PageResultDTO<>(result, fn);
 	}
 	
+	public List<Product> findProductsByIds(List<Long> ids) {
+        return productRepository.findByIdIn(ids);
+    }
+	
 	public Product dtoToEntity(ProductDTO dto){
 		Product entity = Product.builder()
                 .id(dto.getId())

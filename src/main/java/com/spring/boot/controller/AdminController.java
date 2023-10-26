@@ -133,12 +133,8 @@ public class AdminController {
 		//판매자 요청 데이터 받기
 		SellerRequest request = userService.getSellerRequest(id);
 		
-		//받아온 판매자 요청으로 요청자 받기
-		SiteUser requestUser =userService
-				.getUser(request.getRequestUser().getId());
-		
 		//요청 승인 처리하고 db에 저장
-		adminService.approveRequest(requestUser, request);
+		adminService.denyRequest(request);
 		
 		return "redirect:/admin/sellerRequestList";
 		

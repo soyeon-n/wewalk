@@ -8,6 +8,7 @@ function goSignup(){
 	window.location.href = '/auth/signup';
 }
 
+
 $(document).ready(function(){  
 //마우스 hover 하면 안내메세지 보이게하기
 	const hover = document.querySelector('.location_notice');

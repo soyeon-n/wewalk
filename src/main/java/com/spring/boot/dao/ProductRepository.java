@@ -3,6 +3,7 @@ package com.spring.boot.dao;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -50,7 +51,7 @@ public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpec
 
     
     //판매량 순으로 검색(8개)
-    List<Product> findByIdIn(List<Long> productnoList);
+    List<Product> findByIdIn(List<Long> topSellingProducts);
     long countByUserId(Long userId);
 
 	

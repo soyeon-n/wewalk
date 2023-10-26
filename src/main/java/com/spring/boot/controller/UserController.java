@@ -39,7 +39,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Controller
-@RequestMapping("/user")
+@RequestMapping("/user/mypage")
 public class UserController {
 	
 	private final UserService userService;
@@ -107,7 +107,7 @@ public class UserController {
 			
 		}
 		
-		return "redirect:/user/myPage";
+		return "redirect:/user/mypage";
 	}
 	
 }
