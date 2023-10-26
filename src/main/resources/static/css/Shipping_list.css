@@ -34,7 +34,6 @@
 }
 
 .section_destination .tbl_type1 .tit_select {
-
     width: 60px;
 }
 
@@ -190,4 +189,42 @@
     background-size: 26px 26px;
     font-size: 0;
     line-height: 0;
+}
+
+.page-numbers-container {
+    text-align: center; /* 페이지 번호를 중앙에 정렬합니다. */
+    margin-top: 20px; /* 원하는 높이 조정 */
+    
+}
+
+.page-numbers-container a {
+    text-decoration: none; /* 링크 밑줄 제거 */
+    margin: 0 5px; /* 페이지 번호 간 여백 조정 */
+}
+
+.page-numbers-container .current-page {
+    font-weight: bold; /* 현재 페이지의 텍스트를 굵게 표시 */
+    color: #1EC800;
+}
+
+
+
+#tblParent1 {
+    background-image: url('/img/membership.jpg'); /* 이미지 파일의 경로를 설정합니다. */
+    background-size: cover; /* 이미지를 뷰포트에 맞게 조절합니다. */
+    background-position: center; /* 이미지를 중앙에 정렬합니다. */
+    background-repeat: no-repeat; /* 이미지를 반복하지 않도록 설정합니다. */
+    width: 670px;
+    height: 670px;
+    
+}
+
+#tblParent2 {
+    background-image: url('/img/grade.jpg'); 
+    background-size: cover;
+    background-position: center; 
+    background-repeat: no-repeat; 
+    width: 670px;
+    height: 670px;
+    
 }

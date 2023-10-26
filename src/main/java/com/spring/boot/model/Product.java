@@ -2,6 +2,8 @@ package com.spring.boot.model;
 
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -15,7 +17,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import com.spring.boot.dto.ProductDTO.ProductDTOBuilder;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -59,7 +66,9 @@ public class Product{
 	
 	private Integer price;//상품가격
 	
-	private LocalDateTime date;//상품등록일
+	@Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "date")
+    private Date date;//상품등록일
 	
 	private Integer stock;//상품재고
 	
@@ -78,12 +87,11 @@ public class Product{
 	    if (reviewList == null) return 0;
 	    return reviewList.size();
 	}
-	
+
 	@Builder
 	public Product(Long id, String category, String pname,String content,Integer price,
-			LocalDateTime date,Integer stock,String selling, List<Review> reviewList,
-			String image,String image1,String image2,String image3) {
-		
+			Date date,Integer stock,String selling,
+			String image,String image1,String image2,String image3,String image4) {
 		this.id = id;
 		this.category = category;
 		this.pname = pname;
@@ -92,13 +100,26 @@ public class Product{
 		this.date = date;
 		this.stock = stock;
 		this.selling = selling;
-		this.reviewList = reviewList;
 		this.image = image;
 		this.image1 = image1;
 		this.image2 = image2;
 		this.image3 = image3;
 				
 	}
+	
+	@PrePersist
+    protected void onCreate() {
+    	date = new Date();
+    }
+	
+	public List<String> getImages() {
+        List<String> images = new ArrayList();
+        images.add(image);
+        images.add(image1);
+        images.add(image2);
+        images.add(image3);
+        return images;
+    }
 	
 
 }

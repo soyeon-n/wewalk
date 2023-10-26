@@ -3,6 +3,7 @@ package com.spring.boot.model;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -16,10 +17,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import org.hibernate.annotations.ColumnDefault;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -49,9 +49,10 @@ JPA 엔터티나 다른 ORM(Object-Relational Mapping) 프레임워크를 사용
 @Setter
 @Entity
 @NoArgsConstructor
+@JsonSerialize
 public class SiteUser implements Serializable{
 
-	//private static final long serialVersionUID = 517010009203139983L;
+	private static final long serialVersionUID = 517010009244139983L;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -107,21 +108,28 @@ public class SiteUser implements Serializable{
 	@Column(columnDefinition = "TINYINT(1) default 0")
 	private boolean membership;
 	
+	private LocalDate membershipEndDate;
+	
 	//위워크페이 포인트(bigint로 들어가므로 -9,223,372,036,854,775,808부터 9,223,372,036,854,775,807까지의 정수값을 저장할 수 있음)
 	//적립내역 테이블이 필요할 것 같음
 	private Integer point;
 
 	//충전해서쓰는페이머니 잔액
 	private Integer paymoney;
+	
+	public Integer getPaymoney() {
+	    return paymoney;
+	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
-    private Interest interest1;
+	public void setPaymoney(Integer paymoney) {
+	    this.paymoney = paymoney;
+	}
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Interest interest2;
+    private String interest1;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Interest interest3;
+    private String interest2;
+
+    private String interest3;
     
     private LocalDateTime modifyDate;
 
@@ -147,6 +155,9 @@ public class SiteUser implements Serializable{
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<Answer> answerList;
     
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private List<OrderList> orderList;
+    
 
 	//회원정보 수정(자동 반영)
 	public SiteUser update(String userName, String picture) {
@@ -168,7 +179,7 @@ public class SiteUser implements Serializable{
     		String provider, String providerId, String name, LocalDateTime createdDate, 
     		LocalDate birthDate, String postcode, String address, String detailAddress, boolean isActivated,
     		String tel, String picture, boolean seller, String intro, Integer paymoney, String grade,
-    		Integer point, Interest interest1, Interest interest2, Interest interest3, LocalDateTime modifyDate) {
+    		Integer point, String interest1, String interest2, String interest3, LocalDateTime modifyDate) {
   		
   		this.id = id;
   		this.role = role;

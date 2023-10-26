@@ -1,6 +1,7 @@
 package com.spring.boot.dto;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 import com.spring.boot.model.Review;
@@ -24,7 +25,7 @@ public class ProductDTO {
 	
 	private Integer price;//상품가격
 	
-	private LocalDateTime date;//상품등록일
+	private Date date;//상품등록일
 	
 	private Integer stock;//상품재고
 	
@@ -38,7 +39,7 @@ public class ProductDTO {
 	
 	@Builder
 	public ProductDTO(Long id, SiteUser seller, String category, String pname, 
-			String content, Integer price, LocalDateTime date, Integer stock, String selling, 
+			String content, Integer price, Date date, Integer stock, String selling, 
 			String image, String image1, String image2, String image3) {
 		
 		this.id = id;

@@ -1,49 +1,41 @@
 package com.spring.boot.service;
 
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
 
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-
-
+import com.spring.boot.dao.UserRepository;
+import com.spring.boot.model.SiteUser;
 
 @Service
 public class MembershipService {
 	
-
-
-	
-    
-
-	/*
-	
 	@Autowired
-    private PaymentService paymentService;
+    UserRepository userRepository;
 
-    @Autowired
-    private UserRepository userRepository; // 사용자 정보가 저장된 데이터베이스의 Repository
-
-    public PaymentResponse processPayment(String userEmail) throws Exception {
-    	
-    	private boolean success;
-    	
-        // 결제 API 호출 및 결제 정보를 반환하는 코드
-        // 이 예제에서는 PaymentService를 사용하여 결제 처리를 시뮬레이션합니다.
-        // 실제 결제 API를 호출하고 응답을 처리해야 합니다.
-        PaymentResponse paymentResponse = paymentService.makePayment(userEmail);
-
-        return paymentResponse;
-    }
-
-    public void updateMembershipStatus(String userEmail) {
-        // 사용자 이메일을 기반으로 데이터베이스에서 사용자를 조회하고 멤버쉽 상태를 업데이트하는 코드
-        SiteUser user = userRepository.findByEmail(userEmail);
-        if (user != null) {
-            user.setMembershipStatus("P"); // 가입 완료를 나타내는 상태 코드
-            userRepository.save(user);
+	public SiteUser save(SiteUser user) {
+	    return userRepository.save(user);
+	}
+	
+	@Scheduled(fixedRate = 24 * 60 * 60 * 1000) // 매일 한 번 실행 (24시간마다)
+    public void checkAndExpireMemberships() {
+		
+        LocalDate currentDate = LocalDate.now();
+        
+        List <SiteUser> users = userRepository.findAll();
+        
+        for (SiteUser user : users) {
+            if (user.isMembership() && currentDate.isAfter(user.getMembershipEndDate())) {
+                user.setMembership(false); // 멤버십 만료
+                userRepository.save(user);
+            }
         }
-    }
-    
-    */
-
-}
+		
+	} 
+	
+}	
+	

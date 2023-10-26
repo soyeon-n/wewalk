@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -23,7 +24,8 @@ public class OrderList {
 	
 	private Long sellerid;
 	
-	private Long userid;
+	@ManyToOne
+    private SiteUser user;
 	
 	private int count;
 	

@@ -8,7 +8,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -19,6 +18,7 @@ import lombok.Setter;
 @Setter
 @Entity
 public class Point {
+	
 	//포인트 적립및 사용내역
 	@ManyToOne
 	private SiteUser user;
@@ -36,15 +36,6 @@ public class Point {
     
     @Column(name = "type")
     private String type;
-    
-    /* 아임포트 결제시 필요한 컬럼
-    @Column(nullable = false, length = 100)
-	private String impUid;
-	
-	@Column(nullable = false, length = 100)
-	private String merchantUid;
-	*/
-
-    
+     
 
 }

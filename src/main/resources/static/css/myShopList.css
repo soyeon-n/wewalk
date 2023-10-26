@@ -526,3 +526,32 @@ button{
 .product-price {
     font-size: 16px;
 }
+
+.page-numbers-container {
+    text-align: center; /* 페이지 번호를 중앙에 정렬합니다. */
+    margin-top: 20px; /* 원하는 높이 조정 */
+    
+}
+
+.page-numbers-container a {
+    text-decoration: none; /* 링크 밑줄 제거 */
+    margin: 0 5px; /* 페이지 번호 간 여백 조정 */
+}
+
+.page-numbers-container .current-page {
+    font-weight: bold; /* 현재 페이지의 텍스트를 굵게 표시 */
+    color: #1EC800;
+}
+
+.centered-text {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin-top: 10%;
+    margin-right: 60%;
+}
+
+.centered-text p {
+    font-size: 24px;
+}

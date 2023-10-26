@@ -235,10 +235,10 @@ public class UserService {
         userRepository.save(user);
     }
 	
-	//회원 탈퇴
-	 public void deleteUserById(Long userId) {
-	        userRepository.deleteById(userId);
-	    }
+	//회원 비활성화
+	public void saveUser(SiteUser user) {
+        userRepository.save(user);
+    }
 	 
 	 //수정
 	 public void updateUser(SiteUser user) {

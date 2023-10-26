@@ -594,17 +594,77 @@ body #container #main .layout-pagination .pagediv span strong{
 
 /*버튼 스타일 추가*/
 
+@font-face {
+    font-family: 'ONE-Mobile-POP';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2105_2@1.0/ONE-Mobile-POP.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
 .btn.active {
+	font-family: 'ONE-Mobile-POP';
+	color: #fff;
+	-webkit-text-stroke: 1px #1EC800;
     display: inline-block; /* 텍스트를 가운데 정렬하기 위해 추가 */
     height: 30px;
-    border-radius: 3px;
-    font-weight: 700;
-    font-size: 12px;
+    font-size: 30px;
     text-align: center; /* 텍스트를 수평으로 가운데 정렬하기 위해 추가 */
-    outline: none;
-    border: 1px solid #1EC800;
+    position: relative; /* 부모 요소에 상대 위치 지정 */
+    left: 50%; /* 왼쪽으로 50% 이동 */
+    transform: translateX(-50%); /* 다시 왼쪽으로 50% 이동해서 가운데 정렬 */
+    margin-top: 93.5%;
+}
+
+.btn.active1 {
+	font-family: 'ONE-Mobile-POP';
+	color: #000000;
+    display: inline-block; 
+    font-size: 22px;
+    text-align: center; 
+    position: relative;
+    right: 5%;
+    transform: translateX(-50%);
+    margin-top: 115%;
+}
+
+.btn.active2 {
+	font-family: 'ONE-Mobile-POP';
+	color: #000000;
+    display: inline-block; 
+    font-size: 22px;
+    text-align: center; 
+    position: relative;
+    left: 38%; 
+    transform: translateX(-50%);
+    margin-top: 115%;
+}
+
+.btn.active3 {
+	font-family: 'ONE-Mobile-POP';
+	color: #fff;
+    display: inline-block; /* 텍스트를 가운데 정렬하기 위해 추가 */
+    height: 30px;
+    font-size: 20px;
+    text-align: center; /* 텍스트를 수평으로 가운데 정렬하기 위해 추가 */
+    position: relative; /* 부모 요소에 상대 위치 지정 */
+    left: 38%;
     background-color: #1EC800;
-    color: #fff;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.btn.active4 {
+	font-family: 'ONE-Mobile-POP';
+	color: #fff;
+    display: inline-block; /* 텍스트를 가운데 정렬하기 위해 추가 */
+    height: 30px;
+    font-size: 20px;
+    text-align: center; /* 텍스트를 수평으로 가운데 정렬하기 위해 추가 */
+    position: relative; /* 부모 요소에 상대 위치 지정 */
+    left: 36%;
+    background-color: #1EC800;
+    padding: 5px;
+    border-radius: 5px;
 }
 
 .page-numbers {
@@ -613,4 +673,246 @@ body #container #main .layout-pagination .pagediv span strong{
     text-align: center; /* 페이지 번호를 가로 가운데 정렬 */
     margin-top: 770px;
     font-size: 14px;
+}
+
+
+.membershipPP {
+    background-image: url('/img/membershipP.png');
+    background-size: 100% 100%; 
+    background-position: center; 
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    padding: 20px;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    height: 300px;
+}
+
+
+/*pay*/
+input[type="radio"] {
+  position: relativ;
+  display: none;
+}
+
+input[type="radio"] + label {
+  min-width: 45px;
+  height: 25px;
+  margin: 5px;
+  padding: 10px;
+  border-radius: 25px;
+  position: relative;
+  left: 2%;
+}
+
+input[type="radio"]#radio-pink + label {
+  background-color: #FCE4EC80;
+  color: #E91E63;
+}
+
+input[type="radio"]#radio-pink2 + label {
+  background-color: #FCE4EC80;
+  color: #E91E63;
+}
+
+input[type="radio"]#radio-yellow + label {
+  background-color: #FDF9D3;
+  color: #fcd820;
+}
+
+input[type="radio"]#radio-yellow2 + label {
+  background-color: #FDF9D3;
+  color: #fcd820;
+}
+
+input[type="radio"]#radio-indigo + label {
+  background-color: #E8EAF680;
+  color: #3F51B5;
+}
+
+input[type="radio"]#radio-indigo2 + label {
+  background-color: #E8EAF680;
+  color: #3F51B5;
+}
+
+input[type="radio"]#radio-cyan + label {
+  background-color: #E0F7FA80;
+  color: #00BCD4;
+}
+
+input[type="radio"]#radio-cyan2 + label {
+  background-color: #E0F7FA80;
+  color: #00BCD4;
+}
+
+input[type="radio"]#radio-teal + label {
+  background-color: #E0F2F180;
+  color: #009688;
+}
+
+input[type="radio"]#radio-teal2 + label {
+  background-color: #E0F2F180;
+  color: #009688;
+}
+
+input[type="radio"]#radio-lime + label {
+  background-color: #F9FBE780;
+  color: #CDDC39;
+}
+
+input[type="radio"]#radio-lime2 + label {
+  background-color: #F9FBE780;
+  color: #CDDC39;
+}
+
+input[type="radio"]#radio-deep-orange + label {
+  background-color: #FBE9E780;
+  color: #FF5722;
+}
+
+input[type="radio"]#radio-deep-orange2 + label {
+  background-color: #FBE9E780;
+  color: #FF5722;
+}
+
+input[type="radio"]#radio-purple + label {
+  background-color: #f6f0fe;
+  color: #b690f7;
+}
+
+input[type="radio"]#radio-purple2 + label {
+  background-color: #f6f0fe;
+  color: #b690f7;
+}
+
+
+/*hover, checked, focus*/
+
+input[type="radio"]#radio-pink:hover + label,
+input[type="radio"]#radio-pink:checked + label,
+input[type="radio"]#radio-pink:focus + label{
+  cursor: pointer;
+  background-color: #E91E63;
+  color: #FFFFFF;
+}
+
+input[type="radio"]#radio-pink2:hover + label,
+input[type="radio"]#radio-pink2:checked + label,
+input[type="radio"]#radio-pink2:focus + label{
+  cursor: pointer;
+  background-color: #E91E63;
+  color: #FFFFFF;
+}
+
+input[type="radio"]#radio-yellow:hover + label,
+input[type="radio"]#radio-yellow:checked + label,
+input[type="radio"]#radio-yellow:focus + label{
+  cursor: pointer;
+  background-color: #fcd820;
+  color: #FFFFFF;
+}
+
+input[type="radio"]#radio-yellow2:hover + label,
+input[type="radio"]#radio-yellow2:checked + label,
+input[type="radio"]#radio-yellow2:focus + label{
+  cursor: pointer;
+  background-color: #fcd820;
+  color: #FFFFFF;
+}
+
+input[type="radio"]#radio-indigo:hover + label,
+input[type="radio"]#radio-indigo:checked + label,
+input[type="radio"]#radio-indigo:focus + label{
+  cursor: pointer;
+  background-color: #3F51B5;
+  color: #FFFFFF;
+}
+
+input[type="radio"]#radio-indigo2:hover + label,
+input[type="radio"]#radio-indigo2:checked + label,
+input[type="radio"]#radio-indigo2:focus + label{
+  cursor: pointer;
+  background-color: #3F51B5;
+  color: #FFFFFF;
+}
+
+input[type="radio"]#radio-cyan:hover + label,
+input[type="radio"]#radio-cyan:checked + label,
+input[type="radio"]#radio-cyan:focus + label{
+  cursor: pointer;
+  background-color: #00BCD4;
+  color: #FFFFFF;
+}
+
+input[type="radio"]#radio-cyan2:hover + label,
+input[type="radio"]#radio-cyan2:checked + label,
+input[type="radio"]#radio-cyan2:focus + label{
+  cursor: pointer;
+  background-color: #00BCD4;
+  color: #FFFFFF;
+}
+
+input[type="radio"]#radio-teal:hover + label,
+input[type="radio"]#radio-teal:checked + label,
+input[type="radio"]#radio-teal:focus + label{
+  cursor: pointer;
+  background-color: #009688;
+  color: #FFFFFF;
+}
+
+input[type="radio"]#radio-teal2:hover + label,
+input[type="radio"]#radio-teal2:checked + label,
+input[type="radio"]#radio-teal2:focus + label{
+  cursor: pointer;
+  background-color: #009688;
+  color: #FFFFFF;
+}
+
+input[type="radio"]#radio-lime:hover + label,
+input[type="radio"]#radio-lime:checked + label,
+input[type="radio"]#radio-lime:focus + label{
+  cursor: pointer;
+  background-color: #CDDC39;
+  color: #FFFFFF;
+}
+
+input[type="radio"]#radio-lime2:hover + label,
+input[type="radio"]#radio-lime2:checked + label,
+input[type="radio"]#radio-lime2:focus + label{
+  cursor: pointer;
+  background-color: #CDDC39;
+  color: #FFFFFF;
+}
+
+input[type="radio"]#radio-deep-orange:hover + label,
+input[type="radio"]#radio-deep-orange:checked + label,
+input[type="radio"]#radio-deep-orange:focus + label{
+  cursor: pointer;
+  background-color: #FF5722;
+  color: #FFFFFF;
+}
+
+input[type="radio"]#radio-deep-orange2:hover + label,
+input[type="radio"]#radio-deep-orange2:checked + label,
+input[type="radio"]#radio-deep-orange2:focus + label{
+  cursor: pointer;
+  background-color: #FF5722;
+  color: #FFFFFF;
+}
+
+input[type="radio"]#radio-purple:hover + label,
+input[type="radio"]#radio-purple:checked + label,
+input[type="radio"]#radio-purple:focus + label{
+  cursor: pointer;
+  background-color: #b690f7;
+  color: #FFFFFF;
+}
+
+input[type="radio"]#radio-purple2:hover + label,
+input[type="radio"]#radio-purple2:checked + label,
+input[type="radio"]#radio-purple2:focus + label{
+  cursor: pointer;
+  background-color: #b690f7;
+  color: #FFFFFF;
 }

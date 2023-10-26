@@ -3,7 +3,7 @@ package com.spring.boot.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -23,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class OrderListService {
 
+	@Autowired
 	private final OrderListRepository orderListRepository;
 	private final ProductRepository productRepository;
 	
@@ -39,7 +40,7 @@ public class OrderListService {
 			orderlist.setOrderNo(paymentDataForm.getMerchant_uid());
 			orderlist.setProductno(productData.getId());
 			orderlist.setSellerid(seller.getId());
-			orderlist.setUserid(user.getId());
+			orderlist.setUser(user);
 			orderlist.setCount(productData.getCount());
 			orderlist.setPrice(productData.getPrice()+3000);//택배비3000
 			orderlist.setPayment(paymentDataForm.getPay_method());
@@ -57,7 +58,7 @@ public class OrderListService {
 		return orderLists;
 		
 	}
-	
+
 	//판매량 상위 8개 제품 데이터 가져오기
 	public List<Product> getTop8SellingProducts() {
 	    // Specification을 사용하여 상위 판매 상품의 productno를 조회합니다.
@@ -73,5 +74,13 @@ public class OrderListService {
 	    // 해당 productno로 Product 엔티티에서 상품 정보를 조회합니다.
 	    return productRepository.findByIdIn(productnoList);
 	}
+
+	//페이징
+	public List<OrderList> findOrderByUserId(Long userId) {
+		
+		return orderListRepository.findOrderByUserId(userId);
+	}
+
+	
 	
 }

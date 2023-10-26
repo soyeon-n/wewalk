@@ -6,28 +6,29 @@
     <title>회원 정보 수정</title>
     <link rel="stylesheet" href="/css/reset.css">
     <link rel="stylesheet" href="/css/common.css">
-    <link rel="stylesheet" href="/css/order_list.css">
     <link rel="stylesheet" href="/css/changeInfo.css">
-    <link rel="stylesheet" href="/css/join.css">  
+    <link rel="stylesheet" href="/css/join.css"> 
+    <link rel="stylesheet" href="/header/header.css">
+	<script src="/header/header.js"></script>
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-    <script src="/js/common.js"></script>
-
+    <script src="/js/common2.js"></script>
     <script>
+    
         function pw_check(){
-            var pw = $(".field_pw input").val();                   // 변수 pw에 pw값 대입
+        	
+        	var pw = $(".field_pw input").val();                   // 변수 pw에 pw값 대입
             var now_pw = $('.field_nowpw input').val();
 
             var num = /[0-9]/;
             var eng = /[a-zA-Z]/;
             var spe = /[~!@#$%^&*()_+|<>?:{}]/;
         
-
-
-            if(pw.length < 6){                                  //pw의 길이가 10 이하일 때
+            
+            if(pw.length < 8){                                  //pw의 길이가 8 이하일 때
                 $(".field_pw .txt_guide .txt_case1").css('color', '#b3130b');
             }
 
-            if(pw.length >= 6){                                  //pw의 길이가 10 이상일 때
+            if(pw.length >= 8){                                  //pw의 길이가 8 이상일 때
                 $(".field_pw .txt_guide .txt_case1").css('color', '#0f851a'); 
             }
 
@@ -51,8 +52,8 @@
         }
 
 
-
         function pw2_check(){
+        	
             var pwd1 = $(".field_pw input").val(); 
             var pwd2 = $(".field_repw input").val();
 
@@ -99,12 +100,12 @@
             });
         }
 
-
     </script>
 </head>
 <body>
     <div id="container">
         <div id="main">
+        <div th:insert="header :: headerFragment"></div>
             <div id="content">
                 <div id="myPageTop" class="page_aticle mypage_top">
                     <h2 class="blind">마이페이지</h2>
@@ -116,23 +117,27 @@
                                     <span class="blind">등급</span>
                                     <span class="ico_grade class0">
                                         <span class="inner_grade">
-                                            <span class="in_grade">일반</span>
+                                            <span class="in_grade" th:text="${user.grade}"></span>
                                         </span>
                                     </span>
                                     <div class="grade_bnenfit">
                                         <div class="user">
-                                            <strong class="name" id="userName" th:text="${user.name}"></strong>
+    										<strong class="name" id="userName" th:text="${user.name}"></strong>
     										<span class="txt">님</span>
-                                        </div>
+										</div>
                                         <div class="benefit">
-                                            <strong class="tit"></strong>
-                                            적립 0.5%
-                                        </div>
+										    <strong class="tit"></strong>
+										    <span th:text="|적립 ${user.membership == true ? '10%' : 
+										        user.grade == 'B' ? '1%' : 
+										        user.grade == 'S' ? '3%' : 
+										        user.grade == 'G' ? '5%' : 
+										        user.grade == 'P' ? '8%' : ''}|"></span>
+										</div>
                                     </div>
                                 </div>
                                 <div class="next">
-                                    <a href="/user/mypage/grade" class="total_grade">전체등급 보기</a>
-                                    <a href="/user/mypage/mygrade" class="next_month">다음 달 예상등급 보기</a>
+                                    <a href="/user/mypage/myInterest" class="next_month">나의 관심 분야 설정하기</a>
+                                    <a href="/user/mypage/grade" class="total_grade">등급 별 할인혜택</a>
                                 </div>
                             </div>
 
@@ -155,7 +160,7 @@
                                         <div class="tit">
                                             적립금
                                         </div>
-                                        <a href="#" class="info">
+                                        <a href="/user/mypage/point" class="info">
                                             <span th:if="${user.point != null}" th:text="${user.point + ' 원'}"></span>
    											<span th:if="${user.point == null}">0 원</span>
                                             <img src="https://res.kurly.com/pc/service/common/1905/ico_arrow_56x56.png" alt="자세히보기">
@@ -220,7 +225,7 @@
                                                 
                                             </th>
                                             <td>
-												<input type="text" name="email" readonly="readonly" th:value="${user.email}">
+												<input type="text" name="userName" option="regId" readonly="readonly" th:value="${user.userName}">
                                                 <p class="txt_guide square">
                                                     <span class="txt txt_case1">
                                                         
@@ -235,7 +240,7 @@
                                         <tr class="field_nowpw">
                                             <th>현재 비밀번호</th>
                                             <td>
-                                                <input type="password" name="originalPassword" id="originalPassword">
+                                                <input type="password" name="originalPassword" id="originalPassword" maxlength="16">
                                                  <p class="txt_guide square">
                                                     <span class="txt txt_case4">현재 비밀번호를 확인해주세요</span>
                                                 </p>
@@ -245,13 +250,12 @@
                                         <tr class="field_pw">
                                             <th>
                                                 새 비밀번호
-                                                
                                             </th>
                                             <td>
-                                                <input type="password" name="pw" required=""  option="regPass" onkeyup="pw_check()" maxlength="16" class="reg_pw bad" >
+                                                <input type="password" name="pw" required="" option="regPass" onkeyup="pw_check()" maxlength="16" class="reg_pw bad">
                                                 <p class="txt_guide square">
                                                     <span class="txt txt_case1">
-                                                        6자 이상 입력
+                                                        8자 이상 입력
                                                     </span>
                                                     <span class="txt txt_case2">
                                                         영문/숫자/특수문자(공백 제외)만 허용하며, 2개 이상 조합
@@ -269,7 +273,7 @@
                                                 
                                             </th>
                                             <td>
-                                                <input name="newPassword" type="password" required=""  option="regPass" onkeyup="pw2_check()" maxlength="16" class="confirm_pw">
+                                                <input type="password" name="newPassword" required="" option="regPass" onkeyup="pw2_check()" maxlength="16" class="confirm_pw">
                                                 <p class="txt_guide square">
                                                     <span class="txt txt_case1">
                                                         동일한 비밀번호를 입력해주세요.
@@ -280,10 +284,10 @@
     
                                         <tr class="field_name">
                                             <th>
-                                                닉네임 
+                                                이메일 
                                             </th>
                                             <td>
-                                                <input type="text" name="nickname" label="닉네임" th:value="${user.userName}">
+                                                <input type="text" name="email" th:value="${user.email}">
                                                 <a href="#" class="btn default">중복확인</a>
                                             </td>
                                         </tr>

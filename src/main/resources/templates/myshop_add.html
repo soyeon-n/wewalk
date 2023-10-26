@@ -10,6 +10,8 @@
  <link rel="stylesheet" href="/css/order_list.css">
  <link rel="stylesheet" href="/css/changeInfo.css">
  <link rel="stylesheet" href="/css/myShopList.css">
+ <link rel="stylesheet" href="/header/header.css">
+ <script src="/header/header.js"></script>
  <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script>
       function chkword_name(obj, maxByte){                      // 상품명 글자수 제한 두기
@@ -167,6 +169,7 @@
 <body>
     <div id="container">
         <div id="main">
+          <div th:insert="header :: headerFragment"></div>
             <div id="content">
                 <div id="myPageTop" class="page_aticle mypage_top">
                     <h2 class="blind">마이페이지</h2>
@@ -178,7 +181,7 @@
                                     <span class="blind">등급</span>
                                     <span class="ico_grade class0">
                                         <span class="inner_grade">
-                                            <span class="in_grade">일반</span>
+                                            <span class="in_grade" th:text="${user.grade}"></span>
                                         </span>
                                     </span>
                                     <div class="grade_bnenfit">
@@ -187,14 +190,18 @@
     										<span class="txt">님</span>
 										</div>
                                         <div class="benefit">
-                                            <strong class="tit"></strong>
-                                            적립 0.5%
-                                        </div>
+										    <strong class="tit"></strong>
+										    <span th:text="|적립 ${user.membership == true ? '10%' : 
+										        user.grade == 'B' ? '1%' : 
+										        user.grade == 'S' ? '3%' : 
+										        user.grade == 'G' ? '5%' : 
+										        user.grade == 'P' ? '8%' : ''}|"></span>
+										</div>
                                     </div>
                                 </div>
                                 <div class="next">
-                                    <a href="/user/mypage/grade" class="total_grade">전체등급 보기</a>
-                                    <a href="/user/mypage/mygrade" class="next_month">다음 달 예상등급 보기</a>
+                                    <a href="/user/mypage/myInterest" class="next_month">나의 관심 분야 설정하기</a>
+                                    <a href="/user/mypage/grade" class="total_grade">등급 별 할인혜택</a>
                                 </div>
                             </div>
 
@@ -217,7 +224,7 @@
                                         <div class="tit">
                                             적립금
                                         </div>
-                                        <a href="#" class="info">
+                                        <a href="/user/mypage/point" class="info">
                                             <span th:if="${user.point != null}" th:text="${user.point + ' 원'}"></span>
    											<span th:if="${user.point == null}">0 원</span>
                                             <img src="https://res.kurly.com/pc/service/common/1905/ico_arrow_56x56.png" alt="자세히보기">
@@ -286,7 +293,7 @@
                                     				<a class="" href="/user/mypage/soldout">판매 완료</a>
                                 					</li>
                                 					<li name="cate_gory">
-                                    				<a class="" href="/user/mypage/heart">찜한 상품</a>
+                                    				<a class="" href="/user/mypage/wishlist">찜한 상품</a>
                                 					</li>
                                 					<li name="cate_gory">
                                     				<a class="on" href="/user/mypage/myshop/add">판매상품등록</a>
@@ -295,8 +302,9 @@
                                 				
 												</div>
 												
+												<div th:if="${user.seller == true}">
 												<div class="list_order">
-									              <form th:action="@{/user/mypage/myshop/add}" th:object="${goodsForm}" method="post" enctype="multipart/form-data">
+									              <form th:action="@{/user/mypage/myshop/add}" th:object="${productForm}" method="post" enctype="multipart/form-data">
 									                <div class="size">
 									                  <div class="p_board">
 									                    <table width="75%"> 
@@ -306,7 +314,7 @@
 									                                <td colspan="2"> 
 									                                    <div>
 									                                        <span>
-									                                            <input type="text" id="name" class="i_text text1" onkeyup="chkword_name(this, 50)" th:field="*{name}" required>
+									                                            <input type="text" id="pname" class="i_text text1" onkeyup="chkword_name(this, 50)" th:field="*{pname}" required>
 									                                        </span>
 									                                    </div>
 									                                    <span class="txtByte" title="현재글자수/최대글자수">
@@ -364,6 +372,11 @@
 									                                                    <option value="모바일">-모바일·태블릿</option>
 									                                                    <option value="카메라">-카메라·게임</option>
 									                                                </optgroup>
+									                                                <optgroup label="식품">
+																						<option value="신선식품">-신선식품</option>	
+																						<option value="가공식품">-가공식품</option>
+																						<option value="건강식품">-건강식품</option>
+																					</optgroup>
 									                                                <optgroup label="생활 가전">
 									                                                    <option value="영상">-영상·음향</option>
 									                                                    <option value="주방">-주방</option>
@@ -421,9 +434,10 @@
 																		    <div class="image_add">
 																		        <input type="file" name="image" th:field="*{images}" multiple="multiple" accept="image/*" id="image_input" onchange="set_main_image(event);">
 																		        <button type="button" class="image_input_button"></button>
-																		        <div id="image_main_container"></div>
+																		        <div id="image_main_container">
+																		        </div>
 																		        <div style="margin-bottom:10px;">
-																		            <button type="button" name="image_main_container1" class="remove" onclick="img_remove(this)">
+																		            <button type="button" name="image_main_container" class="remove" onclick="img_remove(this)">
 																		                <span>삭제</span>
 																		            </button>
 																		        </div>
@@ -434,7 +448,7 @@
 																		        <button type="button" class="image_input_button"></button>
 																		        <div id="image_main_container1"></div>
 																		        <div style="margin-bottom:10px;">
-																		            <button type="button" name="image_main_container2" class="remove" onclick="img_remove(this)">
+																		            <button type="button" name="image_main_container1" class="remove" onclick="img_remove(this)">
 																		                <span>삭제</span>
 																		            </button>
 																		        </div>
@@ -445,7 +459,7 @@
 																		        <button type="button" class="image_input_button"></button>
 																		        <div id="image_main_container2"></div>
 																		        <div style="margin-bottom:10px;">
-																		            <button type="button" name="image_main_container3" class="remove" onclick="img_remove(this)">
+																		            <button type="button" name="image_main_container2" class="remove" onclick="img_remove(this)">
 																		                <span>삭제</span>
 																		            </button>
 																		        </div>
@@ -456,7 +470,7 @@
 																		        <button type="button" class="image_input_button"></button>
 																		        <div id="image_main_container3"></div>
 																		        <div style="margin-bottom:10px;">
-																		            <button type="button" name="image_main_container4" class="remove" onclick="img_remove(this)">
+																		            <button type="button" name="image_main_container3" class="remove" onclick="img_remove(this)">
 																		                <span>삭제</span>
 																		            </button>
 																		        </div>
@@ -469,7 +483,6 @@
 									                                            <span class="product_tit">상세 설명</span>
 									                                        </div>
 									                                        <span>
-									                                            
 									                                            <textarea class="i_text main_description" name="content"  id="" cols="30" rows="10" onkeyup="chkword_information(this, 1000)"></textarea>
 									                                        </span>
 									                                        <span class="txtByte_big txtByte" title="현재글자수/최대글자수">
@@ -495,6 +508,11 @@
 									            </form>
 									
 									            </div>
+												</div>
+												
+												<div class="centered-text" th:unless="${user.seller == true}">
+												    <p>판매자 등록 후 이용해주세요.</p>
+												</div>
 												
 											</div>
 											

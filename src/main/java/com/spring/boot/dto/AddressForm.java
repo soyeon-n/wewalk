@@ -2,7 +2,7 @@ package com.spring.boot.dto;
 
 import javax.validation.constraints.NotNull;
 
-public class ShippingForm {
+public class AddressForm {
 	
 	@NotNull(message = "받는 사람은 필수입니다.")
 	private String receivername;
