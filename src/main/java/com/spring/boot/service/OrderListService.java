@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.spring.boot.config.OrderListSpecifications;
 import com.spring.boot.dao.OrderListRepository;
 import com.spring.boot.dao.ProductRepository;
+import com.spring.boot.dao.UserRepository;
 import com.spring.boot.dto.ItemDataForm;
 import com.spring.boot.dto.PaymentDataForm;
 import com.spring.boot.model.OrderList;
@@ -26,6 +27,7 @@ public class OrderListService {
 	@Autowired
 	private final OrderListRepository orderListRepository;
 	private final ProductRepository productRepository;
+	private final UserRepository userRepository;
 	
 	public List<OrderList> saveOrderHistory(PaymentDataForm paymentDataForm, SiteUser user) {
 		
@@ -78,7 +80,9 @@ public class OrderListService {
 	//페이징
 	public List<OrderList> findOrderByUserId(Long userId) {
 		
-		return orderListRepository.findOrderByUserId(userId);
+		SiteUser user = userRepository.findById(userId).get();
+		
+		return orderListRepository.findOrderByUser(user);
 	}
 
 	
