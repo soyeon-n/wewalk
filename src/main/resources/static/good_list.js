@@ -212,7 +212,7 @@ window.addEventListener('DOMContentLoaded',function(){
             cart_button(_index+1);
         });
 
-/*
+
         //카테고리 클릭시 활성화되면서 움직이는 bar
 
         $('li[name=cate_gory]').click(function(){                  // li태그에서 name이 cate_gory인걸 클릭했을 때
@@ -248,7 +248,7 @@ window.addEventListener('DOMContentLoaded',function(){
 
 
         });
-*/
+
         function comma(num){          //콤마찍는 함수
             var len, point, str; 
                

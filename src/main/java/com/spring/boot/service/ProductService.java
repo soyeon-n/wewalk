@@ -129,8 +129,8 @@ public class ProductService {
 		
 		return lists;
 	}
-
-	//검색기능을 포함한 상품 리스트(검색 방식에 따라 sorting 다르게 적용)
+	
+	//검색기능을 포함한 상품 리스트(검색 방식에 따라 sorting 다르게 적용 & 카테고리 또는 제품명으로 검색)
 	public PageResultDTO<ProductDTO, Product> getSearchList(PageRequestDTO requestDTO, String sort) {
 	    
 		Pageable pageable;

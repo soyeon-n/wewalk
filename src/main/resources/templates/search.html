@@ -116,7 +116,7 @@
 	                                                <a th:href="@{|/product/detail/${productDTO.id}|}"><!-- 상품 상세 페이지 -->
 	                                                    <img th:src="@{'/product/' + ${productDTO.image}}" onerror="this.src='https://res.kurly.com/mobile/img/1808/img_none_x2.png'" width="308" height="396">
 	                                                </a>
-	                                                <span class="global_sticker" style="display: none;">
+	                                                <!-- <span class="global_sticker" style="display: none;">
 	                                                    <span class="inner_sticker">
 	                                                        <span class="bg_sticker"></span>
 	                                                        <span class="txt_sticker">
@@ -127,11 +127,11 @@
 	                                                    </span>
 	                                                </span>
 	
-	                                                <div class="group_btn"><!-- paging.dtoList.id -->
+	                                                <div class="group_btn">paging.dtoList.id
 	                                                    <button type="button" name="chk" th:value="${productDTO.id}" class="btn btn_cart">
 	                                                        <span class="screen_out">38300</span>
 	                                                    </button>
-	                                                </div>
+	                                                </div> -->
 
 	                                            </div>
 
@@ -144,9 +144,6 @@
 	                                                    <!-- <input type="hidden"  th:id="|product_cost${productDTO.id}|" th:value="${productDTO.price}"> -->
 	                                                    <span class="dodo">원</span>
 	                                                </span>
-	
-	                                                    <input type="text" class="selling" th:value="${productDTO.selling}">
-	                                                    <input type="text" class="stock" th:value="${productDTO.stock}">
 	                                                <span class="desc" th:text="${productDTO.content}"><!-- 무농약 콩으로 재배한 콩나물(1봉/200g) --></span><!-- content -->
 	                                                <span class="tag"></span>
 	                                            </a>
