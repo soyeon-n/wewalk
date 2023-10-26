@@ -26,4 +26,18 @@ $(document).ready(function(){
 	btn_hover.onmouseout = function(){
 	    hover.style.display = 'none';
 	}
+	
+	
+	//카테고리 선택시 해당 카테고리검색
+	$('.menu .current .main_item').on('click', function() {
+    	var topText = $(this).closest('li.current').find('.tit .txt').first().text();
+    
+    	var keyword = topText.split('·')[0].trim();
+    
+    	var url = '/wewalk/search?keyword=c_' + keyword;
+    	window.location.href = url;
+	});
+	
+	
+	
 });
