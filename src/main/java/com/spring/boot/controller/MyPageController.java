@@ -159,6 +159,7 @@ public class MyPageController {
 
     }
     
+    /*
     @GetMapping("/mypage/wishlist")
     public String myWishList(Model model, @AuthenticationPrincipal PrincipalDetails principalDetails, @RequestParam(name = "pageNum", defaultValue = "1") int pageNum) {
 
@@ -168,6 +169,17 @@ public class MyPageController {
     	
     	
     	return "wishList";
+    }
+    */
+    @GetMapping("/mypage/seller")
+    public String myWishList(Model model, @AuthenticationPrincipal PrincipalDetails principalDetails, @RequestParam(name = "pageNum", defaultValue = "1") int pageNum) {
+
+    	//찜한 상품 목록
+    	SiteUser user = userService.getUserByUserName(principalDetails.getUsername());
+    	model.addAttribute("user", user);
+    	
+    	
+    	return "seller";
     }
     
 
@@ -535,7 +547,7 @@ public class MyPageController {
     	SiteUser user = userService.getUserByUserName(principalDetails.getUsername());
     	model.addAttribute("user", user);
     	
-        return "pay"; // payment.html 또는 결제 페이지 템플릿을 반환
+        return "pay";
     }
     
     @PostMapping("/mypage/pay")
@@ -569,7 +581,43 @@ public class MyPageController {
         }
         return "pay";
     }
-    
+
+    @GetMapping("/mypage/paylist")
+    public String PayList (Model model, @AuthenticationPrincipal PrincipalDetails principalDetails,
+            @RequestParam(name = "page", defaultValue = "1") int pageNum) {
+    	
+    	//pay 내역 페이지
+    	SiteUser user = userService.getUserByUserName(principalDetails.getUsername());
+        model.addAttribute("user", user);
+        
+        Long userId = user.getId();
+        
+        int itemsPerPage = 5; 
+        
+        // 전체 포인트 내역을 가져오기
+        List<Pay> payList = payService.findPaysByUserId(userId);
+
+        // 페이지네이션 계산
+        int totalItemCount = payList.size();
+        int totalPages = (int) Math.ceil((double) totalItemCount / itemsPerPage);
+
+        // 페이지 목록 생성
+        List<Integer> pageList = IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList());
+
+        // 페이지에 해당하는 포인트 내역 가져오기
+        int startIndex = (pageNum - 1) * itemsPerPage;
+        int endIndex = Math.min(startIndex + itemsPerPage, totalItemCount);
+        List<Pay> payAll = payList.subList(startIndex, endIndex);
+
+        model.addAttribute("payList", payAll);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("currentPage", pageNum);
+        model.addAttribute("pageList", pageList); // 페이지 목록 추가
+        model.addAttribute("listUrl", "/user/mypage/paylist/");
+        
+    	
+        return "payList";
+    }
     
     @GetMapping("/mypage/point")
     public String point(Model model, @AuthenticationPrincipal PrincipalDetails principalDetails,
