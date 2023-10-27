@@ -36,19 +36,30 @@ public class AnswerController {
 	private final ProductService productService;
 	
 	//답변작성
-	@GetMapping("/answer/create/{id}")
-	public String createAnswer(Model model,@PathVariable("id") long id,@Valid AnswerForm answerForm,BindingResult bindResult) {
+	@GetMapping("/answer/create/{Pid}/{Qid}")
+	public String createAnswer(Model model,
+			@PathVariable("Qid") long Qid,
+			@PathVariable("Pid") long Pid,
+			@Valid AnswerForm answerForm,BindingResult bindResult) {
+		Product product = productService.getProductDetailByNo(Pid);
+		model.addAttribute("product",product);
 		
 		return "product_qna_answerForm";
 	}
 	
-	@PostMapping("/answer/create/{id}")//질문한 글의 고유번호 question.id 를 가져옴
-	public String createAnswer(Model model,@PathVariable("id") long id,
+	@PostMapping("/answer/create/{Pid}/{Qid}")//질문한 글의 고유번호 question.id 를 가져옴
+	public String createAnswer(Model model,
+			@PathVariable("Qid") long Qid,
+			@PathVariable("Pid") long Pid,
 			@Valid AnswerForm answerForm ,
 			@AuthenticationPrincipal PrincipalDetails principalDetails,
 			BindingResult bindResult ) {
 		
-		Question question = questionService.getOneQuestion(id);//답변달고싶은 질문글을 가져옴 
+		SiteUser user = userService.getUserByUserName(principalDetails.getUsername());
+		model.addAttribute("user",user);
+		
+		//Product product = productService.getProductDetailByNo(Pid);
+		Question question = questionService.getOneQuestion(Qid);//답변달고싶은 질문글을 가져옴 
 		
 		SiteUser siteUser = userService.getUserByUserName(principalDetails.getUsername());//답변작성자 정보를 가져옴
 		
@@ -74,6 +85,8 @@ public class AnswerController {
 		//다시 상품페이지detail 로 돌아오기
 		Product product =question.getProduct();
 		Long pno=product.getId();
+		
+		
 		
 		return String.format("redirect:/product/detail/%s", pno);
 		

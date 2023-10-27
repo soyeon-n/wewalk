@@ -121,12 +121,94 @@
                         </tbody>
                     </table>
                     
+                    <!-- 상단 고정 공지 2 개  -->
+                    <div class="tr_line on">
+                        <table class="xans-board-listheaderd tbl_newtype1" width="100%" cellpadding="0" cellspacing="0" onclick="">
+                            <caption style="display:none">구매후기 내용</caption>
+                            <colgroup>
+                                <col style="width:70px;">
+                                <col style="width:auto;">
+                                <col style="width:51px;">
+                                <col style="width:77px;">
+                                <col style="width:100px;">
+                                <col style="width:40px;">
+                                <col style="width:80px;">
+    
+                            </colgroup>
+                            <tr>
+                                <td align="center">공지</td>
+                                <td class="subject">
+                                    <div>금주의 Best 후기 안내</div>
+                                </td>
+                                <td class="user_grade grade_comm"></td>
+
+                                <td class="user_grade">Marketkurly</td>
+                                <td class="time">2021-01-17</td>
+                                <td>
+                                    <span class="review-like-cnt">0</span>
+                                </td>
+                                <td>
+                                    <span class="review-hit-cnt">0</span>
+                                </td>
+                            </tr>
+                        </table>
+
+
+                        <div class="review_view review_notice">
+                            <div class="inner_review">
+                                <p>고객님 안녕하세요, 마켓컬리입니다</p>
+                                <br>
+                                <p>어쩌구 저쩌구 어쩌구 저쩌구</p>
+                               
+
+                            </div>
+                        </div>
+                    </div>
                     
                     
                     
-                    
-                    
-                    
+                    <div class="tr_line on">
+                        <table class="xans-board-listheaderd tbl_newtype1" width="100%" cellpadding="0" cellspacing="0" onclick="">
+                            <caption style="display:none">구매후기 내용</caption>
+                            <colgroup>
+                                <col style="width:70px;">
+                                <col style="width:auto;">
+                                <col style="width:51px;">
+                                <col style="width:77px;">
+                                <col style="width:100px;">
+                                <col style="width:40px;">
+                                <col style="width:80px;">
+    
+                            </colgroup>
+                            <tr>
+                                <td align="center">공지</td>
+                                <td class="subject">
+                                    <div>금주의 Best 후기 안내</div>
+                                </td>
+                                <td class="user_grade grade_comm"></td>
+
+                                <td class="user_grade">Marketkurly</td>
+                                <td class="time">2021-01-17</td>
+                                <td>
+                                    <span class="review-like-cnt">0</span>
+                                </td>
+                                <td>
+                                    <span class="review-hit-cnt">0</span>
+                                </td>
+                            </tr>
+                        </table>
+
+
+                        <div class="review_view review_notice">
+                            <div class="inner_review">
+                                <p>고객님 안녕하세요, 마켓컬리입니다</p>
+                                <br>
+                                <p>어쩌구 저쩌구 어쩌구 저쩌구</p>
+                               
+
+                            </div>
+                        </div>
+                    </div>
                     
                     
                     
@@ -195,58 +277,81 @@
                                     th:if="${product.user.id == #authentication.getPrincipaldetails().getUserid()}"
                                     th:text="답변쓰기"></a>-->
                                     <!-- 일단야매로 하긴했거든요 직접 principalDetails 을 보내준걸로 -->
-                                    <a th:href="@{|/answer/create/${question.id}|}"
-                                    th:if="${product.user.id == principalDetails.user.id}"
-                                    th:text="답변쓰기"></a>
+                                    <a th:href="@{|/answer/create/${question.product.id}/${question.id}|}"
+                                    th:if="${product.user.id == principalDetails.user.id and question.done ==false}"
+                                    th:text="답변쓰기"></a> 
+                                   
+                                    
                                     <!-- product.user.id이거는 번호고  principalDetails.user.id이것도 번호여야해 -->
                                     <!--  
                                     <a sec:authorize="isAuthenticated()" sec:authentication="name"></a>-->
                                 </td>
                                
                             </tr>
-                        </table>
-
-
-                        <div class="review_view review_notice">
-                            <div class="inner_review">
-                                <p>고객님 안녕하세요, 마켓컬리입니다</p>
-                                <br>
-                                <p>어쩌구 저쩌구 어쩌구 저쩌구</p>
-                               
-
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="tr_line on">
-                        <table class="xans-board-listheaderd tbl_newtype1" width="100%" cellpadding="0" cellspacing="0" onclick="">
-                            <caption style="display:none">구매후기 내용</caption>
-                            <colgroup>
-                                <col style="width:70px;">
-                                <col style="width:auto;">
-                                <col style="width:51px;">
-                                <col style="width:77px;">
-                                <col style="width:100px;">
-                                <col style="width:40px;">
-                                <col style="width:80px;">
-    
-                            </colgroup>
-                            <tr>
-                                <td align="center">공지</td>
-                                <td class="subject">
-                                    <div>금주의 Best 후기 안내</div>
+                            <tr th:each="question,loop: ${entities}">
+                            
+                            
+                                <td align="center" >글번호글번호
+                                  <a th:href="@{|/question/detail/${question.id}|}" th:text="${question.id}"></a>
+                                </td>
+                                <td class="subject">                              
+                                <!--  
+                                    <a th:href="@{|/question/detail/${question.id}|}" th:text="${question.title}"></a>-->
+                                    
+	                                    <button th:id="'toggleButton_'+${question.id}" th:text="${question.title}">이게 제목</button>
+	                                        
+                                        <div th:id="'contentToToggle_'+${question.id}" th:text="${question.content}" style="display: none;">
+                                        <!-- answer 이미지 넣어주고  넘겨받은 answer 출력해준다 -->
+                                            <p th:text="${question.content}" ></p>
+                                            
+                                        </div>
+                                         <!--  
+                                       <div th:class="answertest" th:each="answer : ${question.answerList}">
+                                           <p th:onclick=hideans(); th:text="${answer.content}" style="display: none;"></p>
+                                       </div>-->
+                                        
+                                       <!-- if 로 돌리던가 th:if="{answer.content.!isEmpty}" style="display: none;" onclick=함수실행 -->  
+                                       <div th:each="answer : ${question.answerList}" >
+									      <div th:text=${answer.content}></div>
+								       </div>
+	                                         
+                                    
                                 </td>
                                 <td class="user_grade grade_comm"></td>
-
-                                <td class="user_grade">Marketkurly</td>
-                                <td class="time">2021-01-17</td>
+                                <td class="user_grade" th:text="${question.user.userName}">Marketkurly</td>                                                              
+                                <td class="time" th:text="${#temporals.format(question.date,'yyyy-MM-dd')}">작성일</td>
                                 <td>
-                                    <span class="review-like-cnt">0</span>
+                                <!-- done 이 true 일 시 답변완료로 바뀌는 버튼  -->
+                                    <span class="review-like-cnt" ></span>
+                                    <a th:if="${question.done==true}"
+                                    th:text="답변완료"></a>
+                                    <a th:if="${question.done==false}"
+                                    th:text="답변대기"></a>
                                 </td>
                                 <td>
-                                    <span class="review-hit-cnt">0</span>
+                                    <span class="review-hit-cnt"></span>
+                                    <!--  
+                                    <a th:href="@{|/answer/create/${question.id}|}">답변쓰기</a>-->
+                                    <!-- product.siteuserid== siteuser login id 같아야지만 답변쓰기가능 -->
+                                     <!--  
+                                    <a th:href="@{|/answer/create/${product.id}|}"
+                                    sec:authorize="isAuthenticated()"
+                                    th:if="${product.user.id == #authentication.getPrincipaldetails().getUserid()}"
+                                    th:text="답변쓰기"></a>-->
+                                    <!-- 일단야매로 하긴했거든요 직접 principalDetails 을 보내준걸로 -->
+                                    <a th:href="@{|/answer/create/${question.product.id}/${question.id}|}"
+                                    th:if="${product.user.id == principalDetails.user.id and question.done ==false}"
+                                    th:text="답변쓰기"></a> 
+                                   
+                                    
+                                    <!-- product.user.id이거는 번호고  principalDetails.user.id이것도 번호여야해 -->
+                                    <!--  
+                                    <a sec:authorize="isAuthenticated()" sec:authentication="name"></a>-->
                                 </td>
+                               
                             </tr>
+                            
+                            
                         </table>
 
 
@@ -261,51 +366,12 @@
                         </div>
                     </div>
 
-                    <div class="tr_line on">
-                        <table class="xans-board-listheaderd tbl_newtype1" width="100%" cellpadding="0" cellspacing="0" onclick="">
-                            <caption style="display:none">구매후기 내용</caption>
-                            <colgroup>
-                                <col style="width:70px;">
-                                <col style="width:auto;">
-                                <col style="width:51px;">
-                                <col style="width:77px;">
-                                <col style="width:100px;">
-                                <col style="width:40px;">
-                                <col style="width:80px;">
-    
-                            </colgroup>
-                            <tr>
-                                <td align="center">공지</td>
-                                <td class="subject">
-                                    <div>금주의 Best 후기 안내</div>
-                                </td>
-                                <td class="user_grade grade_comm"></td>
+                    
 
-                                <td class="user_grade">Marketkurly</td>
-                                <td class="time">2021-01-17</td>
-                                <td>
-                                    <span class="review-like-cnt">0</span>
-                                </td>
-                                <td>
-                                    <span class="review-hit-cnt">0</span>
-                                </td>
-                            </tr>
-                        </table>
-
-
-                        <div class="review_view review_notice">
-                            <div class="inner_review">
-                                <p>고객님 안녕하세요, 마켓컬리입니다</p>
-                                <br>
-                                <p>어쩌구 저쩌구 어쩌구 저쩌구</p>
-                               
-
-                            </div>
-                        </div>
-                    </div>
+                    
                
                 
-                <!-- 문의쓰기버튼에 productNo 넘겨주어야함 이거는 productController 가면 넘겨줄수있을듯 ? nav 통합하고 넘겨주자 -->
+                <!-- 문의쓰기 -->
 
                 <p class="btnArea after">
                     <a  onclick="going()">
@@ -315,7 +381,7 @@
                     </a>
                     
                     <a th:href="@{|/question/create/${product.id}|}" class="bhs_button" style="line-height:30px; width:130px;">문의쓰기</a> 
-                    <!-- <a th:href="@{|/product/detail/${product.id}/question/create|}">문의쓰기</a> -->
+                    
                     
                     
                 </p>
