@@ -162,8 +162,13 @@
 													</div>
 												</div>
 												
-												<div class="centered-text" th:if="${user.seller == true}">
-												    <p>판매자로 이미 등록되어있습니다.</p>
+												<div th:if="${user.seller == true}">
+													<div>
+													<img src="/img/seller.png">	
+														<div id="tblParent1">
+								                        	<a style="margin-left: 16%;">판매자로 이미 등록되어있습니다.</a>
+								                        </div>				    
+													</div>
 												</div>
 												
 												
