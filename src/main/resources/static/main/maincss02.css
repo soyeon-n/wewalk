@@ -200,6 +200,10 @@
     bottom: 316px;
     width: 60px;
     height: 60px;
+    border: solid;
+    border-radius: 50px;
+    border-width: thick;
+    color: black;
 }
 
 .page_aticle .bx_controls_direction .bx-prev {
