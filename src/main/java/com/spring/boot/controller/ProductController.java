@@ -152,7 +152,7 @@ public class ProductController {
 		
 	}
 	
-
+//?????? 이거 누가만ㅇ든거야 나는 ,,,만든적이업씨요 이래서 출력이 안됐나 
 	@ResponseBody
     @GetMapping("/images/{image}")
     public Resource processImg(@PathVariable String image) throws MalformedURLException {
