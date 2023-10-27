@@ -114,6 +114,9 @@
                                     <a href="/user/mypage/mybuyhistory">구매 내역</a>
                                 </li>
                                 <li>
+                                    <a href="/review/mylist">나의 리뷰</a>
+                                </li>
+                                <li>
                                     <a href="/user/mypage/change">회원 정보 수정 및 탈퇴</a>
                                 </li>
                             </ul>
@@ -136,10 +139,11 @@
                             <table class="tbl tbl_type1">
                                 <thead>
                                     <tr>
-                                        <th class="tit_select" style="width: 30%">상품번호</th>
+                                        <th class="tit_select" style="width: 25%">상품번호</th>
                                         <th class="tit_address" style="width: 20%">수량</th>
                                         <th class="tit_receive" style="width: 30%">총금액</th>
                                         <th class="tit_receive" style="width: 20%">결제수단</th>
+                                        <th class="tit_receive" style="width: 10%">리뷰 작성</th>
                                     </tr>
                                 </thead>
 
@@ -150,7 +154,13 @@
 								        <td class="count" th:text="${orderList.count}"></td>
 								        <td class="price" th:text="${orderList.price}"></td>
 								        <td class="payment" th:text="${orderList.payment}"></td>
+								        <td class="payment">
+								        <a 
+								        th:href="@{|/review/create/${orderList.productno}|}">리뷰쓰기</a>
+								        
+								          </td>
 								    </tr>
+								    
 								</tbody>
                             </table>
                             

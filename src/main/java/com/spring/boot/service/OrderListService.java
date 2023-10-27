@@ -1,7 +1,10 @@
 package com.spring.boot.service;
 
 import java.util.ArrayList;
+
+import java.util.Collections;
 import java.util.Comparator;
+
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,13 +13,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.spring.boot.config.OrderListSpecifications;
 import com.spring.boot.dao.OrderListRepository;
 import com.spring.boot.dao.ProductRepository;
 import com.spring.boot.dao.UserRepository;
 import com.spring.boot.dto.ItemDataForm;
 import com.spring.boot.dto.PaymentDataForm;
-import com.spring.boot.dto.ProductSaleDto;
 import com.spring.boot.model.OrderList;
 import com.spring.boot.model.Product;
 import com.spring.boot.model.SiteUser;
@@ -73,8 +74,10 @@ public class OrderListService {
 	    
 	    // 상위 판매 제품 ID 리스트 추출
 	    List<Long> productnoList = topSellingProductsPage.getContent().stream()
-											                .map(result -> (Long) result[0])
-											                .collect(Collectors.toList());
+
+                .map(result -> (Long) result[0])
+                .collect(Collectors.toList());
+
 
 	    // 제품 ID에 해당하는 Product 엔터티 리스트 조회
 	    List<Product> products = productRepository.findByIdIn(productnoList);
@@ -83,6 +86,7 @@ public class OrderListService {
 	    products.sort(Comparator.comparingInt(p -> productnoList.indexOf(p.getId())));
 	    
 	    return products;
+
 	}
 	
 	//페이징

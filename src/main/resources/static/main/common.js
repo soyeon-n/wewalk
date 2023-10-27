@@ -45,41 +45,108 @@ window.addEventListener('DOMContentLoaded',function(){
 
 	
 	
-	//상품 이미지슬라이드
-    var imgs; // 사용할 이미지들
-	var img_count; // 카운트 변수
+	//최근등록된상품 이미지슬라이드
+    var imgs_roll1; // 사용할 이미지들
+	var img_count_roll1; // 카운트 변수
 	
-	imgs = $('.list_goods_ul li'); // 이미지는 .list_goods_ul 안에 있는 li 태그
-	img_count = imgs.length; // slide ul의 자식, 즉 li의 갯수 = 이미지의 갯수
+	imgs_roll1 = $('.rollmenu1 .list_goods_ul li'); // 이미지는 .list_goods_ul 안에 있는 li 태그
+	img_count_roll1 = imgs_roll1.length; // slide ul의 자식, 즉 li의 갯수 = 이미지의 갯수
 	
-	var currentIndex = 0;
-	updateDisplay();
+	var currentIndex_roll1 = 0;
+	updateDisplay_roll1();
 	
-	$('.bx-prev').click(function () {
-	    slide_left();
+	$('.rollmenu1 .bx-prev').click(function () {
+	    slide_left_roll1();
 	});
 	
-	$('.bx-next').click(function () {
-	    slide_right();
+	$('.rollmenu1 .bx-next').click(function () {
+	    slide_right_roll1();
 	});
 	
-	function slide_left() {
-	    if (currentIndex > 0) {
-	        currentIndex--;
-	        updateDisplay();
+	function slide_left_roll1() {
+	    if (currentIndex_roll1 > 0) {
+	        currentIndex_roll1--;
+	        updateDisplay_roll1();
 	    }
 	}
 	
-	function slide_right() {
-	    if (currentIndex < img_count - 4) {
-	        currentIndex++;
-	        updateDisplay();
+	function slide_right_roll1() {
+	    if (currentIndex_roll1 < img_count_roll1 - 4) {
+	        currentIndex_roll1++;
+	        updateDisplay_roll1();
 	    }
 	}
 	
-	function updateDisplay() {
-	    var leftPosition = -currentIndex * 267;
-	    $('.list_goods_ul').css("left", leftPosition + "px");
+	function updateDisplay_roll1() {
+	
+	    var leftPosition = -currentIndex_roll1 * 267;
+	    $('.rollmenu1 .list_goods_ul').css("left", leftPosition + "px");
+	    
+	    if (currentIndex_roll1 === img_count_roll1 - 4) {
+			$('.rollmenu1 .bx-next').hide();
+   		}else{
+   			$('.rollmenu1 .bx-next').show();
+   		}
+   		
+   		if (currentIndex_roll1 === 0) {
+			$('.rollmenu1 .bx-prev').hide();
+   		}else{
+   			$('.rollmenu1 .bx-prev').show();
+   		}
+	    
+	}
+
+	
+	
+	//많이팔린상품 이미지슬라이드
+    var imgs_roll2; // 사용할 이미지들
+	var img_count_roll2; // 카운트 변수
+	
+	imgs_roll2 = $('.rollmenu2 .list_goods_ul li'); // 이미지는 .list_goods_ul 안에 있는 li 태그
+	img_count_roll2 = imgs_roll2.length; // slide ul의 자식, 즉 li의 갯수 = 이미지의 갯수
+	
+	var currentIndex_roll2 = 0;
+	updateDisplay_roll2();
+	
+	$('.rollmenu2 .bx-prev').click(function () {
+	    slide_left_roll2();
+	});
+	
+	$('.rollmenu2 .bx-next').click(function () {
+	    slide_right_roll2();
+	});
+	
+	function slide_left_roll2() {
+	    if (currentIndex_roll2 > 0) {
+	        currentIndex_roll2--;
+	        updateDisplay_roll2();
+	    }
+	}
+	
+	function slide_right_roll2() {
+	    if (currentIndex_roll2 < img_count_roll2 - 4) {
+	        currentIndex_roll2++;
+	        updateDisplay_roll2();
+	    }
+	}
+	
+	function updateDisplay_roll2() {
+	
+	    var leftPosition = -currentIndex_roll2 * 267;
+	    $('.rollmenu2 .list_goods_ul').css("left", leftPosition + "px");
+	    
+	    if (currentIndex_roll2 === img_count_roll2 - 4) {
+			$('.rollmenu2 .bx-next').hide();
+   		}else{
+   			$('.rollmenu2 .bx-next').show();
+   		}
+   		
+   		if (currentIndex_roll2 === 0) {
+			$('.rollmenu2 .bx-prev').hide();
+   		}else{
+   			$('.rollmenu2 .bx-prev').show();
+   		}
+	    
 	}
 
 

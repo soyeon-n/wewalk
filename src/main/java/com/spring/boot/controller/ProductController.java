@@ -116,9 +116,10 @@ public class ProductController {
 		
 		model.addAttribute("product",product);
 		
-		
-		SiteUser user = userService.getUserByUserName(principalDetails.getUsername());
-		model.addAttribute("user",user);
+		if(principalDetails != null) {
+			SiteUser user = userService.getUserByUserName(principalDetails.getUsername());			
+			model.addAttribute("user",user);		
+		}
 		
 		//상품리뷰 페이징을 위한 값 넘김
 		Product productnum = productService.getProductDetailByNo(productNo);
@@ -167,7 +168,8 @@ public class ProductController {
 		//거기서 addCart 함수로 값 productNo 와 수량 number 가 오면 
 		//db 에 갯수와 count productid 를 넣는다 
 		
-		Product product = productService.getProductDetailByNo(productNo);
+		Product product = productService.getProductById(productNo);
+		SiteUser seller = product.getUser();
 		
 		SiteUser user = userService.getUserByUserName(principalDetails.getUsername());
 		
@@ -181,32 +183,26 @@ public class ProductController {
 		if(mycart) {
 			
 			//다시 돌려보내 
-			return ResponseEntity.badRequest().body("Item is already in the cart");
+			return ResponseEntity.badRequest().body("alreadyInCart");
 			
 			
 		}
 		
 		//number 담으려는 수량이 db의 수량보다 많다면 
+		if(product.getStock()<number) {
+			//다시 돌려보내
+			return ResponseEntity.badRequest().body("notEnough");
+			
+		}
+		
+		//담으려는 상품이 로그인한 유저의것이면
+		if(seller.getId()==user.getId()) {
+			//다시돌려보내
+			return ResponseEntity.badRequest().body("sameUser");
+			
+		}
 		
 		
-		
-		//db의 수량을 가져오기
-		 int nowStock =product.getStock();
-		
-		 //if(number>nowStock) 
-		 /*
-		 if(number>nowStock) {
-				
-				//다시 돌려보내 
-				return ResponseEntity.badRequest().body("stock over");
-				
-				
-			}*/
-		
-		
-		
-		
-		//null 이면 아직 product no 가 담긴적이 없으니 담으면 된다 
 		
 		cartItemService.addCartItem(product, number, cart);//실질적 insert
 		

@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>마이컬리- 상품후기</title>
+    <title>마이리뷰- 상품후기</title>
     <link rel="stylesheet" href="/reset.css">
     
-    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/common.css">
     <link rel="stylesheet" href="/css/order_list.css">
     <link rel="stylesheet" href="/css/changeInfo.css">
     <link rel="stylesheet" href="/css/myShopList.css">
-    
+    <link rel="stylesheet" href="/header/header.css">
     
     
     
@@ -21,7 +21,7 @@
     <script src="./js/mykurly.js"></script>
     <script src="../main/js/common.js"></script>
     
-    <link rel="stylesheet" href="/header/header.css">
+    
     <script src="/header/header.js"></script>
     
     
@@ -90,12 +90,12 @@
                                     <span class="blind">등급</span>
                                     <span class="ico_grade class0">
                                         <span class="inner_grade">
-                                            <span class="in_grade" th:text="${user.grade}">일반</span>
+                                            <span class="in_grade" th:text="${user.membership ? '멤버쉽' : user.grade}">일반</span>
                                         </span>
                                     </span>
                                     <div class="grade_bnenfit">
                                         <div class="user">
-                                            <strong class="name" th:text="${siteUser.name}">멋쟁이</strong>
+                                            <strong class="name" th:text="${user.name}">멋쟁이</strong>
                                             <span class="txt">님</span>
                                         </div>
                                         <div class="benefit">
@@ -122,10 +122,15 @@
                                         </div>
                                         <a href="/user/mypage/pay" class="info">
                                             
-                                            <span th:if="${user.paymoney != null}" th:text="${user.paymoney + ' 원'}"></span>
+                                            <span th:if="${user.paymoney != null}" th:text="${#numbers.formatInteger(user.paymoney, 1, 'COMMA') + '원'}"></span>
                                             <span th:if="${user.paymoney == null}">0 원</span>
                                             <img src="https://res.kurly.com/pc/service/common/1905/ico_arrow_56x56.png" alt="자세히 보기">
-                                            <span class="date">충전하기</span>
+                                            
+                                        </a>
+                                        <br/>
+                                        <a href="/user/mypage/paylist" class="info">
+                                        	<span>거래 내역</span>
+                                            <img src="https://res.kurly.com/pc/service/common/1905/ico_arrow_56x56.png" alt="자세히 보기">
                                         </a>
                                     </div>
                                 </li>
@@ -135,10 +140,10 @@
                                             적립금
                                         </div>
                                         <a href="/user/mypage/point" class="info">
-                                            <span th:if="${user.point != null}" th:text="${user.point + ' 원'}"></span>
+                                            <span th:if="${user.point != null}" th:text="${#numbers.formatInteger(user.point, 1, 'COMMA') + '원'}"></span>
    											<span th:if="${user.point == null}">0 원</span>
                                             <img src="https://res.kurly.com/pc/service/common/1905/ico_arrow_56x56.png" alt="자세히보기">
-                                            <span class="date">적립 내역</span>
+                                            <span class="date">거래 내역</span>
                                         </a>
                                     </div>
                                 </li>
@@ -161,7 +166,7 @@
                 </div>
                 <div class="page_aticle aticle_type2">
                     <div id="snb" class="snb_my">
-                        <h2 class="tit_snb">마이컬리</h2>
+                        <h2 class="tit_snb">마이 페이지</h2>
                         <div class="inner_sub">
                             <ul class="list_menu">
                                 <li>

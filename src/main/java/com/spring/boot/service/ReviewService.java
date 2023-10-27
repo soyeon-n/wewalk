@@ -2,6 +2,9 @@ package com.spring.boot.service;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -78,31 +81,17 @@ public class ReviewService {
 
 
 		//uuid~ filemanager 코딩  
-		String rootPath = System.getProperty("user.dir");
-		//아 이거는 폴더가 유저로컬한테 저장공간이 생기기떄문에 나중에 고쳐야한다 @@@@@@@@@@@@@@@@@@@@@@
-
-		String fileDir = rootPath + "/files/";//내가만든파일폴더이름
-
+		//String rootPath = System.getProperty("user.dir");
+		//아 이거는 폴더가 유저로컬한테 저장공간이 생기기떄문에 나중에 고쳐야한다 
+		
+		String uploadDir = "src/main/resources/static/reviewImg";//저장될서버경로
 
 		//날짜저장
 		LocalDateTime now = LocalDateTime.now();
 		DateTimeFormatter dateTimeFormatter =
 				DateTimeFormatter.ofPattern("yyyyMMdd");
 		String currentDate = now.format(dateTimeFormatter);
-
-
-		//새로 만들기 
-		File file = new File(fileDir);		
-
-		if(!file.exists()) {
-			boolean wasSuccessful = file.mkdirs();
-
-			// 디렉터리 생성에 실패했을 경우
-			if(!wasSuccessful)
-				System.out.println("file: was not successful");
-		}  
-
-
+		
 		//origin 파일 네임 .확장자를 포함한 파일이름 추출 
 		String originalFileName = multipartFile.getOriginalFilename();
 
@@ -114,25 +103,37 @@ public class ReviewService {
 
 		//저장할 파일 네임
 		String saveFileName = currentDate +System.nanoTime() +  "."+ extractExt;//확장자 추출하여 db 저장네임만들기
+		
+
+		//새로 만들기 
+		File file = new File(uploadDir);		
+
+		if(!file.exists()) {
+			boolean wasSuccessful = file.mkdirs();//경로없을시 경로생성
+
+			// 디렉터리 생성에 실패했을 경우
+			if(!wasSuccessful)
+				System.out.println("file: was not successful");
+		}  
 
 
 		//fullpath
-		String fullPath = fileDir + saveFileName;
+		//String fullPath = fileDir + saveFileName;
 
 		//실제로 파일을 저장하는 부분 -> 파일경로 + storeFilename 에 저장
-		multipartFile.transferTo(new File(fullPath));
+		//multipartFile.transferTo(new File(fullPath));
+		Files.copy(multipartFile.getInputStream(), Paths.get(uploadDir, saveFileName), StandardCopyOption.REPLACE_EXISTING);
 
 
 
 		reviews.setOriginalFileName(originalFileName);
 		reviews.setSaveFileName(saveFileName);
-		reviews.setFilePath(fullPath);
-		reviews.setFileDir(fileDir);
+		//reviews.setFilePath(fullPath);
+		//reviews.setFileDir(fileDir);
 
 
 
-		reviews.setProduct(product);//리뷰한 상품번호 넣기
-		//fk 인 동시에 insert 하려고해서 지금안들어가나 이게타입이 지금 int 가 아님 
+		reviews.setProduct(product);//리뷰한 상품번호 넣기 
 		//reviews.setRNo(rNo);//리뷰글 번호 알아서 set 됨 
 		reviews.setUser(siteUser);
 		reviews.setPname(pname);
@@ -185,8 +186,7 @@ public class ReviewService {
 	}
 
 	//리뷰수정해서 다시 set 하여 넣기
-	//Product product,Integer rUser,String pname,Integer star,
-	//String title, String content,MultipartFile multipartFile
+	
 	public void modifyReview(Review review,Integer star,
 			String title, String content,MultipartFile multipartFile) throws IOException{
 
@@ -194,66 +194,52 @@ public class ReviewService {
 
 		//파일재업로드기능은아직임 
 
-		//uuid~ filemanager 코딩  
-		//기존 file 이 있으면 이 코딩을 안하는 조건을 넣을수 있을까 ? 
+		
 		if(multipartFile!=null) {
 
-			String rootPath = System.getProperty("user.dir");
-
-			String fileDir = rootPath + "/files/";//내가만든파일폴더이름
-
+			String uploadDir = "src/main/resources/static/reviewImg";//저장될서버경로
 
 			//날짜저장
 			LocalDateTime now = LocalDateTime.now();
 			DateTimeFormatter dateTimeFormatter =
 					DateTimeFormatter.ofPattern("yyyyMMdd");
 			String currentDate = now.format(dateTimeFormatter);
-
-
-			//새로 만들기 
-			File file = new File(fileDir);		
-
-			if(!file.exists()) {
-				boolean wasSuccessful = file.mkdirs();
-
-				// 디렉터리 생성에 실패했을 경우
-				if(!wasSuccessful)
-					System.out.println("file: was not successful");
-			}  
-
-
+			
 			//origin 파일 네임 .확장자를 포함한 파일이름 추출 
 			String originalFileName = multipartFile.getOriginalFilename();
 
 			//확장자 붙이기 
 			int pos = originalFileName.lastIndexOf(".");
 
-			//origin 파일 네임 이거 지금 오류나는중
+			//origin 파일 네임 
 			String extractExt=originalFileName.substring(pos + 1);//확장자명
 
 			//저장할 파일 네임
 			String saveFileName = currentDate +System.nanoTime() +  "."+ extractExt;//확장자 추출하여 db 저장네임만들기
+			
 
+			//새로 만들기 
+			File file = new File(uploadDir);		
 
-			//fullpath
-			String fullPath = fileDir + saveFileName;
+			if(!file.exists()) {
+				boolean wasSuccessful = file.mkdirs();//경로없을시 경로생성
 
+				// 디렉터리 생성에 실패했을 경우
+				if(!wasSuccessful)
+					System.out.println("file: was not successful");
+			}  
 			//실제로 파일을 저장하는 부분 -> 파일경로 + storeFilename 에 저장
-			multipartFile.transferTo(new File(fullPath));
-
+			Files.copy(multipartFile.getInputStream(), Paths.get(uploadDir, saveFileName), StandardCopyOption.REPLACE_EXISTING);
 
 
 			review.setOriginalFileName(originalFileName);
 			review.setSaveFileName(saveFileName);
-			review.setFilePath(fullPath);
-			review.setFileDir(fileDir);
+			//review.setFilePath(fullPath);
+			//review.setFileDir(fileDir);
 
 			
 		}
 		
-
-
-
 		//review.setProduct(product);//리뷰한 상품번호 넣기
 
 		//reviews.setRUser(rUser);
