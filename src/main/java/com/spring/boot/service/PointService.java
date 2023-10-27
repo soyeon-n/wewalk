@@ -24,7 +24,7 @@ public class PointService {
 		newPoint.setUser(user);
 		newPoint.setPoint(-point);
 		newPoint.setPayDate(new Date());
-		newPoint.setType(name);
+		newPoint.setType(name +" 구매");
 		
 		pointRepository.save(newPoint);
 	}
@@ -36,7 +36,7 @@ public class PointService {
 		newPoint.setUser(user);
 		newPoint.setPoint(point);
 		newPoint.setPayDate(new Date());
-		newPoint.setType(name+" 구매적립");
+		newPoint.setType(name +" 구매적립");
 		
 		pointRepository.save(newPoint);
 		

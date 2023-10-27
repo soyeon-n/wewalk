@@ -48,7 +48,34 @@ window.addEventListener('DOMContentLoaded',function(){
     
     
     
-    
+    	//로그인했을경우 적립율을구함
+		var userinfo = document.querySelector('.userinfo');
+		var grade = "N";
+		var membership = false;
+		var accumulate = 1;  //적립율 
+		var accumulate_mem = 0;  //멤버쉽적립율
+		if (userinfo) {
+		  grade = userinfo.getAttribute('data-grade'); //유저등급
+		  membership = userinfo.getAttribute('data-membership'); //멤버쉽가입여부
+			
+			switch (grade) {
+			    case "P":
+			        accumulate = 8;
+			        break;
+			    case "G":
+			        accumulate = 5;
+			        break;
+			    case "S":
+			        accumulate = 3;
+			        break;
+
+			}
+		
+			if (membership) {
+			    accumulate_mem += 10;
+			}
+			
+		}
 
        
 
@@ -56,20 +83,28 @@ window.addEventListener('DOMContentLoaded',function(){
         
         var number = $('.inp').val();                  //구매 수량을 조절할 변수 ! (inp클래스 초기 value값은 1로 헸음! 시작 수량이 1이니깐)
         var cost = $('.goods_price input').val();     // 상품의 가격을 설정해줘야됨.  goods_price안에있는 input의 value값에 탬플릿 언어로 반찬 가격을 불러와야됨 
-        $('.emph').text((number*cost)/20 + '원 적립');  // 첫 화면의 emph(적립금) 은  반찬가격(cost)의 0.5%로 출력
+        $('.emph').text(comma((number*cost)*(accumulate+accumulate_mem)/100) + '원 적립');  // 첫 화면의 emph(적립금) 은  반찬가격(cost)의 0.5%로 출력
         $('.price .num').text(start_price);             // 첫 화면의 총 상품금액 (.price 안에 .num) 에다가 초기 가격을 출력!
-        $('.emphh').text((number*cost)/20 + '원 적립'); //첫 화면의 윗쪽 1개당 적립금(변하지않는 값) 출력!
-    
+        if(userinfo){
+        	$('.emphh').text('개당 ' +comma((number*cost)*accumulate/100) + '원 적립');  //첫 화면의 윗쪽 1개당 적립금(변하지않는 값) 출력!
+        } else {
+        	$('.emphh').text('회원가입하고 적립혜택을 받아보세요')
+        }
+        if(membership){
+        	$('.emphhm').text('개당 추가 '+comma((number*cost)*accumulate_mem/100) + '원 적립');
         
+        }
+        
+        
+    	const stock = parseInt($('span.count').data('stock')); //로딩완료시 해당상품 재고
+	
 
         //수량 조절 함수 시작
         $('.down').click(function(){               // 수량 내리기 버튼을 클릭할 때 발동!  
-            if(number >= 0){                        // 만약에 수량이 0보다 많으면 ?
+       		number = $('.inp').val(); 
+            if(number >= 2){                        // 만약에 수량이 1보다 많으면 ?
                 number--;                          // 목적대로 수량을 1 깍음
                 $(".inp").val(number);             // 깍았으니 수량클래스(.inp)의 값을 바꿔줌
-                 if(number == 0){                   // 수량이 0 이면 0원 출력!
-                     $(".num").text(0);
-                 }
 
                 // else if(number*cost < 1000){       // 만약에 가격x수량 했을때 1000원 이하면?   ( 가격 표시할때 콤마로 구별하기 위해서 넣었음 ex) 1,000   1,000,000 이런식으로)
                 //     $(".num").text(number*cost);   // 그냥 가격x수량으로 출력   
@@ -88,12 +123,9 @@ window.addEventListener('DOMContentLoaded',function(){
                 
             }
     
-            if(number < 0){             //0 이하면 false 반환
-                return false;
-            }
     
     
-            $('.emph').text(comma((number*cost)/20) + '원 적립');// 적립금은 항상 가격x수량 x 0.05 해서 표현 하도록 설정
+            $('.emph').text(comma((number*cost)*(accumulate+accumulate_mem)/100) + '원 적립');// 적립금은 항상 가격x수량 x 0.05 해서 표현 하도록 설정 (등급,멤버쉽여부에맞게설정)
             
         
             
@@ -103,19 +135,65 @@ window.addEventListener('DOMContentLoaded',function(){
     
     
         $('.up').click(function(){            // 수량올리기 버튼 클릭하면?
+        	number = $('.inp').val();
+        	if(number<stock){
+        	
             number++;// 수량을 1 올려줌
+            
             $(".inp").val(number);  // 올렸으니 수량클래스(.inp)의 값을 바꿔줌
             
             $(".num").text(comma(number*cost));
     
-            $('.emph').text(comma((number*cost)/20) + '원 적립');  // 마찬가지로 적립금 은 가격x수량x0.05로 출력
+            $('.emph').text(comma((number*cost)*(accumulate+accumulate_mem)/100) + '원 적립');  // 마찬가지로 적립금 은 가격x수량x0.05로 출력
             
-    
-            
+  			}else{
+	  			alert("재고부족! 현재재고는 " + stock + "개입니다.");
+	            input.val(stock);
+  			}
+  			
         });
         
+        //수량 입력할경우
+        $('.inp').on('blur', function() {
+        const input = $(this);
+        const enteredValue = input.val().trim();
+        const enteredQuantity = parseInt(enteredValue);
+
+			//숫자만 넣었는지?
+         if (/^\d+$/.test(enteredValue)) {
+            
+            
+            if (enteredQuantity > stock) {
+                alert("재고부족! 현재재고는 " + stock + "개입니다.");
+                $(".inp").val(stock);
+                $(".num").text(comma(stock*cost));
+				$('.emph').text(comma((stock*cost)*(accumulate+accumulate_mem)/100) + '원 적립');
+	        
+            } else if (enteredQuantity <= 0) {
+                
+                $(".inp").val(1);
+                $(".num").text(comma(1*cost));
+				$('.emph').text(comma((1*cost)*(accumulate+accumulate_mem)/100) + '원 적립');
+                
+            } else{
+            
+            	$(".inp").val(enteredQuantity);  // 올렸으니 수량클래스(.inp)의 값을 바꿔줌
+	            
+	        	$(".num").text(comma(enteredQuantity*cost));
+	    
+	        	$('.emph').text(comma((enteredQuantity*cost)*(accumulate+accumulate_mem)/100) + '원 적립');
+	        
+            }
+            
+        } else {
+            
+            $(".inp").val(1);
+            $(".num").text(comma(1*cost));
+			$('.emph').text(comma((1*cost)*(accumulate+accumulate_mem)/100) + '원 적립');
+        }
         
-        
+
+    	});
         
         
         
@@ -196,43 +274,63 @@ window.addEventListener('DOMContentLoaded',function(){
         
         
         //장바구니에담기버튼 btn_type1
-        $('.btn_type1').click(function(){
-             //함수실행. 구매수량 만큼 product 를 cart 테이블에 담기 
-             go_cart();
+       	$('.btn_type1').click(function(){
+            //함수실행. 구매수량 만큼 product 를 cart 테이블에 담기 
+			
+			if(!userinfo){
+			
+				alert('로그인후 구매가능합니다');
+				
+			}else{
+
+				go_cart();
+
+            }
         });
         
         
         function go_cart() {//담은수량 inp 의 값을 가지고 db에 간다 
         
-         var number = $('.inp').val();
+        var number = $('.inp').val();
+        
         //var productNo = element.getAttribute("data-productNo");
         var productNo = $('#productNo').val();
-            //number 의 값을 가지고              
-               $.ajax({
-               url:'/product/addCart',
-               method:'POST',
-               data:{
-                   number : number,//상품수량
-                   productNo : productNo//상품번호
-               },
-               success: function(response) {
-                    alert(productNo + '상품번호 가 장바구니에 담겼습니다.');
-               
-                },
-                error: function(){
-                //badrequest
-                alert(productNo + '상품이 이미 장바구니에 담겨있습니다.');
-                
-                //overstock 인경우 
-                
-                
-                //내가 판매자인경우 
-                }
-            });
-            
         
-        }
-    })
+        //number 의 값을 가지고              
+        	$.ajax({
+        		url:'/product/addCart',
+           		method:'POST',
+           		data:{
+		               number : number,//상품수량
+		               productNo : productNo//상품번호
+		          	 },
+		        success: function(response) {
+                	if (window.confirm('상품을 장바구니에 담았습니다\n장바구니로 이동하시겠습니까?')) {
+			            window.location.href = '/order/cart';
+			        }
+           		},
+            	error: function(xhr){
+
+			        if (xhr.responseText === "alreadyInCart") {//이미 있을경우
+			        
+			            alert('오류 : 이미 장바구니에 있는상품입니다.');
+			            
+			        } else if (xhr.responseText === "notEnough") {//overstock 인경우 
+	                
+	                	alert('오류 : 재고수량보다 많이담을수없습니다.\n새로고침후 다시 시도해주세요.');
+	                	
+	                } else if (xhr.responseText === "sameUser") {//자기가 판매중인물건 담을경우
+	                
+	                	alert('오류 : 자신이 판매중인상품을 담을수없습니다.');
+	                	
+	                }
+	                
+            	}
+       		})
+        
+   		}
+       		
+   	})
 });
 
         
