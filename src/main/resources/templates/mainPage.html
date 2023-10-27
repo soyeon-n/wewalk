@@ -262,7 +262,8 @@
 		                                            <li data-index="1" data-name="today_recommendation" class="list_item"
 		                                            style="float: left; position: relative; width: 249px; margin-right: 18px;"
 		                                            th:each="toplist : ${productListTop8}">
-		                                            <a class="thumb_goods">
+														<a class="thumb_goods" th:href="@{/product/detail/{id}(id=${toplist.id})}">
+
 		                                                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAG0AAACRCAQAAABjof6/AAAANUlEQVR4Ae3BgQAAAADDoPtTT+AI1QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAnfAsAAe7+tYwAAAAASUVORK5CYII=" alt="상품이미지" class="thumb"
 		                                                style="background-image: url('https://img-cf.kurly.com/shop/data/goods/1466488979157l0.jpg');">
 		                                                <!-- 상품 이미지 임시값임. src는 데이터로 받아오기 -->

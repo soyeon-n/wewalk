@@ -74,11 +74,8 @@ public class OrderListService {
 	    
 	    // 상위 판매 제품 ID 리스트 추출
 	    List<Long> productnoList = topSellingProductsPage.getContent().stream()
-	                                        .map(result -> {
-	                                            Product product = (Product) result[0];
-	                                            return product.getId();
-	                                        })
-	                                        .collect(Collectors.toList());
+                .map(result -> (Long) result[0])
+                .collect(Collectors.toList());
 
 
 	    // 제품 ID에 해당하는 Product 엔터티 리스트 조회
