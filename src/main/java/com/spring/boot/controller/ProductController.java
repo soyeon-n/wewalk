@@ -151,13 +151,7 @@ public class ProductController {
 		return "product_list";//html연결
 		
 	}
-	
-//?????? 이거 누가만ㅇ든거야 나는 ,,,만든적이업씨요 이래서 출력이 안됐나 
-	@ResponseBody
-    @GetMapping("/images/{image}")
-    public Resource processImg(@PathVariable String image) throws MalformedURLException {
-        return new UrlResource("file:src/main/resources/static/product/" + image);
-    }
+
 
 	//카트넣기 post 방식으로 값을받아옴 
 	@PostMapping("/addCart")
