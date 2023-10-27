@@ -11,7 +11,6 @@
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <script src="/good_view.js"></script>
     
-    
     <script src="/common.js"></script>
     
     <script src="/header/header.js"></script>
@@ -308,7 +307,7 @@
                                     <div class="pic">
                                     <!-- 대표이미지 뿌리기 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 
                                     <img th:src="@{'/product/images/' + ${products.image}}" -->
-                                        <img th:src="@{'/product/' + ${product.image}}">
+                                        <img th:src="@{'/product/images/' + ${product.image}}">
                                     </div>
                                     <div class="context last">
                                         <h3>
@@ -338,10 +337,10 @@
                                     </h3>
                                     <div class="context last">
                                         <div class="pic">
-                                            <img th:if=${product.image1} th:src="@{'/product/' + ${product.image1}}">
+                                            <img th:if=${product.image1} th:src="@{'/product/images/' + ${product.image1}}">
                                             
-                                            <img th:if=${product.image2} th:src="@{'/product/' + ${product.image2}}">
-                                            <img th:if=${product.image3} th:src="@{'/product/' + ${product.image3}}">
+                                            <img th:if=${product.image2} th:src="@{'/product/images/' + ${product.image2}}">
+                                            <img th:if=${product.image3} th:src="@{'/product/images/' + ${product.image3}}">
                                         </div>
                                     </div>
                                 </div>
@@ -747,10 +746,7 @@
                          </div>
                          
                          
-                         
-                        <div class="goods-view-infomation-content" id="goods-review"> <!-- 아래 주소창에 good_review_list.html url 넣어주면 됩니당-->
-                            <iframe src="file:///C:/Users/siwha/OneDrive/%EB%B0%94%ED%83%95%20%ED%99%94%EB%A9%B4/e-commerce-clone-main/good_review_list.html#none" id="inreview" frameborder="0" class="goods-view-infomation-board" height="733"></iframe>
-                        </div>
+                        
                         
                     </div>
                 </div>
