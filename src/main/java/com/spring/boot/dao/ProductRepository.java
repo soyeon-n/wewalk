@@ -52,6 +52,10 @@ public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpec
     
     //판매량 순으로 검색(8개)
     List<Product> findByIdIn(List<Long> topSellingProducts);
+    
+    //가장 최근에 등록한 상품 8개
+    List<Product> findTop8ByOrderByDateDesc();
+    
     long countByUserId(Long userId);
 
 	
