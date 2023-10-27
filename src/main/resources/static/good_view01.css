@@ -282,7 +282,7 @@
     font-size: 14px;
     color: #000;
     line-height: 18px;
-    text-align: center;
+
 }
 
 #cartPut .cart_option .list .up.on {
@@ -1260,7 +1260,7 @@ table.extra-information th {
 .inp{
     
     position: relative;
-    left: 8px;
+	text-align: center;
     
 }
 
