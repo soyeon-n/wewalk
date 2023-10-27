@@ -28,7 +28,7 @@
                                     <span class="blind">등급</span>
                                     <span class="ico_grade class0">
                                         <span class="inner_grade">
-                                            <span class="in_grade" th:text="${user.grade}"></span>
+                                            <span class="in_grade" th:text="${user.membership ? '멤버쉽' : user.grade}"></span>
                                         </span>
                                     </span>
                                     <div class="grade_bnenfit">
@@ -62,7 +62,11 @@
                                             <span th:if="${user.paymoney != null}" th:text="${#numbers.formatInteger(user.paymoney, 1, 'COMMA') + '원'}"></span>
    											<span th:if="${user.paymoney == null}">0 원</span>
                                             <img src="https://res.kurly.com/pc/service/common/1905/ico_arrow_56x56.png" alt="자세히 보기">
-                                            <span class="date">충전하기</span>
+                                        </a>    
+                                        <br/>
+                                        <a href="/user/mypage/paylist" class="info">
+                                        	<span>거래 내역</span>
+                                            <img src="https://res.kurly.com/pc/service/common/1905/ico_arrow_56x56.png" alt="자세히 보기">
                                         </a>
                                     </div>
                                 </li>
@@ -75,7 +79,7 @@
                                             <span th:if="${user.point != null}" th:text="${#numbers.formatInteger(user.point, 1, 'COMMA') + '원'}"></span>
    											<span th:if="${user.point == null}">0 원</span>
                                             <img src="https://res.kurly.com/pc/service/common/1905/ico_arrow_56x56.png" alt="자세히보기">
-                                            <span class="date">적립 내역</span>
+                                            <span class="date">거래 내역</span>
                                         </a>
                                     </div>
                                 </li>
@@ -140,10 +144,10 @@
                                     				<a class="" href="/user/mypage/soldout">판매 완료</a>
                                 					</li>
                                 					<li name="cate_gory">
-                                    				<a class="" href="/user/mypage/wishlist">찜한 상품</a>
+                                    				<a class="" href="/user/mypage/myshop/add">판매상품등록</a>
                                 					</li>
                                 					<li name="cate_gory">
-                                    				<a class="" href="/user/mypage/myshop/add">판매상품등록</a>
+                                    				<a class="" href="/user/mypage/seller">판매자 신청</a>
                                 					</li>
                                 				</ul> 
                                 				

@@ -1,6 +1,7 @@
 package com.spring.boot.service;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.spring.boot.dao.PayRepository;
 import com.spring.boot.model.Pay;
+import com.spring.boot.model.Point;
 import com.spring.boot.model.SiteUser;
 
 @Service
@@ -37,6 +39,10 @@ public class PayService {
 		pay.setType(name);
 		payRepository.save(pay);
 	}
+	
+	public List<Pay> findPaysByUserId(Long userId) {
+        return payRepository.findPaysByUserId(userId);
+    }
 	
 
 }

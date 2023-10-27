@@ -157,9 +157,6 @@
 }
 
 
-
-
-
 #goodsList .sort_menu .user_sort .list a.on, #goodsList .sort_menu .user_sort .list a:hover {
     color: #1EC800;
 }
@@ -554,4 +551,29 @@ button{
 
 .centered-text p {
     font-size: 24px;
+}
+
+@font-face {
+    font-family: 'ONE-Mobile-POP';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2105_2@1.0/ONE-Mobile-POP.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+#tblParent1 a {
+  font-family: 'ONE-Mobile-POP';
+  font-size: 30px;
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #1EC800;;
+  color: #fff;
+  text-decoration: none; /* 링크 밑줄 제거 */
+  border: 1px solid #1EC800;
+  border-radius: 25px; 
+  margin-top:20px;
+  margin-left: 30%;
+}
+
+#tblParent1 a:hover {
+  background-color: #31B404;
 }
