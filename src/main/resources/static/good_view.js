@@ -87,11 +87,13 @@ window.addEventListener('DOMContentLoaded',function(){
         $('.price .num').text(start_price);             // 첫 화면의 총 상품금액 (.price 안에 .num) 에다가 초기 가격을 출력!
         if(userinfo){
         	$('.emphh').text('개당 ' +comma((number*cost)*accumulate/100) + '원 적립');  //첫 화면의 윗쪽 1개당 적립금(변하지않는 값) 출력!
+        	if(membership){
+        	$('.emphhm').text('개당 추가 '+comma((number*cost)*accumulate_mem/100) + '원 적립');
+        
+        }
+        
         } else {
         	$('.emphh').text('회원가입하고 적립혜택을 받아보세요')
-        }
-        if(membership){
-        	$('.emphhm').text('개당 추가 '+comma((number*cost)*accumulate_mem/100) + '원 적립');
         
         }
         
