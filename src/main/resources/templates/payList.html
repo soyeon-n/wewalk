@@ -3,33 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>회원 정보 수정</title>
-    <link rel="stylesheet" href="/css/reset.css">
-    <link rel="stylesheet" href="/css/changeInfo.css">
-    <link rel="stylesheet" href="/header/header.css">
+    <title>적립금 내역</title>
+    <link rel="stylesheet" href="/css/reset.css?ver=3">
+    <link rel="stylesheet" href="/css/Order_list.css?ver=3">
+    <link rel="stylesheet" href="/css/Shipping_list.css?ver=3">
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <link rel="stylesheet" href="/header/header.css">
 	<script src="/header/header.js"></script>
-    <script th:inline="javascript">
-        function checkPassword(event) {
-        	
-            // 사용자가 입력한 비밀번호와 서버 또는 로그인 된 비밀번호를 비교합니다.
-            const enteredPassword = document.getElementById("userPassword").value;
-            var serverPassword = [[${user.password}]];
-
-            if (enteredPassword === serverPassword) {
-                // 비밀번호가 일치할 때, 원하는 페이지로 리디렉션합니다.
-                window.location.href = "/mypage/change/changeInfo";
-            } else {
-                // 비밀번호가 일치하지 않을 때, 사용자에게 알림을 표시합니다.
-                alert("비밀번호가 올바르지 않습니다. 다시 시도하세요.");
-            }
-        }
+    <script>
+    
     </script>
 </head>
 <body>
     <div id="container">
         <div id="main">
-        	<div th:insert="header :: headerFragment"></div>
+          <div th:insert="header :: headerFragment"></div>
             <div id="content">
                 <div id="myPageTop" class="page_aticle mypage_top">
                     <h2 class="blind">마이페이지</h2>
@@ -101,7 +89,7 @@
                                         <div class="tit">
                                             멤버쉽    
                                         </div>
-                                        <a href="/mypage/membership" class="info info_link">
+                                        <a href="/user/mypage/membership" class="info info_link">
                                             알아보기
                                             <img src="https://res.kurly.com/pc/service/common/1905/ico_arrow_56x56.png" alt="자세히 보기">
                                         </a>
@@ -113,6 +101,7 @@
                         </a>
                     </div>
                 </div>
+
                 <div class="page_aticle aticle_type2">
                     <div id="snb" class="snb_my">
                         <h2 class="tit_snb">마이 페이지</h2>
@@ -127,7 +116,7 @@
                                 <li>
                                     <a href="/user/mypage/mybuyhistory">구매 내역</a>
                                 </li>
-                                <li class="on">
+                                <li>
                                     <a href="/user/mypage/change">회원 정보 수정 및 탈퇴</a>
                                 </li>
                             </ul>
@@ -138,53 +127,44 @@
                         </a>
                     </div>
 
-                    <div class="page_section section_myinfo">
+                    <div class="page_section section_destination">
                         <div class="head_aticle">
-                            <h2 class="tit">회원 정보 수정 및 탈퇴</h2>
+                            <h2 class="tit">
+                                페이머니 내역
+                                <span id="addrListInfo" class="tit_sub">페이머니의 적립/사용 내역 확인을 할 수 있습니다.</span>
+                            </h2>
                         </div>
 
-                        <div class="type_form member_join member_pw">
-                            <div class="field_pw">
-                                <h3 class="tit">비밀번호 재확인</h3>
-                                <p class="sub">회원님의 정보를 안전하게 보호하기 위해 비밀번호를 다시 한번 확인해주세요.</p>
+                        <div id="tblParent" class="type_select">
+                            <table class="tbl tbl_type1">
+                                <thead>
+                                    <tr>
+                                        <th class="tit_select" style="width: 40%">거래일시</th>
+                                        <th class="tit_address" style="width: 40%">페이머니</th>
+                                        <th class="tit_receive" style="width: 20%">내용</th>
+                                    </tr>
+                                </thead>
 
-								<div th:if="${errorMessage}" class="error-message">
-            						<p th:text="${errorMessage}"></p>
-        						</div>
-
-                                <form name="checkPassword" action="/user/mypage/checkPassword" method="post">
-                                    <table class="tbl_comm">
-                                        <tbody>
-                                            <tr class="fst">
-                                                <th>아이디</th>
-                                                <td>
-                                                    <strong class="email" id="email" th:text="${user.email}"></strong>
-                                                </td>
-                                            </tr>
-
-                                            <tr>
-                                                <th>
-                                                    비밀번호
-                                                    <span class="ico">
-                                                        *
-                                                        <span class="blind">필수항목</span>
-                                                    </span>
-                                                </th>
-
-                                                <td>
-                                                    <input type="password" id="userPassword" name="userPassword" class="inp_pw">
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-
-                                    <button type="submit" class="btn active">확인</button>
-                                </form>
-                            </div>
+                                <tbody id="payList">
+								    <tr th:each="pay : ${payList}">
+								        <td class="payDate" th:text="${pay.payDate}"></td>
+								        <td class="payMoney" th:text="${pay.payMoney}"></td>
+								        <td class="type" th:text="${pay.type}"></td>
+								    </tr>
+								</tbody>
+								
+                            </table>
+                            <div class="page-numbers-container">
+							    <span th:each="page, stat : ${pageList}">
+							        <span th:if="${currentPage == page}" class="current-page" th:text="${page}"></span>
+							        <a th:unless="${currentPage == page}" th:href="@{/user/mypage/paylist(page=${page})}" th:text="${page}"></a>
+							    </span>
+							</div>
                         </div>
                     </div>
                     
                 </div>
+                
             </div>
         </div>
     </div>

@@ -5,16 +5,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>마이컬리- 상품후기</title>
     <link rel="stylesheet" href="/reset.css">
-    <link rel="stylesheet" href="/common.css">
-    <link rel="stylesheet" href="/mykurly_order_list.css">
+    
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/order_list.css">
+    <link rel="stylesheet" href="/css/changeInfo.css">
+    <link rel="stylesheet" href="/css/myShopList.css">
+    
+    
+    
+    
+    
+    <!-- css 겹쳐서 임시삭제
+    <link rel="stylesheet" href="/mykurly_order_list.css"> -->
     <link rel="stylesheet" href="/mykurly_review.css">
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <script src="/mykurly.js"></script>
-    <script src="/common.js"></script>
+    
+    
+    
+    <link rel="stylesheet" href="/header/header.css">
+    <script src="/header/header.js"></script>
+    
+    
+   
+    
 </head>
+
+
 <body>
+
+
+
+
     <div id="container">
         <div id="main">
+        <div th:insert="header :: headerFragment"></div>
             <div id="content">
                 <div id="myPageTop" class="page_aticle mypage_top">
                     <h2 class="blind">마이페이지</h2>
@@ -26,7 +51,7 @@
                                     <span class="blind">등급</span>
                                     <span class="ico_grade class0">
                                         <span class="inner_grade">
-                                            <span class="in_grade">일반</span>
+                                            <span class="in_grade" th:text="${user.grade}">일반</span>
                                         </span>
                                     </span>
                                     <div class="grade_bnenfit">
@@ -36,46 +61,53 @@
                                         </div>
                                         <div class="benefit">
                                             <strong class="tit"></strong>
-                                            적립 0.5%
+                                            <span th:text="|적립 ${user.membership == true ? '10%' : 
+										        user.grade == 'B' ? '1%' : 
+										        user.grade == 'S' ? '3%' : 
+										        user.grade == 'G' ? '5%' : 
+										        user.grade == 'P' ? '8%' : ''}|"></span>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="next">
-                                    <a href="#" class="total_grade">전체등급 보기</a>
-                                    <a href="#" class="next_month">다음 달 예상등급 보기</a>
+                                    <a href="/user/mypage/myInterest" class="next_month">나의 관심 분야 설정하기</a>
+                                    <a href="/user/mypage/grade" class="total_grade">등급 별 할인혜택</a>
                                 </div>
                             </div>
 
                             <ul class="list_mypage">
+                                <li class="user_coupon">
+                                    <div class="link">
+                                        <div class="tit">
+                                            페이 머니
+                                        </div>
+                                        <a href="/user/mypage/pay" class="info">
+                                            <span th:if="${user.paymoney != null}" th:text="${user.paymoney + ' 원'}"></span>
+   											<span th:if="${user.paymoney == null}">0 원</span>
+                                            <img src="https://res.kurly.com/pc/service/common/1905/ico_arrow_56x56.png" alt="자세히 보기">
+                                            <span class="date">충전하기</span>
+                                        </a>
+                                    </div>
+                                </li>
                                 <li class="user_reserve">
                                     <div class="link">
                                         <div class="tit">
                                             적립금
                                         </div>
-                                        <a href="#" class="info">
-                                            999,999,999 원
+                                        <a href="/user/mypage/point" class="info">
+                                            <span th:if="${user.point != null}" th:text="${user.point + ' 원'}"></span>
+   											<span th:if="${user.point == null}">0 원</span>
                                             <img src="https://res.kurly.com/pc/service/common/1905/ico_arrow_56x56.png" alt="자세히보기">
-                                            <span class="date">소멸 예정 0원</span>
-                                        </a>
-                                    </div>
-                                </li>
-                                <li class="user_coupon">
-                                    <div class="link">
-                                        <div class="tit">
-                                            쿠폰
-                                        </div>
-                                        <a href="#" class="info">
-                                            1123354 개
-                                            <img src="https://res.kurly.com/pc/service/common/1905/ico_arrow_56x56.png" alt="자세히 보기">
+                                            <span class="date">적립 내역</span>
                                         </a>
                                     </div>
                                 </li>
                                 <li class="user_kurlypass">
                                     <div class="link">
                                         <div class="tit">
-                                            컬리패스    
+                                            멤버쉽    
                                         </div>
-                                        <a href="#" class="info info_link">
+                                        <a href="/user/mypage/membership" class="info info_link">
                                             알아보기
                                             <img src="https://res.kurly.com/pc/service/common/1905/ico_arrow_56x56.png" alt="자세히 보기">
                                         </a>
@@ -83,26 +115,29 @@
                                 </li>
                             </ul>
                         </div>
-                        <a href="#" class="bnr_event" style="background-image: url(https://img-cf.kurly.com/shop/data/skin/designgj/img/banner/bb20c3b9d5542cfdfec3ef5bfefcafa5.jpg);">
+                        <a href="#" class="bnr_event" >
                         </a>
                     </div>
                 </div>
                 <div class="page_aticle aticle_type2">
                     <div id="snb" class="snb_my">
-                        <h2 class="tit_snb">마이컬리</h2>
+                        <h2 class="tit_snb">마이 페이지</h2>
                         <div class="inner_sub">
                             <ul class="list_menu">
                                 <li>
-                                    <a href="#">주문내역</a>
+                                    <a href="/user/mypage">나의 상점</a>
                                 </li>
                                 <li>
-                                    <a href="#">배송지 관리</a>
-                                </li>
-                                <li class="on">
-                                    <a href="#">상품 후기</a>
+                                    <a href="/user/mypage/shipping">배송지 관리</a>
                                 </li>
                                 <li>
-                                    <a href="#">개인 정보 수정</a>
+                                    <a href="/user/mypage/mybuyhistory">구매 내역</a>
+                                </li>
+                                <li>
+                                    <a href="/review/mylist">나의 리뷰</a>
+                                </li>
+                                <li>
+                                    <a href="/user/mypage/change">회원 정보 수정 및 탈퇴</a>
                                 </li>
                             </ul>
                         </div>
@@ -132,6 +167,7 @@
                                 <br>
                                 * 후기 작성은 배송 완료일로부터 30일 이내 가능합니다.
                             </div>
+                            <!--  
 
                             <ul class="tab_menu">
                                 <li class="on">
@@ -147,7 +183,7 @@
                                         <span>(4)</span>
                                     </a>
                                 </li>
-                            </ul>
+                            </ul>-->
                         </div>
 
                         <div id="viewBeforeList" class="before_view" style="display:block;">
@@ -207,14 +243,9 @@
 
                                             <span class="view">
                                                 <span class="img">
-                                                <!-- <img src="https://img-cf.kurly.com/shop/data/review/20200526/94edd664f356ea243a30d8e9797cc5ad.jpg" alt="첨부 이미지">  -->
-                                                    
-                                                    
+                                                
                                                     <!-- <img th:each="imageFile : ${content.imageFiles}" th:src="|/basic-board/images/${imageFile.storeFilename}|"> -->                                    
-                                                    
-                                                    
-                                                    
-
+                                                
                                                 </span>
 
                                                 <span class="txt">
@@ -329,7 +360,7 @@
 							              th:classappend="(${page}==${paging.number}+1) ? 'active'">
 							              <a class="layout-pagination-button layout-pagination-number" 
 							              th:href="@{/review/mylist(page=${page})}" th:text="${page}">
-							              sds
+							              
 							              </a>
 							          </li>
 							          <!-- > -->							          

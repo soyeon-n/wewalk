@@ -13,16 +13,70 @@
     <script src="./js/mykurly.js"></script>
     <script src="../main/js/common.js"></script>
     
+    
+    
+    <link rel="stylesheet" href="/header/header.css">
+    <script src="/header/header.js"></script>
+    
+    <script type="text/javascript">
+    
+    function chkword_name(obj){                      // 상품명 글자수 제한 두기
+        var strValue = obj.value;         //strValue : 글자수 값을 저장하기 위한 변수
+        var strLen = strValue.length;     //strLen : strValue 값의 길이
+        var totalByte = 0;                //글자수 총합
+        var len = 0;
+        var oneChar = "";
+        var str2= "";
+
+        for (var i = 0; i < strLen; i++){
+            oneChar = strValue.charAt(i);             //oneChar : 문자 값 리턴 받는 함수
+            if(escape(oneChar).length > 4) {          //한글이면 글자수 + 2
+                totalByte += 2;
+                $('.field_cmt .txt_count .num').text(totalByte);
+            } else {                                   //그외(숫자,영어)는 +1
+                totalByte++;
+                $('.field_cmt .txt_count .num').text(totalByte);
+            }
+
+            len = i+1;
+
+        }
+
+        if (strLen == 0){
+            $('.field_cmt .txt_count .num').text(0);
+        }
+
+        
+    }
+    
+
+    function submit_check(){    // 10자 이하로 작성할시 submit 안됨
+        var chkword = $('.field_cmt textarea').val();
+
+        if (chkword.length < 10){
+            alert("후기를 최소 10자 이상 작성해주세요");
+            return false;
+        }
+    }
+    </script>
+    
 <title>Insert title here</title>
 </head>
 <body>
 
-
+<div th:insert="header :: headerFragment"></div>
+<br/>
+<br/>
+<br/>
+<br/>
 
 <div class="page_section section_write" style="display: flex; align-items: center; flex-direction: column;">
 	<div class="head_aticle">
 	    <h2 class="tit">상품 문의 작성</h2>
 	</div>
+	<br/>
+	<br/>
+	<br/>
 	<!-- <form name="form_review" id="form_review" action="" method="POST" onsubmit="return submit_check();"> -->
 	
 	
@@ -36,7 +90,7 @@
 	        <div class="goods_info">
 	            <div class="thumb">
 	            <!-- 나중에 상품 이미지 뜨도록 설정  -->
-	                <img src=""
+	                <img th:src="@{'/product/images/' + ${product.image}}"
 	                onerror="this.src='https://res.kurly.com/mobile/img/1808/img_none_x2.png'" alt="상품 이미지">
 	            </div>
 	
@@ -77,7 +131,7 @@
 	                            
 	<textarea id="fieldCmt" name="contents" cols="100" rows="10" onkeyup="chkword_name(this)"  
 	placeholder="상품문의 작성 전 확인해주세요. 답변은 영업일 기준 2-3 일 소요됩니다. 
-	-배송관련, 주문(취소/교환/환불) 에 관련한 사항은 1:1 문의를 이용해 주세요" class="on_txt" style="height: 202px;" th:field="*{content}" ></textarea>
+-배송관련, 주문(취소/교환/환불) 에 관련한 사항은 1:1 문의를 이용해 주세요" class="on_txt" style="height: 202px;" th:field="*{content}" ></textarea>
 	
 	                            <p class="txt_count">
 	                            

@@ -63,8 +63,8 @@ public class ProductController {
 		model.addAttribute("paging",paging);//request.setattribute 와 같음 html 로
 		
 		//return "mainList";//html 인식
-		//return "search";//이게 검색결과 뿌리는 창 
-		return "AcoTest";//아코디언메뉴 테스트 
+		return "search";//이게 검색결과 뿌리는 창 
+		 
 	}
 	
 	//상품을 눌렀을떄 상품번호에 따른 주소가 달라짐 
@@ -94,7 +94,8 @@ public class ProductController {
 		
 		model.addAttribute("paging1",paging1);//qna문의하기의페이징 qna_list layout
 		model.addAttribute("paging",paging);//상품리뷰의 페이징
-		
+
+	
 
 		return "product_list";//html연결
 		
@@ -115,6 +116,9 @@ public class ProductController {
 		
 		model.addAttribute("product",product);
 		
+		
+		SiteUser user = userService.getUserByUserName(principalDetails.getUsername());
+		model.addAttribute("user",user);
 		
 		//상품리뷰 페이징을 위한 값 넘김
 		Product productnum = productService.getProductDetailByNo(productNo);
@@ -170,8 +174,6 @@ public class ProductController {
 		Cart cart=cartService.getOneCart(user);//siteuser 를 넣어주면 유저의 cart 를 반환한다 
 		
 		
-		
-		
 		//나의 cartitem 에 productNo 가 있는 지 검사한다 
 		boolean mycart =cartItemService.searchProduct(product, cart);
 		
@@ -192,13 +194,14 @@ public class ProductController {
 		 int nowStock =product.getStock();
 		
 		 //if(number>nowStock) 
+		 /*
 		 if(number>nowStock) {
 				
 				//다시 돌려보내 
 				return ResponseEntity.badRequest().body("stock over");
 				
 				
-			}
+			}*/
 		
 		
 		

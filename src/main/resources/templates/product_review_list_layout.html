@@ -68,6 +68,7 @@
 	                        <h3 class="goods-add-product-title">
 	                            BEST PHOTO REVIEW
 	                        </h3>
+	                        <h6 class="goods-add-product-title" th:text="|${#lists.size(product.reviewList)}개의 후기가 있습니다.|"></h6>
 	                        <div class="goods-add-product-wrapper __slide-wrapper" data-slide-item="5">
 	                            <button class="goods-add-product-move goods-add-product-move-left __slide-go-left">
 	                                왼쪽으로 슬라이드 이동
@@ -106,8 +107,8 @@
 	                                        </div>
 	                                        <div class="goods-add-product-item-content">
 	                                            <div class="goods-add-product-item-content-wrapper">
-	                                                <p class="goods-add-product-item-name">배</p>
-	                                                <p class="goods-add-product-item-price">2원</p>
+	                                                <p class="goods-add-product-item-name">신선한 햇양파</p>
+	                                                <p class="goods-add-product-item-price">3980원</p>
 	                                            </div>
 	                                        </div>
 	                                    </li>
@@ -123,7 +124,7 @@
 	                                        </div>
 	                                        <div class="goods-add-product-item-content">
 	                                            <div class="goods-add-product-item-content-wrapper">
-	                                                <p class="goods-add-product-item-name">소고기</p>
+	                                                <p class="goods-add-product-item-name">김부각</p>
 	                                                <p class="goods-add-product-item-price">10.000원</p>
 	                                            </div>
 	                                        </div>
@@ -134,28 +135,21 @@
 	                            </div>
 	                        </div>
                     </div>
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
+                        <br/><br/><br/><br/>
 
                         <div id="viewAfterList" class="after_view" style="display:;" th:each="review, loop : ${paging}">
                         <!-- 23/10/13 페이징 시작 -->
                             
                             
                             <ul class="list_after">
+                            
+                            
+                            
+                            </li>
                                 <li>
                                 
                                     <div class="tit_after"  >
                                     
-                                    <!-- 작성한 리뷰 갯수 표시 근데 list 가 아니라서,, -->
-                                    <!-- <span th:text="|${#lists.size(question.answerList)}개의 리뷰 작성 이 있습니다.|"></span> -->
                                     
                                     <a></a>
                                     상품명 : 
@@ -213,16 +207,14 @@
                                         </a>
 
                                         <div class="btn_after">
+                                            
+                                            
+                                            <!-- 도움이 되었어요 기능구현 안함 
                                             <button type="button" class="btn_help">도움이 돼요? 0</button>
-                                            <button value="리뷰추천하기" ></button>
-                                            
-                                            
-                                            <br/>
-                                            <!-- 
                                             <a th:href="@{|/review/delete/${review.id}|}" th:text="리뷰삭제"></a>
                                             
                                             <a th:href="@{|/review/modify/${review.id}|}" th:text="리뷰수정"></a> -->
-                                            <a>리뷰추천버튼</a>
+                                            
                                             
                                             
                                             

@@ -74,6 +74,7 @@ public class OrderListService {
 	    
 	    // 상위 판매 제품 ID 리스트 추출
 	    List<Long> productnoList = topSellingProductsPage.getContent().stream()
+
                 .map(result -> (Long) result[0])
                 .collect(Collectors.toList());
 
@@ -87,7 +88,7 @@ public class OrderListService {
 	    return products;
 
 	}
-
+	
 	//페이징
 	public List<OrderList> findOrderByUserId(Long userId) {
 		

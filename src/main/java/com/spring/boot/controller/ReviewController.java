@@ -80,6 +80,9 @@ public class ReviewController {
 		
 		//내리뷰 여러개는 Page? 로받나? List? 여러개는 아무튼 페이징해야해서 ? 
 		Page<Review> paging = reviewService.getReview(user,pageable);
+		
+		
+		
 
 		model.addAttribute("paging",paging);
 		model.addAttribute("user",user);
@@ -105,8 +108,15 @@ public class ReviewController {
 		//비로그인시 튕기기
 		if(siteUser==null) {
 			
+			//이거 처리가 지금 안되고있는ㄷ ㅔ 
 			return "redirect:/product/detail/{productNo}";
 		}
+		
+		
+		
+		SiteUser user = userService.getUserByUserName(principalDetails.getUsername());
+		model.addAttribute("user",user);
+		
 		
 		model.addAttribute(product);//이안에 savefilename
 		model.addAttribute(siteUser);
@@ -132,6 +142,10 @@ public class ReviewController {
 		
 		model.addAttribute(siteUser);
 		
+		SiteUser user = userService.getUserByUserName(principalDetails.getUsername());
+		
+		model.addAttribute("user",user);
+		
 
 		if(bindResult.hasErrors()) {			
 			return "mypage_reviewReg";//form에 err 값 있을시 페이지 되돌려보내기 
@@ -154,7 +168,9 @@ public class ReviewController {
 	//리뷰수정할값set하기
 	//권한 제한 하도록 하기 
 	@GetMapping("/modify/{id}")//리뷰글의 id 를 가져가야함 
-	public String reviewModify(ReviewForm reviewForm,@PathVariable("id") long id) {
+	public String reviewModify(ReviewForm reviewForm,@PathVariable("id") long id,
+			Model model,
+			@AuthenticationPrincipal PrincipalDetails principalDetails) {
 		 
 
 		Review review = reviewService.getOneReview(id);
@@ -176,9 +192,10 @@ public class ReviewController {
 		reviewForm.setPname(review.getPname());
 		//reviewForm.setRUser(review.getRUser());//작성하는 작성자는그대로 
 		reviewForm.setStar(review.getStar());
-
-
-
+		
+		//nav bar 위한 로그인정보 넘기기 
+		SiteUser user = userService.getUserByUserName(principalDetails.getUsername());
+		model.addAttribute("user",user);
 
 		return "mypage_reviewReg";//다시 리뷰작성창 돌려주기 
 
@@ -191,7 +208,9 @@ public class ReviewController {
 	public String reviewModify(@Valid ReviewForm reviewForm,
 			MultipartFile multipartFile,
 			BindingResult bindResult,
-			@PathVariable("id") long id) throws IOException{
+			@PathVariable("id") long id,
+			Model model,
+			@AuthenticationPrincipal PrincipalDetails principalDetails) throws IOException{
 
 		if(bindResult.hasErrors()) {
 			return "question_form";
@@ -205,6 +224,14 @@ public class ReviewController {
 		//reviewService.createReview(productnum,userId, reviewForm.getPname(), 
 		//reviewForm.getStar(), reviewForm.getTitle(),reviewForm.getContent(), 
 		//multipartFile);
+		
+		//nav bar 위한 로그인정보 넘기기 
+		SiteUser user = userService.getUserByUserName(principalDetails.getUsername());
+		model.addAttribute("user",user);
+		
+		
+		
+		
 		
 		//다시insert 
 		//ruser는 바꿀필요없는데 ?? reviewForm.getRUser() 없는데 흠
