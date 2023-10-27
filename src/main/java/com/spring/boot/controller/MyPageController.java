@@ -2,6 +2,8 @@ package com.spring.boot.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -19,6 +21,7 @@ import com.spring.boot.dto.PrincipalDetails;
 import com.spring.boot.model.Pay;
 import com.spring.boot.model.Point;
 import com.spring.boot.model.Product;
+import com.spring.boot.model.Review;
 import com.spring.boot.model.Address;
 import com.spring.boot.model.OrderList;
 import com.spring.boot.model.SiteUser;
@@ -27,6 +30,7 @@ import com.spring.boot.dto.ProductForm;
 import com.spring.boot.service.PayService;
 import com.spring.boot.service.PointService;
 import com.spring.boot.service.ProductService;
+import com.spring.boot.service.ReviewService;
 import com.spring.boot.service.AddressService;
 import com.spring.boot.service.MembershipService;
 import com.spring.boot.service.OrderListService;
@@ -62,13 +66,14 @@ public class MyPageController {
     private final MembershipService membershipService;
     private final PointService pointService;
     private final OrderListService orderListService;
+    private final ReviewService reviewService;
     
     @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Autowired
     public MyPageController(PayService payService, UserService userService, AddressService shippingService, ProductService productService, MembershipService membershipService,
-    		PointService pointService, OrderListService orderListService) {
+    		PointService pointService, OrderListService orderListService ,ReviewService reviewService ) {
         this.payService = payService;
         this.userService = userService;
         this.addressService = shippingService;
@@ -76,6 +81,7 @@ public class MyPageController {
         this.membershipService = membershipService;
         this.pointService = pointService;
         this.orderListService = orderListService;
+        this.reviewService = reviewService;
     }
 
     @GetMapping("/mypage")
@@ -505,6 +511,7 @@ public class MyPageController {
     
     @GetMapping("/mypage/mybuyhistory")
     public String myBuyHistory(Model model, @AuthenticationPrincipal PrincipalDetails principalDetails,
+    		@PageableDefault Pageable pageable,
     		@RequestParam(name = "page", defaultValue = "1") int pageNum) {
 
     	//구매 내역 페이지
@@ -516,7 +523,7 @@ public class MyPageController {
         //사용자 ID 가져오기
         Long userId = user.getId();
         
-        int itemsPerPage = 5; 
+        int itemsPerPage = 5;
         
         //거래 목록 가져오기
         List<OrderList> orderList = orderListService.findOrderByUserId(userId);
@@ -528,6 +535,13 @@ public class MyPageController {
         int startIndex = (pageNum - 1) * itemsPerPage;
         int endIndex = Math.min(startIndex + itemsPerPage, totalItemCount);
         List<OrderList> orderAll = orderList.subList(startIndex, endIndex);
+        
+        
+        
+        //은별 id 로 리뷰목록 가져오기 
+        Page<Review> paging = reviewService.getReview(user,pageable);
+		
+		model.addAttribute("paging",paging);
         
         model.addAttribute("orderList", orderAll);
         model.addAttribute("totalPages", totalPages);

@@ -50,9 +50,9 @@
                         </div>
 
                         <div id="viewBeforeList" class="before_view" style="display:block;">
-                            <ul class="list_before">
+                            <ul class="list_before" th:if="${paging.isEmpty}">
                                 <li class="no_data">
-                                    작성가능 후기 내역이 없습니다.
+                                    작성된 후기가 없습니다.
                                 </li>
                             </ul>
                         </div>
@@ -83,8 +83,10 @@
 	                                    <li class="goods-add-product-item __slide-item" th:each="review, loop : ${paging}" >
 	                                        <div class="goods-add-product-item-figure">
 	                                            <a href="#" target="_blank">
-	                                            <img th:src="@{'/imgfile/'+ ${review.saveFileName}}"/>
+	                                                <img th:src="@{'/reviewImg/'+ ${review.saveFileName}}" class="goods-add-product-item-image"/>
+	                                                <!-- 
 	                                                <img src="http://img-cf.kurly.com/shop/data/goods/1581917419401m0.jpg" class="goods-add-product-item-image">
+	                                                 -->
 	                                            </a>
 	                                        </div>
 	                                        <div class="goods-add-product-item-content">
@@ -177,7 +179,7 @@
                                                     <img th:src="@{${review.fileDir} + ${review.saveFileName}}"/>                                                   
                                                     <img th:src="@{${review.filePath}}"/>                                                    
                                                     <img th:each="filePath : ${review.filePath}" th:src="|${review.filePath}|">-->
-                                                    <img th:src="@{'/imgfile/'+ ${review.saveFileName}}"/>
+                                                    <img th:src="@{'/reviewImg/'+ ${review.saveFileName}}"/>
                                                     <!-- 여기가 리뷰상품 img 출력하는 부분  -->
                                                     </span>
                                                 </span>

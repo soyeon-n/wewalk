@@ -58,18 +58,13 @@ public class ReviewController {
 		model.addAttribute("paging",paging);
 		
 		//return "product_review_list_temp";//제품리뷰>>미리보기식으로 이거를 layout 분리
-		//return "product_review_list";
+		return "product_review_list";
 		//return "product_review_list_layout";
-		return "product_qna_list";
+		
 
 	}
 
-
-
-
-
-	////로그인한 사람만 들어올수 있음 
-	//접근막기 추가 principal ?  >> d이걸 securityconfig 에서 처리 
+	////로그인한 사람만 들어올수 있음  
 	@RequestMapping("/mylist")
 	public String myreviewList(Model model,
 			@AuthenticationPrincipal PrincipalDetails principalDetails,
@@ -81,9 +76,6 @@ public class ReviewController {
 		//내리뷰 여러개는 Page? 로받나? List? 여러개는 아무튼 페이징해야해서 ? 
 		Page<Review> paging = reviewService.getReview(user,pageable);
 		
-		
-		
-
 		model.addAttribute("paging",paging);
 		model.addAttribute("user",user);
 
@@ -168,24 +160,21 @@ public class ReviewController {
 	//리뷰수정할값set하기
 	//권한 제한 하도록 하기 
 	@GetMapping("/modify/{id}")//리뷰글의 id 를 가져가야함 
-	public String reviewModify(ReviewForm reviewForm,@PathVariable("id") long id,
-			Model model,
-			@AuthenticationPrincipal PrincipalDetails principalDetails) {
+	public String reviewModify(Model model,
+			@Valid ReviewForm reviewForm,@PathVariable("id") long id,
+			MultipartFile multipartFile,
+			@AuthenticationPrincipal PrincipalDetails principalDetails,
+			BindingResult bindResult) {
 		 
 
 		Review review = reviewService.getOneReview(id);
 		//리뷰글의 고유id 로 하나의 리뷰 읽어오는 서비스 
 
 
-		//if 로 권한검사할지말지 고민 로그인된상태에서만 myreview 들어올수있게할거기때문에 
-		/*if(!question.getAuthor().getUserName().equals(principal.getName())) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"수정권한이 없습니다");
-		}
-
 		//아직 파일첨부 수정되는지 반영안됨 >> 새로 첨부해야지만 반영된다 
 
 
-		 */
+		 
 		//form 의 값을 다시 set 해준다 수정창에 미리 떠있도록 
 		reviewForm.setTitle(review.getTitle());
 		reviewForm.setContent(review.getContent());
