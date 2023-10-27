@@ -5,10 +5,12 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -273,9 +275,12 @@ public class ProductService {
 	    return new PageResultDTO<>(result, fn);
 	}
 	
-	public List<Product> findProductsByIds(List<Long> ids) {
-        return productRepository.findByIdIn(ids);
-    }
+	// 가장 최근 등록한 8개 제품 데이터 가져오기
+	public List<Product> getTop8NewestProducts() {
+	    
+		return productRepository.findTop8ByOrderByDateDesc();
+		
+	}
 	
 	public Product dtoToEntity(ProductDTO dto){
 		Product entity = Product.builder()
