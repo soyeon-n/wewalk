@@ -5,24 +5,82 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>상품답변폼 </title>
     <link rel="stylesheet" href="/reset.css">
-    <link rel="stylesheet" href="/common.css">
+    
     <link rel="stylesheet" href="/mykurly_order_list.css">
     <link rel="stylesheet" href="/mykurly_review.css">
     <link rel="stylesheet" href="/mykurly_review_register.css">
+    
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <script src="./js/mykurly.js"></script>
     <script src="../main/js/common.js"></script>
+    
+    
+    <link rel="stylesheet" href="/header/header.css">
+    <script src="/header/header.js"></script>
+    <script type="text/javascript">
+    
+    function chkword_name(obj){                      // 상품명 글자수 제한 두기
+        var strValue = obj.value;         //strValue : 글자수 값을 저장하기 위한 변수
+        var strLen = strValue.length;     //strLen : strValue 값의 길이
+        var totalByte = 0;                //글자수 총합
+        var len = 0;
+        var oneChar = "";
+        var str2= "";
+
+        for (var i = 0; i < strLen; i++){
+            oneChar = strValue.charAt(i);             //oneChar : 문자 값 리턴 받는 함수
+            if(escape(oneChar).length > 4) {          //한글이면 글자수 + 2
+                totalByte += 2;
+                $('.field_cmt .txt_count .num').text(totalByte);
+            } else {                                   //그외(숫자,영어)는 +1
+                totalByte++;
+                $('.field_cmt .txt_count .num').text(totalByte);
+            }
+
+            len = i+1;
+
+        }
+
+        if (strLen == 0){
+            $('.field_cmt .txt_count .num').text(0);
+        }
+
+        
+    }
+    
+
+    function submit_check(){    // 10자 이하로 작성할시 submit 안됨
+        var chkword = $('.field_cmt textarea').val();
+
+        if (chkword.length < 10){
+            alert("후기를 최소 10자 이상 작성해주세요");
+            return false;
+        }
+    }
+    </script>
+    
+    
+    
     
 <title>Insert title here</title>
 </head>
 <body>
 
+<div th:insert="header :: headerFragment"></div>
 
 
+
+<br/>
+<br/>
+<br/>
+<br/>
 <div class="page_section section_write" style="display: flex; align-items: center; flex-direction: column;">
 	<div class="head_aticle">
 	    <h2 class="tit">문의답변 작성</h2>
 	</div>
+	<br/>
+	<br/>
+	<br/>
 	<!-- <form name="form_review" id="form_review" action="" method="POST" onsubmit="return submit_check();"> -->
 	
 	
@@ -35,14 +93,14 @@
 	    <div class="write_board">
 	        <div class="goods_info">
 	            <div class="thumb">
-	                <img src=""
+	                <img th:src="@{'/product/images/' + ${product.image}}"
 	                onerror="this.src='https://res.kurly.com/mobile/img/1808/img_none_x2.png'" alt="상품 이미지">
 	            </div>
 	
 	            <div class="desc">
 	                <div class="inner_desc">
 	                    <div class="name_main">[상품명]</div>
-	                    <textarea rows="10" cols=""  readonly="readonly"></textarea>
+	                    <textarea  th:text=${product.pname} rows="10" cols=""  readonly="readonly"></textarea>
 	                    <!-- 여기 productNo 가 자동으로 들어 와야함   -->
 	                    <!-- 근데 여기 입력된 값을 가지고 가야함 ?? form 에 들어가야 ?? th:field="${product.pname}" -->
 	                    
@@ -57,7 +115,8 @@
 	            </colgroup>
 	            <tbody>
 	                <tr>
-	                    <th>제목</th>
+	                    <!--  
+	                    <th>제목</th>-->
 	                    <td>
 	                       
 	                        <!-- 원) <input type="text" name="subject" placeholder="제목을 입력해주세요." class="inp on_txt" value=""> -->
@@ -67,7 +126,7 @@
 	                </tr>
 	
 	                <tr>
-	                    <th>상품 문의 작성</th>
+	                    <th>문의 답변 작성</th>
 	                    <td>
 	                        <div class="field_cmt">
 	                            <!-- 원) <textarea id="fieldCmt" name="contents" cols="100" rows="10" onkeyup="chkword_name(this)"  placeholder="자세한 후기는 다른 고객의 구매에 많은 도움이 되며,

@@ -94,6 +94,7 @@ public class QuestionController {
 	//문의글 작성
 	@GetMapping("/create/{productNo}")
 	public String questionCreate(QuestionForm questionForm, 
+			@AuthenticationPrincipal PrincipalDetails principalDetails,
 			Model model , @PathVariable("productNo")long productNo ) {
 		
 		//상품문의시 문의하려는 product-pname 이 들어와있으면 좋을듯 ? set 하기 
@@ -107,6 +108,7 @@ public class QuestionController {
 	@PostMapping("/create/{productNo}")
 	public String questionCreate(@Valid QuestionForm questionForm,
 			@PathVariable("productNo") long productNo,
+			Model model,
 			@AuthenticationPrincipal PrincipalDetails principalDetails,
 			BindingResult bindResult ) {
 		
@@ -117,6 +119,13 @@ public class QuestionController {
 		SiteUser siteUser = userService.getUserByUserName(principalDetails.getUsername());
 		
 		Product product = productService.getProductDetailByNo(productNo);
+		
+		
+		SiteUser user = userService.getUserByUserName(principalDetails.getUsername());
+		model.addAttribute("user",user);
+		
+		
+		
 		
 		
 		
