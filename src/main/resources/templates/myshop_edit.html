@@ -190,11 +190,13 @@
 										</div>
                                         <div class="benefit">
 										    <strong class="tit"></strong>
-										    <span th:text="|적립 ${user.membership == true ? '10%' : 
-										        user.grade == 'B' ? '1%' : 
-										        user.grade == 'S' ? '3%' : 
-										        user.grade == 'G' ? '5%' : 
-										        user.grade == 'P' ? '8%' : ''}|"></span>
+										    <span th:text="|적립 ${user.membership == true ? (user.grade == 'B' ? '10% + 1%' : 
+							                                user.grade == 'S' ? '10% + 3%' : 
+							                                user.grade == 'G' ? '10% + 5%' : 
+							                                user.grade == 'P' ? '10% + 8%' : '10%') : 
+							                                (user.grade == 'P' ? '8%' : (user.grade == 'B' ? '1%' : 
+							                                user.grade == 'S' ? '3%' : 
+							                                user.grade == 'G' ? '5%' : ''))}|"></span>
 										</div>
                                     </div>
                                 </div>
