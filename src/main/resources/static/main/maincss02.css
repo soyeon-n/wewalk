@@ -214,7 +214,7 @@
 
 /* hover시 백그라운드 그림자 */
 .page_aticle .bx_controls_direction .bx-prev:hover {
-    background: url('/img/btn_prev_default_hover_v1.png') no-repeat 50% 50%;
+    background: url('/img/mainpage/btn_prev_default_hover_v1.png') no-repeat 50% 50%;
     transition: background 0.5s;
 }
 
@@ -226,7 +226,7 @@
 
 /* hover시 백그라운드 그림자 */
 .page_aticle .bx_controls_direction .bx-next:hover {
-    background: url('/img/btn_next_default_hover_v1.png') no-repeat 50% 50%;
+    background: url('/img/mainpage/btn_next_default_hover_v1.png') no-repeat 50% 50%;
     transition: background 0.5s;
 }
 
@@ -353,3 +353,5 @@
 body #header .location_login .location_notice{  /* 안내메세지 처음에 block이였다가 사라지게 하기위해 */
     display:block;
 }
+
+

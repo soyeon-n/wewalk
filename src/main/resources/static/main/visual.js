@@ -16,7 +16,7 @@
 // 		if ($(window).width() <= 1900){
 // 			size = $(window).width()
 // 		}
-// 		ul.style.transition = '0.6s'; //0.2초에 걸쳐 객체 변화
+// 		ul.style.transition = '1s'; //0.2초에 걸쳐 객체 변화
 // 		ul.style.transform = "translate3d(-"+size*(curIndex+1)+"px, 0px, 0px)"; //translate3d = 현재위치에서 x, y, z축의 거리만큼 이동
 
 // 		curIndex++; //index	1씩 증가
@@ -34,7 +34,7 @@
 // }
 
  
-$(document).ready(function(){                                  // 브라우저가 로딩이 됐을때 아래 코드 실행!
+$(document).ready(function(){                                  // 브라우저가 로딩이 됐을때 아래 코드 실행
 	
 	$('#go-top').bind('click', function() {
     $('html, body').animate({scrollTop: '0'}, 680);
