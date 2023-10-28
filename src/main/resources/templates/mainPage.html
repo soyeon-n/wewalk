@@ -271,7 +271,9 @@
 		                                            th:each="toplist : ${productListTop8}">
 														<a class="thumb_goods" th:href="@{/product/detail/{id}(id=${toplist.id})}">
 
-		                                                <img th:src="@{'/product/' + ${toplist.image}}" alt="상품이미지" class="thumb">
+		                                                <img th:src="@{'/product/images/' + ${toplist.image}}" alt="상품이미지" class="thumb">
+
+		                                                
 
 
 		                                               
