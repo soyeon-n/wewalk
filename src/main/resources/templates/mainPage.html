@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WeWalkShop</title>
+	<link rel="stylesheet" href="/main/bootstrap.min.css">
     <link rel="stylesheet" href="/main/reset.css">
     <link rel="stylesheet" href="/main/maincss01.css">
     <link rel="stylesheet" href="/main/maincss02.css">
@@ -12,6 +13,9 @@
     <script src="/main/common.js"></script>
     <script src="/main/visual.js"></script>
 	<script src="/header/header.js"></script>
+	
+    <script src="/main/bootstrap.min.js"></script>
+
     
 </head>
 <body>
@@ -20,27 +24,30 @@
         
 
         <div th:replace="header :: headerFragment"></div>
-
-        <div id="visual">
-            <h2 class="blind">마켓컬리 메인</h2>
-            <div class="swipe">
-                <ul class="promotions">
-                    <li data-index="1" class="slide_list">
-                    	<a href="#" class="thumb" th:style="'background-image: url(/img/testimage.png);'"></a>
-                    </li>
-                    
-                   
-                </ul>
-
-                <div class="controls_direction" style="display: none;">
-                <!-- bg url 처리 -->
-                    <a href="prev">이전으로</a>
-                    <a href="next">다음으로</a>
+		
+		
+		<div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel" >
+            <div class="carousel-inner">
+                <div class="carousel-item active" data-bs-interval="2000">
+                    <img src="/img/mainpage/member.png" class="d-block w-100" alt="..." >
+                </div>
+                <div class="carousel-item" data-bs-interval="2000">
+                    <img src="/img/mainpage/testimage.png" class="d-block w-100" alt="...">
+                </div>
+                <div class="carousel-item">
+                    <img src="/img/mainpage/aamm.png" class="d-block w-100" alt="...">
                 </div>
             </div>
-            
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="next">
+                <span class="carousel-control-next-icon" ariahidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
         </div>
-        <!-- id="visual" -->
+		
         <div id="main">
             
             <div id="contents" class="page_aticle">
@@ -81,7 +88,7 @@
 		                                        style="float: left; position: relative; width: 249px; margin-right: 18px;">
 		                                        <a class="thumb_goods">
 		                                            
-		                                            <img src="/img/testimage.png" alt="상품이미지" class="thumb"
+		                                            <img src="/img/mainpage/testimage.png" alt="상품이미지" class="thumb"
 		                                            >
 		                                            <!-- 상품 이미지 임시값임. src는 데이터로 받아오기 -->
 		                                        </a>
@@ -264,8 +271,10 @@
 		                                            th:each="toplist : ${productListTop8}">
 														<a class="thumb_goods" th:href="@{/product/detail/{id}(id=${toplist.id})}">
 
-		                                                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAG0AAACRCAQAAABjof6/AAAANUlEQVR4Ae3BgQAAAADDoPtTT+AI1QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAnfAsAAe7+tYwAAAAASUVORK5CYII=" alt="상품이미지" class="thumb"
-		                                                style="background-image: url('https://img-cf.kurly.com/shop/data/goods/1466488979157l0.jpg');">
+		                                                <img th:src="@{'/product/' + ${toplist.image}}" alt="상품이미지" class="thumb">
+
+
+		                                               
 		                                                <!-- 상품 이미지 임시값임. src는 데이터로 받아오기 -->
 		                                            </a>
 		                                            <div class="info_goods">
