@@ -33,6 +33,9 @@
 	paging.hasPrevious	이전 페이지 존재 여부
 	paging.hasNext		다음 페이지 존재 여부 -->
 	<tbody>
+		<tr class="centered-text" th:if="${paging.isEmpty()}">
+		    <td colspan="7" style="text-align: center; vertical-align: middle;">검색 결과가 없습니다</td>
+		</tr>
 		<tr class="text-center" th:each="sellerRequest, loop : ${paging}">
 			<td th:text="${paging.totalElements - (paging.number * paging.size) - loop.index}"></td>
 			<td class="text-start">
@@ -130,9 +133,10 @@
 		</nav>
 	
 	</div>
-	
-	<a th:href="@{/admin/createUser}" class="btn btn-primary">유저 등록하기</a>
-	<a th:href="@{/admin/manageSeller}" class="btn btn-primary">판매자 관리</a>
+	<div style="display: flex; flex-direction: row;">
+		<a th:href="@{/admin/createUser}" class="btn btn-primary" style="margin-right: 5px;">유저 등록</a>
+		<a th:href="@{/admin/userList}" class="btn btn-primary">유저 리스트</a>
+	</div>
 </div>
 
 </html>
