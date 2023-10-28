@@ -30,7 +30,7 @@ $(document).ready(function(){
 	
 	
 	//카테고리 선택시 해당 카테고리검색
-	$('.menu .current .main_item').on('click', function() {
+	$('.menu .current .submenu-right').on('click', function() {
     	var topText = $(this).closest('li.current').find('.tit .txt').first().text();
     
     	var keyword = topText.split('·')[0].trim();
