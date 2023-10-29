@@ -47,18 +47,31 @@ public class MainController {
 	@GetMapping("/main")
 	public String mainPage(@AuthenticationPrincipal PrincipalDetails principalDetails, Model model) {
 		
-		
+		//판매량 상위 3개
+    	Pageable topN = PageRequest.of(0, 3);
+    	
 		if(principalDetails != null) {
 			SiteUser user = userService.getUserByUserName(principalDetails.getUsername());
+
+			String userInterest = user.getInterest1();
 			
+			//interest가 일치하는 상품 중 판매량이 높은 순으로 3개 가져오기			
+			List<Product> productsFoundByInterest = productService.getProductsByCategory(userInterest);
+			List<Long> top8SellingProductnosFoundByInterest = orderListService
+																.getTopNSellingProductnosFoundByCategory(productsFoundByInterest, topN);
+	        
+			List<Product> top8SellingProductsFoundByInterest = productService
+																.getTopNSellingProducts(top8SellingProductnosFoundByInterest);
+			
+	        model.addAttribute("products", top8SellingProductsFoundByInterest);
 			model.addAttribute("user",user);
 		
-		}
+		}	
 		
 		//판매량 상위 8개
-    	Pageable top8 = PageRequest.of(0, 8);
-    	
-    	List<Long> top8SellingProductnos = orderListService.getTopNSellingProductnos(top8);
+		topN = PageRequest.of(0, 8);
+		
+    	List<Long> top8SellingProductnos = orderListService.getTopNSellingProductnos(topN);
 		
 		//프로덕트에서 검색해서 가장많이팔린거 8개 리스트 들고감
 		List<Product> productListTop8 = productService.getTopNSellingProducts(top8SellingProductnos);
@@ -66,7 +79,6 @@ public class MainController {
 		
 		return "mainPage";
 	}
-	
 	
 	//메인에서 검색시이곳으로 keyword가 검색어
     @GetMapping("/search")

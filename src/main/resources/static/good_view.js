@@ -57,7 +57,6 @@ window.addEventListener('DOMContentLoaded',function(){
 		if (userinfo) {
 		  grade = userinfo.getAttribute('data-grade'); //유저등급
 		  membership = userinfo.getAttribute('data-membership'); //멤버쉽가입여부
-			
 			switch (grade) {
 			    case "P":
 			        accumulate = 8;
@@ -71,13 +70,13 @@ window.addEventListener('DOMContentLoaded',function(){
 
 			}
 		
-			if (membership) {
+			if (membership==='true') {
 			    accumulate_mem += 10;
+			    
 			}
 			
 		}
 
-       
 
         var start_price = $('.goods_price .dc_price').text()  // 개당가격 표시할 변수!
         
@@ -85,12 +84,13 @@ window.addEventListener('DOMContentLoaded',function(){
         var cost = $('.goods_price input').val();     // 상품의 가격을 설정해줘야됨.  goods_price안에있는 input의 value값에 탬플릿 언어로 반찬 가격을 불러와야됨 
         $('.emph').text(comma((number*cost)*(accumulate+accumulate_mem)/100) + '원 적립');  // 첫 화면의 emph(적립금) 은  반찬가격(cost)의 0.5%로 출력
         $('.price .num').text(start_price);             // 첫 화면의 총 상품금액 (.price 안에 .num) 에다가 초기 가격을 출력!
+        
         if(userinfo){
         	$('.emphh').text('개당 ' +comma((number*cost)*accumulate/100) + '원 적립');  //첫 화면의 윗쪽 1개당 적립금(변하지않는 값) 출력!
-        	if(membership){
+        	
+        	if(membership==='true'){
         	$('.emphhm').text('개당 추가 '+comma((number*cost)*accumulate_mem/100) + '원 적립');
-        
-        }
+        	}
         
         } else {
         	$('.emphh').text('회원가입하고 적립혜택을 받아보세요')
@@ -248,23 +248,12 @@ window.addEventListener('DOMContentLoaded',function(){
 
 
 
-        function comma(num){                       //콤마찍는 함수
-            var len, point, str; 
-               
-            num = num + ""; 
-            point = num.length % 3 ;
-            len = num.length; 
-           
-            str = num.substring(0, point); 
-            while (point < len) { 
-                if (str != "") str += ","; 
-                str += num.substring(point, point + 3); 
-                point += 3; 
-            } 
-             
-            return str;
-         
-        }
+        function comma(num) {
+		    num = Math.floor(num); // Remove the decimal part
+		    var parts = num.toString().split('.');
+		    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+		    return parts.join('.');
+		}
         
         
  

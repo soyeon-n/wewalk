@@ -43,6 +43,7 @@ public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpec
 	
 	//검색-카테고리검색
 	List<Product> findByCategoryLike(String category);
+	List<Product> findAllByCategory(String category);
 	
 	//소연
 	Page<Product> findByUserId(Long userId, Pageable pageable);

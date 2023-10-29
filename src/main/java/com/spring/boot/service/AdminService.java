@@ -18,7 +18,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.spring.boot.config.DataNotFoundException;
-import com.spring.boot.config.SiteUserSpecification;
 import com.spring.boot.dao.AdminRepository;
 import com.spring.boot.dao.SellerRequestRepository;
 import com.spring.boot.dao.UserRepository;

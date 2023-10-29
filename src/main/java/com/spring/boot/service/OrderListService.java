@@ -80,6 +80,24 @@ public class OrderListService {
 	    return topNSellingProductIdList;
 	}
 	
+	// 판매량 상위 n개의 productno 데이터 가져오기
+	public List<Long> getTopNSellingProductnosFoundByCategory(
+			List<Product> productsFoundByCategory, Pageable pageable) {
+		
+		//몇개의 데이터 가져올지 변수로 입력
+		Pageable topCount = pageable;
+		
+		List<Long> productIds = productsFoundByCategory.stream()
+														.map(Product::getId)
+														.collect(Collectors.toList());	
+	    
+	    // 꺼내온 productId 상품 중 판매량 상위 n개의 상품 id 리스트에 담기
+		List<Long> topNSellingProductIdList = orderListRepository
+												.findTopNSellingProducts(productIds, topCount);
+		
+	    return topNSellingProductIdList;
+	}
+	
 	// 판매량 상위 n개의 상품 중 재구매가 3회 이상 일어난 상품 productno 리스트에 담기
 	public List<Long> getProductnosBoughtMoreThan3TimesBySameUser(List<Long> topNSellingProductnos) {
 

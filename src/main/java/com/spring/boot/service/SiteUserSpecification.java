@@ -1,4 +1,4 @@
-package com.spring.boot.config;
+package com.spring.boot.service;
 
 import javax.persistence.criteria.Predicate;
 

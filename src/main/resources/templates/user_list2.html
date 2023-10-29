@@ -44,6 +44,9 @@
 	paging.hasPrevious	이전 페이지 존재 여부
 	paging.hasNext		다음 페이지 존재 여부 -->
 	<tbody>
+		<div class="centered-text" th:if="${paging.isEmpty()}">
+		    <p>검색 결과가 없습니다</p>
+		</div>
 		<tr class="text-center" th:each="siteUserDTO, loop : ${paging.dtoList}">
 			<td th:text="${((paging.number - 1) * paging.size) + loop.index + 1}"></td>
 			<td th:text="${siteUserDTO.userName}"></td>
@@ -153,12 +156,11 @@
 
             });
 
-
-
-        </script>
-	
-	<a th:href="@{/admin/createUser}" class="btn btn-primary">유저 등록하기</a>
-	<a th:href="@{/admin/sellerRequestList}" class="btn btn-primary">판매자 요청 관리</a>
+    </script>
+	<div style="display: flex; flex-direction: row;">
+		<a th:href="@{/admin/createUser}" class="btn btn-primary" style="margin-right: 5px;">유저 등록</a>
+		<a th:href="@{/admin/sellerRequestList}" class="btn btn-primary">판매자 요청</a>
+	</div>
 </div>
 
 </html>

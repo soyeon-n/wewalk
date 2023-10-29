@@ -317,7 +317,22 @@ function requestPay() {
 		            payMoney: payMoney,
 		            itemIds: itemIds,
 	       		};
-	            
+	       		/*
+	       		console.log(rsp.merchant_uid);
+	            console.log(name);
+	            console.log(rsp.paid_amount);
+	            console.log(rsp.pay_method);
+	            console.log(rsp.apply_num);
+	            console.log(buyer_name);
+	            console.log(buyer_tel);
+	            console.log(buyer_addr);
+	            console.log(buyer_addr_detail);
+	            console.log(buyer_postcode);
+	            console.log(request);
+	            console.log(pointPay);
+	            console.log(payMoney);
+	            console.log(itemIds);
+	            */
 	            $.ajax({
 		            type: "POST",
 		            url: "/order/checkout",
@@ -325,7 +340,9 @@ function requestPay() {
 		            data: JSON.stringify(paymentData),
 		            success: function (response) {
 		                console.log(response);
-		            	window.location.href = response;
+		            	alert('성공');
+		            	$('#paymentsData').val(JSON.stringify(response.paymentsData));
+	       				$('#resultForm').submit();
 		            	
 		            },
 		            error: function (xhr, status, error) {
