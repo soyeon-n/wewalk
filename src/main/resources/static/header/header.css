@@ -22,7 +22,7 @@ textarea::placeholder, input::placeholder{
 }
 
 #main {
-    border-bottom: 1px solid #f7f7f7;
+    border-bottom: 1px solid #EAEAEA;
 }
 
 #content {
@@ -949,6 +949,7 @@ li:hover .sub_menu2 {
 }
 
 .link_footer .authentication .mark {
+	background-color:#fff;
     float: left;
     width: 267px;
 }

@@ -30,13 +30,15 @@ $(document).ready(function(){
 	
 	
 	//카테고리 선택시 해당 카테고리검색
-	$('.menu .current .submenu-right').on('click', function() {
-    	var topText = $(this).closest('li.current').find('.tit .txt').first().text();
+	$('.menu .current .submenu-right li.current').on('click', function() {
     
+    	if (!$(this).hasClass('notcurrent')) {
+        var topText = $(this).closest('li.current').find('.tit .txt').text().trim();
     	var keyword = topText.split('·')[0].trim();
     
     	var url = '/wewalk/search?keyword=c_' + keyword;
     	window.location.href = url;
+    	}
 	});
 	
 	

@@ -8,9 +8,25 @@
 dd
 
 <div th:each=item:${paymentsData}>
-	<span th:text="${item.count}">
-	</span>
+	<span>주문번호</span>
+	<span th:text="${item.orderNo}"></span>
 
+	<span>상품명</span>
+	<span th:text="${item.productName}"></span>
+	
+	<span>이미지</span>
+	<span>
+	<img th:src="@{'/product/images/' + ${item.image}}">
+	</span>
+	
+	<span>판매자</span>
+	<span th:text="${item.sellerId}"></span>
+	
+	<span>구매개수</span>
+	<span th:text="${item.count}"></span>
+	
+	<span>구매금액</span>
+	<span th:text="${item.price}"></span>
 </div>
 
 

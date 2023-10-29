@@ -103,6 +103,7 @@
                                     </span>
                                     <span class="txt_benefit">
                                     	<span class="ico_grade user_grade_membership" th:if="${user!=null && user.membership==true}" style="color: #1EC800;"> 멤버쉽 </span>
+                                    	<span  th:if="${user!=null && user.membership==false}" style="color: #1EC800; padding-left: 2px; font-size: 14px;"> 멤버쉽가입하고 추가적립받아보세요! </span>
                                         <span class="point">
                                             <strong class="emphhm"></strong>
                                         </span>
