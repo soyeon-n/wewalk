@@ -202,10 +202,10 @@
                                     
 	                                    <button th:id="'toggleButton_'+${question.id}" th:text="${question.title}">이게 제목</button>
 	                                        
-                                        <div th:id="'contentToToggle_'+${question.id}" th:text="${question.content}" style="display: none;">
+                                        <div th:id="'contentToToggle_'+${question.id}" style="display: none;">
                                         
-                                        내용:
-                                            <p th:text="${question.content}" ></p>
+                                        <br/>
+                                            내용:<p th:text="${question.content}" ></p>
                                             
                                         </div>
                                         
@@ -215,9 +215,13 @@
                                        </div>-->
                                         
                                        <!-- if 로 돌리던가 th:if="{answer.content.!isEmpty}" style="display: none;" onclick=함수실행 --> 
-                                       <br/><br/> 
+                                       <br/><br/>
                                        <div th:each="answer : ${question.answerList}" >
-                                           ㄴA:<div th:id="'contentToToggle_'+${answer.question.id}" th:text=${answer.content}  ></div>
+                                        
+                                           <div th:id="'answertest_'+${answer.question.id}" style="display: none;" >
+                                               <hr/>
+                                            답변:<p th:text=${answer.content}></p>
+                                           </div>
 									      
 								       </div>
 	                                         
