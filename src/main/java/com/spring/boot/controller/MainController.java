@@ -43,10 +43,6 @@ public class MainController {
 	private final OrderListService orderListService;
 	private final SpringTemplateEngine templateEngine;
 
-	@GetMapping("/testpage")
-	public String gotest() {
-		return "footer";
-	}
 	
 	@GetMapping("/main")
 	public String mainPage(@AuthenticationPrincipal PrincipalDetails principalDetails, Model model) {
