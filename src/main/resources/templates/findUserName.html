@@ -2,7 +2,7 @@
     <head>
         <meta charset="utf-8">
         <script src="http://code.jquery.com/jquery.min.js"></script>
-        <title>로그인</title>
+        <title>계정명 찾기</title>
         <link rel="stylesheet" href="/css/reset.css">
         <link rel="stylesheet" href="/css/login.css">
     </head>
@@ -16,38 +16,27 @@
 		        alert(message);
 		    }
 		</script>
-
-		<div th:if="${reactivatePrompt}">
-		    <script>
-		        var result = confirm("탈퇴한 유저입니다. 재가입하시겠습니까?");
-		        if (result) {
-		            window.location.href = "/auth/reactivate";
-		        }else {
-		            window.location.href = "/auth/login";  // 로그인 페이지로 리다이렉트
-		        }
-		    </script>
-		</div>
-
             <div id="main">
                 <div id="content">
                     <div class="section_login">
-                        <h3 class="tit_login">LOGIN</h3>
+                        <h3 class="tit_login">UserName</h3>
                         <div class="write_form">
                             <div class="write_view login_view">
-                                <form th:action="@{/auth/login}" name="login_form" id="form" method="post" onkeydown="runFunctionOnEnter(event)">
+                                <form th:action="@{/auth/findUserName}" name="login_form" id="form" method="post" onkeydown="runFunctionOnEnter(event)">
                                     <input type="hidden" name="returnUrl" value="">
                                     <input type="hidden" name="close" value>
-                                    <input type="text" name="userName" size="50" tabindex="1" placeholder="계정명 입력">
-                                    <input type="password" name="password" size="50" tabindex="2" placeholder="비밀번호 입력">
+                                    <input type="text" name="name" size="50" tabindex="1" placeholder="이름 입력">
+                                    <input type="text" name="tel" size="50" tabindex="2" placeholder="전화번호 입력">
+                                    <input type="email" name="email" size="50" tabindex="3" placeholder="이메일 입력">
                                     <div class="checkbox_save">
                                         <div class="login_search">
-                                            <a th:href="@{/auth/findUserName}" class="link">계정 찾기</a>
+                                            <a th:href="@{/wewalk/main}" class="link">메인으로</a>
                                             <span class="bar"></span>
                                             <a th:href="@{/auth/findPwd}" class="link">비밀번호 찾기</a>
                                         </div>
                                     </div>
                                     <button type="button" onclick="check_input()" class="btn_type1">
-                                        <span class="txt_type">로그인</span>
+                                        <span class="txt_type">계정명 찾기</span>
                                     </button>
                                 </form>
                                 
@@ -95,14 +84,19 @@
         <script>       
 	        
             function check_input(){
-                if (!document.login_form.userName.value){
-                    alert("계정명을 입력하세요");
-                    document.login_form.userName.focus();
+                if (!document.login_form.name.value){
+                    alert("이름을 입력하세요");
+                    document.login_form.name.focus();
                     return;
                 }
-                if (!document.login_form.password.value){
-                    alert("비밀번호를 입력하세요");
-                    document.login_form.password.focus();
+                if (!document.login_form.tel.value){
+                    alert("전화번호를 입력하세요");
+                    document.login_form.tel.focus();
+                    return;
+                }
+                if (!document.login_form.email.value){
+                    alert("이메일을 입력하세요");
+                    document.login_form.email.focus();
                     return;
                 }
                
