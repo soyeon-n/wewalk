@@ -44,13 +44,13 @@ public class SecurityConfig {
         //.cors(); Cross-Origin Resource Sharing (CORS)를 활성화하는 메소드. 
         // CORS는 웹 페이지가 다른 도메인의 리소스에 액세스할 수 있게 하는 메커니즘
         http.cors();
-        //http.cors().configurationSource(corsConfigurationSource());
+        //http.cors().configurationSource(corsConfigurationSource()); 배포시 테스트 필요
         
         // 권한에 따라 허용하는 url 설정
         // /login, /signup 페이지는 모두 허용, 다른 페이지는 인증된 사용자만 허용
         http
 	        .authorizeRequests()
-	        	//.requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
+	        	//.requestMatchers(CorsUtils::isPreFlightRequest).permitAll() 배포시 테스트 필요
 	            //.antMatchers("/user/mypage/myshop/**").hasAnyRole(UserRole.SELLER.name(), UserRole.ADMIN.name()) // SELLER만 myshop에 접근 가능
 	            .antMatchers("/user/**").hasAnyRole(UserRole.USER.name(), UserRole.SELLER.name(), UserRole.ADMIN.name()) // USER와 SELLER는 나머지 /user/**에 접근 가능
 	            .antMatchers("/admin/**").hasRole(UserRole.ADMIN.name())
@@ -109,7 +109,7 @@ public class SecurityConfig {
 		
 	}
 	
-//	@Bean
+//	@Bean 여기가 cors설정
 //    public CorsConfigurationSource corsConfigurationSource() {
 //        CorsConfiguration config = new CorsConfiguration();
 //
