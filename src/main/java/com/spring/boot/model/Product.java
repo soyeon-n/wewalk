@@ -64,7 +64,7 @@ public class Product{
 	
 	private Integer stock;//상품재고
 	
-	@Column(columnDefinition = "TINYINT(1) default 1")
+	@Column(columnDefinition = "TINYINT(1)")
 	private boolean selling;//상품판매여부(판매중/판매완료)조건식으로 재고가0이면 이값을 F 로 바꾸던가헤야
 	
 	private String image;//대표이미지

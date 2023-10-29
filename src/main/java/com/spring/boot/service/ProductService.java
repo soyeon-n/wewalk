@@ -97,12 +97,13 @@ public class ProductService {
 		product.setPrice(productForm.getPrice());
 		product.setCategory(productForm.getCategory());
 		product.setStock(productForm.getStock());
-
+		product.setSelling(true);
+		
         // 사용자 정보 설정 (글 작성시 product 테이블에 사용자 id 값도 넣기)
         SiteUser user = new SiteUser();
         user.setId(userId);
         product.setUser(user);
-
+        
         // 상품 등록
         productRepository.save(product);
     }

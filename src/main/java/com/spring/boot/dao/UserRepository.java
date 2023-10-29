@@ -16,7 +16,8 @@ public interface UserRepository extends JpaRepository<SiteUser, Long>{
 	Optional<SiteUser> findByUserName(String userName);
 	Optional<SiteUser> findByEmail(String email);
 	Optional<SiteUser> findByProviderId(String providerId);
-	
+	//Optional<SiteUser> findByNameAndTelAndEmail(String name, String tel, String email);
+	SiteUser findByNameAndTelAndEmail(String name, String tel, String email);
 	// id를 기반으로 사용자를 찾는 메서드 추가
 	//SiteUser findById(Long id);
 	

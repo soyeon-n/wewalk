@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.spring.boot.dto.PrincipalDetails;
 import com.spring.boot.dto.SellerRequestForm;
@@ -62,7 +63,7 @@ public class UserController {
 	@PreAuthorize("isAuthenticated")
 	@PostMapping("/requestSeller")
 	public String requestSeller(@Valid SellerRequestForm sellerRequestForm, BindingResult bindResult, 
-			@AuthenticationPrincipal PrincipalDetails principalDetails) {
+			@AuthenticationPrincipal PrincipalDetails principalDetails, RedirectAttributes redirectAttributes) {
 		
 		//입력값 검증
 		if(bindResult.hasErrors()) {
@@ -106,7 +107,9 @@ public class UserController {
 			return "request_seller";
 			
 		}
-		
+		// DB 저장 성공 시 메시지 설정
+	    redirectAttributes.addFlashAttribute("message", "판매자 요청이 완료되었습니다");
+	    
 		return "redirect:/user/mypage";
 	}
 	
