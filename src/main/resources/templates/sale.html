@@ -157,7 +157,7 @@
 												<div th:each="product : ${product}">
 												    <div class="product-container" style="position: relative;">
 												        <div class="product-image">
-												            <img th:src="@{'/product/' + ${product.image}}">
+												            <img th:src="@{'/product/images/' + ${product.image}}">
 												        </div>
 												        <div class="product-details">
 												            <div class="product-name" th:text="${product.pname}"></div>
