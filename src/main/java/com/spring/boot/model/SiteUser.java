@@ -210,7 +210,7 @@ public class SiteUser implements Serializable{
   	
   	@OneToMany(mappedBy = "user",cascade = CascadeType.REMOVE,
 			fetch = FetchType.LAZY)
-	private List<Address> adressList;
+	private List<Address> addressList;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, 
     		fetch = FetchType.LAZY)
