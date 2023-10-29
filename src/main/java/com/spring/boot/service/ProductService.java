@@ -23,7 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.spring.boot.config.DataNotFoundException;
-import com.spring.boot.config.ProductSpecification;
 import com.spring.boot.dao.ProductRepository;
 import com.spring.boot.dao.UserRepository;
 import com.spring.boot.dto.ItemDataForm;
@@ -186,7 +185,6 @@ public class ProductService {
                 }
             }
         }
-
         return imagePaths;
     }
     
@@ -307,7 +305,14 @@ public class ProductService {
 		
 	}
 	
-	// 받아온 idList로 상품 데이터 가져오기
+	//관심사랑 일치하는 제품 데이터 가져오기
+	public List<Product> getProductsByCategory(String userInterest) {
+	    
+		return productRepository.findAllByCategory(userInterest);
+		
+	}
+	
+	// 받아온 idList로 판매량이 높은 상품 데이터 가져오기
 	public List<Product> getTopNSellingProducts(List<Long> productIdList) {
 	    
 	    // 제품 ID에 해당하는 Product 엔터티 리스트 조회
@@ -318,8 +323,6 @@ public class ProductService {
 	    
 	    return products;
 	}
-	
-	
 	
 	public Product dtoToEntity(ProductDTO dto){
 		Product entity = Product.builder()
