@@ -53,7 +53,7 @@
                     <div id="sectionView">
                         <div class="inner_view">
                             <div class="thumb" style="background-image: url(https://img-cf.kurly.com/shop/data/goods/15675741261y0.jpg);">
-                                <img th:src="@{'/product/' + ${product.image}}" alt="상품 대표 이미지" class="bg">
+                                <img th:src="@{'/product/images/' + ${product.image}}" alt="상품 대표 이미지" class="bg">
 
                             </div>
                             <p class="goods_name">
@@ -213,7 +213,7 @@
                                     <li class="goods-add-product-item __slide-item" th:each="products : ${products}">
                                         <div class="goods-add-product-item-figure" >
                                             <a href="#" target="_blank">
-                                                <img th:src="@{'/product/' + ${products.image}}" class="goods-add-product-item-image">
+                                                <img th:src="@{'/product/images/' + ${products.image}}" class="goods-add-product-item-image">
                                                 
                                             </a>
                                         </div>
@@ -308,7 +308,7 @@
                                     <div class="pic">
                                     <!-- 대표이미지 뿌리기 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 
                                     <img th:src="@{'/product/images/' + ${products.image}}" -->
-                                        <img th:src="@{'/product/' + ${product.image}}">
+                                        <img th:src="@{'/product/images/' + ${product.image}}">
                                     </div>
                                     <div class="context last">
                                         <h3>
@@ -338,10 +338,10 @@
                                     </h3>
                                     <div class="context last">
                                         <div class="pic">
-                                            <img th:if=${product.image1} th:src="@{'/product/' + ${product.image1}}">
+                                            <img th:if=${product.image1} th:src="@{'/product/images/' + ${product.image1}}">
                                             
-                                            <img th:if=${product.image2} th:src="@{'/product/' + ${product.image2}}">
-                                            <img th:if=${product.image3} th:src="@{'/product/' + ${product.image3}}">
+                                            <img th:if=${product.image2} th:src="@{'/product/images/' + ${product.image2}}">
+                                            <img th:if=${product.image3} th:src="@{'/product/images/' + ${product.image3}}">
                                         </div>
                                     </div>
                                 </div>
