@@ -190,6 +190,14 @@
             </div>
         </div>
     </div>
+    <script>
+		document.addEventListener('DOMContentLoaded', (event) => {
+		    var message = /*[[${message}]]*/ null; // 플래시 속성 값을 받아옵니다.
+		    if (message) {
+		        alert(message); // 메시지가 있다면 alert로 표시합니다.
+		    }
+		});
+	</script>
 </body>
 
 </html>
