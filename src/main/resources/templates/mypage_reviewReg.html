@@ -18,8 +18,8 @@
     <link rel="stylesheet" href="/mykurly_review.css">
     <link rel="stylesheet" href="/mykurly_review_register.css">
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-    <script src="./js/mykurly.js"></script>
-    <script src="../main/js/common.js"></script>
+    <script src="/myKurly.js"></script>
+    <script src="/common.js"></script>
     
     
     <script src="/header/header.js"></script>
@@ -59,14 +59,14 @@
         
 
         function submit_check(){    // 10자 이하로 작성할시 submit 안됨
-            var chkword = $('.field_cmt textarea').val();
+            var chkword = $('.field_Cmt textarea').val();
 
             if (chkword.length < 10){
                 alert("후기를 최소 10자 이상 작성해주세요");
                 return false;
             }
         }
-        
+        /*
         function image_upload(){
             
             
@@ -100,7 +100,7 @@
             };
 
             reader.readAsDataURL(event.target.multipartFile);
-        }
+        }*/
 
 
 
