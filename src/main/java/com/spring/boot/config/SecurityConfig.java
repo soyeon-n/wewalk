@@ -57,7 +57,7 @@ public class SecurityConfig {
 	            .anyRequest().permitAll()
 	        .and()
 	        .exceptionHandling()
-	            .accessDeniedHandler(customAccessDeniedHandler)
+	            .accessDeniedHandler(customAccessDeniedHandler) //접근 권한이 없는 경우에 NoAccess로 넘어가게 설정
 	        .and()
 	        .sessionManagement()
 	            .invalidSessionUrl("/auth/login");
