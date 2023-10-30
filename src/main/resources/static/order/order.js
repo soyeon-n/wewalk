@@ -395,7 +395,7 @@ function requestPay() {
 				            data: JSON.stringify(paymentData),
 				            success: function (response) {
 				                console.log(response);
-				            	alert('성공');
+
 				            	$('#paymentsData').val(JSON.stringify(response.paymentsData));
 			       				$('#resultForm').submit();
 				            	
