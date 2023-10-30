@@ -31,13 +31,19 @@
 		<div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel" style="background-color: #EAEAEA;">
             <div class="carousel-inner">
                 <div class="carousel-item active" data-bs-interval="2000">
-                    <img src="/img/grade.jpg" class="d-block w-100" alt="...">
+                	<a href="/user/mypage/grade">
+                    <img src="/img/grade.jpg" class="d-block w-100" alt="..." >
+                    </a>
                 </div>
                 <div class="carousel-item" data-bs-interval="2000">
-                    <img src="/img/membership.jpg" class="d-block w-100" alt="...">
+                	<a href="/user/mypage/membership">
+                    <img src="/img/membership.jpg" class="d-block w-100" alt="..." >
+                    </a>
                 </div>
                 <div class="carousel-item" data-bs-interval="2000">
+                	<a href="/user/mypage/seller">
                     <img src="/img/seller.png" class="d-block w-100" alt="...">
+                    </a>
                 </div>
             </div>
             <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
@@ -306,7 +312,7 @@
                 <!-- .main_type2 반복 끝-->
              </div>
           </div>
-                
+                <div th:text=${top3products}></div>
 
         
         <div th:replace="footer :: footerFragment"></div>

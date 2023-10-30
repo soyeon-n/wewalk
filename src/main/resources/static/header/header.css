@@ -566,10 +566,7 @@ li:hover .sub_menu2 {
     font-weight: bolder;
 }
 
-.gnb_main:active .gnb_sub,
-.gnb_main:hover .gnb_sub {
-    display: block;
-}
+
 
 .gnb_main:active .gnb_sub,
 .gnb_main:hover .gnb_sub {
@@ -587,6 +584,7 @@ li:hover .sub_menu2 {
 
 .gnb_sub .menu .notcurrent{
     background-color: #f7f7f7;
+    height: 40px;
 }
 .gnb_sub .menu .notcurrent :hover {
     background-color: #f7f7f7;
