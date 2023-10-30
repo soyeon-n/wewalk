@@ -116,7 +116,7 @@ public class MyPageController {
             	end = totalPages;
             }
             
-            List<Integer> pageList = IntStream.rangeClosed(start, end).boxed().collect(Collectors.toList());
+            List<Integer> pageList = IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList());
 
             String listUrl = "/user/mypage/"; 
             model.addAttribute("totalPages", totalPages);
