@@ -60,13 +60,17 @@ public class MainController {
 			List<Long> top8SellingProductnosFoundByInterest = orderListService
 																.getTopNSellingProductnosFoundByCategory(productsFoundByInterest, topN);
 	        
-			List<Product> top8SellingProductsFoundByInterest = productService
+			List<Product> top3SellingProductsFoundByInterest = productService
 																.getTopNSellingProducts(top8SellingProductnosFoundByInterest);
 			
-	        model.addAttribute("products", top8SellingProductsFoundByInterest);
+	        model.addAttribute("top3products", top3SellingProductsFoundByInterest);
 			model.addAttribute("user",user);
 		
 		}	
+		
+		//최근등록상품8개
+		List<Product> recentlyProducts = productService.getTop8NewestProducts();
+		model.addAttribute("recentlyProducts", recentlyProducts);
 		
 		//판매량 상위 8개
 		topN = PageRequest.of(0, 8);

@@ -341,13 +341,7 @@
 							                            </span>
 					                            	</a>
 					                            </li>
-					                            <li class="current">
-					                            	<a href="#" class="main_item">
-					                            		<span class="tit">
-							                                <span class="txt">신발·가방·잡화</span>
-							                            </span>
-					                            	</a>
-					                            </li>
+					                            
 					                            <li class="current">
 					                            	<a href="#" class="main_item">
 					                            		<span class="tit">
@@ -375,6 +369,9 @@
 							                                <span class="txt">반려동물용품</span>
 							                            </span>
 					                            	</a>
+					                            </li>
+					                            <li class="notcurrent">
+					                            	<span class="main_item"></span>
 					                            </li>
 				                            </ul>
 				                        </div>
@@ -930,13 +927,7 @@
 							                            </span>
 					                            	</a>
 					                            </li>
-					                            <li class="current">
-					                            	<a href="#" class="main_item">
-					                            		<span class="tit">
-							                                <span class="txt">신발·가방·잡화</span>
-							                            </span>
-					                            	</a>
-					                            </li>
+					                            
 					                            <li class="current">
 					                            	<a href="#" class="main_item">
 					                            		<span class="tit">
@@ -964,6 +955,10 @@
 							                                <span class="txt">반려동물용품</span>
 							                            </span>
 					                            	</a>
+					                            </li>
+					                            </li>
+					                            <li class="notcurrent">
+					                            	<span class="main_item"></span>
 					                            </li>
 				                            </ul>
 				                        </div>
@@ -1157,7 +1152,7 @@
                                 	<li th:each=item:${user.addressList} th:text="${item.type}+' - '+${item.address01}+'...'"></li>
                                 </ul>
                                 
-                                <form method="post" action="/user/mypage/shipping">
+                                <form method="get" action="/user/mypage/shipping">
 	                                <div class="group_button">
 		                                    <button type="sub" class="btn search_address" style="width: 300px;">
 		                                        <span class="ico"></span>
