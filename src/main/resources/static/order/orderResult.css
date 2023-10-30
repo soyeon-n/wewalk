@@ -1,0 +1,82 @@
+@charset "UTF-8";
+	
+	.ty{
+		width: 100%;
+		text-align: center;
+		
+		padding-top: 60px;
+		padding-bottom: 10px;
+	}
+	
+	.payment-item span{
+	
+		font-size: 35px;
+	
+	}
+	
+	.itemsname{
+	
+	display: flex;
+    justify-content: center;
+    height: 56px; 
+    font-weight: 700;
+    font-size: 20px;
+
+   
+	}    
+	
+	.itemsname li {
+	
+	display: flex;
+   	
+	}     
+	
+ 	.itemsname li div{
+ 	margin-left: 70px;
+ 	text-align: center;
+ 	}
+ 	
+ 	.names {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 20px;
+}
+
+	.names div {
+	    text-align: center;
+	}
+ 	.btn_payment{
+ 	
+ 	display: block;
+    width: 240px;
+    height: 56px;
+    margin: 40px auto 0;
+    background-color: #1EC800;
+    font-weight: 700;
+    font-size: 16px;
+    color: #fff;
+    border-radius: 8px;
+    border: 1px solid gray;
+    text-align: center;
+    padding-top: 10px;
+ 	}
+ 	
+ 	.names_image{
+ 	padding-left: 20px;
+ 	padding-right: 60px;
+	
+ 	}
+ 	.names_seller{
+ 	padding-left: 300px;
+ 	}
+ 	.names_name, .names_money {
+
+    padding-left: 10px;
+    padding-right: 100px;
+
+	}
+	.names_stock{
+	padding-left: 10px;
+    padding-right: 10px;
+	}
