@@ -126,17 +126,19 @@
 										</div>
                                         <div class="benefit">
 										    <strong class="tit"></strong>
-										    <span th:text="|적립 ${user.membership == true ? '10%' : 
-										        user.grade == 'B' ? '1%' : 
-										        user.grade == 'S' ? '3%' : 
-										        user.grade == 'G' ? '5%' : 
-										        user.grade == 'P' ? '8%' : ''}|"></span>
+										    <span th:text="|적립 ${user.membership == true ? (user.grade == 'B' ? '10% + 1%' : 
+							                                user.grade == 'S' ? '10% + 3%' : 
+							                                user.grade == 'G' ? '10% + 5%' : 
+							                                user.grade == 'P' ? '10% + 8%' : '10%') : 
+							                                (user.grade == 'P' ? '8%' : (user.grade == 'B' ? '1%' : 
+							                                user.grade == 'S' ? '3%' : 
+							                                user.grade == 'G' ? '5%' : ''))}|"></span>
 										</div>
                                     </div>
                                 </div>
                                 <div class="next">
                                     <a href="/user/mypage/myInterest" class="next_month">나의 관심 분야 설정하기</a>
-                                    <a href="/user/mypage/grade" class="total_grade">등급 별 할인혜택</a>
+                                    <a href="/user/mypage/grade" class="total_grade">등급 별 적립혜택</a>
                                 </div>
                             </div>
 
@@ -290,8 +292,8 @@
                                                 이메일 
                                             </th>
                                             <td>
-                                                <input type="text" name="email" th:value="${user.email}">
-                                                <a href="#" class="btn default">중복확인</a>
+	                                             <input type="text" name="email" th:value="${user.email}">
+	                                             <a href="#" class="btn default2">중복확인</a>
                                             </td>
                                         </tr>
     
@@ -304,7 +306,7 @@
                                             <td>
                                                 <div class="phone_num">
                                                     <input type="text" pattern="[0-9]*" name="mobileInp"  class="inp" th:value="${user.tel}"> <!-- value에 휴대폰 번호 데이터 나오게 -->
-    												<a href="#" class="btn default">본인인증</a>
+    												<a href="#" class="btn default2">본인인증</a>
                                                 </div>
                                             </td>
                                         </tr>
@@ -329,7 +331,7 @@
                                 </table>
 
                                 <div id="formSubmit" class="form_footer" style="border-top: 2px solid;">
-                                    <a href="/user/mypage/withdraw" class="btn default">탈퇴하기</a>
+                                    <a href="/user/mypage/withdraw" class="btn default2">탈퇴하기</a>
                                     <button type="submit" class="btn active">회원정보수정</button>
                                 </div>
                             </form>
@@ -340,5 +342,6 @@
             </div>
         </div>
     </div>
+    <div th:replace="footer :: footerFragment"></div>
 </body>
 </html>

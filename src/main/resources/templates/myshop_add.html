@@ -190,17 +190,19 @@
 										</div>
                                         <div class="benefit">
 										    <strong class="tit"></strong>
-										    <span th:text="|적립 ${user.membership == true ? '10%' : 
-										        user.grade == 'B' ? '1%' : 
-										        user.grade == 'S' ? '3%' : 
-										        user.grade == 'G' ? '5%' : 
-										        user.grade == 'P' ? '8%' : ''}|"></span>
+										    <span th:text="|적립 ${user.membership == true ? (user.grade == 'B' ? '10% + 1%' : 
+							                                user.grade == 'S' ? '10% + 3%' : 
+							                                user.grade == 'G' ? '10% + 5%' : 
+							                                user.grade == 'P' ? '10% + 8%' : '10%') : 
+							                                (user.grade == 'P' ? '8%' : (user.grade == 'B' ? '1%' : 
+							                                user.grade == 'S' ? '3%' : 
+							                                user.grade == 'G' ? '5%' : ''))}|"></span>
 										</div>
                                     </div>
                                 </div>
                                 <div class="next">
                                     <a href="/user/mypage/myInterest" class="next_month">나의 관심 분야 설정하기</a>
-                                    <a href="/user/mypage/grade" class="total_grade">등급 별 할인혜택</a>
+                                    <a href="/user/mypage/grade" class="total_grade">등급 별 적립혜택</a>
                                 </div>
                             </div>
 
@@ -317,13 +319,13 @@
 									                                <td colspan="2"> 
 									                                    <div>
 									                                        <span>
-									                                            <input type="text" id="pname" class="i_text text1" onkeyup="chkword_name(this, 50)" th:field="*{pname}" required>
+									                                            <input type="text" id="pname" class="i_text text1" onkeyup="chkword_name(this, 40)" th:field="*{pname}" required>
 									                                        </span>
 									                                    </div>
 									                                    <span class="txtByte" title="현재글자수/최대글자수">
 									                                      [
 									                                      <strong class="txt_count_name">0</strong>
-									                                       /50 ]
+									                                       /40 ]
 									                                    </span>
 									                                </td>
 									                            </tr>
@@ -528,5 +530,6 @@
             </div>
         </div>
     </div>
+    <div th:replace="footer :: footerFragment"></div>
 </body>
 </html>
