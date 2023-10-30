@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">   
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -135,9 +136,9 @@
                                 
                                 <dl class="list">
                                     <dt class="tit">상품 등록일</dt>
-                                    <dd class="desc" th:text="${product.date}"></dd>
-                                    <!-- <td class="time" th:text="${#temporals.format(question.date,'yyyy-MM-dd')}">작성일</td> 
-                                    <dd class="desc" th:text="${#temporals.format(product.date,'yyyy-MM-dd')}">수령일 포함 최소 1일이상 남은 상품을 배송드립니다.</dd>-->
+
+                                    <dd class="desc" th:text="${#temporals.format(localDateTime, 'yyyy-MM-dd')}">수령일 포함 최소 1일이상 남은 상품을 배송드립니다.</dd>
+                                <!-- <td th:text="${#temporals.format(question.createdDate, 'yyyy-MM-dd HH:mm')}">작성일 </td> -->
                                 </dl>
                             </div>
                         </div>

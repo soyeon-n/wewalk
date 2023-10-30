@@ -2,6 +2,8 @@ package com.spring.boot.controller;
 
 
 import java.net.MalformedURLException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import javax.validation.Valid;
 import org.springframework.core.io.Resource;
@@ -113,8 +115,11 @@ public class ProductController {
 		
 		
 		Product product = productService.getProductDetailByNo(productNo);
+		Timestamp timestamp = (Timestamp) product.getDate();// ... (여기에 Timestamp 객체를 가져오는 코드)
+		LocalDateTime localDateTime = timestamp.toLocalDateTime();
 		
 		model.addAttribute("product",product);
+		model.addAttribute("localDateTime",localDateTime);
 		
 		if(principalDetails != null) {
 			SiteUser user = userService.getUserByUserName(principalDetails.getUsername());			
