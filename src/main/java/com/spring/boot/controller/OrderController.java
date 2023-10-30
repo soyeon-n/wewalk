@@ -126,6 +126,66 @@ public class OrderController {
 		return "order_detail";
 	}
 
+
+    @PostMapping("/checkStock")
+    public ResponseEntity<String> verifyInventory(@RequestBody List<Map<String, Long>> selectedProducts) {
+        
+    	boolean allStockOk = true;
+    	
+    	for(Map<String,Long> selectProduct : selectedProducts) {
+			
+			Long productId = selectProduct.get("productId");
+			Long quantity = selectProduct.get("quantity");
+			
+			Product product = productService.getProductById(productId);
+			
+			int productCount = product.getStock();
+			
+			if(productCount<quantity) {
+				allStockOk=false;
+				break;
+			}
+
+			
+		}
+
+        if (allStockOk) {
+            return ResponseEntity.ok("Inventory is sufficient.");
+        } else {
+            return ResponseEntity.badRequest().body("Inventory is insufficient.");
+        }
+    }
+
+    @PostMapping("/checkStockBeforePay")
+    public ResponseEntity<String> verifyPay(@RequestBody List<Map<String, Long>> itemIds) {
+        
+    	boolean allStockOk = true;
+    	
+    	for(Map<String,Long> selectProduct : itemIds) {
+			
+			Long id = selectProduct.get("id");
+			Long count = selectProduct.get("count");
+			
+			Product product = productService.getProductById(id);
+			
+			int productCount = product.getStock();
+			
+			if(productCount<count) {
+				allStockOk=false;
+				break;
+			}
+
+			
+		}
+
+        if (allStockOk) {
+            return ResponseEntity.ok("Inventory is sufficient.");
+        } else {
+            return ResponseEntity.badRequest().body("Inventory is insufficient.");
+        }
+    }
+	
+	
 	//결제정보 저장
 
 	@PostMapping("/checkout")
