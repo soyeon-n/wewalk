@@ -48,7 +48,7 @@
 		    <p>검색 결과가 없습니다</p>
 		</div>
 		<tr class="text-center" th:each="siteUserDTO, loop : ${paging.dtoList}">
-			<td th:text="${((paging.number - 1) * paging.size) + loop.index + 1}"></td>
+			<td th:text="${((paging.page - 1) * paging.size) + loop.index + 1}"></td>
 			<td th:text="${siteUserDTO.userName}"></td>
 			<td class="text-start"> 
 				<!-- <a th:href="@{/user/login}" sec:authorize="isAnonymous()" th:text="${question.subject}"></a> -->
@@ -98,27 +98,24 @@
 	
 	<!-- 페이징은 5개씩 -->
 		<nav aria-label="Page navigation">
-			<ul class="pagination justify-content-center"
-				th:with="startNumber=${(paging.number/5)} * 5 + 1,
-				endNumber=(${paging.totalPages}>${startNumber}+4)?
-				${startNumber}+4 : ${paging.totalPages}">
+			<ul class="pagination justify-content-center">
 				
 				<!-- << -->
 				<li>
-					<a class="page-link" th:style="${paging.number == paging.start} ? 'display:none'" th:href="@{/admin/userList?page=1}">&laquo;</a>
+					<a class="page-link" th:style="${paging.page == paging.start} ? 'display:none'" th:href="@{/admin/userList?page=1}">&laquo;</a>
 				</li>
 			
 				<!-- < -->
 				<li class="page-item"
-					th:style="${paging.number == paging.start}?'display:none'">
+					th:style="${paging.page == paging.start}?'display:none'">
 					<a class="page-link"
-						th:href="@{/admin/userList(page=${paging.number-1})}">&lsaquo;</a>
+						th:href="@{/admin/userList(page=${paging.page-1})}">&lsaquo;</a>
 				</li>
 				
 				<!-- 12345 -->
 				<li class="page-item" 
-					th:each="page : ${#numbers.sequence(startNumber, endNumber)}"
-						th:classappend="(${page}==${paging.number}) ? 'active'">
+					th:each="page : ${paging.pageList}"
+						th:classappend="(${page}==${paging.page}) ? 'active'">
 					<a class="page-link"
 						th:href="@{/admin/userList(page=${page})}" th:text="${page}">
 					</a>
@@ -126,14 +123,14 @@
 				
 				<!-- > -->
 				<li class="page-item"
-					th:style="${paging.number == paging.end} ? 'display:none'">
+					th:style="${paging.page == paging.end} ? 'display:none'">
 					<a class="page-link"
-						th:href="@{/admin/userList(page=${paging.number}+1)}">&rsaquo;</a>
+						th:href="@{/admin/userList(page=${paging.page}+1)}">&rsaquo;</a>
 				</li>
 				
 				<!-- >> -->
 				<li>
-					<a class="page-link" th:style="${paging.number == paging.end} ? 'display:none'" 
+					<a class="page-link" th:style="${paging.page == paging.end} ? 'display:none'" 
 					th:href="@{/admin/userList(page=${paging.totalPages})}">&raquo;</a>
 				</li>
 			</ul>

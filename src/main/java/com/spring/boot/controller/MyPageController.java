@@ -93,7 +93,13 @@ public class MyPageController {
             model.addAttribute("user", user);
             
             int itemsPerPage = 9; // 페이지당 항목 수
-
+            
+            //5개 페이지씩 묶음(소수점 없으면 동작 제대로 안함)
+            int tempEnd = (int)((Math.ceil(pageNum / 5.0))* 5);
+            
+            //첫 번째 번호는 tempEnd - 4(1, 6, 11, ...)
+            int start = tempEnd - 4;
+            
             Page<Product> productPage = productService.getProductsPaged(user.getId(), pageNum, itemsPerPage);
             List<Product> product = productPage.getContent();
 
@@ -101,8 +107,16 @@ public class MyPageController {
             
             int totalItemCount = (int) productService.getTotalItemCount(principalDetails.getId());
             int totalPages = (int) Math.ceil((double) totalItemCount / itemsPerPage);
-
-            List<Integer> pageList = IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList());
+            
+            int end;
+            
+            if(totalPages > tempEnd) {
+            	end = tempEnd;
+            }else {
+            	end = totalPages;
+            }
+            
+            List<Integer> pageList = IntStream.rangeClosed(start, end).boxed().collect(Collectors.toList());
 
             String listUrl = "/user/mypage/"; 
             model.addAttribute("totalPages", totalPages);

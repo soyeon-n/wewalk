@@ -173,10 +173,14 @@
 												
 
 												<div class="page-numbers">
-												    <span th:each="page, stat : ${pageList}">
-													    <span th:if="${currentPage == page}" class="current-page" th:text="${page}"></span>
-													    <a th:unless="${currentPage == page}" th:href="@{/user/mypage/sale(pageNum=${page})}" th:text="${page}"></a>
-													</span>
+													<a th:style="${paging.page == paging.start} ? 'display:none'" th:href="@{/wewalk/search(page=1, keyword=${keyword}, sort=${sort})}" class="layout-pagination-button layout-pagination-first-page">&laquo;</a>
+	                                				<a th:style="${paging.page == paging.start}?'display:none'" th:href="@{/wewalk/search(page=${paging.page-1}, keyword=${keyword}, sort=${sort})}" class="layout-pagination-button layout-pagination-prev-page">&lsaquo;</a>
+													    <span th:each="page, stat : ${pageList}">
+														    <span th:if="${currentPage == page}" class="current-page" th:text="${page}"></span>
+														    <a th:unless="${currentPage == page}" th:href="@{/user/mypage/sale(pageNum=${page})}" th:text="${page}"></a>
+														</span>
+													<a th:style="${paging.page == paging.end} ? 'display:none'" th:href="@{/wewalk/search(page=${paging.page+1}, keyword=${keyword}, sort=${sort})}" class="layout-pagination-button layout-pagination-next-page">&rsaquo;</a>
+	                                				<a th:style="${paging.page == paging.end} ? 'display:none'" th:href="@{/wewalk/search(page=${paging.totalPages}, keyword=${keyword}, sort=${sort})}" class="layout-pagination-button layout-pagination-last-page">&raquo;</a>                               
 												</div>
 												</div>
 												
