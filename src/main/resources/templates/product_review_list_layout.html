@@ -161,13 +161,14 @@
 
                                     <div class="cont_after">
                                         <a class="desc_after">
-                                            <span class="subject" th:text="${review.title}">
+                                            <span class="subject" th:text="${review.title}" >
                                                 그냥 리코타 치즈 ㅇㅇ
+                                                <span th:text="${review.user.Id}"></span>
                                                 <span class="date" th:text="${#dates.format(review.date,'yyyy-MM-dd HH:mm:ss')}"  >
                                                     20.05.26 작성
                                                     여기에 작성자 이름 출력해야함
                                                     
-                                                    <!-- 지금 date 타입 출력안되고있음?????????  -->
+                                                    <!-- 지금 date 타입 출력안되고있음????????? 작성자도 !!!!!!!1 -->
                                                 </span>
                                                 
                                                 
