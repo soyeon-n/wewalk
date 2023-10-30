@@ -52,11 +52,23 @@
     color: #fff;
 }
 
+.btn.default2 {
+    border: 1px solid #1EC800;
+    background-color: #fff;
+    color: #1EC800;
+    transition: background-color 0.3s, color 0.3s; 
+}
+
+.btn.default2:hover {
+    background-color: #1EC800;
+    color: #fff;
+}
+
 .btn.btn_join {
     border: 1px solid #fff;
     background-color: #1EC800;
     color: #fff;
-    transition: background-color 0.3s, color 0.3s;  /* �ε巯�� ��ȯ ȿ���� ���� �߰� */
+    transition: background-color 0.3s, color 0.3s; 
 }
 
 .btn.btn_join:hover {

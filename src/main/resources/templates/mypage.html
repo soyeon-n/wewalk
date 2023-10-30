@@ -193,6 +193,7 @@
             </div>
         </div>
     </div>
+    <div th:replace="footer :: footerFragment"></div>
     <script>
 		document.addEventListener('DOMContentLoaded', (event) => {
 		    var message = /*[[${message}]]*/ null; // 플래시 속성 값을 받아옵니다.
