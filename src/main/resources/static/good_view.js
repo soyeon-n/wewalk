@@ -26,14 +26,16 @@ window.addEventListener('DOMContentLoaded',function(){
 		 //이게 게시글 toggle 출력하는 2버전 스크립트 
 		 $(document).ready(function() {
 		    $('[id^=toggleButton_]').click(function () {
-		        alert('ffff');
+		        //alert('ffff');
 		        var questionId  = this.id.split('_')[1];// Extract the question ID from the button's ID
-		        alert(questionId);
+		        var answer = $('#answertest_'+questionId);
+		        //alert(questionId);
 		        var contentElementId = $('#contentToToggle_' + questionId); //버튼과 id 합쳐 
+		        
 		        contentElementId.toggle();
-		         
-		        var answer = $('.answertest_'+answerId).text();//이러면 모든 answer 가 온다고
-		        alert(answer);
+		        //alert('ffff');
+		        
+		        //alert(answer);
 		        answer.toggle();
 		        
 		        

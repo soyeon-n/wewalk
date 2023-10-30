@@ -21,23 +21,16 @@ public class ReviewForm {//우리가 직접 넣는값만 form 검사
 	
 	private Integer rUser;//리뷰작성자 = 여기에 현재로그인된 id 를 set 해야함
 	
-	//private Integer productNo;//???
 	
 	private String pname;//상품명--product 테이블에서가져오기
 	private Integer star;//별점
 	//private LocalDateTime date;//리뷰등록일
 	
 	private String title;//제목
-	@NotEmpty(message = "내용은필수항목입니다")
+	//@NotEmpty(message = "내용은필수항목입니다")
 	//@size등제한은나중에@Size(max = 200)
 	private String content;//리뷰내용
-	
-	//파일업로드 
-	//모든내용이 form 거치는게 아니라 form 검사하는것만 
-	
-	//private String originalFilename;
-	//private String saveFilename;//+ 시분초로 이름 겹치지 않게하기 
-	//private String filepath;
+	//private String saveFileName;나중에 이미지 set 하도록 
 	
 	
 	

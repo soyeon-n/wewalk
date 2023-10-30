@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">   
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -60,11 +61,12 @@
                                 <span class="btn_share">
                                     <button id="btnShare">공유하기</button>
                                 </span>
+                                <br/><br/><br/>
                                 <strong class="name" th:text="${product.pname}">[김구원선생] 무농약 콩나물 200g</strong>
                                   <input type="hidden" th:value="${product.id}" id="productNo">
                                   <!-- 이걸로 값을 넘긴다 ajax 
                                   <img th:src="@{'/product/' + ${product.image}}"--> 
-                                                                <span class="short_desc" th:text="${product.content}">무농약 콩으로 재배한 콩나물(1봉/200g)</span>
+                                                                <span class="short_desc"></span>
                             </p>
                             <p class="goods_price">
                                 <span class="position">
@@ -115,10 +117,7 @@
                                     <dt class="tit" >상품 카테고리</dt>
                                     <dd class="desc" th:text="${product.category}">1봉</dd>
                                 </dl>
-                                <dl class="list">
-                                    <dt class="tit">중량/용량</dt>
-                                    <dd class="desc">200g</dd>
-                                </dl>
+                                
                                 <dl class="list">
                                     <dt class="tit">배송비</dt>
                                     <dd class="desc">3,000원</dd>
@@ -128,19 +127,18 @@
                                     <dd class="desc" th:text="${seller.name}">국산</dd>
                                 </dl>
                                 <dl class="list">
-                                    <dt class="tit">포장타입</dt>
-                                    <dd class="desc">
-                                        냉장/종이포장
+                                    <dt class="tit">재고수량</dt>
+                                    <dd class="desc" th:text="${product.stock}">
+                                        
                                         <strong class="emphd">택배배송은 에코포장이 스티로폼으로 대체됩니다.</strong>
                                     </dd>
                                 </dl>
-                                <dl class="list">
-                                    <dt class="tit">알레르기정보</dt>
-                                    <dd class="desc">-대두 함유</dd>
-                                </dl>
+                                
                                 <dl class="list">
                                     <dt class="tit">상품 등록일</dt>
-                                    <dd class="desc" th:text="${product.date}">수령일 포함 최소 1일이상 남은 상품을 배송드립니다.</dd>
+
+                                    <dd class="desc" th:text="${#temporals.format(localDateTime, 'yyyy-MM-dd')}">수령일 포함 최소 1일이상 남은 상품을 배송드립니다.</dd>
+                                <!-- <td th:text="${#temporals.format(question.createdDate, 'yyyy-MM-dd HH:mm')}">작성일 </td> -->
                                 </dl>
                             </div>
                         </div>
@@ -184,11 +182,12 @@
                                 </div>
                                 <div class="group_btn off">
                                     <div class="view_function">
-                                        <button type="button" class="btn btn_save">찜이라기에는 버튼이안움직여</button>
+                                    <!--  
+                                        <button type="button" class="btn btn_save">찜이라기에는 버튼이안움직여</button>-->
                                     </div>
                                     <!-- 장바구니 담기버튼  -->
                                     <span class="btn_type1" th:data-seller="${product.user}">
-                                        <button type="button" class="txt_type">장바구니 담기</button>
+                                        <button type="button" class="txt_type" style="background-color: #1EC800">장바구니 담기</button>
                                     </span>
                                 </div>
                             </div>
@@ -212,7 +211,10 @@
                                 <!-- 판매자의 관련된 produsts 상품 추천해주기  -->
                                     <li class="goods-add-product-item __slide-item" th:each="products : ${products}">
                                         <div class="goods-add-product-item-figure" >
-                                            <a href="#" target="_blank">
+                                        <!-- th:href="@{/product/detail/{products.id}(id=${products.id})}"> 
+                                            <a th:href="@{/product/detail/{products.id}(id=${products.id})}" target="_blank">-->
+                                              
+                                            <a th:href="@{|/product/detail/${products.id}|}" target="_blank">
                                                 <img th:src="@{'/product/images/' + ${products.image}}" class="goods-add-product-item-image">
                                                 
                                             </a>
@@ -228,7 +230,7 @@
 
                                     
 
-                                    
+                                    <!--  
 
                                     <li class="goods-add-product-item __slide-item">
                                         <div class="goods-add-product-item-figure">
@@ -269,7 +271,7 @@
                                                 <p class="goods-add-product-item-price">10.000원</p>
                                             </div>
                                         </div>
-                                    </li>
+                                    </li>-->
 
                                     
                                 </ul>
@@ -305,16 +307,16 @@
                         <div class="goods-view-infomation-content __active" id="goods-description">
                             <div class="goods_wrap">
                                 <div class="goods_intro">
-                                    <div class="pic">
+                                    <div class="pic" align="center">
                                     <!-- 대표이미지 뿌리기 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 
                                     <img th:src="@{'/product/images/' + ${products.image}}" -->
-                                        <img th:src="@{'/product/images/' + ${product.image}}">
+                                        <img th:src="@{'/product/images/' + ${product.image}}" width="100%">
                                     </div>
                                     <div class="context last">
                                         <h3>
-                                            <small>
+                                            <small><!--
                                             <div th:text="${product.content}"></div>
-                                                <!-- 무농약 콩으로 기른 장인의 나물 -->
+                                                 무농약 콩으로 기른 장인의 나물 -->
                                             </small>
                                             <div th:text="${product.pname}"></div>
                                             <!-- [김구원선생] 무농약 콩나물 -->
@@ -332,20 +334,46 @@
 
                                     </div>
                                 </div>
-                                <div class="goods_point">
+                                <br/><br/>
+                                <ul class="goods-view-infomation-tab-group">
+		                            <li class="goods-view-infomation-tab">
+		                                <a href="#goods-description" class="goods-view-infomation-tab-anchor">상품설명</a>
+		                            </li>
+		                            <li class="goods-view-infomation-tab">
+		                                <a href="#goods-image" class="goods-view-infomation-tab-anchor __active">상품이미지</a>
+		                            </li>
+		                            <li class="goods-view-infomation-tab">
+		                                <a href="#goods-infomation" class="goods-view-infomation-tab-anchor">상세정보</a>
+		                            </li>
+		                            <li class="goods-view-infomation-tab">
+		                                <a href="#goods-review" class="goods-view-infomation-tab-anchor">
+		                                    고객후기
+		                                    <span class="count_review">(0)</span>
+		                                </a>
+		                            </li>
+		                            <li class="goods-view-infomation-tab">
+		                                <a href="#goods-qna" class="goods-view-infomation-tab-anchor">상품문의
+		                                    <span>(0)</span>
+		                                </a>
+		                            </li>
+		                        </ul>
+		                        <br/><br/><br/><br/><br/><br/>
+                                <div class="goods_point" id="goods-image">
                                     <h3>
                                         <span>seller's detail photo</span>
                                     </h3>
-                                    <div class="context last">
+                                    <div class="context last" >
                                         <div class="pic">
-                                            <img th:if=${product.image1} th:src="@{'/product/images/' + ${product.image1}}">
+                                            <img th:if=${product.image1} th:src="@{'/product/images/' + ${product.image1}}" width="100%">
                                             
-                                            <img th:if=${product.image2} th:src="@{'/product/images/' + ${product.image2}}">
-                                            <img th:if=${product.image3} th:src="@{'/product/images/' + ${product.image3}}">
+                                            <img th:if=${product.image2} th:src="@{'/product/images/' + ${product.image2}}" width="100%">
+                                            <img th:if=${product.image3} th:src="@{'/product/images/' + ${product.image3}}" width="100%">
                                         </div>
                                     </div>
                                 </div>
+                                
                                 <div class="goods_tip">
+                                <!--  
                                     <h3>
                                         <span>Wewalk's Tip</span>
                                     </h3>
@@ -355,18 +383,22 @@
                                                 <img src="http://img-cf.kurly.com/shop/data/goodsview/20190826/gv20000060226_1.jpg">
                                             </div>
                                         </div>
-                                    </div>
+                                    </div>-->
                                 </div>
                                 <div class="goods_pick">
                                     <h3>
-                                        <span>Kurly`s Pick</span>
+                                        <span>Wewalk`s Pick</span>
                                     </h3>
 
                                     <div class="context last">
+                                    
                                         <p class="words">
+                                        <!--
                                             <strong class="sub_tit">
                                                 <span class="option_tit">무농약 콩나물</span>
                                             </strong>
+                                              
+                                              
                                             <b>・중량</b>
                                             : 1봉(200g)
                                             <br>
@@ -379,18 +411,25 @@
                                             <br>
                                             <b>・조리법</b>
                                             : 반드시 열을 가해 조리한 후 드시는 것을 권할게요. 삶아 드실 경우, 아래 컬리스 팁을 따라 조리해 보세요. 
-                                        </p>
+                                        </p>-->
                                     </div>
                                 </div>
                                 <div class="goods_tip">
+                                <!--  -->
                                     <h3>
-                                        <span>Kurly's Tip</span>
+                                    
+                                        <span>About Seller</span>
                                     </h3>
                                     <div class="tip_box">
                                         <div class="context">
+                                        <!-- 
                                             <div class="pic">
-                                                <img src="http://img-cf.kurly.com/shop/data/goodsview/20190826/gv40000060228_1.jpg">
-                                            </div>
+                                                <img src="">
+                                            </div> -->
+                                            <p class="words">판매자 소개</p>
+                                            
+                                            <p class="words" th:text="${seller.name}">
+                                            <!--  
                                             <p class="words">
                                                 <strong>콩나물 삶는법</strong>
                                                 
@@ -412,18 +451,25 @@
                                                 처음부터 찬물로 삶을 경우, 뚜껑을 닫은 채로 약 7분간 삶으면 됩니다.
                                                 
                                             </p>
-                                        </div>
+                                        </div>-->
                                     </div>
                                 </div>
                                 <div class="about_brand">
                                     <h3>
-                                        <span>About Brand</span>
+                                        <span>Seller Intro</span>
+                                        
                                     </h3>
+                                      
                                     <div class="context last">
                                         <div class="context_about">
+                                        <!--    셀러 -->
                                             <div class="pic">
-                                                <img src="http://img-cf.kurly.com/shop/data/goodsview/20190826/gv10000060230_1.jpg">
+                                                <img th:src="@{${seller.picture}}" width="200" height="200">
+                                                
                                             </div>
+                                            <p class="words" th:text=${seller.intro}>
+                                            </p>
+                                            <!--  
                                             <p class="words">
                                                 
                                               1938년, 1대 김의창 선생의 손에서 처음 김구원선생의 두부 역사가 시작되었습니다. 
@@ -434,38 +480,17 @@
                                               농림식품부가 신지식 농업인으로 선정할만큼 그 실력을 인정받기도 했습니다. 
                                               산수유는 물론 국산콩, 그리고 8가지 한방 재료 등 정직한 재료로 맛을 낸 정성과 
                                               노력이 80년이 지난 지금까지 빛을 발하고 있습니다.
-                                            </p>
+                                            </p>-->
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <ul class="goods-view-infomation-tab-group">
-                            <li class="goods-view-infomation-tab">
-                                <a href="#goods-description" class="goods-view-infomation-tab-anchor">상품설명</a>
-                            </li>
-                            <li class="goods-view-infomation-tab">
-                                <a href="#goods-image" class="goods-view-infomation-tab-anchor __active">상품이미지</a>
-                            </li>
-                            <li class="goods-view-infomation-tab">
-                                <a href="#goods-infomation" class="goods-view-infomation-tab-anchor">상세정보</a>
-                            </li>
-                            <li class="goods-view-infomation-tab">
-                                <a href="#goods-review" class="goods-view-infomation-tab-anchor">
-                                    고객후기
-                                    <span class="count_review">(0)</span>
-                                </a>
-                            </li>
-                            <li class="goods-view-infomation-tab">
-                                <a href="#goods-qna" class="goods-view-infomation-tab-anchor">상품문의
-                                    <span>(0)</span>
-                                </a>
-                            </li>
-                        </ul>
-                        <div class="goods-view-infomation-content" id="goods-image">
+                        
+                        <div class="goods-view-infomation-content" >
                             <div id="goods_pi">
                                 <p class="pic">
-                                    <img src="http://img-cf.kurly.com/shop/data/goodsview/20200831/gv40000117646_1.jpg">
+                                    <img src="">
                                 </p>
                             </div>
                         </div>
@@ -522,7 +547,7 @@
                             </table>
                             <div class="whykurly_area">
                                 <div class="row">
-                                    <strong class="tit_whykurly">WHY KURLY</strong>
+                                    <strong class="tit_whykurly">WHY WeWalk</strong>
                                     <div id="why_kurly" class="txt_area">
                                         <div class="why-kurly">
                                             <div class="col">
@@ -549,16 +574,16 @@
                                                     <img src="https://res.kurly.com/pc/ico/1910/02_only.svg">
                                                 </div>
                                                 <div class="info">
-                                                    <div class="title">차별화된 Kurly Only 상품</div>
+                                                    <div class="title">차별화된 WeWalk Only 상품</div>
                                                     <div class="desc">
                                                         <p>
                                                             전국 각지와 해외의 훌륭한 생산자가
                                                             <br>
-                                                            믿고 선택하는 파트너, 마켓컬리.
+                                                            믿고 선택하는 파트너, 위워크.
                                                             <br>
                                                             2천여 개가 넘는 컬리 단독 브랜드, 스펙의
                                                             <br>
-                                                            Kurly Only 상품을 믿고 만나보세요.
+                                                            WeWalk Only 상품을 믿고 만나보세요.
                                                         </p>
                                                         <span class="etc">
                                                             (온라인 기준 / 자사몰, 직구 제외)
@@ -634,6 +659,8 @@
                                     </div>
                                 </div>
                             </div>
+                            <br/>
+                            <br/>
                             <div class="happy_center fst">
                                 <div class="happy">
                                     <h4 class="tit">고객행복센터</h4>
@@ -670,7 +697,7 @@
                                         <div class="sub">
                                             24시간 접수 가능
                                             <br>
-                                            로그인 > 마이컬리 > 1:1문의
+                                            로그인 > 마이페이지 > 1:1문의
                                         </div>
                                         <div class="expend">                                            
                                             고객센터 운영 시간에 순차적으로 답변해드리겠습니다.
@@ -684,7 +711,7 @@
                                     <ul class="sub">
                                         <li>
                                             <strong>[입금 확인] 단계</strong>                                            
-                                            마이컬리 > 주문 내역 상세페이지에서 직접 취소하실 수 있습니다.
+                                            마이페이지 > 주문 내역 상세페이지에서 직접 취소하실 수 있습니다.
                                         </li>
                                         <li>
                                             <strong>[입금 확인] 이후 단계</strong>                                                                                        
@@ -737,13 +764,13 @@
                         <!-- layout 분리 호출 -->
                          <!-- product_review_list_layout 분리호출 -->
                          <!-- <nav th:replace="navbar :: navbarFragment"></nav> -->
-                         <div th:replace="product_review_list_layout :: reviewListFragment">
+                         <div th:replace="product_review_list_layout :: reviewListFragment" id="goods-review">
                          </div>
                          <br/><br/>
                          
                          <!-- layout 분리 호출 : 상품문의 + 답변  -->
                          
-                         <div th:replace="product_qna_list2 :: qnaFragment">
+                         <div th:replace="product_qna_list2 :: qnaFragment" id="goods-qna">
                          </div>
                          
                          
@@ -758,138 +785,7 @@
 
 
 
-        <div id="footer">
-            <div class="inner_footer">
-                <div class="cc_footer">
-                <!-- cc = company calls --> 
-                    <h2 class="cc_tit">고객행복센터</h2>
-                    <div class="cc_view cc_call">
-                        <h3>
-                            <span class="tit">1644-1107</span>
-                        </h3>
-                        <dl class="list">
-                            <dt>365고객센터</dt>
-                            <dd>오전 7시 - 오후 7시</dd>
-                        </dl>
-                    </div>
-                    <div class="cc_view cc_kakao">
-                        <h3>
-                            <a href="#" class="tit">카카오톡 문의</a>
-                        </h3>
-                        <dl class="list">
-                            <dt>365고객센터</dt>
-                            <dd>오전 7시 - 오후 7시</dd>
-                        </dl>
-                    </div>
-                    <div class="cc_view cc_qna">
-                        <h3>
-                            <a href="#" class="tit">1:1 문의</a>
-                        </h3>
-                        <dl class="list">
-                            <dt>24시간 접수 가능</dt>
-                            <dd>고객센터 운영시간에 순차적으로 답변해드리겠습니다.</dd>
-                        </dl>
-                    </div>
-                </div>
-
-                <div class="company_info">
-                    <ul class="list">
-                        <li>
-                            <a href="#" class="link">컬리소개</a>
-                        </li>
-                        <li>
-                            <a href="#" class="link">컬리소개영상</a>
-                        </li>
-                        <li>
-                            <a href="#" class="link">인재채용</a>
-                        </li>
-                        <li>
-                            <a href="#" class="link">이용약관</a>
-                        </li>
-                        <li>
-                            <a href="#" class="link">개인정보처리방침</a>
-                        </li>
-                        <li>
-                            <a href="#" class="link">이용안내</a>
-                        </li>
-                    </ul>
-                    <div class="spec_info">
-                        법인명 (상호) : 주식회사 컬리
-                        <span class="bar">I</span>
-                        사업자등록번호 : 000-00-0000 
-                        <a href="#" class="link">사업자정보확인</a><br>
-                        통신판매업 : 제 2018-서울강남-00000 호
-                        <span class="bar">I</span>
-                        개인정보보호책임자 : 000 <br>
-                        주소 : 서울시 도산대로 16길 20, 이래빌딩 B1 ~ 4F
-                        <span class="bar">I</span>
-                        대표이사 : 000 <br>
-                        입점문의 : <a href="#" class="link">입점문의하기</a>
-                        제휴문의 : <a href="#" class="link">ghkdvnfld345@naver.com</a><br>
-                        채용문의 : <a href="#" class="link">ghkdvnfld345@naver.com</a><br>
-                        팩스 : 000 - 0000 - 0000
-                        <span class="bar">I</span>
-                        이메일 : <a href="#" class="link">ghkdvnfld345@naver.com</a><br>
-                        <br>
-                        <strong class="copy">© KURLY CORP. ALL RIGHTS RESERVED</strong>
-                        <ul class="sns">
-                            <li>
-                                <a href="#" class="link_sns insta" target="_blank">
-                                    <img src="https://res.kurly.com/pc/ico/1810/ico_instagram.png" alt="마켓컬리 인스타그램 바로가기">
-                                </a>
-                                <!-- bg url 넣기 -->
-                            </li>
-                            <li>
-                                <a href="#" class="link_sns fb" target="_blank">
-                                    <img src="https://res.kurly.com/pc/ico/1810/ico_fb.png" alt="마켓컬리 페이스북 바로가기">
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" class="link_sns naver_blog" target="_blank">
-                                    <img src="https://res.kurly.com/pc/ico/1810/ico_blog.png" alt="마켓컬리 네이버블로그 바로가기">
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" class="link_sns naver_post" target="_blank">
-                                    <img src="https://res.kurly.com/pc/ico/1810/ico_naverpost.png" alt="마켓컬리 포스트 바로가기">
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" class="link_sns yt" target="_blank">
-                                    <img src="https://res.kurly.com/pc/ico/1810/ico_youtube.png" alt="마켓컬리 유튜브 바로가기">
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <div class="link_footer">
-                <div class="authentication">
-                    <a href="#" class="mark" target="_blank">
-                        <img src="https://res.kurly.com/pc/ico/2001/logo_isms.png" alt="isms 로고" class="logo">
-                        <p class="txt">
-                            [인증범위] 마켓컬리 쇼핑몰 서비스 개발 · 운영<br>
-                            [유효기간] 2019.04.01 ~ 2022.03.31
-                        </p>
-                    </a>
-                    <a href="#" class="mark" target="_blank">
-                        <img src="https://res.kurly.com/pc/ico/2001/logo_eprivacyplus.png" alt="eprivacy plus 로고" class="logo">
-                        <p class="txt">
-                            개인정보보호 우수 웹사이트 ·<br>
-                            개인정보처리시스템 인증 (ePRIVACY PLUS)
-                        </p>
-                    </a>
-                    <a href="#" class="lguplus mark" target="_blank">
-                        <img src="https://res.kurly.com/pc/service/main/2009/logo_payments.png" alt="payments 로고" class="logo">
-                        <p class="txt">
-                            고객님의 안전거래를 위해 현금 등으로 결제 시 저희 쇼핑몰에서 가입한<br>
-                            토스 페이먼츠 구매안전(에스크로) 서비스를 이용하실 수 있습니다.
-                        </p>
-                    </a>
-                </div>
-            </div>
-        </div>
+        <div th:replace="footer :: footerFragment"></div>
 
 
 

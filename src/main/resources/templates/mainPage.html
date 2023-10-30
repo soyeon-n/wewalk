@@ -28,24 +28,27 @@
         <div th:replace="header :: headerFragment"></div>
 		
 		
-		<div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel" >
+		<div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel" style="background-color: #EAEAEA;">
             <div class="carousel-inner">
                 <div class="carousel-item active" data-bs-interval="2000">
-                    <img src="/img/mainpage/member.png" class="d-block w-100" alt="..." >
+                    <img src="/img/grade.jpg" class="d-block w-100" alt="...">
                 </div>
                 <div class="carousel-item" data-bs-interval="2000">
-                    <img src="/img/mainpage/testimage.png" class="d-block w-100" alt="...">
+                    <img src="/img/membership.jpg" class="d-block w-100" alt="...">
                 </div>
-                <div class="carousel-item">
-                    <img src="/img/mainpage/aamm.png" class="d-block w-100" alt="...">
+                <div class="carousel-item" data-bs-interval="2000">
+                    <img src="/img/seller.png" class="d-block w-100" alt="...">
                 </div>
             </div>
             <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="carousel-control-prev-icon" aria-hidden="true"
+                style="background-image: url('/img/beforebutton.svg');"></span>
                 <span class="visually-hidden">Previous</span>
             </button>
+            
             <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="next">
-                <span class="carousel-control-next-icon" ariahidden="true"></span>
+                <span class="carousel-control-next-icon" ariahidden="true"
+                style="background-image: url('/img/nextbutton.svg');"></span>
                 <span class="visually-hidden">Next</span>
             </button>
         </div>
@@ -71,160 +74,39 @@
 		                                <span class="name">
 		                                최근등록된 상품
 		                                </span>
-		                                <!-- 아이콘 없는 버전, h3에 링크 없음 -->
+		                                
 		                            </h3>
 		                        </div>
-		                        <!-- list_goods는 마켓컬리와 똑같이 html 파일에서 스타일함 -->
+		                        
 		                        <div class="list_goods">
 		                            <div class="bx_wrapper" style="max-width: 1054px; margin: 0 auto;">
 		                                <div class="vx-viewport" style="width: 100%; height: 506px; position: relative; overflow: hidden;">
-		                                    <!-- overflow: hidden 임시로 삭제 -->
+		                                    
 		                                    <ul data-title="이 상품 어때요?" data-section="today_recommendation" class="list_goods_ul" 
 		                                    style="width: 2215%; position: relative; transition-duration: 0.5s; transform: translate3d(0, 0, 0);"> 
-		                                    <!--width: 2215%는 아직 뭔지 모르겠음  -->
-		                                    <!-- data-section과 data-name은 임시값 -->
+		                                    
 		    
 		                                    <!-- list data  -->
 		                                    
 		                                        <li data-index="1" data-name="today_recommendation" class="list_item"
-		                                        style="float: left; position: relative; width: 249px; margin-right: 18px;">
-		                                        <a class="thumb_goods">
+		                                        style="float: left; position: relative; width: 249px; margin-right: 18px;"
+		                                        th:each="recently : ${recentlyProducts}">
+		                                        <a class="thumb_goods" th:href="@{/product/detail/{id}(id=${recently.id})}">
 		                                            
-		                                            <img src="/img/mainpage/testimage.png" alt="상품이미지" class="thumb"
-		                                            >
-		                                            <!-- 상품 이미지 임시값임. src는 데이터로 받아오기 -->
+		                                        <img th:src="@{'/product/images/' + ${recently.image}}" alt="상품이미지" class="thumb">
+		                                            
 		                                        </a>
 		                                        <div class="info_goods">
 		                                            <span class="name">
-		                                                <a class="txt">
-		                                                    [버크셔세상] 버크셔K 흑돼지 앞다리살 500g(냉장)
+		                                                <a class="txt" th:text="${recently.pname}">
+		                                                    
 		                                                </a>
 		                                            </span>
-		                                            <span class="price">10,800원</span>
-		                                            <span class="cost">12,000원</span>
+		                                            <span class="price" th:text="${recently.price}"></span>
 		                                        </div>
 		                                        </li>
 		                                        
-		                                        <li data-index="2" data-name="today_recommendation" class="list_item"
-		                                        style="float: left; position: relative; width: 249px; margin-right: 18px;">
-		                                        <a class="thumb_goods">
-		                                            
-		                                            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAG0AAACRCAQAAABjof6/AAAANUlEQVR4Ae3BgQAAAADDoPtTT+AI1QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAnfAsAAe7+tYwAAAAASUVORK5CYII=" alt="상품이미지" class="thumb"
-		                                            style="background-image: url('https://img-cf.kurly.com/shop/data/goods/1514257155111l0.jpg')">
-		                                            <!-- 상품 이미지 임시값임. src는 데이터로 받아오기 -->
-		                                        </a>
-		                                        <div class="info_goods">
-		                                            <span class="name">
-		                                                <a class="txt">
-		                                                    이스라엘산 스위티 1개
-		                                                </a>
-		                                            </span>
-		                                            <span class="price">1,870원</span>
-		                                            <span class="cost">2,200원</span>
-		                                        </div>
-		                                        </li>
-		                                        <li data-index="3" data-name="today_recommendation" class="list_item"
-		                                        style="float: left; position: relative; width: 249x; margin-right: 18px;">
-		                                        <a class="thumb_goods">
-		                                            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAG0AAACRCAQAAABjof6/AAAANUlEQVR4Ae3BgQAAAADDoPtTT+AI1QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAnfAsAAe7+tYwAAAAASUVORK5CYII=" alt="상품이미지" class="thumb"
-		                                            style="background-image: url('https://img-cf.kurly.com/shop/data/goods/1510134053904l0.jpg');">
-		                                            <!-- 상품 이미지 임시값임. src는 데이터로 받아오기 -->
-		                                        </a>
-		                                        <div class="info_goods">
-		                                            <span class="name">
-		                                                <a class="txt">
-		                                                    [어부네] 생관자 2종(냉장)
-		                                                </a>
-		                                            </span>
-		                                            <span class="price">7,310원</span>
-		                                            <span class="cost">8,600원</span>
-		                                        </div>
-		                                        </li>
-		                                        <li data-index="4" data-name="today_recommendation" class="list_item"
-		                                        style="float: left; position: relative; width: 249px; margin-right: 18px;">
-		                                        <a class="thumb_goods">
-		                                            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAG0AAACRCAQAAABjof6/AAAANUlEQVR4Ae3BgQAAAADDoPtTT+AI1QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAnfAsAAe7+tYwAAAAASUVORK5CYII=" alt="상품이미지" class="thumb"
-		                                            style="background-image: url('https://img-cf.kurly.com/shop/data/goods/160868697126l0.jpg');">
-		                                            <!-- 상품 이미지 임시값임. src는 데이터로 받아오기 -->
-		                                        </a>
-		                                        <div class="info_goods">
-		                                            <span class="name">
-		                                                <a class="txt">
-		                                                    [퀸즈프레시] 프리미엄 샐러드 3종
-		                                                </a>
-		                                            </span>
-		                                            <span class="price">6,555원</span>
-		                                            <span class="cost">6,900원</span>
-		                                        </div>
-		                                        </li>
-		                                        <li data-index="5" data-name="today_recommendation" class="list_item"
-		                                        style="float: left; position: relative; width: 249px; margin-right: 18px;">
-		                                        <a class="thumb_goods">
-		                                            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAG0AAACRCAQAAABjof6/AAAANUlEQVR4Ae3BgQAAAADDoPtTT+AI1QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAnfAsAAe7+tYwAAAAASUVORK5CYII=" alt="상품이미지" class="thumb"
-		                                            style="background-image: url('https://img-cf.kurly.com/shop/data/goods/160868697126l0.jpg');">
-		                                            <!-- 상품 이미지 임시값임. src는 데이터로 받아오기 -->
-		                                        </a>
-		                                        <div class="info_goods">
-		                                            <span class="name">
-		                                                <a class="txt">
-		                                                    [퀸즈프레시] 프리미엄 샐러드 3종
-		                                                </a>
-		                                            </span>
-		                                            <span class="price">6,555원</span>
-		                                            <span class="cost">6,900원</span>
-		                                        </div>
-		                                        </li>
-		                                        <li data-index="6" data-name="today_recommendation" class="list_item"
-		                                        style="float: left; position: relative; width: 249px; margin-right: 18px;">
-		                                        <a class="thumb_goods">
-		                                            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAG0AAACRCAQAAABjof6/AAAANUlEQVR4Ae3BgQAAAADDoPtTT+AI1QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAnfAsAAe7+tYwAAAAASUVORK5CYII=" alt="상품이미지" class="thumb"
-		                                            style="background-image: url('https://img-cf.kurly.com/shop/data/goods/160868697126l0.jpg');">
-		                                            <!-- 상품 이미지 임시값임. src는 데이터로 받아오기 -->
-		                                        </a>
-		                                        <div class="info_goods">
-		                                            <span class="name">
-		                                                <a class="txt">
-		                                                    [퀸즈프레시] 프리미엄 샐러드 3종
-		                                                </a>
-		                                            </span>
-		                                            <span class="price">6,555원</span>
-		                                            <span class="cost">6,900원</span>
-		                                        </div>
-		                                        </li>
-		                                        <li data-index="7" data-name="today_recommendation" class="list_item"
-		                                        style="float: left; position: relative; width: 249px; margin-right: 18px;">
-		                                        <a class="thumb_goods">
-		                                            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAG0AAACRCAQAAABjof6/AAAANUlEQVR4Ae3BgQAAAADDoPtTT+AI1QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAnfAsAAe7+tYwAAAAASUVORK5CYII=" alt="상품이미지" class="thumb"
-		                                            style="background-image: url('https://img-cf.kurly.com/shop/data/goods/160868697126l0.jpg');">
-		                                            <!-- 상품 이미지 임시값임. src는 데이터로 받아오기 -->
-		                                        </a>
-		                                        <div class="info_goods">
-		                                            <span class="name">
-		                                                <a class="txt">
-		                                                    [퀸즈프레시] 프리미엄 샐러드 3종
-		                                                </a>
-		                                            </span>
-		                                            <span class="price">6,555원</span>
-		                                            <span class="cost">6,900원</span>
-		                                        </div>
-		                                        </li>
-		                                        <li data-index="8" data-name="today_recommendation" class="list_item"
-		                                        style="float: left; position: relative; width: 249px; margin-right: 18px;">
-		                                        <a class="thumb_goods">
-		                                            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAG0AAACRCAQAAABjof6/AAAANUlEQVR4Ae3BgQAAAADDoPtTT+AI1QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAnfAsAAe7+tYwAAAAASUVORK5CYII=" alt="상품이미지" class="thumb"
-		                                            style="background-image: url('https://img-cf.kurly.com/shop/data/goods/160868697126l0.jpg');">
-		                                            <!-- 상품 이미지 임시값임. src는 데이터로 받아오기 -->
-		                                        </a>
-		                                        <div class="info_goods">
-		                                            <span class="name">
-		                                                <a class="txt">
-		                                                    [퀸즈프레시] 프리미엄 샐러드 3종
-		                                                </a>
-		                                            </span>
-		                                            <span class="price">6,555원</span>
-		                                            <span class="cost">6,900원</span>
-		                                        </div>
-		                                        </li>
+		                                        
 		                                    </ul>
 		    
 		                                </div>
@@ -316,67 +198,107 @@
 	                        <div class="tit_goods">
 	                            <h3 class="tit">
 	                            <!-- 아이콘 있는 버전, h3에 링크 있음 -->
-	                                <a href="#" class="name">
-	                                    <span class="ico">관심있을만한 상품</span>
+	                            
+	                                <a th:href="@{/user/mypage/myInterest}" class="name">
+	                                    <span class="ico" th:if="${user!=null && user.interest1!=null}">관심있을만한 상품</span>
+	                                    <span class="ico" th:if="${user == null}">관심상품 등록하기</span>
+	                                    <span class="ico" th:if="${user != null && user.interest1 == null}">관심상품 등록하기</span>
 	                                </a>
 	                            </h3>
 	                        </div>
-	                        <div class="list_goods">
+	                        
+	                        <div class="list_goods" th:if="${user!=null && user.interest1!=null}">
 	                            <ul data-title="이벤트 소식" data-section="event" class="list_goods_ul">
 	                                <li>
-	                                    <li data-index="1">
-	                                        <a class="thumb_goods">
-	                                            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAF4AAABeCAQAAAAA22vlAAAAAXNSR0IArs4c6QAAACdJREFUeAHtwQENAAAAwiD7p34PBwwAAAAAAAAAAAAAAAAAAAAA4FpFZgABkfKClwAAAABJRU5ErkJggg==" alt="상품이미지" class="thumb"
-	                                            >
+	                                
+	                                    <li data-index="1" th:each="topproduct : ${top3products}"style="text-align: center;">
+	                                        <a class="thumb_goods" th:href="@{/product/detail/{id}(id=${topproduct.id})}">
+	                                            <img th:src="@{'/product/images/' + ${topproduct.image}}" alt="상품이미지" class="thumb">
 	                                            </a>
 	                                        <div class="info_goods">
 	                                            <div class="inner_info">
-	                                                <span class="name">
-	                                                    <a class="txt">화장지 최대 40% 할인</a>
+	                                                <span class="name" th:text="${topproduct.pname}" style="font-size: 16px; margin-bottom: 20px;">
+	                                                    
 	                                                </span>
-	                                                <span class="desc"> 
-	                                                    <a class="txt">미리미리 쟁여두세요!</a>
+	                                                <span class="desc" th:text="${topproduct.content}"> 
+	                                                    
 	                                                </span>
 	                                            </div>
 	                                        </div>
 	                                    </li>
 	                                </li>
+	                                 
+	                                
+	                            </ul>
+	                        </div>
+	                        
+	                        <div class="list_goods" th:if="${user==null}">
+	                            <ul data-title="이벤트 소식" data-section="event" class="list_goods_ul">
 	                                <li>
-	                                    <li data-index="2">
-	                                        <a class="thumb_goods">
-	                                            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAF4AAABeCAQAAAAA22vlAAAAAXNSR0IArs4c6QAAACdJREFUeAHtwQENAAAAwiD7p34PBwwAAAAAAAAAAAAAAAAAAAAA4FpFZgABkfKClwAAAABJRU5ErkJggg==" alt="상품이미지" class="thumb"
-	                                            >
-	                                        </a>
+	                                	<li style="text-align: center;">
+	                                		<div class="inner_info">
+	                                               　
+	                                                
+	                                        </div>
+	                                	</li>
+	                                    <li data-index="1" style="text-align: center;">
+	                                        
 	                                        <div class="info_goods">
 	                                            <div class="inner_info">
-	                                                <span class="name">
-	                                                    <a class="txt">종근당건강 최대 27% 할인</a>
+	                                                <span class="name" style="font-size: 30px; margin-bottom: 20px; text-align: center; margin-top: 50px;
+	                                                overflow: inherit; position: static;letter-spacing: 5px; ">
+	                                                    
+	                                                    
+	                                                    ⬆️<br/>
+	                                                    관심분야 설정하시면<br/>
+
+	                                                    좋아하실만한 상품을
+	                                                    <br/>
+	                                                     
+	                                                    알려드릴게요
 	                                                </span>
-	                                                <span class="desc"> 
-	                                                    <a class="txt">국민 유산균, 락토핏</a>
-	                                                </span>
+	                                                
 	                                            </div>
 	                                        </div>
 	                                    </li>
 	                                </li>
+	                                 
+	                                
+	                            </ul>
+	                        </div>
+	                        
+	                        <div class="list_goods" th:if="${user != null and user.interest1 == null}">
+	                            <ul data-title="이벤트 소식" data-section="event" class="list_goods_ul">
 	                                <li>
-	                                    <li data-index="3">
-	                                        <a class="thumb_goods">
-	                                            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAF4AAABeCAQAAAAA22vlAAAAAXNSR0IArs4c6QAAACdJREFUeAHtwQENAAAAwiD7p34PBwwAAAAAAAAAAAAAAAAAAAAA4FpFZgABkfKClwAAAABJRU5ErkJggg==" alt="상품이미지" class="thumb"
-	                                            >
-	                                            </a>
+	                                	<li style="text-align: center;">
+	                                		<div class="inner_info">
+	                                               　
+	                                                
+	                                        </div>
+	                                	</li>
+	                                    <li data-index="1" style="text-align: center;">
+	                                        
 	                                        <div class="info_goods">
 	                                            <div class="inner_info">
-	                                                <span class="name">
-	                                                    <a class="txt">바스용품 최대 35% 할인</a>
+	                                                <span class="name" style="font-size: 30px; margin-bottom: 20px; text-align: center; margin-top: 50px;
+	                                                overflow: inherit; position: static;letter-spacing: 5px; ">
+	                                                    
+	                                                    
+	                                                    ⬆️<br/>
+	                                                    관심분야 설정하시면<br/>
+
+	                                                    좋아하실만한 상품을
+	                                                    <br/>
+	                                                     
+	                                                    알려드릴게요
 	                                                </span>
-	                                                <span class="desc"> 
-	                                                    <a class="txt">나만의 힐링타임</a>
-	                                                </span>
+	                                                
 	                                            </div>
 	                                        </div>
 	                                    </li>
 	                                </li>
+	                                 
+	                                
 	                            </ul>
 	                        </div>
 	                    </div>

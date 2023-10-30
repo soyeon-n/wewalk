@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>마이컬리- 상품후기</title>
+    <title>마이페이지- 상품후기</title>
     <link rel="stylesheet" href="/reset.css">
     
     <link rel="stylesheet" href="/css/common.css">
@@ -197,6 +197,8 @@
                                 </li>
                             </ul>
                         </div>
+                        <br/>
+                        <br/>
 
                         <div id="viewAfterList" class="after_view" style="display:;" th:each="review, loop : ${paging}">
                             <ul class="list_after">
@@ -219,8 +221,9 @@
                                     <div class="cont_after">
                                         <a class="desc_after">
                                             <span class="subject" th:text="${review.title}">
+                                            <span class="date" ></span>
                                                 그냥 리코타 치즈 ㅇㅇ
-                                                <span class="date">
+                                                <span class="date" th:text="${#temporals.format(review.date,'yyyy-MM-dd')}">
                                                     작성일
                                                     <a th:text="${#temporals.format(review.date,'yyyy-MM-dd')}"></a> 
                                                     <!-- 지금 date 타입 출력안되고있음?????????  -->
@@ -247,12 +250,13 @@
 
                                             <span class="view">
                                                 <span class="img">
+                                                    <img th:src="@{'/reviewImg/'+ ${review.saveFileName}}"/>
                                                 
                                                     <!-- <img th:each="imageFile : ${content.imageFiles}" th:src="|/basic-board/images/${imageFile.storeFilename}|"> -->                                    
                                                 
                                                 </span>
 
-                                                <span class="txt">
+                                                <span class="txt"  th:text="${review.content}">
                                                     양은 꽤 많고 리코타 치즈치고 약간 묽긴한데 몽글몽글한게 참 귀엽습니다. 샐러드에 넣어 먹을 때 가장 맛있는 치즈 같아요
                                                     <br>
                                                 </span>
@@ -266,17 +270,18 @@
                                             <button type="button" class="btn_help">도움이 돼요? 0</button>-->
                                             
                                             
-                                            <a th:href="@{|/review/delete/${review.id}|}" th:text="리뷰삭제"></a>
+                                            <a th:href="@{|/review/delete/${review.id}|}" th:text="리뷰삭제" ></a>
                                             <br/>
-                                            <a th:href="@{|/review/modify/${review.id}|}" th:text="리뷰수정"></a>
-                                            
-                                            <a class="btn btn_modify">수정</a>
-                                            <a class="btn btn_del">삭제하기</a>
+                                            <br/>
+                                            <a th:href="@{|/review/modify/${review.id}|}" th:text="리뷰수정" ></a>
+                                            <!--  -->
+                                            <a class="btn btn_modify" th:href="@{|/review/modify/${review.id}|}">수정</a>
+                                            <a class="btn btn_del" th:href="@{|/review/delete/${review.id}|}">삭제하기</a>
 
                                         </div>
                                     </div>
                                 </li>
-                                <!-- 한 단락 반복 끝  -->
+                                <!-- 한 단락 반복 끝  --> 
                                 <!-- 
 
                                 <li>
@@ -334,8 +339,11 @@
                                 
                             </ul>
                         </div>
+                        <br/>
+                        <br/>
+                        <br/>
                         <!-- 여기까지가 게시물 반복문 -->
-                        <div th:if="${!paging.isEmpty()}">
+                        <div th:if="${!paging.isEmpty()}" align="center">
 							<nav aria-label="Page navigation">
 							     <ul class="pagination justify-content-center"
 							          th:with="startNumber=${(paging.number/10)}*10+1, 
@@ -344,7 +352,7 @@
 							          
 							          <!-- << -->
 							          <!-- th:href="@{|/question/list/${product.id}?page=${page}|}" th:text="${page}" -->
-							          <li>
+							          
 							          <a class="layout-pagination-button layout-pagination-first-page" 
 							          th:href="@{/review/mylist?page=1}">&laquo;</a>
 							          <!-- <a class="page-link" th:href="@{/question/list?page=1}">&laquo;</a> -->
@@ -355,7 +363,7 @@
 							          th:href="@{/review/mylist(page=${paging.number})}" th:style ="${paging.first}?'display:none'">
 							          &lsaquo;</a>
 							          
-							          </li>
+							          
 							          
 							          
 						          
@@ -368,8 +376,9 @@
 							              </a>
 							          </li>
 							          <!-- > -->							          
-							          <li th:style="${paging.last}?'display:none'">
+							          
 								          <a class="layout-pagination-button layout-pagination-next-page" 
+								          th:style="${paging.last}?'display:none'"
 								          th:href="@{/review/mylist(page=${paging.number}+2)}" >
 								          
 								          </a>
@@ -377,7 +386,7 @@
 								          <a class="layout-pagination-button layout-pagination-last-page" 
 									          th:href="@{/review/mylist(page=${paging.totalPages})}"></a>
 								          
-							          </li>
+							          
 							          
 							     
 							     </ul>
@@ -388,8 +397,14 @@
 						<!-- 페이징 끝 -->
                         
                         
-                        
+                        <br/>
+                    <br/>
+                    <br/>
+                    <br/>
                     </div>
+                    
+                    
+                    <div th:replace="footer :: footerFragment"></div>
 
 
                 </div>

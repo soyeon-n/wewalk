@@ -134,5 +134,5 @@
 /* Ensure images maintain their aspect ratio */
 .carousel-item img {
     max-height: 100%;
-    height: 600px;
+    height: 500px;
 }

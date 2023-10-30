@@ -11,8 +11,8 @@
 
 </head>
 <body>
-<div class="container my-3" style="display: flex; flex-direction:column; justify-content: center; align-items: center; min-width: 630px; height: 800px;">
 
+<div class="container my-3" style="display: flex; flex-direction:column; justify-content: center; align-items: center; min-width: 630px; height: 800px;">
 	<div class="my3 border-bottom">
 		<div>
 			<h4>판매자 신청</h4>
@@ -32,7 +32,7 @@
 		    <label for="intro" class="form-label">판매자 설명</label>
 		    <div style="display: flex; width: 100%;">
 		        <!-- <input type="text" id="intro" name="intro" th:field="*{intro}" size="74" maxlength="100" class="form-control" style="flex: 1; margin-right: 10px;"/> -->
-		        <textarea rows="7" cols="50" maxlength="150" id="intro" name="intro" th:field="*{intro}" class="form-control" placeholder="사용자 설명을 적어주세요" style="resize: none;"></textarea>
+		        <textarea rows="7" cols="50" maxlength="150" id="intro" name="intro" th:field="*{intro}" class="form-control" placeholder="판매자 설명을 적어주세요(최대 150자)" style="resize: none;"></textarea>
 		    </div>
 		</div>
 
@@ -49,9 +49,9 @@
 		        <input type="file" id="generalFiles" name="generalFiles" th:field="*{generalFiles}" multiple class="form-control"/>
 		    </div>
 		</div>
+		<div class="filetxt" style="font-size: 12px;">* 파일당 10mb 이하 & 총 30mb 이하</div>
 		
 		
-		<div th:replace="footer :: footerFragment"></div>
 		<script type="text/javascript">
 		//이미지 파일 업로드 시 크기 검증하는 스크립트
 		document.querySelector('#imageFiles').addEventListener('change', function(event) {
@@ -138,8 +138,13 @@
 		    }
 		});
 		</script>
-		<button type="submit" class="btn btn_join">판매자 요청</button>
+		<div style="display: flex; flex-direction: row; margin-top: 50px;">
+			<button type="submit" class="btn btn_join">판매자 요청</button>
+			<button type="reset" class="btn btn_join">재작성하기</button>
+			<button type="button" onclick="location.href='/wewalk/main'" class="btn btn_join">메인페이지</button>
+		</div>
 	</form>
+
 <script type="text/javascript">
 
 	function sendIt(){
@@ -166,4 +171,5 @@
 
 </script>
 </div>
+</body>
 </html>

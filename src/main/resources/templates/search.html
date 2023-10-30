@@ -123,7 +123,7 @@
 	                                        <div class="item"><!-- 반복문 써야할 부분 -->
 	                                            <div class="thumb"><!-- thumbnail picture -->
 	                                                <a th:href="@{|/product/detail/${productDTO.id}|}"><!-- 상품 상세 페이지 -->
-	                                                    <img th:src="@{'/product/' + ${productDTO.image}}" onerror="this.src='https://res.kurly.com/mobile/img/1808/img_none_x2.png'" width="308" height="396">
+	                                                    <img th:src="@{'/product/images/' + ${productDTO.image}}" onerror="this.src='https://res.kurly.com/mobile/img/1808/img_none_x2.png'" width="308" height="396">
 	                                                </a>
 	                                                <!-- <span class="global_sticker" style="display: none;">
 	                                                    <span class="inner_sticker">
@@ -169,8 +169,10 @@
                             th:with="startNumber=${(paging.number/5)} * 5 + 1,
 							endNumber=(${paging.totalPages}>${startNumber}+4)?
 							${startNumber}+4 : ${paging.totalPages}">
-                                <a th:style="${paging.number == paging.start} ? 'display:none'" th:href="@{/wewalk/search(page=1, keyword=${keyword}, sort=${sort})}" class="layout-pagination-button layout-pagination-first-page">맨 처음 페이지로 가기</a>
-                                <a th:style="${paging.number == paging.start}?'display:none'" th:href="@{/wewalk/search(page=${paging.number-1}, keyword=${keyword}, sort=${sort})}" class="layout-pagination-button layout-pagination-prev-page">이전 페이지로 가기</a>
+                                <a th:href="@{/wewalk/search(page=1, keyword=${keyword}, sort=${sort})}" class="layout-pagination-button layout-pagination-first-page">맨 처음 페이지로 가기</a>
+                                <a th:href="@{/wewalk/search(page=${paging.number-1}, keyword=${keyword}, sort=${sort})}" class="layout-pagination-button layout-pagination-prev-page">이전 페이지로 가기</a>
+<!--                                 <a th:style="${paging.number == paging.start} ? 'display:none'" th:href="@{/wewalk/search(page=1, keyword=${keyword}, sort=${sort})}" class="layout-pagination-button layout-pagination-first-page">맨 처음 페이지로 가기</a>
+                                <a th:style="${paging.number == paging.start}?'display:none'" th:href="@{/wewalk/search(page=${paging.number-1}, keyword=${keyword}, sort=${sort})}" class="layout-pagination-button layout-pagination-prev-page">이전 페이지로 가기</a> -->
                                 <a th:each="page : ${#numbers.sequence(startNumber, endNumber)}"
 									th:classappend="(${page}==${paging.number}) ? 'active'" 
 									th:href="@{/wewalk/search(page=${page}, keyword=${keyword}, sort=${sort})}">
@@ -178,8 +180,10 @@
                                         <strong class="layout-pagination-button layout-pagination-number" th:classappend="(${page}==${paging.number}) ? '__active'" th:text="${page}"></strong>
                                     </span>
                                 </a>                                
-                                <a th:style="${paging.number == paging.end} ? 'display:none'" th:href="@{/wewalk/search(page=${paging.number+1}, keyword=${keyword}, sort=${sort})}" class="layout-pagination-button layout-pagination-next-page">다음 페이지로 가기</a>
-                                <a th:style="${paging.number == paging.end} ? 'display:none'" th:href="@{/wewalk/search(page=${paging.totalPages}, keyword=${keyword}, sort=${sort})}" class="layout-pagination-button layout-pagination-last-page">맨 끝 페이지로 가기</a>                               
+                                <a th:href="@{/wewalk/search(page=${paging.number+1}, keyword=${keyword}, sort=${sort})}" class="layout-pagination-button layout-pagination-next-page">다음 페이지로 가기</a>
+                                <a th:href="@{/wewalk/search(page=${paging.totalPages}, keyword=${keyword}, sort=${sort})}" class="layout-pagination-button layout-pagination-last-page">맨 끝 페이지로 가기</a>                               
+<!--                                 <a th:style="${paging.number == paging.end} ? 'display:none'" th:href="@{/wewalk/search(page=${paging.number+1}, keyword=${keyword}, sort=${sort})}" class="layout-pagination-button layout-pagination-next-page">다음 페이지로 가기</a>
+                                <a th:style="${paging.number == paging.end} ? 'display:none'" th:href="@{/wewalk/search(page=${paging.totalPages}, keyword=${keyword}, sort=${sort})}" class="layout-pagination-button layout-pagination-last-page">맨 끝 페이지로 가기</a>                                -->
                             </div>
                         </div>
                     </div>                    
@@ -192,7 +196,7 @@
         </div>
     </div>
 	
-	<div th:replace="footer :: footerFragment"></div>
+	<div th:replace="footer :: footerFragment" style="margin-bottom: 0px; padding-bottom: 0px;"></div>
 	
     <div id="cartPut">
         <div class="cart_option cart_type3" style="opacity: 1;">
