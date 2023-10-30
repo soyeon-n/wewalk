@@ -439,7 +439,7 @@
 																		        <input type="file" name="image" th:field="*{images}" multiple="multiple" accept="image/*" id="image_input" onchange="set_main_image(event);">
 																		        <button type="button" class="image_input_button"></button>
 																		        <div id="image_main_container">
-																		        <img th:src="@{'/product/' + ${editProduct.image}}">
+																		        <img th:src="@{'/product/images/' + ${editProduct.image}}">
 																		        </div>
 																		        <div style="margin-bottom:10px;">
 																		            <button type="button" name="image_main_container" class="remove" onclick="img_remove(this)">
@@ -452,7 +452,7 @@
 																		        <input type="file" name="image1" th:field="*{images}" multiple="multiple" accept="image/*" id="image_input" onchange="set_main_image1(event);">
 																		        <button type="button" class="image_input_button"></button>
 																		        <div id="image_main_container1">
-																		        <img th:if="${editProduct.image1 != null}" th:src="@{'/product/' + ${editProduct.image1}}">
+																		        <img th:if="${editProduct.image1 != null}" th:src="@{'/product/images/' + ${editProduct.image1}}">
 																		        </div>
 																		        <div style="margin-bottom:10px;">
 																		            <button type="button" name="image_main_container1" class="remove" onclick="img_remove(this)">
@@ -465,7 +465,7 @@
 																		        <input type="file" name="image2" th:field="*{images}" multiple="multiple" accept="image/*" id="image_input" onchange="set_main_image2(event);">
 																		        <button type="button" class="image_input_button"></button>
 																		        <div id="image_main_container2">
-																		        <img th:if="${editProduct.image2 != null}" th:src="@{'/product/' + ${editProduct.image2}}">
+																		        <img th:if="${editProduct.image2 != null}" th:src="@{'/product/images/' + ${editProduct.image2}}">
 																		        </div>
 																		        <div style="margin-bottom:10px;">
 																		            <button type="button" name="image_main_container2" class="remove" onclick="img_remove(this)">
@@ -478,7 +478,7 @@
 																		        <input type="file" name="image3" th:field="*{images}" multiple="multiple" accept="image/*" id="image_input" onchange="set_main_image3(event);">
 																		        <button type="button" class="image_input_button"></button>
 																		        <div id="image_main_container3">
-																		        <img th:if="${editProduct.image3 != null}" th:src="@{'/product/' + ${editProduct.image3}}">
+																		        <img th:if="${editProduct.image3 != null}" th:src="@{'/product/images/' + ${editProduct.image3}}">
 																		        </div>
 																		        <div style="margin-bottom:10px;">
 																		            <button type="button" name="image_main_container3" class="remove" onclick="img_remove(this)">
