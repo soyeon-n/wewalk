@@ -102,7 +102,7 @@
 		                                                    
 		                                                </a>
 		                                            </span>
-		                                            <span class="price" th:text="${recently.price}"></span>
+		                                            <span class="price" th:text="${#numbers.formatInteger(recently.price, 1, 'COMMA') + ' 원'}"></span>
 		                                        </div>
 		                                        </li>
 		                                        
@@ -199,7 +199,7 @@
 	                            <h3 class="tit">
 	                            <!-- 아이콘 있는 버전, h3에 링크 있음 -->
 	                            
-	                                <a th:href="@{/user/mypage/myInterest}" class="name">
+	                                <a th:href="@{/user/mypage/myInterest}" class="name" >
 	                                    <span class="ico" th:if="${user!=null && user.interest1!=null}">관심있을만한 상품</span>
 	                                    <span class="ico" th:if="${user == null}">관심상품 등록하기</span>
 	                                    <span class="ico" th:if="${user != null && user.interest1 == null}">관심상품 등록하기</span>
@@ -231,7 +231,7 @@
 	                                
 	                            </ul>
 	                        </div>
-	                        
+	                       
 	                        <div class="list_goods" th:if="${user==null}">
 	                            <ul data-title="이벤트 소식" data-section="event" class="list_goods_ul">
 	                                <li>

@@ -40,6 +40,12 @@
     vertical-align: 0;
 }
 
+.type_form .btn.default {
+    border: 1px solid #1EC800;
+    background-color: #fff;
+    color: #1EC800;
+}
+
 .btn.default {
     border: 1px solid #1EC800;
     background-color: #fff;
@@ -52,11 +58,30 @@
     color: #fff;
 }
 
+.btn.default2 {
+    border: 1px solid #1EC800;
+    background-color: #fff;
+    color: #1EC800;
+    display: inline-block;
+    margin-left: 5px;
+    width: 20%; 
+}
+
+.btn.default2:hover {
+    background-color: #1EC800;
+    color: #fff;
+}
+
+.email-container {
+    display: flex; /* 이메일 입력 상자와 중복확인 버튼을 가로로 나란히 정렬 */
+    align-items: center; /* 수직 정렬을 중앙으로 설정 */
+}
+
 .btn.btn_join {
     border: 1px solid #fff;
     background-color: #1EC800;
     color: #fff;
-    transition: background-color 0.3s, color 0.3s;  /* �ε巯�� ��ȯ ȿ���� ���� �߰� */
+    transition: background-color 0.3s, color 0.3s; 
 }
 
 .btn.btn_join:hover {
@@ -178,8 +203,11 @@
 
 .type_form .btn.active {
     border: 1px solid #1EC800;
-    background-color: #1EC800;
-    color: #fff;
+    font-size: 14px;
+    display: inline-block;
+    width: 20%;
+    text-align: center;
+    height: 44px;
 }
 
 input::placeholder{
