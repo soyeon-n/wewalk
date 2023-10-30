@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -76,8 +77,6 @@ public class ReviewService {
 
 		Review reviews = new Review();//객체생성
 
-
-
 		//uuid~ filemanager 코딩  
 		//String rootPath = System.getProperty("user.dir");
 		//아 이거는 폴더가 유저로컬한테 저장공간이 생기기떄문에 나중에 고쳐야한다 
@@ -136,7 +135,7 @@ public class ReviewService {
 		reviews.setUser(siteUser);
 		reviews.setPname(pname);
 		reviews.setStar(star);
-		reviews.setDate(LocalDateTime.now());
+		reviews.setDate(new Date());//(LocalDateTime.now());
 		reviews.setTitle(title);
 		reviews.setContent(content);
 
@@ -226,6 +225,8 @@ public class ReviewService {
 				if(!wasSuccessful)
 					System.out.println("file: was not successful");
 			}  
+			// 이미지를 저장할 디렉토리가 없으면 생성
+            Files.createDirectories(Paths.get(uploadDir));
 			//실제로 파일을 저장하는 부분 -> 파일경로 + storeFilename 에 저장
 			Files.copy(multipartFile.getInputStream(), Paths.get(uploadDir, saveFileName), StandardCopyOption.REPLACE_EXISTING);
 
@@ -243,7 +244,7 @@ public class ReviewService {
 		//reviews.setRUser(rUser);
 		//reviews.setPname(pname);
 		review.setStar(star);
-		review.setDate(LocalDateTime.now());//수정일
+		review.setDate(new Date());//수정일
 		review.setTitle(title);
 		review.setContent(content);
 
