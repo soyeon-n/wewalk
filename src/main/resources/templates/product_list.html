@@ -309,7 +309,7 @@
                                     <div class="pic">
                                     <!-- 대표이미지 뿌리기 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 
                                     <img th:src="@{'/product/images/' + ${products.image}}" -->
-                                        <img th:src="@{'/product/images/' + ${product.image}}">
+                                        <img th:src="@{'/product/images/' + ${product.image}}" width="100%">
                                     </div>
                                     <div class="context last">
                                         <h3>
@@ -339,10 +339,10 @@
                                     </h3>
                                     <div class="context last">
                                         <div class="pic">
-                                            <img th:if=${product.image1} th:src="@{'/product/images/' + ${product.image1}}">
+                                            <img th:if=${product.image1} th:src="@{'/product/images/' + ${product.image1}}" width="100%">
                                             
-                                            <img th:if=${product.image2} th:src="@{'/product/images/' + ${product.image2}}">
-                                            <img th:if=${product.image3} th:src="@{'/product/images/' + ${product.image3}}">
+                                            <img th:if=${product.image2} th:src="@{'/product/images/' + ${product.image2}}" width="100%">
+                                            <img th:if=${product.image3} th:src="@{'/product/images/' + ${product.image3}}" width="100%">
                                         </div>
                                     </div>
                                 </div>

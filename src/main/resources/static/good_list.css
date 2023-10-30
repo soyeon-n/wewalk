@@ -157,10 +157,6 @@
     box-shadow: 0 2px 4px rgba(0,0,0,.3);
 }
 
-
-
-
-
 #goodsList .sort_menu .user_sort .list a.on, #goodsList .sort_menu .user_sort .list a:hover {
     color: #1EC800;
 }
