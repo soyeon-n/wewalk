@@ -12,6 +12,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.CorsUtils;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.spring.boot.model.UserRole;
 import com.spring.boot.service.CustomOAuthSevice;
@@ -40,21 +44,23 @@ public class SecurityConfig {
         //.cors(); Cross-Origin Resource Sharing (CORS)를 활성화하는 메소드. 
         // CORS는 웹 페이지가 다른 도메인의 리소스에 액세스할 수 있게 하는 메커니즘
         http.cors();
+        //http.cors().configurationSource(corsConfigurationSource()); 배포시 테스트 필요
         
         // 권한에 따라 허용하는 url 설정
         // /login, /signup 페이지는 모두 허용, 다른 페이지는 인증된 사용자만 허용
         http
-        .authorizeRequests()
-            //.antMatchers("/user/mypage/myshop/**").hasAnyRole(UserRole.SELLER.name(), UserRole.ADMIN.name()) // SELLER만 myshop에 접근 가능
-            .antMatchers("/user/**").hasAnyRole(UserRole.USER.name(), UserRole.SELLER.name(), UserRole.ADMIN.name()) // USER와 SELLER는 나머지 /user/**에 접근 가능
-            .antMatchers("/admin/**").hasRole(UserRole.ADMIN.name())
-            .anyRequest().permitAll()
-        .and()
-        .exceptionHandling()
-            .accessDeniedHandler(customAccessDeniedHandler)
-        .and()
-        .sessionManagement()
-            .invalidSessionUrl("/auth/login");
+	        .authorizeRequests()
+	        	//.requestMatchers(CorsUtils::isPreFlightRequest).permitAll() 배포시 테스트 필요
+	            //.antMatchers("/user/mypage/myshop/**").hasAnyRole(UserRole.SELLER.name(), UserRole.ADMIN.name()) // SELLER만 myshop에 접근 가능
+	            .antMatchers("/user/**").hasAnyRole(UserRole.USER.name(), UserRole.SELLER.name(), UserRole.ADMIN.name()) // USER와 SELLER는 나머지 /user/**에 접근 가능
+	            .antMatchers("/admin/**").hasRole(UserRole.ADMIN.name())
+	            .anyRequest().permitAll()
+	        .and()
+	        .exceptionHandling()
+	            .accessDeniedHandler(customAccessDeniedHandler)
+	        .and()
+	        .sessionManagement()
+	            .invalidSessionUrl("/auth/login");
         
 //        , "/oauth2/authorization/**"
 		// login 설정
@@ -69,9 +75,9 @@ public class SecurityConfig {
         //OAuth 2.0 login 설정
         http
             .oauth2Login()
-            .defaultSuccessUrl("/auth/verify")
-            .userInfoEndpoint() //소셜 로그인 성공시 진입할 페이지 설정
-            .userService(customOAuthSevice);	// login에 성공하면 /로 redirect
+	            .defaultSuccessUrl("/auth/verify")
+	            .userInfoEndpoint() //소셜 로그인 성공시 진입할 페이지 설정
+	            .userService(customOAuthSevice);	// login에 성공하면 /로 redirect
 
 		// logout 설정
         http
@@ -102,5 +108,20 @@ public class SecurityConfig {
 		return authenticationConfiguration.getAuthenticationManager();
 		
 	}
+	
+//	@Bean 여기가 cors설정
+//    public CorsConfigurationSource corsConfigurationSource() {
+//        CorsConfiguration config = new CorsConfiguration();
+//
+//        config.addAllowedOrigin("http://localhost:8080"); // 로컬 
+//        config.addAllowedOrigin("http://프론트 AWS  주소"); // 프론트 IPv4 주소
+//        config.addAllowedMethod("*"); // 모든 메소드 허용.
+//        config.addAllowedHeader("*");
+//        config.setAllowCredentials(true);
+//
+//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//        source.registerCorsConfiguration("/**", config);
+//        return source;
+//    }
 	
 }

@@ -5,12 +5,15 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
 
 import com.spring.boot.model.Product;
 import com.spring.boot.model.SiteUser;
@@ -40,6 +43,7 @@ public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpec
 	
 	//검색-카테고리검색
 	List<Product> findByCategoryLike(String category);
+	List<Product> findAllByCategory(String category);
 	
 	//소연
 	Page<Product> findByUserId(Long userId, Pageable pageable);
@@ -50,11 +54,15 @@ public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpec
     List<Product> findByStockEquals(int stock);
 
     
-    //판매량 순으로 검색(8개)
-    List<Product> findByIdIn(List<Long> topSellingProducts);
+    //판매량 순으로 검색(n개)
+    List<Product> findByIdIn(List<Long> topNSellingProducts);
+    
+    //판매량 순으로 검색(n개)
+    Page<Product> findByIdIn(List<Long> productIdList, Pageable pageable);
     
     //가장 최근에 등록한 상품 8개
     List<Product> findTop8ByOrderByDateDesc();
+    
     
     long countByUserId(Long userId);
 

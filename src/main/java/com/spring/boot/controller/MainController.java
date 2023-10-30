@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
@@ -39,31 +40,49 @@ public class MainController {
 
 	private final UserService userService;
 	private final ProductService productService;
-	private final SpringTemplateEngine templateEngine;
 	private final OrderListService orderListService;
+	private final SpringTemplateEngine templateEngine;
+
 	
 	@GetMapping("/main")
 	public String mainPage(@AuthenticationPrincipal PrincipalDetails principalDetails, Model model) {
 		
-		
+		//판매량 상위 3개
+    	Pageable topN = PageRequest.of(0, 3);
+    	
 		if(principalDetails != null) {
 			SiteUser user = userService.getUserByUserName(principalDetails.getUsername());
+
+			String userInterest = user.getInterest1();
 			
+			//interest가 일치하는 상품 중 판매량이 높은 순으로 3개 가져오기			
+			List<Product> productsFoundByInterest = productService.getProductsByCategory(userInterest);
+			List<Long> top8SellingProductnosFoundByInterest = orderListService
+																.getTopNSellingProductnosFoundByCategory(productsFoundByInterest, topN);
+	        
+			List<Product> top8SellingProductsFoundByInterest = productService
+																.getTopNSellingProducts(top8SellingProductnosFoundByInterest);
+			
+	        model.addAttribute("products", top8SellingProductsFoundByInterest);
 			model.addAttribute("user",user);
 		
-		}
+		}	
+		
+		//판매량 상위 8개
+		topN = PageRequest.of(0, 8);
+		
+    	List<Long> top8SellingProductnos = orderListService.getTopNSellingProductnos(topN);
 		
 		//프로덕트에서 검색해서 가장많이팔린거 8개 리스트 들고감
-		List<Product> productListTop8 = orderListService.getTop8SellingProducts();
-		model.addAttribute("productListTop8",productListTop8);
+		List<Product> productListTop8 = productService.getTopNSellingProducts(top8SellingProductnos);
+		model.addAttribute("productListTop8", productListTop8);
 		
 		return "mainPage";
 	}
 	
-	
 	//메인에서 검색시이곳으로 keyword가 검색어
     @GetMapping("/search")
-    public String Search(@PageableDefault Pageable pageable, 
+    public String search( //@PageableDefault Pageable pageable 이미 pageable에 대한 설정 하고 왔음 
     		@RequestParam(value = "sort", required = false) String sort, 
 			@ModelAttribute PageRequestDTO pageRequestDTO, Model model, 
     		@AuthenticationPrincipal PrincipalDetails principalDetails) {
@@ -84,6 +103,8 @@ public class MainController {
     			sortText = "낮은 가격순";
     		}else if(sort.equals("priceDesc")) {
     			sortText = "높은 가격순";
+    		}else if(sort.equals("category")) {
+    			sortText = "카테고리순";
     		}
     		
             model.addAttribute("sort", sort);
@@ -98,6 +119,56 @@ public class MainController {
     	}
         
     	return "search";
+        
+    }
+    
+    //베스트 상품 페이징
+    @GetMapping("/searchBest")
+    public String searchBest( //@PageableDefault Pageable pageable, 
+    		@RequestParam(value = "sort", required = false) String sort, 
+			@ModelAttribute PageRequestDTO pageRequestDTO, Model model, 
+    		@AuthenticationPrincipal PrincipalDetails principalDetails) {
+        
+    	String sortText = "";
+    	
+    	if(principalDetails != null) {		
+    		SiteUser user = userService.getUserByUserName(principalDetails.getUsername());
+    		
+    		model.addAttribute("user", user);
+    	}
+    	
+    	//판매량 상위 20개
+    	Pageable top20 = PageRequest.of(0, 20);
+    	
+    	List<Long> top20SellingProductnos = orderListService.getTopNSellingProductnos(top20);
+    	List<Long> productnosTop20SellingNBoughtMoreThan3TimesBySameUser = orderListService
+    					.getProductnosBoughtMoreThan3TimesBySameUser(top20SellingProductnos);
+    	
+    	model.addAttribute("paging", productService.getBestProducts(productnosTop20SellingNBoughtMoreThan3TimesBySameUser, 
+    																pageRequestDTO, sort));
+    	if(sort != null && !sort.isEmpty()) {
+    		if(sort.equals("newest")) {
+    			sortText = "신상품순";
+    		}else if(sort.equals("priceAsc")) {
+    			sortText = "낮은 가격순";
+    		}else if(sort.equals("priceDesc")) {
+    			sortText = "높은 가격순";
+    		}else if(sort.equals("category")) {
+    			sortText = "카테고리순";
+    		}
+    		
+            model.addAttribute("sort", sort);
+            model.addAttribute("sortText", sortText);
+        }else {
+        	model.addAttribute("sort", "newest");
+        	model.addAttribute("sortText", "신상품순");
+        }
+    	
+//    	if(pageRequestDTO.getKeyword() != null && !pageRequestDTO.getKeyword().isEmpty()) {
+//    		model.addAttribute("keyword", pageRequestDTO.getKeyword());
+//    	}
+        
+    	return "searchBest";
         
     }
     

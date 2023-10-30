@@ -81,7 +81,7 @@ input[type=checkbox]:focus {
 
 .skin_checkbox input:checked[type=radio]+.ico,
 input[type=checkbox]:checked+.ico {
-    background-image: url(https://res.kurly.com/mobile/service/common/2006/ico_checkbox_checked.svg);
+    background-image: url(/img/checked.svg);
     background-color: transparent;
     background-repeat: no-repeat;
     background-size: 24px 24px;
@@ -1242,13 +1242,11 @@ label.label_block {
 
 .only_pc .cart_result .inner_result {
     position: absolute;
-    background-color: #fff;
-    position: fixed;
-    right: 60%;
-    top: 40%;
-    margin-right: -720px;
+    right: 0;
+    top: 60px;
     width: 284px;
-    
+    background-color: #fff;
+    margin-right: -50px;
 }
 
 .only_pc .cart_result .notice {

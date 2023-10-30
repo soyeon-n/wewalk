@@ -276,6 +276,17 @@ public class UserService {
 		 
 		 return getPoint;
 	 }
+
+	public SiteUser getUser(String name, String tel, String email) {
+		SiteUser siteUser = 
+				userRepository.findByNameAndTelAndEmail(name, tel, email);
+		
+		if(siteUser != null) {			
+			return siteUser;
+		}
+		
+		return null;
+	}
 	 
 	 
 	 

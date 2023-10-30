@@ -286,6 +286,14 @@
     opacity: .9;
 }
 
+.centered-text {
+	display: flex;
+	justify-content: center;
+	font-size: 15pt;
+	font-family: sans-serif;
+	padding-top: 200px;
+}
+
 .global_sticker .txt_sticker{
     position: relative;
     font-weight: 400;

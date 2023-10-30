@@ -1,5 +1,40 @@
 $(document).ready(function() {
 
+	//접속유저의 등급과 멤버쉽여부
+	const titPage = document.querySelector('.tit_page');
+
+	const grade = titPage.getAttribute('data-grade');
+	const membership = titPage.getAttribute('data-membership');
+	
+	var savePointGrade = 1;
+	var savePointMembership = 0;
+
+	switch (grade) {
+	
+		    case "P":
+		        savePointGrade = 8;
+		        break;
+		    case "G":
+		        savePointGrade = 5;
+		        break;
+		    case "S":
+		        savePointGrade = 3;
+		        break;
+	
+	}
+	
+	if (membership) {
+	    savePointMembership = 10;
+		savePointMembership = parseInt(savePointMembership);
+		    
+	}
+	savePointGrade = parseInt(savePointGrade);
+	
+	console.log('Grade: ' + grade);
+	console.log('Membership: ' + membership);
+	console.log('savePointGrade: ' + savePointGrade);
+	console.log('savePointMembership: ' + savePointMembership);
+	
 	$('.btn.plus').click(function() {
 	    increaseQuantity(this);
 	    updateTotalPrice();
@@ -108,11 +143,11 @@ $(document).ready(function() {
 	    }
 	    
 	});
-    
+
 	updateTotalPrice();
 	updateTotalAmount()
 
-});
+
 
 
 //체크된상품들 가격합표시
@@ -136,14 +171,22 @@ function updateTotalAmount() {
     });
 
 	const resultPrice = totalAmount + deliveryCharge;
-
     $('.totalSum').text(totalAmount); 
     
     $('.amount [name=totalPrice]').text(numberWithComma(totalAmount));
     $('.amount [name=delever]').text(numberWithComma(deliveryCharge));
     $('.amount [name=resultPrice]').text(numberWithComma(resultPrice));
+    
+    var savep = numberWithComma(parseInt(resultPrice*savePointGrade/100));
+    $('#savePointGrade').text(savep);
+    
+	if (membership) {
+	 	var savemp = numberWithComma(parseInt(resultPrice*savePointMembership/100));
+	    $('#savePointMembership').text(savemp);
+	}
 }
 
+});
 //각 상품의 가격*갯수 금액표시
 function updateTotalPrice() {
     $('.item').each(function() {
@@ -250,9 +293,22 @@ function goCheckOut() {
 	if(selectedProducts.length==0){
 		alert('선택된 상품이 없습니다.');
 	}else{
-		const checkoutURL = '/order/detail?selectedProducts=' + encodeURIComponent(selectedProductsJSON);
+	
+		$.ajax({
+            type: 'POST',
+            url: '/order/checkStock',
+            contentType: 'application/json',
+            data: selectedProductsJSON,
+            success: function (response) {
+                const checkoutURL = '/order/detail?selectedProducts=' + encodeURIComponent(selectedProductsJSON);
+				window.location.href = checkoutURL;
+            },
+            error: function (xhr, status, error) {
+                alert('상품 재고가 부족한 상품이 있습니다.\n새로고침후 재고수량을 조정해주세요');
+            }
+        });
+        
 		
-		window.location.href = checkoutURL;
 	}
 	
 }

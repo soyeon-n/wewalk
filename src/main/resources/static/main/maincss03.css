@@ -19,6 +19,8 @@
 .swipe .promotions {
     width: 11400px;
     background-color: #ddd;
+   
+    
 }
 
 .swipe .promotions .slide_list {
@@ -27,11 +29,12 @@
     height: 370px;
     margin: 0 auto;
     background-repeat: no-repeat;
+    flex: 0 0 100%;
 }
 
 .swipe .slide_list .thumb {
     display: block;
-    height: 370px;
+    height: 100%;
     background-position: 50% 50%; /* 가운데 정렬을 위해 추가  */
     
 }
@@ -106,4 +109,30 @@
     border: 1px solid #BDBDBD;
     background-color: #EBE7E1;
     font-weight: bold;
+}
+
+.carousel-inner img {
+    width: 100%;
+    height: auto;
+    object-fit: contain; /* This line preserves the aspect ratio */
+}
+
+.carousel {
+    max-height: 600px; /* Set your desired max height here */
+    background-color: #212121;
+}
+
+#carouselExampleInterval {
+    max-height: 600px;
+}
+
+/* Set a max height for each carousel item */
+.carousel-item {
+    max-height: 600px;
+}
+
+/* Ensure images maintain their aspect ratio */
+.carousel-item img {
+    max-height: 100%;
+    height: 600px;
 }
