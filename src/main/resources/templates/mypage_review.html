@@ -250,12 +250,13 @@
 
                                             <span class="view">
                                                 <span class="img">
+                                                    <img th:src="@{'/reviewImg/'+ ${review.saveFileName}}"/>
                                                 
                                                     <!-- <img th:each="imageFile : ${content.imageFiles}" th:src="|/basic-board/images/${imageFile.storeFilename}|"> -->                                    
                                                 
                                                 </span>
 
-                                                <span class="txt">
+                                                <span class="txt"  th:text="${review.content}">
                                                     양은 꽤 많고 리코타 치즈치고 약간 묽긴한데 몽글몽글한게 참 귀엽습니다. 샐러드에 넣어 먹을 때 가장 맛있는 치즈 같아요
                                                     <br>
                                                 </span>
@@ -269,18 +270,18 @@
                                             <button type="button" class="btn_help">도움이 돼요? 0</button>-->
                                             
                                             
-                                            <a th:href="@{|/review/delete/${review.id}|}" th:text="리뷰삭제"></a>
+                                            <a th:href="@{|/review/delete/${review.id}|}" th:text="리뷰삭제" ></a>
                                             <br/>
                                             <br/>
-                                            <a th:href="@{|/review/modify/${review.id}|}" th:text="리뷰수정"></a>
-                                            
-                                            <a class="btn btn_modify">수정</a>
-                                            <a class="btn btn_del">삭제하기</a>
+                                            <a th:href="@{|/review/modify/${review.id}|}" th:text="리뷰수정" ></a>
+                                            <!--  -->
+                                            <a class="btn btn_modify" th:href="@{|/review/modify/${review.id}|}">수정</a>
+                                            <a class="btn btn_del" th:href="@{|/review/delete/${review.id}|}">삭제하기</a>
 
                                         </div>
                                     </div>
                                 </li>
-                                <!-- 한 단락 반복 끝  -->
+                                <!-- 한 단락 반복 끝  --> 
                                 <!-- 
 
                                 <li>

@@ -1,6 +1,7 @@
 package com.spring.boot.model;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -40,7 +41,7 @@ public class Review {
 	private String pname;//상품명--product 테이블에서가져오기
 	
 	private Integer star;//별점
-	private LocalDateTime date;//리뷰등록일
+	private Date date;//리뷰등록일
 	private String title;//제목
 	private String content;//리뷰내용
 	

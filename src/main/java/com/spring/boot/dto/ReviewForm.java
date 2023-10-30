@@ -30,7 +30,7 @@ public class ReviewForm {//우리가 직접 넣는값만 form 검사
 	//@NotEmpty(message = "내용은필수항목입니다")
 	//@size등제한은나중에@Size(max = 200)
 	private String content;//리뷰내용
-	
+	//private String saveFileName;나중에 이미지 set 하도록 
 	
 	
 	

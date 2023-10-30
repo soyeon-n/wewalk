@@ -163,12 +163,12 @@
                                         <a class="desc_after">
                                             <span class="subject" th:text="${review.title}" >
                                                 그냥 리코타 치즈 ㅇㅇ
-                                                <span th:text="${review.user.Id}"></span>
-                                                <span class="date" th:text="${#dates.format(review.date,'yyyy-MM-dd HH:mm:ss')}"  >
+                                                <span  th:text="${review.date}"></span>
+                                                <span class="date"  >
                                                     20.05.26 작성
                                                     여기에 작성자 이름 출력해야함
-                                                    
-                                                    <!-- 지금 date 타입 출력안되고있음????????? 작성자도 !!!!!!!1 -->
+                                                    <!-- th:text="${#dates.format(review.date,'yyyy-MM-dd HH:mm:ss')}"  -->
+                                                    <!-- 지금 date 타입 출력안되고있음????????? 작성자도 !!!!!!!1 th:text="${#dates.format(review.date,'yyyy-MM-dd HH:mm:ss')}" -->
                                                 </span>
                                                 
                                                 
@@ -185,12 +185,13 @@
                                                     <!-- 여기가 리뷰상품 img 출력하는 부분  -->
                                                     </span>
                                                 </span>
-                                                <span class="txt" th:text="${review.content}">양은 꽤 많고 리코타 치즈치고 약간 묽긴한데 몽글몽글한게 참 귀엽습니다. 샐러드에 넣어 먹을 때 가장 맛있는 치즈 같아요</span>
+                                                <span class="txt" th:text="${review.content}"></span>
 
                                             </span>
 
                                             <span class="view">
                                                 <span class="img">
+                                                <img th:src="@{'/reviewImg/'+ ${review.saveFileName}}"/>
                                                 <!-- <img src="https://img-cf.kurly.com/shop/data/review/20200526/94edd664f356ea243a30d8e9797cc5ad.jpg" alt="첨부 이미지">  -->
                                                     
                                                     
@@ -201,7 +202,7 @@
 
                                                 </span>
 
-                                                <span class="txt">
+                                                <span class="txt" th:text="${review.content}">
                                                     양은 꽤 많고 리코타 치즈치고 약간 묽긴한데 몽글몽글한게 참 귀엽습니다. 샐러드에 넣어 먹을 때 가장 맛있는 치즈 같아요
                                                     <br>
                                                 </span>
@@ -217,13 +218,10 @@
                                             <button type="button" class="btn_help">도움이 돼요? 0</button>
                                             <a th:href="@{|/review/delete/${review.id}|}" th:text="리뷰삭제"></a>
                                             
-                                            <a th:href="@{|/review/modify/${review.id}|}" th:text="리뷰수정"></a> -->
-                                            
-                                            
-                                            
+                                            <a th:href="@{|/review/modify/${review.id}|}" th:text="리뷰수정"></a> 
                                             
                                             <a class="btn btn_modify">수정</a>
-                                            <a class="btn btn_del">삭제하기</a>
+                                            <a class="btn btn_del">삭제하기</a>-->
 
                                         </div>
                                     </div>
