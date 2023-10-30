@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>페이 충전</title>
+    <link rel="stylesheet" href="/css/reset.css">
+	<link rel="stylesheet" href="/css/order_list.css">
+	<link rel="stylesheet" href="/css/Shipping_list.css">
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <link rel="stylesheet" href="/header/header.css">
+	<script src="/header/header.js"></script>
+	<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
+    <script type="text/javascript">
+    
+        var IMP = window.IMP;
+        IMP.init("imp68260115");
+
+        function requestPay() {  
+        	
+        	var money = $('input[name="cp_item"]:checked').val(); // 선택한 라디오 버튼의 값 가져오기
+      	
+        	var userName = '[[${user.name}]]';
+            var userTel = '[[${user.tel}]]';
+            var userPostcode = '[[${user.postcode}]]';
+            var userEmail = '[[${user.email}]]';
+            var userId = '[[${user.id}]]';
+            
+        	
+            IMP.request_pay(
+                {
+                    pg: "html5_inicis",		//KG이니시스 pg파라미터 값
+                    pay_method: "card",		//결제 방법
+                    merchant_uid : 'merchant_' + new Date().getTime(),   //주문번호
+                    name: "페이 충전",		//상품 명
+                    amount: money,			//금액
+      				buyer_email: userEmail,
+      				buyer_name: userName,
+      				buyer_tel: userTel,
+      				buyer_postcode: userPostcode //buyer_postcode: user.zipcode
+     	
+                },
+                function (rsp) {   //callback
+      				
+                    if (rsp.success) {
+                    	
+                    	alert('결제가 성공했습니다.');
+                    	
+                    	var data = {
+                    			userId: userId,
+            	                paymoney: money,// 금액
+            	                userName: userName
+            	                
+                    	};
+            	        
+            	     // 여기서 결제 정보를 서버에 전송하고 저장
+            	        $.ajax({
+            	            type: 'POST',
+            	            url: '/user/mypage/pay?paymoney=' + money, // URL에 paymoney를 추가
+            	            contentType: 'application/x-www-form-urlencoded',
+            	            data: data,
+            	            
+            	            success: function (response) {
+            	                // 서버에서의 응답이 성공한 경우, 이 함수가 실행됩니다.
+            	                // 응답을 처리하거나 추가 작업을 수행할 수 있습니다.
+            	                alert('결제 정보가 성공적으로 저장되었습니다.');
+            	                // 여기에서 추가적인 로직을 구현할 수 있습니다.
+            	            },
+            	            error: function (error) {
+            	                // 서버에서의 응답이 실패한 경우, 이 함수가 실행됩니다.
+            	                //alert('결제 정보 저장에 실패했습니다.');
+            	                // 오류 처리나 다른 작업을 수행할 수 있습니다.
+            	            }
+            	        });
+            	        
+                    } else {
+                        alert("결제에 실패하였습니다. 에러 내용: " + rsp.error_msg);
+                    }
+                });
+        	}
+        
+       
+        
+        function requestPayKaKao() {  
+            	
+            	var money = $('input[name="cp_item"]:checked').val(); // 선택한 라디오 버튼의 값 가져오기
+          	
+            	var userName = '[[${user.name}]]';
+                var userTel = '[[${user.tel}]]';
+                var userPostcode = '[[${user.postcode}]]';
+                var userEmail = '[[${user.email}]]';
+                
+            	
+                IMP.request_pay(
+                    {
+                        pg: "kakaopay",		
+                        pay_method: "card",		//결제 방법
+                        merchant_uid : 'merchant_' + new Date().getTime(),   //주문번호
+                        name: "페이 충전",		//상품 명
+                        amount: money,			//금액
+          				buyer_email: userEmail,
+          				buyer_name: userName,
+          				buyer_tel: userTel,
+          				buyer_postcode: userPostcode //buyer_postcode: user.zipcode
+         	
+                    },
+                    function (rsp) {   //callback
+          				
+                        if (rsp.success) {
+                        	
+                        	alert('결제가 성공했습니다.');
+                        	
+                        	var data = {
+                        			userEmail: userEmail,
+                	                paymoney: money// 금액    
+                        	};
+                	        
+                	     // 여기서 결제 정보를 서버에 전송하고 저장
+                	        $.ajax({
+                	            type: 'POST',
+                	            url: '/user/mypage/pay?paymoney=' + money, // URL에 paymoney를 추가
+                	            contentType: 'application/x-www-form-urlencoded',
+                	            data: data,
+                	            
+                	            success: function (response) {
+                	                // 서버에서의 응답이 성공한 경우, 이 함수가 실행됩니다.
+                	                // 응답을 처리하거나 추가 작업을 수행할 수 있습니다.
+                	                alert('결제 정보가 성공적으로 저장되었습니다.');
+                	                // 여기에서 추가적인 로직을 구현할 수 있습니다.
+                	            },
+                	            error: function (error) {
+                	                // 서버에서의 응답이 실패한 경우, 이 함수가 실행됩니다.
+                	               // alert('결제 정보 저장에 실패했습니다.');
+                	                // 오류 처리나 다른 작업을 수행할 수 있습니다.
+                	            }
+                	        });
+                	        
+                        } else {
+                            alert("결제에 실패하였습니다. 에러 내용: " + rsp.error_msg);
+                        }
+                    });
+            	}
+      	
+		/* 주문번호 만들기
+     	var orderNo = createOrderNo(); // 주문번호 생성
+     	
+        function createOrderNo(){
+        	const date = new Date();
+        	const year = date.getFullYear();
+        	const month = String(date.getMonth() + 1).padStart(2, "0");
+        	const day = String(date.getDate()).padStart(2, "0");
+        	
+        	let orderNo = year + month + day;
+        	
+        	for(let i=0;i<10;i++) {
+        		orderNo += Math.floor(Math.random() * 8);	
+        	}
+        	return orderNo;
+        }
+     	*/
+        
+        </script> 
+	
+</head>
+<body>
+    <div id="container">
+        <div id="main">
+          <div th:insert="header :: headerFragment"></div>
+            <div id="content">
+                <div id="myPageTop" class="page_aticle mypage_top">
+                    <h2 class="blind">마이페이지</h2>
+                    <div class="mypagetop_user">
+                        <div class="inner_mypagetop">
+                            
+                            <div class="grade_user">
+                                <div class="grade">
+                                    <span class="blind">등급</span>
+                                    <span class="ico_grade class0">
+                                        <span class="inner_grade">
+                                            <span class="in_grade" th:text="${user.membership ? '멤버쉽' : user.grade}"></span>
+                                        </span>
+                                    </span>
+                                    <div class="grade_bnenfit">
+                                        <div class="user">
+    										<strong class="name" id="userName" th:text="${user.name}"></strong>
+    										<span class="txt">님</span>
+										</div>
+                                        <div class="benefit">
+										    <strong class="tit"></strong>
+										    <span th:text="|적립 ${user.membership == true ? '10%' : 
+										        user.grade == 'B' ? '1%' : 
+										        user.grade == 'S' ? '3%' : 
+										        user.grade == 'G' ? '5%' : 
+										        user.grade == 'P' ? '8%' : ''}|"></span>
+										</div>
+                                    </div>
+                                </div>
+                                <div class="next">
+                                    <a href="/user/mypage/myInterest" class="next_month">나의 관심 분야 설정하기</a>
+                                    <a href="/user/mypage/grade" class="total_grade">등급 별 할인혜택</a>
+                                </div>
+                            </div>
+
+                            <ul class="list_mypage">
+                            	<li class="user_coupon">
+                                    <div class="link">
+                                        <div class="tit">
+                                            페이 머니
+                                        </div>
+                                        <a href="/user/mypage/pay" class="info">
+                                            <span th:if="${user.paymoney != null}" th:text="${#numbers.formatInteger(user.paymoney, 1, 'COMMA') + '원'}"></span>
+   											<span th:if="${user.paymoney == null}">0 원</span>
+                                            <img src="https://res.kurly.com/pc/service/common/1905/ico_arrow_56x56.png" alt="자세히 보기">
+                                        </a>    
+                                        <br/>
+                                        <a href="/user/mypage/paylist" class="info">
+                                        	<span>거래 내역</span>
+                                            <img src="https://res.kurly.com/pc/service/common/1905/ico_arrow_56x56.png" alt="자세히 보기">
+                                        </a>
+                                    </div>
+                                </li>
+                                <li class="user_reserve">
+                                    <div class="link">
+                                        <div class="tit">
+                                            적립금
+                                        </div>
+                                        <a href="/user/mypage/point" class="info">
+                                            <span th:if="${user.point != null}" th:text="${#numbers.formatInteger(user.point, 1, 'COMMA') + '원'}"></span>
+   											<span th:if="${user.point == null}">0 원</span>
+                                            <img src="https://res.kurly.com/pc/service/common/1905/ico_arrow_56x56.png" alt="자세히보기">
+                                            <span class="date">거래 내역</span>
+                                        </a>
+                                    </div>
+                                </li>
+                                <li class="user_kurlypass">
+                                    <div class="link">
+                                        <div class="tit">
+                                            멤버쉽    
+                                        </div>
+                                        <a href="/user/mypage/membership" class="info info_link">
+                                            알아보기
+                                            <img src="https://res.kurly.com/pc/service/common/1905/ico_arrow_56x56.png" alt="자세히 보기">
+                                        </a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <a href="#" class="bnr_event">
+                        </a>
+                    </div>
+                </div>
+                <div class="page_aticle aticle_type2">
+                    <div id="snb" class="snb_my">
+                        <h2 class="tit_snb">마이 페이지</h2>
+                        <div class="inner_sub">
+                            <ul class="list_menu">
+                                <li class="">
+                                    <a href="/user/mypage">나의 상점</a>
+                                </li>
+                                <li>
+                                    <a href="/user/mypage/shipping">배송지 관리</a>
+                                </li>
+                                <li>
+                                    <a href="/user/mypage/mybuyhistory">구매 내역</a>
+                                </li>
+                                <li>
+                                    <a href="/user/mypage/change">회원 정보 수정 및 탈퇴</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <a href="#" class="link_inquire">
+                            <span class="emph">도움이 필요하신가요?</span>
+                            1:1 문의하기
+                        </a>
+                    </div>
+                    
+                    <div class="page_section section_destination">
+                        <div class="head_aticle">
+                            <h2 class="tit">
+                                페이 머니
+                                <span id="addrListInfo" class="tit_sub">카드 결제와 카카오페이를 지원합니다.</span>
+                            </h2>
+                        </div>
+
+                        <div id="tblParent" class="type_select">
+                            <table class="tbl tbl_type1">
+                                <thead>
+                                    <tr>
+                                        <th class="tit_address">카드 결제 충전</th>
+                                    </tr>
+                                </thead>				   
+                                
+                            </table>
+                        </div> 
+                        <br/>
+                        <div class="card-body bg-white mt-0 shadow">
+						     <p style="font-weight: bold">카드결제 현재 사용가능</p><br/><br/>
+						     <input type="radio" name="cp_item" id="radio-pink" value="5000"/>
+						      	<label for="radio-pink">5,000원</label>
+						     <input type="radio" name="cp_item" id="radio-deep-orange" value="10000"/>
+						     	<label for="radio-deep-orange">10,000원</label>
+						     <input type="radio" name="cp_item" id="radio-yellow" value="15000"/>
+						     	<label for="radio-yellow">15,000원</label>
+						     <input type="radio" name="cp_item" id="radio-lime" value="20000"/>
+						     	<label for="radio-lime">20,000원</label>
+						     <input type="radio" name="cp_item" id="radio-teal" value="25000"/>
+						     	<label for="radio-teal">25,000원</label>
+						     <input type="radio" name="cp_item" id="radio-cyan" value="30000"/>
+						     	<label for="radio-cyan">30,000원</label>
+						     <input type="radio" name="cp_item" id="radio-indigo" value="35000"/>
+						     	<label for="radio-indigo">35,000원</label>
+						     <input type="radio" name="cp_item" id="radio-purple" value="40000"/>
+						     	<label for="radio-purple">40,000원</label>
+
+						     <p style="color: #ac2925; margin-top: 30px">카드결제의 최소 충전금액은 5,000원이며 최대 충전금액은 40,000원 입니다.</p><br/>
+						     	<button class="btn active3" onclick="requestPay()">카드결제로 충전하기</button>
+						 </div>
+						 <br/>
+						 <div id="tblParent" class="type_select">
+                            <table class="tbl tbl_type1">
+                                <thead>
+                                    <tr>
+                                        <th class="tit_address">카카오 페이 결제 충전</th>
+                                    </tr>
+                                </thead>				   
+                                
+                            </table>
+                        </div> 
+                        <br/>
+                        <div class="card-body bg-white mt-0 shadow">
+						     <p style="font-weight: bold">카카오페이 현재 사용가능</p><br/><br/>
+						     <input type="radio" name="cp_item" id="radio-pink2" value="5000"/>
+						      	<label for="radio-pink2">5,000원</label>
+						     <input type="radio" name="cp_item" id="radio-deep-orange2" value="10000"/>
+						     	<label for="radio-deep-orange2">10,000원</label>
+						     <input type="radio" name="cp_item" id="radio-yellow2" value="15000"/>
+						     	<label for="radio-yellow2">15,000원</label>
+						     <input type="radio" name="cp_item" id="radio-lime2" value="20000"/>
+						     	<label for="radio-lime2">20,000원</label>
+						     <input type="radio" name="cp_item" id="radio-teal2" value="25000"/>
+						     	<label for="radio-teal2">25,000원</label>
+						     <input type="radio" name="cp_item" id="radio-cyan2" value="30000"/>
+						     	<label for="radio-cyan2">30,000원</label>
+						     <input type="radio" name="cp_item" id="radio-indigo2" value="35000"/>
+						     	<label for="radio-indigo2">35,000원</label>
+						     <input type="radio" name="cp_item" id="radio-purple2" value="40000"/>
+						     	<label for="radio-purple2">40,000원</label>
+						     <p style="color: #ac2925; margin-top: 30px">카카오페이의 최소 충전금액은 5,000원이며 최대 충전금액은 40,000원 입니다.</p><br/>
+						     <button class="btn active4" onclick="requestPayKaKao()">카카오페이로 충전하기</button>
+						 </div>
+						 <br/>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+
+</script>
+</html>

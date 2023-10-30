@@ -1,0 +1,138 @@
+/* visual.css : header 바로 밑 이미지 슬라이드 파트 */
+
+@charset "utf-8";
+
+/* 배너 움직이는부분 */
+
+/* visual */
+#visual {
+    position: relative; /* position: absolute의 경우 우측 플로팅 배너가 올라옴*/
+    width: 1900px; /*고정 width 값으로 변경*/
+    height: 370px;
+    margin: 0 auto; /*가운데 정렬*/
+}
+
+#visual .swipe {
+    overflow-x: hidden;
+}
+
+.swipe .promotions {
+    width: 11400px;
+    background-color: #ddd;
+   
+    
+}
+
+.swipe .promotions .slide_list {
+    float: left; /*position 삭제*/
+    width: 1900px;
+    height: 370px;
+    margin: 0 auto;
+    background-repeat: no-repeat;
+    flex: 0 0 100%;
+}
+
+.swipe .slide_list .thumb {
+    display: block;
+    height: 100%;
+    background-position: 50% 50%; /* 가운데 정렬을 위해 추가  */
+    
+}
+
+.user_grade_bronze {
+	display: inline-block;
+    min-width: 48px;
+    height: 16px;
+    margin-right: 6px;
+    padding: 0px 4px;
+    border-radius: 30px;
+    font-size: 10px;
+    line-height: 14px;
+    text-align: center;
+    letter-spacing: -0.3px;
+    vertical-align: 0px;
+    color: #F8FFFF;
+    border: 1px solid #993800;
+    background-color: #993800;
+    font-weight: bold;
+}
+
+.user_grade_silver {
+	display: inline-block;
+    min-width: 48px;
+    height: 16px;
+    margin-right: 6px;
+    padding: 0px 4px;
+    border-radius: 30px;
+    font-size: 10px;
+    line-height: 14px;
+    text-align: center;
+    letter-spacing: -0.3px;
+    vertical-align: 0px;
+    color: #F8FFFF;
+    border: 1px solid #D5D5D5;
+    background-color: #A6A6A6;
+    font-weight: bold;
+}
+
+.user_grade_gold {
+	display: inline-block;
+    min-width: 48px;
+    height: 16px;
+    margin-right: 6px;
+    padding: 0px 4px;
+    border-radius: 30px;
+    font-size: 10px;
+    line-height: 14px;
+    text-align: center;
+    letter-spacing: -0.3px;
+    vertical-align: 0px;
+    color: #F8FFFF;
+    border: 1px solid #F2CB61;
+    background-color: #F2CB61;
+    font-weight: bold;
+}
+
+.user_grade_platinum {
+	display: inline-block;
+    min-width: 48px;
+    height: 16px;
+    margin-right: 6px;
+    padding: 0px 4px;
+    border-radius: 30px;
+    font-size: 10px;
+    line-height: 14px;
+    text-align: center;
+    letter-spacing: -0.3px;
+    vertical-align: 0px;
+    color: #58919A;
+    border: 1px solid #BDBDBD;
+    background-color: #EBE7E1;
+    font-weight: bold;
+}
+
+.carousel-inner img {
+    width: 100%;
+    height: auto;
+    object-fit: contain; /* This line preserves the aspect ratio */
+}
+
+.carousel {
+    max-height: 600px; /* Set your desired max height here */
+    background-color: #212121;
+}
+
+#carouselExampleInterval {
+    max-height: 600px;
+}
+
+/* Set a max height for each carousel item */
+.carousel-item {
+    max-height: 600px;
+}
+
+/* Ensure images maintain their aspect ratio */
+.carousel-item img {
+    max-height: 100%;
+    height: 500px;
+}

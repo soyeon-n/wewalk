@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>shopping-cart</title>
+    <link rel="stylesheet" href="/order/reset.css">
+    <link rel="stylesheet" href="/order/cart.css">
+    <link rel="stylesheet" href="/order/list.bundle.css">
+
+    <script src="http://code.jquery.com/jquery.min.js"></script>
+    
+    <script src="/order/cart.js"></script>
+    
+    <link rel="stylesheet" href="/header/header.css"> 
+    <script src="/header/header.js"></script>
+</head>
+<body>
+	
+	<div th:insert="header :: headerFragment"></div>
+	
+    <div class="tit_page" th:data-grade=${user.grade} th:data-membership=${user.membership}>
+
+        <h2 class="tit">장바구니</h2>
+    </div>
+    <div id="cartItemList" class="only_pc" style="min-height: 602px;">
+        <div class="">
+            <div class="cart_item ">
+                <div class="cart_select">
+                    <div class="inner_select">
+                        <label class="check">
+                            <input type="checkbox" name="checkAll" class="checkAll" >
+                            <span class="ico"></span>전체선택
+                        </label>
+                        <a href="#none" class="btn_delete" id="deleteSelected">선택삭제</a>
+                    </div>
+                </div>
+                <div class="box cold">
+                    <div class="tit_box">
+                        <h4 class="tit">
+                            <span class="inner_tit">상품 목록</span>
+                        </h4>
+
+                    </div>
+                    <ul class="list" id='dropup_list' style="margin-top: 30px;">
+                        <li style="margin-bottom: 30px;">
+                        
+                            <!-- 상품 목록 중 1. 추가/삭제될 목록임. -->
+                            <div class="item" th:each="item : ${productList}" >
+                                <label class="check" th:for="'chkItem_' + ${item.id}">
+							        <input type="checkbox"  th:id="'chkItem_' + ${item.id}" name="checkOne" class="checkOne" 
+							        th:disabled="${(item.selling ==false) || (item.stock<1)} ? 'disabled'">
+							        <span class="ico"></span>
+							    </label>
+    
+                                <div class="name">
+                                    <div class="inner_name">
+                                        <a href="#" class="package " th:text="${item.pname}"></a>
+                                        
+                                        <span th:switch="${true}">
+										    <span th:case="${not item.selling}" th:text="'현재 판매중인 상품이 아닙니다.'" style="font-size: 15px; color: red;"></span>
+										    <span th:case="${item.stock < 1}" th:text="'해당 상품은 품절되었습니다'" style="font-size: 15px; color: red;"></span>
+										    <span th:case="*">
+										        <span th:text="'재고: ' + ${item.stock}" style="font-size: 15px;"></span>
+										    </span>
+										</span>
+                                        
+                                        
+                                        <div class="info" ></div>
+                                    </div>
+                                    
+                                    <div class="goods">
+
+                                            <img class="thumb " th:src="@{'/product/images/' + ${item.image}}">
+                                        <!-- 이미지자리 ^-->
+                                        <div class="price">
+                                            <div class="in_price">
+                                               <span class="selling" th:data-price="${item.price}" th:data-selling="${item.selling}">
+                                               <span class="won"></span>
+                                                    
+                                                </span>
+                                                <p class="noti"></p>
+                                            </div>
+                                            <!-- 개수 조정 부분. -->
+                                            
+                                            
+                                            
+                                            <div class="stamper count">
+                                                <button type="button" class="btn minus off" th:disabled="${(item.selling =='false') || (item.stock<1)} ? 'disabled'">감소</button>
+                                                <input type="text" class="stepperCounter num" th:each="cartItem : ${cartItemList}"
+											       th:if="${cartItem.product.id == item.id}" th:value="${cartItem.count}" 
+											       th:data-stock="${item.stock}" th:data-cartItemId="${cartItem.id}" th:data-product-id="${item.id}"
+											       th:disabled="${(item.selling ==false) || (item.stock<1)} ? 'disabled'">
+
+                                                <button type="button" class="btn plus" th:disabled="${(item.selling ==false) || (item.stock<1)} ? 'disabled'">추가</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- 상품 삭제 시 db반영 (btn_delete)-->
+                                    <button type="button" class="btn_delete" name="deleteOne" >
+                                        상품 삭제</button>
+                                </div>
+                            </div>
+                                
+                        </li>
+                        <!--1끝-->
+    
+                        <!-- """밑에 코드는 장바구니 데이터가 하나도 없을 경우 출력하도록 구현 바람.(cart_empty.html 참고)"""
+                            <div class="inner_empty"><span class="bg"></span>
+                            <p class="txt">장바구니에 담긴 상품이 없습니다</p></div>
+     -->
+    
+                        
+                    </ul>
+                   
+                </div>
+    
+    
+               
+                
+            </div>
+            <div class="cart_result">
+            	
+                <div class="inner_result">
+                    
+                    <div class="amount_view">
+                        <dl class="amount">
+                            <dt class="tit">상품금액</dt>
+                            <dd class="price">
+                                <span class="num" name="totalPrice">0</span>
+                                <!-- product price here-->
+                                <span class="won">원</span>
+                            </dd>
+                        </dl>
+                        
+                        <dl class="amount">
+                            <dt class="tit">배송비</dt>
+                            <dd class="price">
+                                <span class="num" name="delever">0</span>
+                                <span class="won">원</span>
+                            </dd>
+                        </dl>
+                        <dl class="amount lst">
+                            <dt class="tit">결제예정금액</dt>
+                            <dd class="price">
+                                <span class="num" name="resultPrice">0</span>
+                                <!-- sum of product price here -->
+                                <span class="won">원</span>
+                            </dd>
+                        </dl>
+                        
+                        
+                        <div class="reserve" style="font-size: 13px;">
+                            <span class="user_grade_bronze" th:if="${user.grade=='B'}" style="color: white;">Bronze</span>
+	                        <span class="user_grade_silver" th:if="${user.grade=='S'}" style="color: white;">Silver</span>
+	                        <span class="user_grade_gold" th:if="${user.grade=='G'}" style="color: white;">Gold</span>
+	                        <span class="user_grade_platinum" th:if="${user.grade=='P'}" style="color: #58919A;">Platinum</span>구매 시
+    
+                            <span class="emph" id="savePointGrade"></span>적립
+                            
+                        </div>
+                        
+                        <div class="reserve" style="font-size: 13px;" th:if="${user.membership==true}">
+                            <span class="user_grade_membership"  style="color: #1EC800; margin-right: 10px;">Member</span>멤버쉽
+    
+                            <span class="emph" id="savePointMembership"></span>적립
+                            
+                        </div>
+                    </div>
+                 
+                    <div class="btn_submit">
+                        <button type="submit" class="btn active" onclick="goCheckOut()" style="background-color: #1EC800; border: none;">주문하기</button>
+                        <!-- 결제 페이지로 이동 -->
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    
+<div th:replace="footer :: footerFragment" ></div>
+
+</body>
+</html>
+

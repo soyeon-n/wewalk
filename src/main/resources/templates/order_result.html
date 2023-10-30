@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>구매해주셔서 감사합니다</title>
+
+    <link rel="stylesheet" href="/order/reset.css">
+    <link rel="stylesheet" href="/order/common.css">
+    <link rel="stylesheet" href="/order/order.css">
+    <link rel="stylesheet" href="/order/orderResult.css">
+</head>
+<body>
+
+
+<div class="payment-item" >
+    
+             	 <div class="ty" style="margin-bottom: 100px;">
+             	 		<span>결제가 완료되었습니다.</span>
+             	 </div>
+             	 <div class="itemsname">
+             	 		<ul>
+             	 			<li>
+             	 				<div class="names_image">이미지</div>
+             	 				<div class="names_name">상품명</div>
+             	 				<div class="names_seller" >판매자</div>
+             	 				<div class="names_stock">수량</div>
+             	 				<div class="names_money">금액</div>
+             	 			</li>
+             	 		</ul>
+             	 </div>
+</div>
+   <div id="itemList" class="page_aticle order_goodslist" th:each="item: ${paymentsData}">
+             	 
+         <ul class="list_product" >
+             <li>
+             	
+             	
+                 <div class="thumb">
+                     <img th:src="@{'/product/images/' + ${item.image}}" alt="상품이미지">
+                 </div>
+
+                 <div class="name">
+                     <div class="inner_name" th:text="${item.productName}"></div>
+                     <div class="inner_name" th:text="'판매자: ' + ${item.sellerId}" style="float: right; vertical-align: middle; padding-top: 52px;"></div>
+                 </div>
+                 
+             
+                 <div class="ea" th:text="${#numbers.formatInteger(item.count, 1, 'COMMA') + ' 개'}">
+                     
+                 </div>
+
+                 <div class="info_price">
+                     <span class="num">
+                         <span class="price" th:text="${#numbers.formatInteger((item.price), 1, 'COMMA') + ' 원'}">
+                             
+                         </span>
+                         
+                     </span>
+                 </div>
+             </li>
+         </ul>
+    
+     </div>
+		<div class="tit_section"> 
+              <a th:href="@{/wewalk/main}" class="btn_payment" >메인메뉴</a>
+        </div>
+
+
+
+</body>
+</html>
+
+
+</body>
+</html>

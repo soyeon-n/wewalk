@@ -1,0 +1,1496 @@
+/* common.css : header, footer 메인 페이지 */
+
+@charset "utf-8";
+
+body{
+	letter-spacing: -.05em !important;
+}
+
+ul{
+	margin-block-start: 0;
+    margin-block-end: 0;
+    padding-inline-start: 0;
+}
+
+
+textarea::placeholder, input::placeholder{
+    color:rgb(173, 173, 173);
+}
+
+#header, #container, #content {
+    position: relative;
+}
+
+#main {
+    border-bottom: 1px solid #EAEAEA;
+}
+
+#content {
+    min-width: 1050px;
+    padding-bottom: 120px;
+}
+
+
+
+#header{
+	margin: 0 auto;
+}
+
+
+/* 로그인 클래스 추가 /삭제 */
+/* 로그인: #top_event */
+#top_event .inner_top_event.login {
+    display: none;
+}
+
+#top_event.login .inner_top_event.login {
+    display: block;
+}
+
+#top_event.login .inner_top_event {
+    display: none;
+}
+
+#top_event.login {
+    background-color: transparent;
+    position: relative;
+    border-bottom: 1px solid #f4f4f4;
+    /* 1px로 했는데 2px로 나와서 수정 필요 */
+}
+
+
+
+#top_event.login .inner_top_event .top_event_bnr.login {
+    color: #4c4c4c;
+}
+
+#top_event.login .inner_top_event.login .b  {
+    color: #5f0080;
+}
+
+#top_event.login .top_event_close.login {
+    background-image: url("https://res.kurly.com/pc/ico/1908/ico_close_333_42x42.png");
+}
+/* 로그인; top_event 끝-- */
+
+
+/* 로그인: sign_menu */
+.sign_menu.login {
+    min-width: 196px;
+    white-space: nowrap;
+}
+
+.sign_menu.login .item {
+    display: block;
+    padding: 0 22px 0 10px;
+}
+
+.sign_menu.login .join,
+.sign_menu.login .login_none { 
+    display: none;
+}
+
+.sign_menu .link .login_check{
+    display: none;
+}
+
+.sign_menu.login .login_check {
+    display: block;
+    position: relative;
+    /* min-width: 120px; */
+}
+
+.sign_menu.login .login_check::after {
+    position: absolute;
+    content: '';
+    background-color: rgb(216, 216, 216);
+    height: 13px;
+    width: 1px;
+    top: 11px;
+    right: 1px;
+}
+
+.sign_menu.login .ico_grade {
+    float: left;
+    margin-top: 10px;
+}
+
+/* sign_menu 로그인: grade 아이콘 설정 */
+.grade_comm .ico_grade {
+    display: inline-block;
+    min-width: 38px;
+    height: 16px;
+    padding: 0 4px;
+    border-radius: 30px;
+    font-size: 9px;
+    line-height: 14px;
+    text-align: center;
+}
+
+.grade_comm .grade0 {
+    border: 1px solid #5f0080;
+    background-color: #fff;
+    color: #5f0080;
+}
+
+.sign_menu.login .txt {
+    float: left;
+    padding-left: 4px;
+}
+
+.sign_menu.login .login_check ::before {
+    position: absolute;
+    content: '';
+    top: 15px;
+    right: 10px;
+    content: '';
+    background-image: url(https://res.kurly.com/pc/ico/1908/ico_down_8x5.png);
+    width: 8px;
+    height: 5px;
+}
+.sign_menu.login .link .service::before {
+    position: absolute;
+    top: 15px;
+    right: 22px;
+    content: '';
+    background-image: url(https://res.kurly.com/pc/ico/1908/ico_down_8x5.png);
+    width: 8px;
+    height: 5px;
+}
+
+
+
+.sign_menu.login .link:nth-child(2) {
+    position: relative;
+}
+
+
+.sign_menu.login .sub {
+    display: none;
+    position: absolute;
+    left: auto;
+    top: 34px;
+    left: 10px;
+    width: 102px;
+    padding: 3px 9px;
+    border: 1px solid #ddd;
+    background-color: #fff;
+}
+
+.sign_menu .sub {
+    display: none;
+}
+
+
+.sign_menu.login .sub .list_item {
+    font-size: 12px;
+    color: #404040;
+    line-height: 24px;
+    white-space: nowrap;
+}
+
+
+.sign_menu.login .link:nth-child(2):hover .sub{
+    display: block;
+    z-index: 200;
+}
+
+
+.sub_menu2 {
+    display: none;
+    position: absolute;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    width: 100px;
+    padding: 8px;
+    line-height: 25px;
+    top: 34px;
+    font-size: 16px;
+
+}
+.item.service2:hover + .sub_menu2,
+
+li:hover .sub_menu2 {
+    display: block;
+    z-index: 200;
+}
+
+.item.service2:hover + .sub_menu2 {
+    display: block;
+	z-index: 200;
+}
+
+.sub_menu2 .list_item {
+  font-size: 12px;
+    color: #404040;
+    line-height: 24px;
+    white-space: nowrap;
+}
+
+
+.item.service2::after {
+    content: "";
+    display: inline-block;
+    width: 8px; 
+    height: 5px;
+    background-image: url('https://res.kurly.com/pc/ico/1908/ico_down_8x5.png');
+    background-repeat: no-repeat;
+    margin-left: 2px; 
+    margin-bottom: 4px;
+}
+
+.sign_menu .link:last-child .sub_menu2 {
+    display: none;
+    position: absolute;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    width: 100px;
+    top: 34px;
+    right: 0px;
+    padding: 8px;
+    line-height: 25px;
+}
+.sign_menu .link.item-service2:hover + .sub_menu2 {
+    display: block;
+    z-index: 200;
+    top: 100%; 
+}
+
+/* 로그인: sign_menu 끝 */
+
+
+
+
+
+/* header, footer */
+#wrap {
+    min-width: 1050px; /*고정 width 값으로 변경할 경우 min-width로 설정했던 모든 코드들이 쓸모없어져버림. >> 다른 방법 찾아야 함!*/
+    min-height: 100%;
+    /* 임시 height 값 */
+    margin: 0 auto;
+}
+
+/* header */
+#top_event {
+    position: relative;
+    min-width: 1050px;
+    height: 42px;
+    background-color: #5f0080;
+    z-index: 9999;
+}
+
+#top_event .inner_top_event {
+    position: relative;
+    width: 1050px;
+    height: 100%;
+    margin: 0 auto;
+}
+
+#top_event .inner_top_event .top_event_bnr {
+    display: block;
+    text-align: center;
+    line-height: 42px;
+    font-size: 14px;
+    color: #fff;
+}
+
+#top_event .inner_top_event .top_event_close {
+    background: url(https://res.kurly.com/pc/ico/1908/ico_close_fff_42x42.png);
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+#top_event .bnr_arr, .top_event_close {
+    width: 42px;
+    height: 42px;
+}
+
+#header {
+    position: relative;
+}
+
+#header .user_menu {
+    position: relative;
+    width: 1050px;
+    height: 37px;
+    top: 0;
+    margin: 0 auto;
+}
+
+.user_menu .bnr_delivery {
+    position: absolute;
+    top: 7px;
+    left: 17px;
+    height: 22px;
+}
+
+.user_menu .bnr_delivery .bnr_delivery_img {
+    width: 163px;
+    height: 22px;
+}
+
+.user_menu .sign_menu {
+    margin-left: auto;
+    font-family: noto sans;
+    font-weight: 400;
+    letter-spacing: -.3px;
+}
+
+.user_menu::after {
+    content: '';
+    display: block;
+    clear: both;
+}
+
+.sign_menu {
+    height: 100%;
+    float: right;
+    justify-content: space-around;
+}
+
+.sign_menu .join {
+    color: #1EC800;
+}
+
+.sign_menu .item {
+    float: left;
+    display: block;
+    line-height: 37px;
+    height: 100%;
+    padding: 0 10px;
+}
+
+.sign_menu .after {
+    position: relative;
+}
+
+.sign_menu .after::after {
+    position: absolute;
+    content: '';
+    background-color: rgb(216, 216, 216);
+    height: 13px;
+    width: 1px;
+    top: 11px;
+    right: 2px;
+}
+
+.sign_menu .link {
+    float: left;
+    display: block;
+}
+
+.sign_menu .link:last-child{
+    position: relative;
+    padding-right: 10px;
+}
+
+.sign_menu .link .service::before {
+    position: absolute;
+    top: 15px;
+    right: 11px;
+    content: '';
+    background-image: url(https://res.kurly.com/pc/ico/1908/ico_down_8x5.png);
+    width: 8px;
+    height: 5px;
+}
+
+.sign_menu .link:last-child:hover .sub_menu {
+    display: block;
+    z-index: 200;
+}
+
+.sign_menu .link:last-child .sub_menu {
+    display: none;
+    position: absolute;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    width: 100px;
+    top: 34px;
+    right: 0px;
+    padding: 8px;
+    line-height: 25px;
+}
+
+
+
+
+
+
+#header .header_logo {
+    width: 1050px;
+    height: 63px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.header_logo .logo {
+    position: absolute;
+    left: 50%;
+    bottom: 6px;
+    width: 200px;
+    height: 79px;
+    margin-left: -100px;
+}
+
+.header_logo .logo_img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+}
+
+#header .gnb {
+    min-width: 1050px;
+    background-color: #fff;
+    position: relative;
+    z-index: 100;
+}
+
+/* gnb position: fixed 시켜야 함 */
+
+.gnb::after {
+    content: '';
+    position: absolute;
+    top: 56px;
+    width: 100%;
+    height: 9px;
+    background: url(https://res.kurly.com/pc/service/common/1902/bg_1x9.png) repeat-x 0 100%;
+}
+
+.gnb .gnb_menu {
+    width: 1050px;
+    /* overflow: hidden; */
+    height: 56px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.gnb .gnb_menu .list {
+    float: left;
+}
+
+.gnb_menu .list:active .link,
+.gnb_menu .list:hover .link {
+    color: #1EC800;
+}
+
+.gnb_menu .list + .list:active .txt,
+.gnb_menu .list + .list:hover .txt{
+    border-bottom: 1px solid #1EC800;
+}
+
+/* 추후 전체 카테고리 앞 메뉴 아이콘 컬러 변경 */
+
+.gnb_menu .list .link {
+    /* overflow: hidden; */
+    float: left;
+    display: block;
+    height: 55px;
+    width: 129px;
+    line-height: 20px;
+    padding: 16px 0 0;
+    font-size: 16px;
+    text-align: center;
+}
+
+.gnb_menu .gnb_main .link{
+    width: 168px;
+    padding-left: 19px;
+}
+
+.gnb_menu .link .ico {
+    float: left;
+    width: 16px;
+    height: 14px;
+    margin: 4px 14px 0 0;
+    background: url(https://res.kurly.com/pc/service/common/1908/ico_gnb_all_off.png) no-repeat;
+}
+
+.gnb_menu .link .txt {
+    font-weight: 700;
+}
+
+/* .gnb_main {
+    position: relative;
+    display: block;
+} */
+
+.gnb .gnb_sub {
+    display: none;
+    position: absolute;
+    width: 220px;
+    height: auto;
+    overflow:visible;
+    top: 55px;
+    left: 0;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    z-index: 9999;
+}
+
+
+.gnb .gnb_sub .current .submenu-right {
+  	display: none;
+  	width: 210px;
+    height: auto;
+    position: absolute;
+    top: -1px;
+    left: 100%; 
+    background-color: #fff;
+    border: 1px solid #ddd;
+}
+
+.gnb .gnb_sub .current:hover .submenu-right {
+    display: block;
+}
+
+.submenu-right .current .txt{
+    float: left;
+    padding: 0 10px 0 24px;
+    font-weight: 400;
+    font-size: 14px;
+    color: #333;
+    line-height: 22px;
+    white-space: nowrap;
+}
+
+.gnb_sub .menu .submenu-right {
+    background-color: #f7f7f7;
+}
+
+
+
+.gnb_sub .tit:hover .txt {
+    font-weight: bolder;
+}
+
+.gnb_main:active .gnb_sub,
+.gnb_main:hover .gnb_sub {
+    display: block;
+}
+
+.gnb_main:active .gnb_sub,
+.gnb_main:hover .gnb_sub {
+    display: block;
+}
+
+
+
+.gnb_sub .menu .current {
+    background-color: #f7f7f7;
+}
+.gnb_sub .menu .current :hover {
+    background-color: #D5D5D5;
+}
+
+.gnb_sub .menu .notcurrent{
+    background-color: #f7f7f7;
+}
+.gnb_sub .menu .notcurrent :hover {
+    background-color: #f7f7f7;
+}
+
+
+.gnb_sub .main_item {
+    display: block;
+    padding: 10px 14px;
+    height: 40px;
+    line-height: 32px;
+}
+
+.gnb_sub .ico {
+    float: left;
+    width: 24px;
+    height: 24px;
+    display: block;
+}
+
+.gnb_sub .txt {
+    float: left;
+    padding: 0 10px 0 24px;
+    font-weight: 400;
+    font-size: 14px;
+    color: #333;
+    line-height: 22px;
+    white-space: nowrap;
+}
+
+.gnb_sub .ico_new {
+    background-image: url("https://res.kurly.com/pc/service/common/1908/ico_new_42x42_v2.png");
+    background-position: 50% 50%;
+    background-size: 14px 14px;
+    float: left;
+    width: 14px;
+    height: 14px;
+    overflow: hidden;
+    margin-top: 5px;
+    /* text-indent: -9999px; */
+}
+
+.gnb .gnb_search {
+    position: absolute;
+    right: 158px;
+    top: 10px;
+    width: 438px;
+    border: 1px #BDBDBD solid;
+    border-radius: 25px;
+}
+
+.gnb_search .inp_search {
+    width: 100%;
+    height: 36px;
+    padding: 0 50px 0 20px;
+    border: 1px solid #f7f7f6;
+    border-radius: 18px;
+    background-color: #f7f7f7;
+    font-weight: 400;
+    font-size: 14px;
+    color: #666;
+    line-height: 36px;
+    transition: background-color .3s ease-in-out;
+}
+
+.gnb_search .btn_search {
+    position: absolute;
+    right: 10px;
+    top: 3px;
+    width: 30px;
+    height: 30px;
+    line-height: 36px;
+}
+
+.gnb_search .init {
+    position: relative;
+}
+
+.gnb_search .init .btn_delete {
+    display: none;
+    position: absolute;
+    overflow: hidden;
+    left: 370px;
+    top: -36px;
+    width: 36px;
+    height: 36px;
+    border: none;
+    background: url(https://res.kurly.com/pc/ico/2010/ico_search_del.svg) no-repeat 50% 50%;
+    background-size: 12px 12px;
+    font-size: 0;
+    line-height: 0;
+    /* opacity: 0; */
+}
+
+.gnb_search:hover .btn_delete {
+    display: block;
+}
+
+.gnb .location_login .btn_location.on {
+    background-image: url(https://res.kurly.com/pc/ico/2008/ico_delivery_setting.svg?ver=1);
+}
+
+.gnb .location_login .btn_location {
+    overflow: hidden;
+    position: absolute;
+    right: 52px;
+    top: 10px;
+    width: 36px;
+    height: 36px;
+    border: none;
+    font-size: 0;
+    line-height: 0;
+}
+
+.gnb .location_notice {
+    display: none;
+    position: absolute;
+    right: 41px;
+    top: 56px;
+    width: 308px;
+    padding: 20px 18px 19px 20px;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    z-index: 100;
+    font-weight: 700;
+    font-size: 16px;
+    color: #333;
+    line-height: 24px;
+}
+
+.gnb .location_notice::after {
+    position: absolute;
+    content: '';
+    top: -50px;
+    right: 9px;
+    width: 36px;
+    height: 50px;
+    background: url(https://res.kurly.com/pc/ico/2011/ico_point_up_18x12.svg) no-repeat 50% 100%;
+}
+/* /* border가 색자체가 돼서 나중에 변경 예정 * */
+
+
+.gnb .location_login .location_notice.on,
+.gnb .location_login:active .location_notice,
+.gnb .location_login:hover .location_notice {
+    display: block;
+}
+/* 포인터가 영역을 벗어나면 notice가 바로 사라져버림 
+>> z-index 추가해서 수정 완료*/
+/* js로 location_login에 3초간 active 붙게 설정*/
+
+
+.gnb .group_button .btn {
+	display: inline-flex;
+    height: 36px;
+    margin-top: 17px;
+    padding-bottom: 2px;
+    border-radius: 3px;
+    font-size: 13px;
+    font-weight: bold;
+	align-items: center;
+	justify-content: center;
+}
+
+.gnb .group_button .login {
+    float: left;
+    width: 104px;
+    border: 1px solid #1EC800;
+    background-color: #fff;
+    color: #1EC800;
+}
+
+.gnb .group_button .search_address {
+    float: right;
+    width: 158px;
+    border: 1px solid #1EC800;
+    background-color: #1EC800;
+    color: #fff;
+}
+
+.gnb .cart_count {
+    position: absolute;
+    right: -6px;
+    top: 10px;
+}
+
+.gnb .cart_count .btn_cart {
+    display: block;
+    width: 36px;
+    height: 36px;
+    background: url(https://res.kurly.com/pc/service/common/2011/ico_cart.svg) no-repeat 50% 50%;
+}
+/* btn_car와 btn_location은 hover 시 보라색으로 변경해야 함. url 못찾는 중 */
+/* #header 끝 */
+
+
+/* footer */
+#footer {
+    width: 1050px;
+    margin: 0 auto;
+    padding-bottom: 60px;
+    font-weight: 400;
+    letter-spacing: -.2px;
+}
+
+#footer::after {
+    display: block;
+    content: '';
+    clear: both;
+}
+
+#footer .inner_footer {
+    /* overflow: hidden; */
+    padding-bottom: 20px;
+}
+
+#footer .inner_footer::after {
+    content: '';
+    clear: both;
+    display: block;
+}
+
+.inner_footer .cc_footer {
+    float: left;
+    width: 534px;
+}
+
+.inner_footer .cc_tit {
+    padding: 29px 0 2px;
+    font-weight: 700;
+    font-size: 30px;
+    color: #333;
+    line-height: 24px;
+}
+
+.inner_footer .cc_view {
+    /* overflow: hidden; */
+    padding-top: 16px;
+}
+
+.inner_footer .cc_view .tit {
+    float: left;
+    width: 140px;
+    margin-right: 16px;
+}
+
+.inner_footer .cc_call {
+    padding-top: 20px;
+}
+
+.inner_footer .cc_call .tit {
+    padding-top: 4px;
+    font-weight: 800;
+    font-size: 18px;
+    color: #333;
+    line-height: 36px;
+    letter-spacing: -.5px;
+    white-space: nowrap;
+}
+
+.cc_footer .list {
+    font-size: 14px;
+    color: #333;
+    line-height: 22px;
+    letter-spacing: -.2px;
+}
+
+.cc_footer .cc_kakao .tit,
+.cc_footer .cc_qna .tit {
+    height: 40px;
+    padding-top: 7px;
+    margin-top: 3px;
+    border: 1px solid #e3e3e3;
+    border-radius: 3px;
+    font-weight: 700;
+    font-size: 14px;
+    color: #333;
+    line-height: 22px;
+    text-align: center;
+}
+
+.cc_footer .list dd {
+    color: #999;
+}
+
+/* #footer right */
+#footer .company_info {
+    float: right;
+    padding-top: 29px;
+    font-size: 12px;
+    color: #999;
+    line-height: 20px;
+}
+
+.company_info .list {
+    padding-bottom: 29px;
+    display: inline-block;
+}
+
+.company_info .list li {
+    float: left;
+    padding-right: 16px;
+}
+
+.company_info .list .link {
+    font-size: 14px;
+    color: #333;
+    line-height: 18px;
+}
+
+.company_info .spec_info .bar {
+    padding: 0 4px 0 3px;
+}
+
+.company_info .spec_info .link {
+    color: #5f0080;
+}
+
+.company_info .spec_info .copy {
+    display: block;
+    font-size: 10px;
+    color: #949296;
+    line-height: 22px;
+    letter-spacing: 0;
+}
+
+.spec_info .sns {
+    float: left;
+    padding-top: 16px;
+}
+
+.sns li {
+    float: left;
+}
+
+.sns .link_sns {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+    
+}
+
+#footer .link_footer {
+    width: 100%;
+    height: auto;
+    padding-top: 19px;
+    letter-spacing: 0;
+    border-top: 1px solid #eee;
+}
+
+.link_footer::after {
+    display: block;
+    content: '';
+    clear: both;
+}
+
+.link_footer .authentication {
+    float: left;
+    padding-top: 3px;
+}
+
+.link_footer .authentication .mark {
+	background-color:#fff;
+    float: left;
+    width: 267px;
+}
+
+.link_footer .mark .logo {
+    float: left;
+    width: 34px;
+    height: 34px;
+    margin-right: 10px;
+}
+
+.link_footer .mark .txt {
+    float: left;
+    padding-top: 1px;
+    font-size: 10px;
+    color: #999;
+    line-height: 16px;
+    letter-spacing: -.5px;
+    white-space: nowrap;
+}
+
+#footer .lguplus {
+    width: 428px;
+    display: inline-block;
+}
+
+.link_footer .lguplus .logo {
+    width: 102px;
+    height: 34px;
+}
+
+
+
+
+
+.onlyApplyHeader {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+
+
+
+
+
+
+
+
+/* 공통 클래스 */
+.blind {
+    position: absolute;
+    clip: rect(0 0 0 0);
+    width: 1px;
+    height: 1px;
+    margin: 1px;
+    overflow: hidden;
+}
+
+
+.page_aticle button,
+.page_aticle input,
+.page_aticle select, .page_aticle {
+    font-family: noto sans;
+    font-weight: 400;
+    letter-spacing: 0;
+}
+
+
+.page_aticle {
+    color: #333;
+}
+
+/* top 가는 버튼 */
+.page_aticle #go-top {
+    position: fixed;
+    z-index: 200;
+    right: 31px;
+    bottom: 12px;
+    width: 58px;
+    height: 58px;
+    border: 0;
+    background: url(https://res.kurly.com/pc/service/common/1903/btn_pagetop_v2.png) no-repeat 50% 50%;
+    font-size: 0;
+    line-height: 0;
+    transition: background .5s;
+}
+
+/* hover시 transition 색 변경 */
+.page_aticle #go-top:hover {
+    background-image: url(https://res.kurly.com/pc/service/common/1903/btn_pagetop_hover.png);
+    transition: background .5s;
+}
+
+
+/* 우측 플로팅 배너 */
+@media (max-width: 1050px) { /*width 1050부터 qnb display: none*/
+    .qnb {
+        display: none;
+    }
+}
+
+
+
+#main{
+    min-width: 1050px;
+    position: relative;
+}
+
+.qnb {
+    position: absolute;
+    z-index: 1;
+    right: 20px;
+    top: 70px;
+    width: 80px;
+    font: normal 12px/16px "Noto Sans";
+    color: #333;
+    letter-spacing: -0.3px;
+    transition: top 0.2s;
+}
+
+.qnb .thumb {
+    width: 80px;
+    height: 120px;
+    padding-bottom: 7px;
+}
+
+.qnb .side_menu {
+    width: 80px;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    border-top: none;
+}
+
+.side_menu .link_menu {
+    display: block;
+    height: 29px;
+    line-height: 29px;
+    border-top: 1px solid #ddd;
+    text-align: center;
+}
+
+/* contents 제목들 */
+.page_aticle .tit_goods {
+    padding: 79px 0 35px;
+}
+
+.page_aticle .tit_goods .tit {
+    font-weight: 700;
+    font-size: 28px;
+    line-height: 32px;
+    letter-spacing: -.3px;
+    text-align: center;
+}
+
+.page_aticle .tit_goods .name {
+    position: relative;
+    font-weight: 700;
+}
+
+
+/* contents main_type1 = 이 상품 어때요?*/
+.page_aticle .list_goods .thumb_goods .ico {
+    z-index: 1;
+    transition: all 0.3s ease-in-out;
+}
+
+/* hover시 이미지 조금 확대 효과 */
+.page_aticle .list_goods .thumb_goods {
+    display: block;
+    overflow: hidden;
+}
+
+.page_aticle .list_goods .thumb_goods .thumb:hover {
+    transform: scale(1.02); /*이미지 확대 효과*/
+    transition: transform.5s;
+} 
+
+.page_aticle .list_goods .thumb_goods .thumb { 
+    display: block;
+    margin: 0 auto;
+    background-position: 50% 50%;
+    background-size: cover;
+    transform: scale(1); /*커서가 벗어났을 때도 자연스럽게 돌아옴*/
+    transition: all 0.3s ease-in-out;
+}
+
+
+/* list_goods의 데이터 이미지 크기 설정 */
+.main_type1 .list_goods .thumb {
+    width: 249px;
+    height: 320px;
+}
+
+/* list_goods의 세일 아이콘 */
+.main_type1 .list_goods .ico {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 62px;
+    height: 54px;
+}
+
+.main_type1 .list_goods .name {
+    display: block;
+    margin-top: 12px;
+    overflow: hidden;
+    max-height: 50px; 
+    text-overflow: ellipsis; /*말줄임 효과*/
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /*2줄 넘어가면 말줄임*/
+    -webkit-box-orient: vertical;
+    word-wrap: break-word;
+}
+
+.main_type1 .list_goods .txt {
+    font-size: 16px;
+    line-height: 23px;
+}
+
+.main_type1 .list_goods .price {
+    display: block;
+    padding-top: 9px;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 20px;
+}
+
+.main_type1 .list_goods .cost {
+    display: block;
+    padding-top: 5px;
+    font-size: 14px;
+    color: #999;
+    line-height: 18px;
+    text-decoration: line-through;
+}
+
+/* list-goods 전후 버튼 */
+/* Id 로 선택할 경우 공통으로 적용이 안됨. class로 지정 */
+.page_aticle {
+    position: relative;
+    width: 1050px;
+    margin: 0 auto;
+}
+
+.page_aticle .bx_controls_direction {
+    position: relative;
+    width: 1050px;
+    margin: 0 auto;
+}
+
+.page_aticle .bx_controls_direction .bx-prev,
+.page_aticle .bx_controls_direction .bx-next {
+    overflow: hidden;
+    position: absolute;
+    bottom: 316px;
+    width: 60px;
+    height: 60px;
+}
+
+.page_aticle .bx_controls_direction .bx-prev {
+    left: -30px;
+    background: url(https://res.kurly.com/pc/service/main/1908/btn_prev_default.png?v=1) no-repeat 50% 50%;
+    transition: background 0.5s;
+}
+
+/* hover시 백그라운드 그림자 */
+.page_aticle .bx_controls_direction .bx-prev:hover {
+    background: url(https://res.kurly.com/pc/service/main/1908/btn_prev_default_hover_x1.png?v=1) no-repeat 50% 50%;
+    transition: background 0.5s;
+}
+
+.page_aticle .bx_controls_direction .bx-next {
+    right: -30px;
+    background: url(https://res.kurly.com/pc/service/main/1908/btn_next_default.png?v=1) no-repeat 50% 50%;
+    transition: background 0.5s;
+}
+
+/* hover시 백그라운드 그림자 */
+.page_aticle .bx_controls_direction .bx-next:hover {
+    background: url(https://res.kurly.com/pc/service/main/1908/btn_next_default_hover_x1.png?v=1) no-repeat 50% 50%;;
+    transition: background 0.5s;
+}
+
+/* main_type2 = 이벤트 소식 */
+.page_aticle .bg {
+    background-color: #f7f7f7;
+}
+
+/* 이벤트 소식 제목 화살표 */
+.page_aticle .tit_goods .name .ico {
+    padding: 0 31px;
+    background: url(https://res.kurly.com/pc/service/main/1908/ico_title_link_x1.png) no-repeat 100% 50%;
+    font-weight: 700;
+}
+
+/* main_event 안에 main_type2가 있는 것 */
+.main_event .list_goods {
+    overflow: hidden;
+    height: 538px;    
+}
+
+.main_type2 .list_goods {
+    width: 1050px;
+    margin: 0 auto;
+}
+
+.main_type2 .list_goods::after {
+    display: block;
+    content: '';
+    clear: both;
+}
+
+.main_event .list_goods .li {
+    height: 538px;
+}
+
+.main_type2 .list_goods li {
+    float: left;
+    width: 338px;
+    margin-right: 18px;
+}
+
+.main_type2 .list_goods .thumb_goods {
+    display: block;
+    position: relative;
+}
+
+.main_event .list_goods .list_goods_ul {
+    width: 1068px;
+}
+
+/* 이벤트소식 이미지 썸네일 높이값 동일 설정*/
+.main_event .list_goods .thumb {
+    height: 338px;
+}
+
+.main_type2 .list_goods .thumb {
+    width: 338px;
+}
+
+/* main_event 이미지 제목 높이, 말줄임, 가운데 정렬 */
+.main_event .list_goods .name {
+    max-height: 54px; /*txt line-height의 2배로 설정해줘야 함!*/
+    margin-top: 17px;
+    text-align: center;
+    /* 2줄 말줄임 */
+    text-overflow: ellipsis;
+    display: -webkit-box; /*webkit 계열 브라우저(크롬, 오페라, 사파리 등)에서 동작하게 설정*/
+    -webkit-line-clamp: 2; /*2줄 넘어가면 말줄임*/
+    -webkit-ox-orient: vertical;
+}
+
+.main_type2 .list_goods .name {
+    display: block;
+    overflow: hidden;
+}
+
+/* main_event 이미지 제목 font 설정*/
+.main_event .list_goods .name .txt {
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 28px;
+    letter-spacing: -0.3px;
+}
+
+/* main_event 이미지 제목 밑 설명 */
+.main_event .list_goods .desc {
+    padding-top: 8px;
+}
+
+.main_type2 .list_goods .desc {
+    display: block;
+    overflow: hidden;
+    text-align: center;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    /* 1줄 말줄임 */
+}
+
+/* main_type3 = 인스타그램 고객 후기 */
+.main_type3 .bnr {
+    padding: 39px 0 100px;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 29px;
+    text-align: center;
+}
+
+.main_type3 .bnr .txt {
+    display: block;
+    font-weight: 400;
+    color: #999;
+}
+
+.main_type3 .bnr a {
+    font-weight: 700;
+}
+
+.main_type3 .bx_controls_direction .bx-prev, 
+.main_type3 .bx_controls_direction .bx-next {
+    bottom: 58px;
+}
+
+body #header .location_login .location_notice{  /* 안내메세지 처음에 block이였다가 사라지게 하기위해 */
+    display:block;
+}
+
+
+    position: relative; /* position: absolute의 경우 우측 플로팅 배너가 올라옴*/
+    width: 1900px; /*고정 width 값으로 변경*/
+    height: 370px;
+    margin: 0 auto; /*가운데 정렬*/
+}
+
+#visual .swipe {
+    overflow-x: hidden;
+}
+
+.swipe .promotions {
+    width: 11400px;
+    background-color: #ddd;
+}
+
+.swipe .promotions .slide_list {
+    float: left; /*position 삭제*/
+    width: 1900px;
+    height: 370px;
+    margin: 0 auto;
+    background-repeat: no-repeat;
+}
+
+.swipe .slide_list .thumb {
+    display: block;
+    height: 370px;
+    background-position: 50% 50%; /* 가운데 정렬을 위해 추가  */
+    
+}
+
+.user_grade_bronze {
+	display: inline-block;
+    min-width: 48px;
+    height: 16px;
+    margin-right: 6px;
+    padding: 0px 4px;
+    border-radius: 30px;
+    font-size: 10px;
+    line-height: 14px;
+    text-align: center;
+    letter-spacing: -0.3px;
+    vertical-align: 0px;
+    color: #F8FFFF;
+    border: 1px solid #993800;
+    background-color: #993800;
+    font-weight: bold;
+    box-sizing: content-box;
+}
+
+.user_grade_silver {
+	display: inline-block;
+    min-width: 48px;
+    height: 16px;
+    margin-right: 6px;
+    padding: 0px 4px;
+    border-radius: 30px;
+    font-size: 10px;
+    line-height: 14px;
+    text-align: center;
+    letter-spacing: -0.3px;
+    vertical-align: 0px;
+    color: #F8FFFF;
+    border: 1px solid #D5D5D5;
+    background-color: #A6A6A6;
+    font-weight: bold;
+    box-sizing: content-box;
+}
+
+.user_grade_gold {
+	display: inline-block;
+    min-width: 48px;
+    height: 16px;
+    margin-right: 6px;
+    padding: 0px 4px;
+    border-radius: 30px;
+    font-size: 10px;
+    line-height: 14px;
+    text-align: center;
+    letter-spacing: -0.3px;
+    vertical-align: 0px;
+    color: #F8FFFF;
+    border: 1px solid #F2CB61;
+    background-color: #F2CB61;
+    font-weight: bold;
+    box-sizing: content-box;
+}
+
+.user_grade_platinum {
+	display: inline-block;
+    min-width: 48px;
+    height: 16px;
+    margin-right: 6px;
+    padding: 0px 4px;
+    border-radius: 30px;
+    font-size: 10px;
+    line-height: 14px;
+    text-align: center;
+    letter-spacing: -0.3px;
+    vertical-align: 0px;
+    color: #58919A;
+    border: 1px solid #BDBDBD;
+    background-color: #EBE7E1;
+    font-weight: bold;
+    box-sizing: content-box;
+}
+
+.user_grade_membership {
+	display: inline-block;
+    min-width: 48px;
+    height: 16px;
+    margin-right: 6px;
+    padding: 0px 4px;
+    border-radius: 30px;
+    font-size: 10px;
+    line-height: 14px;
+    text-align: center;
+    letter-spacing: -0.3px;
+    vertical-align: 0px;
+    color: #1EC800;
+    border: 1px solid #1EC800;
+    background-color: #fff;
+    font-weight: bold;
+    box-sizing: content-box;
+}
+
+#usergradecs {
+	margin-top: 10px;
+	margin-left: auto;
+	float: left;
+	display: block;
+	letter-spacing: -.3px;
+	box-sizing: content-box;
+	
+}

@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원가입</title>
+    <link rel="stylesheet" href="/css/reset.css">
+<!--     <link rel="stylesheet" href="/css/common.css"> -->
+    <link rel="stylesheet" href="/css/join.css">
+
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script src="/js/join.js"></script>
+    <script src="/js/util.js"></script>
+    <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
+	<!-- 유효성 검사 -->
+    <SCRIPT LANGUAGE="JavaScript">
+        
+        if(top.document.location.search != "?mobile") //접속할때 모바일이면 아래 strGoto 주소의 html로 접속됨
+        {
+                var strGoto = "mobile_join.html";
+                var str = window.navigator.userAgent.toLowerCase();
+                if(/iphone/.test(str) || /android/.test(str) || /opera/.test(str) || /bada/.test(str) || /iemobile/.test(str) || /lgtelecom/.test(str) || /ppc/.test(str) || /sonyericsson/.test(str) || /sonyericsson/.test(str) || /blackberry/.test(str)){
+                 top.document.location.replace(strGoto);
+                }
+        }
+        
+    </SCRIPT>
+
+    <script type="text/javascript">
+
+        function id_check(){
+            var id = $(".field_id input").val();             // 변수 id에  id값 대입
+
+            var num = /[0-9]/;
+            var eng = /[a-zA-Z]/;
+            var notNumOrEng = /[^a-zA-Z0-9]/;
+
+          //만약에 id의 길이가 6 이상이고 영문이 최소 한 자리 이상이며 영문과 숫자 이외의 문자가 들어가지 않으면
+            if(id.length >= 6 && notNumOrEng.test(id) == 0 && eng.test(id) == 1){ 
+                $(".field_id .txt_guide .txt_case1").css('color', '#0f851a');   //글자색 초록색으로 변경
+            }else{          // 그 외에는 전부 빨강처리 
+                $(".field_id .txt_guide .txt_case1").css('color', '#b3130b');  //글자색 빨간색으로 변경
+            }
+
+        }
+
+        function pw_check(){
+
+        	var pw = $(".field_pw input").val();                   // 변수 pw에 pw값 대입
+
+            var num = /[0-9]/;
+            var engLower = /[a-z]/;
+            var engUpper = /[A-Z]/;
+            var spe = /[~!@#$%^&*()_+|<>?:{}]/;
+        
+            if(pw.length < 8){                                  //pw의 길이가 10 이하일 때
+                $(".field_pw .txt_guide .txt_case1").css('color', '#b3130b');
+            }
+
+            if(pw.length >= 8){                                  //pw의 길이가 10 이상일 때
+                $(".field_pw .txt_guide .txt_case1").css('color', '#0f851a'); 
+            }
+
+            if(num.test(pw) == 0 || engLower.test(pw) == 0 || engUpper.test(pw) == 0 || spe.test(pw) == 0){    // pw의 숫자가 없거나 , 소문자가 없거나, 대문자가 없거나, 특수문자가 없을경우 실패
+                $(".field_pw .txt_guide .txt_case2").css('color', '#b3130b');
+            }            
+
+            if(num.test(pw) == 1 && engLower.test(pw) == 1 && engUpper.test(pw) == 1 && spe.test(pw) == 1){ // pw의 숫자,영어,특수문자가 1개이상씩 있을경우 성공
+                $(".field_pw .txt_guide .txt_case2").css('color', '#0f851a');
+            }
+
+        }
+
+        function pw2_check(){
+            var pwd1 = $(".field_pw input").val(); 
+            var pwd2 = $(".field_repw input").val();
+
+            if ( pwd1 != '' && pwd2 == '' ) {          //둘다 빈칸일 경우 아무것도 하지 않음
+                null;
+            } else if (pwd1 != "" || pwd2 != "") {     // 빈칸이 아닐 경우
+                if (pwd1 == pwd2) {                    // 비교해서 같으면
+                    $(".field_repw .txt_guide .txt_case1").css('color', '#0f851a');                 
+                    $(".field_repw .txt_guide .txt_case1").text("비밀번호가 동일합니다.");            
+                
+                } else {        // 비교해서 같지 않으면
+                    $(".field_repw .txt_guide .txt_case1").css('color', '#b3130b');
+                    $(".field_repw .txt_guide .txt_case1").text("비밀번호가 일치하지 않습니다.");                             
+                }
+            }
+        }
+
+    </script>
+
+    
+</head>
+<body>
+
+    <div id="container">
+        <div id="main">
+            <div id="content">
+                <div class="page_aticle">
+                    <div class="type_form member_join">
+                        <form id="myForm" th:action="@{/user/signup}" th:object="${userCreateForm}"
+                         method="post" onsubmit="return on_submit_check();">
+                            <div class="field_head">
+                                <h3 class="tit">회원가입</h3>
+                                <p class="sub">
+                                    <span class="ico">*</span>
+                                    필수입력사항
+                                </p>
+                            </div>
+
+                            <table class="tbl_comm">
+                                <tbody>
+									<tr class="field_email">
+                                        <th>
+                                            이메일 
+                                            <span class="ico">
+                                                *
+                                                <span class="screen_out">필수항목</span>
+                                            </span>
+                                        </th>
+
+                                        <td>
+                                            <input type="email" th:field="*{email}" size="30" placeholder="예: marketkurly@kurly.com">
+<!--                                             <input type="email" name="email" th:field="*{email}" size="30" placeholder="예: marketkurly@kurly.com"> -->
+                                            <a href="#" class="btn default">중복확인</a>
+                                        </td>
+
+                                    </tr>
+                                    
+                                    <tr class="fst field_id">
+                                        <th>닉네임
+                                            <span class="ico">
+                                                *
+                                                <span class="screen_out">필수항목</span>
+                                            </span>
+                                        </th>
+                                        <td>
+                                            <input type="text" th:field="*{userName}" maxlength="16" onkeyup="id_check()" placeholder="6~16자의 영문 혹은 영문과 숫자를 조합">
+<!--                                             <input type="text" name="userName" th:field="*{userName}" maxlength="16" onkeyup="id_check()" placeholder="6~16자의 영문 혹은 영문과 숫자를 조합"> -->
+                                            <a class="btn default" href="#">중복확인</a>
+                                            <p class="txt_guide square">
+                                                <span class="txt txt_case1">
+                                                    6자 이상의 영문 혹은 영문과 숫자를 조합
+                                                </span>
+                                                <span class="txt txt_case2">
+                                                    아이디 중복확인
+                                                </span>
+                                            </p>
+                                        </td>
+                                    </tr>
+
+                                    <tr class="field_pw">
+                                        <th>
+                                            비밀번호
+                                            <span class="ico">*
+                                                <span class="screen_out">필수항목</span>
+                                            </span>
+                                        </th>
+                                        <td>
+                                            <input type="password" th:field="*{password1}" onkeyup="pw_check()" maxlength="16" class="reg_pw bad" placeholder="비밀번호를 입력해주세요">
+<!--                                             <input type="password" name="password1" th:field="*{password1}" option="regPass" onkeyup="pw_check()" maxlength="16" class="reg_pw bad" placeholder="비밀번호를 입력해주세요"> -->
+                                            <p class="txt_guide square">
+                                                <span class="txt txt_case1">
+                                                    8자 이상 입력
+                                                </span>
+                                                <span class="txt txt_case2">
+                                                    영문 대소문자/숫자/특수문자(공백 제외)만 허용하며, 모두 조합
+                                                </span>
+                                            </p>
+                                        </td>
+                                    </tr>
+
+                                    <tr class="member_pwd field_repw">
+                                        <th>
+                                            비밀번호확인
+                                            <span class="ico">
+                                                *                                                
+                                                <span class="screen_out">필수항목</span>
+                                            </span>
+                                        </th>
+                                        <td>
+                                            <input type="password" th:field="*{password2}" onkeyup="pw2_check()" maxlength="16" class="confirm_pw" placeholder="비밀번호를 한번 더 입력해주세요">
+<!--                                             <input type="password" name="password2" th:field="*{password2}" onkeyup="pw2_check()" maxlength="16" class="confirm_pw" placeholder="비밀번호를 한번 더 입력해주세요"> -->
+                                            <p class="txt_guide square">
+                                                <span class="txt txt_case1">
+                                                    동일한 비밀번호를 입력해주세요.
+                                                </span>
+                                            </p>
+                                        </td>
+                                    </tr>
+
+                                    <tr class="field_name">
+                                        <th>
+                                            이름
+                                            <span class="ico">
+                                                *
+                                                <span class="screen_out">필수항목</span>
+                                            </span>
+                                        </th>
+                                        <td>
+                                            <input type="text" th:field="*{name}" placeholder="이름을 입력해주세요">
+<!--                                             <input type="text" name="name" th:field="*{name}" placeholder="이름을 입력해주세요"> -->
+                                        </td>
+                                    </tr>
+
+                                    <tr class="field_phone">
+                                        <th>
+                                            전화번호
+                                            <span class="ico">
+                                                *
+                                                <span class="screen_out">필수항목</span>
+                                            </span>
+                                        </th>
+
+                                        <td>
+                                            <div class="phone_num">
+                                                <input type="text" pattern="[0-9]*" th:field="*{tel}" placeholder="숫자만 입력해주세요" class="inp">
+<!--                                                 <input type="text" pattern="[0-9]*" name="tel"  th:field="*{tel}" placeholder="숫자만 입력해주세요" class="inp"> -->
+
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <th>
+                                            주소
+                                            <span class="ico">
+                                                *
+                                                <span class="screen_out">필수항목</span>
+                                            </span>
+                                        </th>
+                                        <td class="field_address">
+                                            <a href="#" id="addressSearch" class="search">
+                                                <span id="addressNo" class="address_no">주소검색</span>
+                                            </a>
+                                            <input type="text" id="address" th:field="*{address}" placeholder="주소">
+                                            <!-- <input type="text" id="address" name="address" th:field="*{address}" placeholder="주소"> -->
+                                            <input type="text" id="detailAddress" th:field="*{detailAddress}" placeholder="상세주소">
+                                            <!-- <input type="text" id="detailAddress" name="detailAddress" th:field="*{detailAddress}" placeholder="상세주소"> -->
+                                            <p class="txt_guide" style="display:block;">
+                                                <span class="txt txt_case1">배송지에 따라 상품 정보가 달라질 수 있습니다.</span>
+                                            </p>
+                                        </td>
+                                    </tr>
+
+                                    <tr class="birth field_birth">
+                                        <th>생년월일</th>
+                                        <td>
+                                            <div class="birth_day">
+                                                <input type="text" id="birth_year" th:field="*{birthYear}" pattern="[0-9]*" size="4" maxlength="4" placeholder="YYYY">
+<!--                                                 <input type="text" name="birth_year" id="birth_year" th:field="*{birth_year}" pattern="[0-9]*"  label="생년월일" size="4" maxlength="4" placeholder="YYYY"> -->
+                                                <span class="bar">
+
+                                                </span>
+                                                <input type="text" id="birth_month" th:field="*{birthMonth}" pattern="[0-9]*" size="2" maxlength="2" placeholder="MM">
+<!--                                                 <input type="text" name="birth_month" id="birth_month" th:field="*{birth_month}" pattern="[0-9]*"  label="생년월일" size="2" maxlength="2" placeholder="MM"> -->
+                                                <span class="bar"></span>
+                                                <input type="text" id="birth_day" th:field="*{birthDay}" pattern="[0-9]*" size="2" maxlength="2" placeholder="DD">
+<!--                                                 <input type="text" name="birth_day" id="birth_day" th:field="*{birth_day}" pattern="[0-9]*"  label="생년월일" size="2" maxlength="2" placeholder="DD"> -->
+
+                                            </div>
+                                        </td>                                       
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <div id="formSubmit" class="form_footer" style="border-top: 1px solid #333;">
+                                <button type="submit" class="btn active btn_join" >가입하기</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+	<script type="text/javascript">
+
+		//이메일 검사 함수		
+        function on_email_check(){ 
+		    var email = $(".field_email input").val();
+		    if(email.length == 0){
+		        alert('이메일을 입력해주세요');
+		        $(".field_email input").focus();
+		        return false;
+		    }
+		    
+		    return true;
+		}
+
+      	//id 검사 함수
+        function on_userName_check(){          
+            
+      		var userName = $(".field_id input").val();
+            var spe = /[~!@#$%^&*()_+|<>?:{}]/;
+            
+            if(userName.length < 6){
+            	
+	            alert('계정명은 6자 이상  입력해주세요');
+	            $(".field_id input").focus();
+	            return false;
+            
+            }else if(spe.test(userName) == 1){
+
+	            alert('특수문자가 들어있습니다');
+	            $(".field_id input").focus();
+	            return false;
+            }
+            
+            return true;
+            
+        }
+
+      	//비밀번호 검사 함수
+        function on_pw_check(){           
+        	
+            var pw = $(".field_pw input").val();
+            var num = /[0-9]/;
+            var engLower = /[a-z]/;
+            var engUpper = /[A-Z]/;
+            var spe = /[~!@#$%^&*()_+|<>?:{}]/;
+            
+            if(pw.length < 8){
+            	
+                alert('비밀번호는 최소 8자 이상 입력해주세요');
+                $(".field_pw input").focus();
+                return false;
+                
+            }else if(num.test(pw) == 0 || engLower.test(pw) == 0 || engUpper.test(pw) == 0 || spe.test(pw) == 0){
+            	
+                alert('대소문자와 특수문자를 모두 포함하여 입력해주세요');
+                $(".field_pw input").focus();
+                return false;
+                
+            }
+
+            return true;
+
+        }
+
+      	//비밀번호 확인 검사 함수
+        function on_pw2_check(){
+      		
+            var pw = $(".field_pw input").val();
+            var pw2 = $(".field_repw input").val();
+            
+            if(pw2.length == 0){
+            
+	            alert('비밀번호 확인을 입력해주세요');
+	            $(".field_repw input").focus();
+	            return false;
+	            
+            }else if(pw != pw2){
+            
+	            alert('입력하신 비밀번호와 다릅니다');
+	            $(".field_repw input").focus();
+	            return false;
+	            
+            }            
+            
+            return true;
+            
+        }
+
+      	//이름 검사 함수
+        function on_name_check(){ 
+      		
+            var name = $(".field_name input").val();
+            
+            if(name.length == 0){
+            
+	            alert('이름을 입력해주세요');
+	            $(".field_name input").focus();
+	            return false;
+            }
+            
+            return true;
+            
+        }
+
+      	//휴대폰번호 검사 함수
+        function on_phone_check(){      
+      		
+            var phone = $(".field_phone input").val();
+            
+            if(phone.length == 0){
+            
+	            alert('휴대폰 번호를 입력해주세요');
+	            $(".field_phone input").focus();
+	            return false;
+            }
+            
+            return true;
+            
+        }
+      	
+      	//주소 검사 함수
+        function on_addressDetail_check(){      
+      		
+            var addressDetail = $(".field_address input #addressDetail").val();
+            
+            if(addressDetail.length == 0){
+            
+	            alert('주소를 입력해주세요');
+	            $(".field_address input #addressDetail").focus();
+	            return false;
+            }
+            
+            return true;
+            
+        }
+        
+        
+      //주소 검사 함수
+        function on_birth_check(){      
+      		
+            var birth_year = $(".field_birth input #birth_year").val();
+            var birth_month = $(".field_birth input #birth_month").val();
+            var birth_day = $(".field_birth input #birth_day").val();
+            
+            if(birth_year.length == 0){
+            
+	            alert('태어난 연도를 입력해주세요');
+	            $(".field_address input #birth_year").focus();
+	            return false;
+            }
+            if(birth_month.length == 0){
+                
+	            alert('태어난 월을 입력해주세요');
+	            $(".field_address input #birth_month").focus();
+	            return false;
+            }
+            if(birth_day.length == 0){
+                
+	            alert('태어난 일을 입력해주세요');
+	            $(".field_address input #birth_day").focus();
+	            return false;
+            }
+            
+            return true;
+            
+        }
+        
+        function on_submit_check(){               // form에 onsubmit으로 최종적으로 넘겨야될 함수
+            
+            var check = false;                   //check변수에 false를 넣어주고 다른 함수들이 false를 반환하면 다음페이지로 못넘어가게 설정
+            if(on_email_check() == check){
+            	return false;
+            }else if(on_userName_check() == check){
+            	return false;
+            }else if(on_pw_check() == check){
+            	return false;
+            }else if(on_pw2_check() == check){
+            	return false;
+            }else if(on_name_check() == check){
+            	return false;
+            }else if(on_phone_check() == check){
+            	return false;
+            }else if(on_addressDetail_check() == check){
+            	return false;
+            }else if(on_birth_check() == check){
+            	return false;
+            }else{
+            	return true;
+            }
+        }
+       
+    </script>
+</body>
+</html>
+<!-- <td> 추후 선택한 생년월일에 따라 option이 변동되도록 추가해볼 예정
+                                            <div class="birth_day">
+                                                <select name="birth_year" id="birth_year" label="생년" placeholder="YYYY">
+                                                	<option>생년</option>
+                                                	<option>01</option>
+                                                	<option>02</option>
+                                                	<option>03</option>
+                                                	<option>04</option>
+                                                	<option>05</option>
+                                                	<option>06</option>
+                                                	<option></option>
+                                                	<option>생년</option>
+                                                </select>
+                                                <span class="bar">
+
+                                                </span>
+                                                <input type="text" name="birth_month" id="birth_month" pattern="[0-9]*"  label="생년월일" size="2" maxlength="2" placeholder="MM">
+                                                <span class="bar"></span>
+                                                <input type="text" name="birth_day" id="birth_day" pattern="[0-9]*"  label="생년월일" size="2" maxlength="2" placeholder="DD">
+
+                                            </div>
+                                        </td> -->

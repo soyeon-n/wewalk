@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>나의 관심 분야 설정하기</title>
+    <link rel="stylesheet" href="/css/reset.css">
+	<link rel="stylesheet" href="/css/order_list.css">
+	<link rel="stylesheet" href="/css/Shipping_list.css">
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <link rel="stylesheet" href="/header/header.css">
+	<script src="/header/header.js"></script>	
+	<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+	<script>
+	
+	  document.addEventListener('DOMContentLoaded', function () {
+	    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+	    const maxAllowed = 3;
+	
+	    checkboxes.forEach(checkbox => {
+	      checkbox.addEventListener('change', function () {
+	        const checkedCheckboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+	        if (checkedCheckboxes.length > maxAllowed) {
+	          this.checked = false; // 선택한 체크박스가 3개를 초과하면 체크를 해제
+	        }
+	      });
+	    });
+	  });
+	</script>
+	<script>
+	    // 페이지 로드 시 실행되는 코드
+	    document.addEventListener('DOMContentLoaded', function () {
+	        const urlParams = new URLSearchParams(window.location.search);
+	        const success = urlParams.get('s');
+	        if (success === 'true') {
+	            alert("관심분야가 성공적으로 저장되었습니다!");
+	        }
+	    });
+	</script>
+	
+</head>
+<body>
+    <div id="container">
+        <div id="main">
+          <div th:insert="header :: headerFragment"></div>
+            <div id="content">
+                <div id="myPageTop" class="page_aticle mypage_top">
+                    <h2 class="blind">마이페이지</h2>
+                    <div class="mypagetop_user">
+                        <div class="inner_mypagetop">
+                            
+                            <div class="grade_user">
+                                <div class="grade">
+                                    <span class="blind">등급</span>
+                                    <span class="ico_grade class0">
+                                        <span class="inner_grade">
+                                            <span class="in_grade" th:text="${user.membership ? '멤버쉽' : user.grade}"></span>
+                                        </span>
+                                    </span>
+                                    <div class="grade_bnenfit">
+                                        <div class="user">
+    										<strong class="name" id="userName" th:text="${user.name}"></strong>
+    										<span class="txt">님</span>
+										</div>
+                                        <div class="benefit">
+										    <strong class="tit"></strong>
+										    <span th:text="|적립 ${user.membership == true ? '10%' : 
+										        user.grade == 'B' ? '1%' : 
+										        user.grade == 'S' ? '3%' : 
+										        user.grade == 'G' ? '5%' : 
+										        user.grade == 'P' ? '8%' : ''}|"></span>
+										</div>
+                                    </div>
+                                </div>
+                                <div class="next">
+                                    <a href="/user/mypage/myInterest" class="next_month">나의 관심 분야 설정하기</a>
+                                    <a href="/user/mypage/grade" class="total_grade">등급 별 할인혜택</a>
+                                </div>
+                            </div>
+
+                            <ul class="list_mypage">
+                            	<li class="user_coupon">
+                                    <div class="link">
+                                        <div class="tit">
+                                            페이 머니
+                                        </div>
+                                        <a href="/user/mypage/pay" class="info">
+                                            <span th:if="${user.paymoney != null}" th:text="${#numbers.formatInteger(user.paymoney, 1, 'COMMA') + '원'}"></span>
+   											<span th:if="${user.paymoney == null}">0 원</span>
+                                            <img src="https://res.kurly.com/pc/service/common/1905/ico_arrow_56x56.png" alt="자세히 보기">
+                                        </a>    
+                                        <br/>
+                                        <a href="/user/mypage/paylist" class="info">
+                                        	<span>거래 내역</span>
+                                            <img src="https://res.kurly.com/pc/service/common/1905/ico_arrow_56x56.png" alt="자세히 보기">
+                                        </a>
+                                    </div>
+                                </li>
+                                <li class="user_reserve">
+                                    <div class="link">
+                                        <div class="tit">
+                                            적립금
+                                        </div>
+                                        <a href="/user/mypage/point" class="info">
+                                            <span th:if="${user.point != null}" th:text="${#numbers.formatInteger(user.point, 1, 'COMMA') + '원'}"></span>
+   											<span th:if="${user.point == null}">0 원</span>
+                                            <img src="https://res.kurly.com/pc/service/common/1905/ico_arrow_56x56.png" alt="자세히보기">
+                                            <span class="date">거래 내역</span>
+                                        </a>
+                                    </div>
+                                </li>
+                                <li class="user_kurlypass">
+                                    <div class="link">
+                                        <div class="tit">
+                                            멤버쉽    
+                                        </div>
+                                        <a href="/user/mypage/membership" class="info info_link">
+                                            알아보기
+                                            <img src="https://res.kurly.com/pc/service/common/1905/ico_arrow_56x56.png" alt="자세히 보기">
+                                        </a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <a href="#" class="bnr_event">
+                        </a>
+                    </div>
+                </div>
+                <div class="page_aticle aticle_type2">
+                    <div id="snb" class="snb_my">
+                        <h2 class="tit_snb">마이 페이지</h2>
+                        <div class="inner_sub">
+                            <ul class="list_menu">
+                                <li class="on">
+                                    <a href="/user/mypage">나의 상점</a>
+                                </li>
+                                <li>
+                                    <a href="/user/mypage/shipping">배송지 관리</a>
+                                </li>
+                                <li>
+                                    <a href="/user/mypage/mybuyhistory">구매 내역</a>
+                                </li>
+                                <li>
+                                    <a href="/user/mypage/change">회원 정보 수정 및 탈퇴</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <a href="#" class="link_inquire">
+                            <span class="emph">도움이 필요하신가요?</span>
+                            1:1 문의하기
+                        </a>
+                    </div>
+                    
+                    <div class="page_section section_destination">
+                        <div class="head_aticle">
+                            <h2 class="tit">
+                                나의 관심 분야 설정하기
+                                <span id="addrListInfo" class="tit_sub">설정한 관심 분야로 상품을 추천받을 수 있습니다.</span>
+                            </h2>
+                        </div>
+                        <div id="tblParent" class="type_select">
+                            <table class="tbl tbl_type1">
+                                <thead>
+                                    <tr>
+                                        <th class="tit_select" >관심 분야</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                        <br/>
+                        * 관심분야는 최대 3개까지 설정가능합니다.
+                        <br/>
+                        
+                        <form action="/user/mypage/myInterest" method="post">
+                        <div class="project">
+						  <div class="boxes">
+						    <div class="box">
+						      <div>
+						        <input type="checkbox" name="interests" id="box1" value="데스크탑">
+						      </div>
+						      <label for="box1">
+						      	<img src="/img/데스크탑.png" width="35px;" height="32px;"/>
+						        <i class="fa-brands fa-codepen" id="box1">데스크탑</i>
+						      </label>
+						      
+						    </div>
+						     <div class="box">
+						     <div>
+						        <input type="checkbox" name="interests" id="box2" value="노트북">
+						      </div>
+						     <label for="box2">
+						       <img src="/img/노트북.png" width="35px;" height="33px;"/>
+						       <i class="fa-solid fa-code-compare">노트북</i>
+						     </label>
+						    </div>
+						     <div class="box">
+						      <div>
+						        <input type="checkbox" name="interests" id="box3" value="PC주변기기">
+						      </div>
+						     <label for="box3">
+						        <img src="/img/PC주변기기.png" width="35px;" height="33px;"/>
+						        <i class="fa-solid fa-pen-ruler">PC주변기기</i>
+						     </label>
+						    </div>
+						     <div class="box">
+						       <div>
+						        <input type="checkbox" name="interests" id="box4" value="모바일">
+						      </div>
+						        <label for="box4">
+						          <img src="/img/모바일.png" width="35px;" height="31px;"/>
+						          <i class="fa-solid fa-blog">모바일·태블릿</i>
+						        </label>
+						    </div>
+						    <div class="box">
+						       <div>
+						        <input type="checkbox" name="interests" id="box5" value="카메라">
+						      </div>
+						       <label for="box5">
+						         <img src="/img/카메라.png" width="35px;" height="33px;"/>
+						         <i class="fa-solid fa-bug">카메라·게임</i>
+						       </label>
+						    </div>
+						    <div class="box">
+						       <div>
+						        <input type="checkbox" name="interests" id="box6" value="신선식품">
+						      </div>
+						        <label for="box6">
+						          <img src="/img/신선식품.png" width="35px;" height="33px;"/>
+						          <i class="fa-solid fa-cloud">신선식품</i>
+						        </label>
+						    </div>
+						    <div class="box">
+						       <div>
+						        <input type="checkbox" name="interests" id="box7" value="가공식품">
+						      </div>
+						       <label for="box7">
+						         <img src="/img/가공식품.png" width="35px;" height="32px;"/>
+						         <i class="fa-solid fa-code">가공식품</i>
+						       </label>
+						    </div>
+						    <div class="box">
+						       <div>
+						        <input type="checkbox" name="interests" id="box8" value="건강식품">
+						      </div>
+						        <label for="box8">
+						          <img src="/img/건강식품.png" width="35px;" height="32px;"/>
+						          <i class="fa-solid fa-puzzle-piece">건강식품</i>
+						        </label>
+						    </div>
+						    <div class="box">
+						       <div>
+						        <input type="checkbox" name="interests" id="box9" value="영상">
+						      </div>
+						        <label for="box9">
+						          <img src="/img/영상.png" width="35px;" height="33px;"/>
+						          <i class="fa-solid fa-puzzle-piece">영상·음향</i>
+						        </label>
+						    </div>
+						    <div class="box">
+						       <div>
+						        <input type="checkbox" name="interests" id="box10" value="주방">
+						      </div>
+						        <label for="box10">
+						          <img src="/img/주방.png" width="35px;" height="33px;"/>
+						          <i class="fa-solid fa-puzzle-piece">주방가전</i>
+						        </label>
+						    </div>
+						    <div class="box">
+						       <div>
+						        <input type="checkbox" name="interests" id="box11" value="계절">
+						      </div>
+						        <label for="box11">
+						          <img src="/img/계절.png" width="35px;" height="31px;"/>
+						          <i class="fa-solid fa-puzzle-piece">계절가전</i>
+						        </label>
+						    </div>
+						    <div class="box">
+						       <div>
+						        <input type="checkbox" name="interests" id="box12" value="미용">
+						      </div>
+						        <label for="box12">
+						          <img src="/img/미용.png" width="35px;" height="32px;"/>
+						          <i class="fa-solid fa-puzzle-piece">미용가전</i>
+						        </label>
+						    </div>
+						    <div class="box">
+						       <div>
+						        <input type="checkbox" name="interests" id="box13" value="건강">
+						      </div>
+						        <label for="box13">
+						          <img src="/img/건강.png" width="35px;" height="32px;"/>
+						          <i class="fa-solid fa-puzzle-piece">건강가전</i>
+						        </label>
+						    </div>
+						    <div class="box">
+						       <div>
+						        <input type="checkbox" name="interests" id="box14" value="여성의류">
+						      </div>
+						        <label for="box14">
+						          <img src="/img/여성의류.png" width="35px;" height="35px;"/>
+						          <i class="fa-solid fa-puzzle-piece">여성의류</i>
+						        </label>
+						    </div>
+						    <div class="box">
+						       <div>
+						        <input type="checkbox" name="interests" id="box15" value="남성의류">
+						      </div>
+						        <label for="box15">
+						          <img src="/img/남성의류.png" width="35px;" height="32px;"/>
+						          <i class="fa-solid fa-puzzle-piece">남성의류</i>
+						        </label>
+						    </div>
+						    <div class="box">
+						       <div>
+						        <input type="checkbox" name="interests" id="box16" value="아동의류">
+						      </div>
+						        <label for="box16">
+						          <img src="/img/아동의류.png" width="35px;" height="33px;"/>
+						          <i class="fa-solid fa-puzzle-piece">아동의류</i>
+						        </label>
+						    </div>
+						    <div class="box">
+						       <div>
+						        <input type="checkbox" name="interests" id="box17" value="잡화">
+						      </div>
+						        <label for="box17">
+						          <img src="/img/잡화.png" width="35px;" height="32px;"/>
+						          <i class="fa-solid fa-puzzle-piece">신발·가방·잡화</i>
+						        </label>
+						    </div>
+						    <div class="box">
+						       <div>
+						        <input type="checkbox" name="interests" id="box18" value="쥬얼리">
+						      </div>
+						        <label for="box18">
+						          <img src="/img/쥬얼리.png" width="35px;" height="33px;"/>
+						          <i class="fa-solid fa-puzzle-piece">쥬얼리·시계</i>
+						        </label>
+						    </div>
+						    <div class="box">
+						       <div>
+						        <input type="checkbox" name="interests" id="box19" value="화장품">
+						      </div>
+						        <label for="box19">
+						          <img src="/img/화장품.png" width="35px;" height="33px;"/>
+						          <i class="fa-solid fa-puzzle-piece">화장품</i>
+						        </label>
+						    </div>
+						    <div class="box">
+						       <div>
+						        <input type="checkbox" name="interests" id="box20" value="바디">
+						      </div>
+						        <label for="box20">
+						          <img src="/img/바디.png" width="35px;" height="32px;"/>
+						          <i class="fa-solid fa-puzzle-piece">바디·헤어</i>
+						        </label>
+						    </div>
+						    <div class="box">
+						       <div>
+						        <input type="checkbox" name="interests" id="box21" value="스포츠의류">
+						      </div>
+						        <label for="box21">
+						          <img src="/img/스포츠의류.png" width="35px;" height="33px;"/>
+						          <i class="fa-solid fa-puzzle-piece">스포츠의류</i>
+						        </label>
+						    </div>
+						    <div class="box">
+						       <div>
+						        <input type="checkbox" name="interests" id="box22" value="낚시">
+						      </div>
+						        <label for="box22">
+						          <img src="/img/낚시.png" width="33px;" height="32px;"/>
+						          <i class="fa-solid fa-puzzle-piece">낚시·캠핑·등산</i>
+						        </label>
+						    </div>
+						    <div class="box">
+						       <div>
+						        <input type="checkbox" name="interests" id="box23" value="자전거">
+						      </div>
+						        <label for="box23">
+						          <img src="/img/자전거.png" width="35px;" height="33px;"/>
+						          <i class="fa-solid fa-puzzle-piece">자전거</i>
+						        </label>
+						    </div>
+						    <div class="box">
+						       <div>
+						        <input type="checkbox" name="interests" id="box24" value="가구">
+						      </div>
+						        <label for="box24">
+						          <img src="/img/가구.png" width="35px;" height="32px;"/>
+						          <i class="fa-solid fa-puzzle-piece">가구</i>
+						        </label>
+						    </div>
+						    <div class="box">
+						       <div>
+						        <input type="checkbox" name="interests" id="box25" value="인테리어">
+						      </div>
+						        <label for="box25">
+						          <img src="/img/인테리어.png" width="35px;" height="35px;"/>
+						          <i class="fa-solid fa-puzzle-piece">인테리어</i>
+						        </label>
+						    </div>
+						    <div class="box">
+						       <div>
+						        <input type="checkbox" name="interests" id="box26" value="생활용품">
+						      </div>
+						        <label for="box26">
+						          <img src="/img/생활용품.png" width="35px;" height="32px;"/>
+						          <i class="fa-solid fa-puzzle-piece">생활·주방 용품</i>
+						        </label>
+						    </div>
+						    <div class="box">
+						       <div>
+						        <input type="checkbox" name="interests" id="box27" value="이벤트">
+						      </div>
+						        <label for="box27">
+						          <img src="/img/이벤트.png" width="35px;" height="32px;"/>
+						          <i class="fa-solid fa-puzzle-piece">이벤트용품</i>
+						        </label>
+						    </div>
+						    <div class="box">
+						       <div>
+						        <input type="checkbox" name="interests" id="box28" value="문구">
+						      </div>
+						        <label for="box28">
+						          <img src="/img/문구.png" width="35px;" height="32px;"/>
+						          <i class="fa-solid fa-puzzle-piece">문구용품</i>
+						        </label>
+						    </div>
+						    <div class="box">
+						       <div>
+						        <input type="checkbox" name="interests" id="box29" value="악기">
+						      </div>
+						        <label for="box29">
+						          <img src="/img/악기.png" width="35px;" height="31px;"/>
+						          <i class="fa-solid fa-puzzle-piece">악기·취미</i>
+						        </label>
+						    </div>
+						    <div class="box">
+						       <div>
+						        <input type="checkbox" name="interests" id="box30" value="반려동물용품">
+						      </div>
+						        <label for="box30">
+						          <img src="/img/반려동물용품.png" width="35px;" height="31px;"/>
+						          <i class="fa-solid fa-puzzle-piece">반려동물</i>
+						        </label>
+						    </div>
+						    <div class="box">
+						       <div>
+						        <input type="checkbox" name="interests" id="box31" value="도서">
+						      </div>
+						        <label for="box31">
+						          <img src="/img/도서.png" width="35px;" height="35px;"/>
+						          <i class="fa-solid fa-puzzle-piece">도서</i>
+						        </label>
+						    </div>
+						    <div class="box">
+						       <div>
+						        <input type="checkbox" name="interests" id="box32" value="아동도서">
+						      </div>
+						        <label for="box32">
+						          <img src="/img/아동도서.png" width="35px;" height="32px;"/>
+						          <i class="fa-solid fa-puzzle-piece">아동도서</i>
+						        </label>
+						    </div>
+						    <div class="box">
+						       <div>
+						        <input type="checkbox" name="interests" id="box33" value="학습">
+						      </div>
+						        <label for="box33">
+						          <img src="/img/학습.png" width="35px;" height="32px;"/>
+						          <i class="fa-solid fa-puzzle-piece">학습</i>
+						        </label>
+						    </div>
+						    <div class="box">
+						       <div>
+						        <input type="checkbox" name="interests" id="box34" value="음반">
+						      </div>
+						        <label for="box34">
+						          <img src="/img/음반.png" width="35px;" height="32px;"/>
+						          <i class="fa-solid fa-puzzle-piece">음반</i>
+						        </label>
+						    </div>
+						    <div class="box">
+						       <div>
+						        <input type="checkbox" name="interests" id="box35" value="쿠폰">
+						      </div>
+						        <label for="box35">
+						          <img src="/img/쿠폰.png" width="35px;" height="35px;"/>
+						          <i class="fa-solid fa-puzzle-piece">쿠폰</i>
+						        </label>
+						    </div>
+						    </div>
+						    
+						    <div class="button-wrapper2">
+					            <button class="button" type="submit">
+							  <span class="button__text">관심 정보 저장</span>
+							  <i class="icon check button__icon">&#10004;</i>
+							</button>
+					        
+						  </div>
+						</div>
+						</form>
+
+                    </div>    
+                </div>
+            </div>
+        </div>
+    </div>    
+</body>
+</html>

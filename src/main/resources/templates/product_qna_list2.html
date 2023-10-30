@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>상품문의 페이지</title>
+    <link rel="stylesheet" href="/reset.css">
+    <link rel="stylesheet" href="/common.css">
+    <link rel="stylesheet" href="/good_review_list.css">
+    <link rel="stylesheet" href="/aco.css">
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script src="/good_view.js"></script>
+    
+
+    <script type="text/javascript">
+    
+  
+    
+    
+    
+    </script>
+
+
+
+</head>
+<!-- 문의 게시판 qnaList layout분리 -->
+
+<body style="overflow-y: hidden">
+<nav th:fragment="qnaFragment">
+<!-- form 제거 이거떄문에 자꾸 새로고침 -->
+    <div id="contents-wrapper" class="goods_board" >
+        <div class="xans-element- xans-product xans-product-additional detail_board">
+            <div class="board">
+                <span class="line"></span>
+                
+                    <div class="title_txt">
+                        <h2>PRODUCT Q&A</h2>
+                        <div class="sort-wrap">
+                            <ul class="list_type1 old">
+                                <li>
+                                    <span class="ico"></span>
+                                    <p class="txt">상품에 대한 문의를 남기는 공간입니다. 해당 게시판의 성격과 다른 글은 사전동의 없이 담당 게시판으로 이동될 수 있습니다.</p>                                   
+                                </li>
+                                <li>
+                                    <span class="ico"></span>
+                                    <p class="txt">배송관련, 주문(취소/교환/환불)관련 문의 및 요청사항은 마이컬리 내 
+                                        <a href="#none">1:1문의</a>
+                                        에 남겨주세요.
+                                    </p>
+                                </li>
+                            </ul>
+                            <div class="sort">
+                                <select name="" id="" onchange="">
+                                    <option value="1">최근등록순</option>
+                                    <option value="2">좋아요많은순</option>
+                                    <option value="3">조회많은순</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <table class="xans-board-listheader" width="100%" border="0" cellpadding="0" cellspacing="0">
+                        <caption style="display:none;">구매후기 제목</caption>
+                        <colgroup>
+                            <col style="width:70px;">
+                            <col style="width:auto;">
+                            <col style="width:51px;">
+                            <col style="width:77px;">
+                            <col style="width:100px;">
+                            <col style="width:40px;">
+                            <col style="width:80px;">
+
+                        </colgroup>
+                        <tbody>
+                            <tr>
+                                <th scope="col" class="input_txt">번호</th>
+                                <th scope="col" class="input_txt">제목</th>
+                                <th scope="col" class="input_txt">
+                                    <span class="screen_out">회원 등급</span>
+                                </th>
+                                <th scope="col" class="input_txt" align="left">작성자</th>
+                                <th scope="col" class="input_txt">작성일</th>
+                                <th scope="col" class="input_txt">답변상태</th>
+                                <th scope="col" class="input_txt">-</th>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <!-- 상단 고정 공지 2 개  -->
+                    <div class="tr_line on">
+                        <table class="xans-board-listheaderd tbl_newtype1" width="100%" cellpadding="0" cellspacing="0" onclick="">
+                            <caption style="display:none">구매후기 내용</caption>
+                            <colgroup>
+                                <col style="width:70px;">
+                                <col style="width:auto;">
+                                <col style="width:51px;">
+                                <col style="width:77px;">
+                                <col style="width:100px;">
+                                <col style="width:40px;">
+                                <col style="width:80px;">
+    
+                            </colgroup>
+                            <tr>
+                                <td align="center">공지</td>
+                                <td class="subject">
+                                    <div>금주의 Best 후기 안내</div>
+                                </td>
+                                <td class="user_grade grade_comm"></td>
+
+                                <td class="user_grade">Marketkurly</td>
+                                <td class="time">2021-01-17</td>
+                                <td>
+                                    <span class="review-like-cnt">0</span>
+                                </td>
+                                <td>
+                                    <span class="review-hit-cnt">0</span>
+                                </td>
+                            </tr>
+                        </table>
+
+
+                        <div class="review_view review_notice">
+                            <div class="inner_review">
+                                <p>고객님 안녕하세요, 마켓컬리입니다</p>
+                                <br>
+                                <p>어쩌구 저쩌구 어쩌구 저쩌구</p>
+                               
+
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
+                    
+                    <div class="tr_line on">
+                        <table class="xans-board-listheaderd tbl_newtype1" width="100%" cellpadding="0" cellspacing="0" onclick="">
+                            <caption style="display:none">구매후기 내용</caption>
+                            <colgroup>
+                                <col style="width:70px;">
+                                <col style="width:auto;">
+                                <col style="width:51px;">
+                                <col style="width:77px;">
+                                <col style="width:100px;">
+                                <col style="width:40px;">
+                                <col style="width:80px;">
+    
+                            </colgroup>
+                            <tr>
+                                <td align="center">공지</td>
+                                <td class="subject">
+                                    <div>금주의 Best 후기 안내</div>
+                                </td>
+                                <td class="user_grade grade_comm"></td>
+
+                                <td class="user_grade">Marketkurly</td>
+                                <td class="time">2021-01-17</td>
+                                <td>
+                                    <span class="review-like-cnt">0</span>
+                                </td>
+                                <td>
+                                    <span class="review-hit-cnt">0</span>
+                                </td>
+                            </tr>
+                        </table>
+
+
+                        <div class="review_view review_notice">
+                            <div class="inner_review">
+                                <p>고객님 안녕하세요, 마켓컬리입니다</p>
+                                <br>
+                                <p>어쩌구 저쩌구 어쩌구 저쩌구</p>
+                               
+
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
+                    
+                    
+                    <div class="tr_line on">
+                        <table class="xans-board-listheaderd tbl_newtype1" width="100%" cellpadding="0" cellspacing="0" onclick="">
+                            <caption style="display:none;">구매후기 내용</caption>
+                            <colgroup>
+                                <col style="width:70px;">
+                                <col style="width:auto;">
+                                <col style="width:51px;">
+                                <col style="width:70px;">
+                                <col style="width:100px;">
+                                <col style="width:55px;">
+                                <col style="width:80px;">
+    
+                            </colgroup>
+                            <tr th:each="question,loop: ${entities}">
+                            
+                            
+                                <td align="center" >
+                                  <a th:href="@{|/question/detail/${question.id}|}" th:text="${question.id}"></a>
+                                </td>
+                                <td class="subject">                              
+                                <!--  
+                                    <a th:href="@{|/question/detail/${question.id}|}" th:text="${question.title}"></a>-->
+                                    
+	                                    <button th:id="'toggleButton_'+${question.id}" th:text="${question.title}">이게 제목</button>
+	                                        
+                                        <div th:id="'contentToToggle_'+${question.id}" style="display: none;">
+                                        
+                                        <br/>
+                                            내용:<p th:text="${question.content}" ></p>
+                                            
+                                        </div>
+                                        
+                                         <!--  
+                                       <div th:class="answertest" th:each="answer : ${question.answerList}">
+                                           <p th:onclick=hideans(); th:text="${answer.content}" style="display: none;"></p>
+                                       </div>-->
+                                        
+                                       <!-- if 로 돌리던가 th:if="{answer.content.!isEmpty}" style="display: none;" onclick=함수실행 --> 
+                                       <br/><br/>
+                                       <div th:each="answer : ${question.answerList}" >
+                                        
+                                           <div th:id="'answertest_'+${answer.question.id}" style="display: none;" >
+                                               <hr/>
+                                            답변:<p th:text=${answer.content}></p>
+                                           </div>
+									      
+								       </div>
+	                                         
+                                    
+                                </td>
+                                <td class="user_grade grade_comm"></td>
+                                <td class="user_grade" th:text="${question.user.userName}">Marketkurly</td>                                                              
+                                <td class="time" th:text="${#temporals.format(question.date,'yyyy-MM-dd')}">작성일</td>
+                                <td>
+                                <!-- done 이 true 일 시 답변완료로 바뀌는 버튼  -->
+                                    <span class="review-like-cnt" ></span>
+                                    <a th:if="${question.done==true}"
+                                    th:text="답변완료"></a>
+                                    <a th:if="${question.done==false}"
+                                    th:text="답변대기"></a>
+                                </td>
+                                <td>
+                                    <span class="review-hit-cnt"></span>
+                                    <!--  
+                                    <a th:href="@{|/answer/create/${question.id}|}">답변쓰기</a>-->
+                                    <!-- product.siteuserid== siteuser login id 같아야지만 답변쓰기가능 -->
+                                     <!--  
+                                    <a th:href="@{|/answer/create/${product.id}|}"
+                                    sec:authorize="isAuthenticated()"
+                                    th:if="${product.user.id == #authentication.getPrincipaldetails().getUserid()}"
+                                    th:text="답변쓰기"></a>-->
+                                    <!-- 일단야매로 하긴했거든요 직접 principalDetails 을 보내준걸로 -->
+                                    <a th:href="@{|/answer/create/${question.product.id}/${question.id}|}"
+                                    th:if="${product.user.id == principalDetails.user.id and question.done ==false}"
+                                    th:text="답변쓰기"></a> 
+                                   
+                                    
+                                    <!-- product.user.id이거는 번호고  principalDetails.user.id이것도 번호여야해 -->
+                                    <!--  
+                                    <a sec:authorize="isAuthenticated()" sec:authentication="name"></a>-->
+                                </td>
+                               
+                            </tr>
+                            
+                            
+                        </table>
+
+
+                        <div class="review_view review_notice">
+                            <div class="inner_review">
+                                <p>고객님 안녕하세요, 마켓컬리입니다</p>
+                                <br>
+                                <p>어쩌구 저쩌구 어쩌구 저쩌구</p>
+                               
+
+                            </div>
+                        </div>
+                    </div>
+
+                    
+
+                    
+               
+                
+                <!-- 문의쓰기 -->
+
+                <p class="btnArea after">
+                    <a  onclick="going()">
+                    <!--  
+                        <span class="bhs_button" style="line-height:30px; width:130px;">문의 쓰기</span>
+                        style="background-color: #1EC800"-->
+                        
+                    </a>
+                    
+                    <a th:href="@{|/question/create/${product.id}|}" class="bhs_button" style="line-height:30px; width:130px; background-color:#1EC800 " >문의쓰기</a> 
+                    
+                    
+                    
+                </p>
+
+
+
+            </div>
+        </div>
+        <!-- 아코디언바 추가 -->
+       
+        
+        <div class="board_pg_area">
+        
+            <!-- 페이징처리 -->
+	        <div th:if="${!entities.isEmpty()}">
+		
+				<nav aria-label="Page navigation" >
+				     <ul class="pagination justify-content-center"
+				          th:with="startNumber=${(entities.number/10)}*10+1, 
+				          endNumber=(${entities.totalPages}>${startNumber}+9)?
+				          ${startNumber}+9 : ${entities.totalPages}">
+				          
+				          <!-- << -->
+				          
+				          <a class="layout-pagination-button layout-pagination-first-page" 
+				          th:href="@{|/product/detail/${product.id}?page=1|}">&laquo;</a>
+				          <!-- <a class="page-link" th:href="@{/question/list?page=1}">&laquo;</a> -->
+				          
+				          
+				          <!-- < -->
+				          
+					          <a class="layout-pagination-button layout-pagination-prev-page" th:style ="${entities.first}?'display:none'"
+					          th:href="@{|/product/detail/${product.id}?page=${entities.number}|}">
+					          &lsaquo;				          
+					          </a>
+				          
+				          <!-- 1 2 3 4 5 -->
+				          <li class="layout-pagination-button layout-pagination-number" 
+				          th:each="page : ${#numbers.sequence(startNumber,endNumber)}"
+				              th:classappend="(${page}==${entities.number}+1) ? 'active'">
+				              <a class="layout-pagination-button layout-pagination-number" 
+				              th:href="@{|/product/detail/${product.id}?page=${page}|}" th:text="${page}">
+				            
+				              </a>
+				              <!-- 일단 넘겨받는것을 paging1 에서 entities 로 바꿔주고 -->
+				          </li>
+				          <!-- > -->
+				          <!-- th:href="@{'/question/list/' + productNo + '?page=' + page}" th:text="${page}" -->
+				          
+					          <a class="layout-pagination-button layout-pagination-next-page"  
+					          th:href="@{|/product/detail/${product.id}?page=${entities.number}+2}"
+					          th:style="${entities.last}?'display:none'">
+					          &rsaquo;
+					          <!-- 여기만 paging 쿼리 수정함 확인해봐  -->
+					          
+					          </a>
+				          
+				          
+				          <!-- >> -->
+				          
+				          <a class="layout-pagination-button layout-pagination-last-page" 
+				          th:href="@{|/product/detail/${product.id}?page=${entities.totalPages}|}">
+				          &raquo;
+				          </a>
+				          
+				          
+				     
+				     </ul>
+				
+				</nav>
+			
+			</div>
+			
+			 
+        
+        
+        <!--  
+            <a href="#" class="layout-pagination-button layout-pagination-first-page">맨 처음 페이지로 가기</a>
+            
+            <a href="#" class="layout-pagination-button layout-pagination-prev-page">이전 페이지로 가기</a>
+            <a href="#" class="layout-pagination-button layout-pagination-number __active">1</a>
+            <a href="#" class="layout-pagination-button layout-pagination-number">2</a>
+            <a href="#" class="layout-pagination-button layout-pagination-number">3</a>
+            <a href="#" class="layout-pagination-button layout-pagination-number">4</a>
+            <a href="#" class="layout-pagination-button layout-pagination-number">5</a>
+            <a href="#" class="layout-pagination-button layout-pagination-number">6</a>
+            <a href="#" class="layout-pagination-button layout-pagination-number">7</a>
+            <a href="#" class="layout-pagination-button layout-pagination-number">8</a>
+            <a href="#" class="layout-pagination-button layout-pagination-number">9</a>
+            <a href="#" class="layout-pagination-button layout-pagination-number">10</a>
+
+            <a href="#" class="layout-pagination-button layout-pagination-next-page">다음 페이지로 가기</a>
+            <a href="#" class="layout-pagination-button layout-pagination-last-page">맨 끝 페이지로 가기</a>
+            -->
+        </div>
+        
+   
+        
+        
+	
+    </div>
+    
+   
+    
+    
+    
+    
+</nav> 
+
+    
+</body>
+</html>
