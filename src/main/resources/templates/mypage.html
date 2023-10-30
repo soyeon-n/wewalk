@@ -163,7 +163,7 @@
 												    <div th:each="product : ${product}">
 												        <div class="product-container">
 												            <div class="product-image">
-												                <img th:src="@{'/product/' + ${product.image}}">
+												                <img th:src="@{'/product/images/' + ${product.image}}">
 												            </div>
 												            <div class="product-details">
 												                <div class="product-name" th:text="${product.pname}"></div>
@@ -193,6 +193,7 @@
             </div>
         </div>
     </div>
+    <div th:replace="footer :: footerFragment"></div>
     <script>
 		document.addEventListener('DOMContentLoaded', (event) => {
 		    var message = /*[[${message}]]*/ null; // 플래시 속성 값을 받아옵니다.

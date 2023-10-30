@@ -577,3 +577,11 @@ button{
 #tblParent1 a:hover {
   background-color: #31B404;
 }
+
+.ico.modify {
+    width: 24px;
+    height: 24px;
+    background: url(https://res.kurly.com/mobile/ico/2006/ico_modify.png) no-repeat 50% 50%;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
