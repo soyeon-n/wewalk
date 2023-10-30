@@ -23,7 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.spring.boot.config.DataNotFoundException;
-import com.spring.boot.config.ProductSpecification;
 import com.spring.boot.dao.ProductRepository;
 import com.spring.boot.dao.UserRepository;
 import com.spring.boot.dto.ItemDataForm;
@@ -98,12 +97,13 @@ public class ProductService {
 		product.setPrice(productForm.getPrice());
 		product.setCategory(productForm.getCategory());
 		product.setStock(productForm.getStock());
-
+		product.setSelling(true);
+		
         // 사용자 정보 설정 (글 작성시 product 테이블에 사용자 id 값도 넣기)
         SiteUser user = new SiteUser();
         user.setId(userId);
         product.setUser(user);
-
+        
         // 상품 등록
         productRepository.save(product);
     }
@@ -186,7 +186,6 @@ public class ProductService {
                 }
             }
         }
-
         return imagePaths;
     }
     
@@ -260,7 +259,9 @@ public class ProductService {
 			pageable = requestDTO.getPageable(Sort.by("price").ascending());
 		}else if("priceDesc".equals(sort)){ //높은 가격 순		
 			pageable = requestDTO.getPageable(Sort.by("price").descending());
-		}else { //기본 값은 신상품순
+		}else if("category".equals(sort)) { //카테고리순
+			pageable = requestDTO.getPageable(Sort.by("category").ascending());
+		}else { //기본값은 신상품순
 			pageable = requestDTO.getPageable(Sort.by("date").descending());
 		}
 	    
@@ -275,11 +276,53 @@ public class ProductService {
 	    return new PageResultDTO<>(result, fn);
 	}
 	
+	//베스트 상품 리스트(검색 방식에 따라 sorting 다르게 적용 & 카테고리 또는 제품명으로 검색)
+	public PageResultDTO<ProductDTO, Product> getBestProducts(List<Long> productIdList, 
+															PageRequestDTO requestDTO, String sort) {
+	    
+		Pageable pageable;
+		
+		if("priceAsc".equals(sort)) { //낮은 가격 순			
+			pageable = requestDTO.getPageable(Sort.by("price").ascending());
+		}else if("priceDesc".equals(sort)){ //높은 가격 순		
+			pageable = requestDTO.getPageable(Sort.by("price").descending());
+		}else if("category".equals(sort)) { //카테고리순
+			pageable = requestDTO.getPageable(Sort.by("category").ascending());
+		}else { //기본값은 신상품순
+			pageable = requestDTO.getPageable(Sort.by("date").descending());
+		}
+	    
+	    Page<Product> result = productRepository.findByIdIn(productIdList, pageable);
+	    
+	    Function<Product, ProductDTO> fn = (entity -> entityToDto(entity));
+	    
+	    return new PageResultDTO<>(result, fn);
+	}
+	
 	// 가장 최근 등록한 8개 제품 데이터 가져오기
 	public List<Product> getTop8NewestProducts() {
 	    
 		return productRepository.findTop8ByOrderByDateDesc();
 		
+	}
+	
+	//관심사랑 일치하는 제품 데이터 가져오기
+	public List<Product> getProductsByCategory(String userInterest) {
+	    
+		return productRepository.findAllByCategory(userInterest);
+		
+	}
+	
+	// 받아온 idList로 판매량이 높은 상품 데이터 가져오기
+	public List<Product> getTopNSellingProducts(List<Long> productIdList) {
+	    
+	    // 제품 ID에 해당하는 Product 엔터티 리스트 조회
+	    List<Product> products = productRepository.findByIdIn(productIdList);
+	    
+	    // 받아온 idList의 순서대로 Product 엔터티 리스트 정렬
+	    products.sort(Comparator.comparingInt(p -> productIdList.indexOf(p.getId())));
+	    
+	    return products;
 	}
 	
 	public Product dtoToEntity(ProductDTO dto){

@@ -33,6 +33,7 @@
 <div th:insert="header :: headerFragment"></div>
     <div id="container" class="container">
 
+		
         <input type="hidden" id="sort" th:value="${sort} == null ? 'newest' : ${sort}" />
 		
         <div id="main">
@@ -90,20 +91,20 @@
                                             </li> -->
                                             <li>
                                                 <a th:class="${sort == 'newest' || sort == '' ? 'on' : ''}" data-sort="newest"
-                                                th:href="@{/wewalk/search(keyword=${keyword}, sort='newest')}">신상품순</a>
+                                                th:href="@{/wewalk/searchBest(sort='newest')}">신상품순</a>
                                             </li>
                                             <li>
                                                 <a th:class="${sort == 'category' ? 'on' : ''}" data-sort="category"
-                                                th:href="@{/wewalk/search(keyword=${keyword}, sort='category')}">카테고리순</a>
+                                                th:href="@{/wewalk/searchBest(sort='category')}">카테고리순</a>
                                             </li>
                                             
                                             <li>
                                                 <a th:class="${sort == 'priceAsc' ? 'on' : ''}" data-sort="priceAsc"
-                                                th:href="@{/wewalk/search(keyword=${keyword}, sort='priceAsc')}">낮은 가격순</a>
+                                                th:href="@{/wewalk/searchBest(sort='priceAsc')}">낮은 가격순</a>
                                             </li>
                                             <li>
                                                 <a th:class="${sort == 'priceDesc' ? 'on' : ''}" data-sort="priceDesc"
-                                                th:href="@{/wewalk/search(keyword=${keyword}, sort='priceDesc')}">높은 가격순</a>
+                                                th:href="@{/wewalk/searchBest(sort='priceDesc')}">높은 가격순</a>
                                             </li>
                                         </ul>
                                     </div>
@@ -169,17 +170,17 @@
                             th:with="startNumber=${(paging.number/5)} * 5 + 1,
 							endNumber=(${paging.totalPages}>${startNumber}+4)?
 							${startNumber}+4 : ${paging.totalPages}">
-                                <a th:style="${paging.number == paging.start} ? 'display:none'" th:href="@{/wewalk/search(page=1, keyword=${keyword}, sort=${sort})}" class="layout-pagination-button layout-pagination-first-page">맨 처음 페이지로 가기</a>
-                                <a th:style="${paging.number == paging.start}?'display:none'" th:href="@{/wewalk/search(page=${paging.number-1}, keyword=${keyword}, sort=${sort})}" class="layout-pagination-button layout-pagination-prev-page">이전 페이지로 가기</a>
+                                <a th:style="${paging.number == paging.start} ? 'display:none'" th:href="@{/wewalk/searchBest(page=1, sort=${sort})}" class="layout-pagination-button layout-pagination-first-page">맨 처음 페이지로 가기</a>
+                                <a th:style="${paging.number == paging.start}?'display:none'" th:href="@{/wewalk/searchBest(page=${paging.number-1}, sort=${sort})}" class="layout-pagination-button layout-pagination-prev-page">이전 페이지로 가기</a>
                                 <a th:each="page : ${#numbers.sequence(startNumber, endNumber)}"
 									th:classappend="(${page}==${paging.number}) ? 'active'" 
-									th:href="@{/wewalk/search(page=${page}, keyword=${keyword}, sort=${sort})}">
+									th:href="@{/wewalk/searchBest(page=${page}, sort=${sort})}">
                                     <span>
                                         <strong class="layout-pagination-button layout-pagination-number" th:classappend="(${page}==${paging.number}) ? '__active'" th:text="${page}"></strong>
                                     </span>
                                 </a>                                
-                                <a th:style="${paging.number == paging.end} ? 'display:none'" th:href="@{/wewalk/search(page=${paging.number+1}, keyword=${keyword}, sort=${sort})}" class="layout-pagination-button layout-pagination-next-page">다음 페이지로 가기</a>
-                                <a th:style="${paging.number == paging.end} ? 'display:none'" th:href="@{/wewalk/search(page=${paging.totalPages}, keyword=${keyword}, sort=${sort})}" class="layout-pagination-button layout-pagination-last-page">맨 끝 페이지로 가기</a>                               
+                                <a th:style="${paging.number == paging.end} ? 'display:none'" th:href="@{/wewalk/searchBest(page=${paging.number+1}, sort=${sort})}" class="layout-pagination-button layout-pagination-next-page">다음 페이지로 가기</a>
+                                <a th:style="${paging.number == paging.end} ? 'display:none'" th:href="@{/wewalk/searchBest(page=${paging.totalPages}, sort=${sort})}" class="layout-pagination-button layout-pagination-last-page">맨 끝 페이지로 가기</a>                               
                             </div>
                         </div>
                     </div>                    
@@ -191,9 +192,7 @@
             </div>
         </div>
     </div>
-	
 	<div th:replace="footer :: footerFragment"></div>
-	
     <div id="cartPut">
         <div class="cart_option cart_type3" style="opacity: 1;">
             <form action="/product/addCart" method="POST" id="contactsForm">

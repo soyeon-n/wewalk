@@ -8,10 +8,10 @@
     <link rel="stylesheet" href="/order/common.css">
     <link rel="stylesheet" href="/order/order.css">
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script src="/order/order.js"></script>
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 	<script src="https://cdn.iamport.kr/v1/iamport.js"></script>
-
+	
 
 </head>
 <body>
@@ -29,12 +29,14 @@
                         <div id="itemList" class="page_aticle order_goodslist">
                             <ul class="list_product" th:each=item:${productList}>
                                 <li  th:data-id="${item.key.id}" th:data-count="${item.value}" th:data-price="${item.key.price}">
+                                
                                     <div class="thumb">
-                                        <img src="https://img-cf.kurly.com/shop/data/goods/156757412839i0.jpg" alt="상품이미지">
+                                        <img th:src="@{'/product/images/' + ${item.key.image}}" alt="상품이미지">
                                     </div>
 
                                     <div class="name">
                                         <div class="inner_name" th:text="${item.key.pname}"></div>
+                                        <div class="inner_name" th:text="'판매자: ' + ${item.key.user.userName}" style="float: right; vertical-align: middle; padding-top: 52px;"></div>
                                     </div>
                                     
                                 
@@ -102,9 +104,11 @@
                                 </div>
                                 <div class="section_full">
                                 
-                                	<input type="radio" name="address" value="default" class="radio" checked="checked"> 배송지 입력 | 
-                                	<input type="radio" name="address" value="default" class="radio address-radio"th:each="adress:${SiteUser.adressList}" th:text="${adress.type}"> 
-                                	<br/>
+                                	<input type="radio" name="address" value="default" class="radio" checked="checked" id="enterAddressRadio"> 배송지 입력 | 
+                                	<input type="radio" name="address" class="radio address-radio" th:each="address, addressStat : ${SiteUser.addressList}" 
+                                	th:value="${address.receiverName}" th:data-phone="${address.phone}" th:data-zipcode="${address.zipcode}" 
+                                	th:data-address01="${address.address01}" th:data-address02="${address.address02}" th:text="${address.type}"/>
+									<br/>
                                 	<br/>
                                 	<span class="tag" id="addrTags">
                                             <span style="display:block; margin-top:5px;">배송지 등록 및 수정은 마이페이지  > 배송지 관리에서 변경할 수 있어요</span>
@@ -283,11 +287,9 @@
                             </div>
                             
                             <div class="tit_section"> 
-                                <input type="submit" value="결제하기" class="btn_payment" onclick="requestPay()">
+                                <input type="submit" value="결제하기" class="btn_payment" onclick="verifyPay()">
                             </div>
-                            <div>
-                            <button onclick="al()">테스트</button>
-							</div>
+                            
 
                     </div>
                 </div>

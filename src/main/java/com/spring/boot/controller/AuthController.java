@@ -275,6 +275,31 @@ public class AuthController {
         }
 	}
 	
+	@PreAuthorize("isAnonymous()")
+	@GetMapping("/findUserName")
+	public String findUserName(@RequestParam(value = "error", required = false) String error, Model model) {
+	    
+		if("nodata".equals(error)) {
+			model.addAttribute("alertMessage", "회원정보가 일치하는 계정이 없습니다");
+		}
+		
+	    return "findUserName";
+	}
+	
+	@PreAuthorize("isAnonymous()")
+	@PostMapping("/findUserName")
+	public String findUserName(@RequestParam String name, @RequestParam String tel, 
+			@RequestParam String email, Model model, RedirectAttributes redirectAttributes) {
+	    
+		SiteUser user = userService.getUser(name, tel, email);
+		
+		if(user == null) {
+			return "redirect:/auth/findUserName?error=nodata";
+		}
+		redirectAttributes.addFlashAttribute("alertMessage", "회원님의 계정명은 " + user + "입니다.");
+		return "redirect:/auth/login";
+	}
+	
 	@GetMapping("/reactivate")
 	public String reactivate(@RequestParam String userName, Model model) {
 	
@@ -308,8 +333,8 @@ public class AuthController {
 		if ("disabled".equals(error)) {
 			model.addAttribute("reactivatePrompt", true);
 	    } else if ("true".equals(error)) {
-	        model.addAttribute("alertMessage", "로그인에 실패하였습니다");
-	    }		
+	        model.addAttribute("alertMessage", "아이디 또는 패스워드가 틀립니다");
+	    }	
 	    return "login";		
 	}
 	

@@ -7,6 +7,8 @@ import java.util.Comparator;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -65,27 +67,48 @@ public class OrderListService {
 		
 	}
 
-	// 판매량 상위 8개 제품 데이터 가져오기
-	public List<Product> getTop8SellingProducts() {
-	    Pageable top8 = PageRequest.of(0, 8);
+	// 판매량 상위 n개의 productno 데이터 가져오기
+	public List<Long> getTopNSellingProductnos(Pageable pageable) {
+		
+		//몇개의 데이터 가져올지 변수로 입력
+		Pageable topCount = pageable;
 	    
-	    // 판매량 상위 8개의 제품 및 판매량 정보 가져오기
-	    Page<Object[]> topSellingProductsPage = orderListRepository.findTopSellingProducts(top8);
-	    
-	    // 상위 판매 제품 ID 리스트 추출
-	    List<Long> productnoList = topSellingProductsPage.getContent().stream()
+	    // 판매량 상위 n개의 상품 id 리스트에 담기
+		List<Long> topNSellingProductIdList = orderListRepository
+												.findTopNSellingProductnos(topCount);
 
-                .map(result -> (Long) result[0])
-                .collect(Collectors.toList());
-
-
-	    // 제품 ID에 해당하는 Product 엔터티 리스트 조회
-	    List<Product> products = productRepository.findByIdIn(productnoList);
+	    return topNSellingProductIdList;
+	}
+	
+	// 판매량 상위 n개의 productno 데이터 가져오기
+	public List<Long> getTopNSellingProductnosFoundByCategory(
+			List<Product> productsFoundByCategory, Pageable pageable) {
+		
+		//몇개의 데이터 가져올지 변수로 입력
+		Pageable topCount = pageable;
+		
+		List<Long> productIds = productsFoundByCategory.stream()
+														.map(Product::getId)
+														.collect(Collectors.toList());	
 	    
-	    // 판매량 순서대로 Product 엔터티 리스트 정렬
-	    products.sort(Comparator.comparingInt(p -> productnoList.indexOf(p.getId())));
-	    
-	    return products;
+	    // 꺼내온 productId 상품 중 판매량 상위 n개의 상품 id 리스트에 담기
+		List<Long> topNSellingProductIdList = orderListRepository
+												.findTopNSellingProducts(productIds, topCount);
+		
+	    return topNSellingProductIdList;
+	}
+	
+	// 판매량 상위 n개의 상품 중 재구매가 3회 이상 일어난 상품 productno 리스트에 담기
+	public List<Long> getProductnosBoughtMoreThan3TimesBySameUser(List<Long> topNSellingProductnos) {
+
+	    List<Object[]> findProductnosBoughtMoreThan3TimesBySameUser = orderListRepository
+	    																.findProductsBoughtMoreThan3TimesBySameUser(topNSellingProductnos);
+
+	    List<Long> productIdList = findProductnosBoughtMoreThan3TimesBySameUser.stream()
+											                .map(result -> (Long) result[0])
+											                .collect(Collectors.toList());
+
+	    return productIdList;
 
 	}
 	

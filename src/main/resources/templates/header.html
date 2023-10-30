@@ -6,7 +6,7 @@
 <title>Insert title here</title>
 
     <link rel="stylesheet" href="/main/reset.css">
-    <link rel="stylesheet" href="/header.css">
+    <link rel="stylesheet" href="/header/header.css">
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <script src="/main/common.js"></script>
     <script src="/main/visual.js"></script>
@@ -53,7 +53,7 @@
                 <h1 class="logo">
                     <a th:href="@{/wewalk/main}" class="link_main">
                         <span class="gnb_logo_container"></span>
-                        <img src="/img/002.png" alt="로고" class="logo_img">
+                        <img src="/img/logo.png" alt="로고" class="logo_img">
                     </a>
                 </h1>
             </div>
@@ -541,7 +541,7 @@
                             </a>
                         </li>
                         <li class="list">
-                            <a href="#" class="link">
+                            <a th:href="@{/wewalk/searchBest}" class="link">
                                 <span class="txt">베스트</span>
                             </a>
                         </li>
@@ -594,11 +594,11 @@
                 <!-- bnr = banner -->
                 
                 <ul class="sign_menu"> <!--login class 추가-->
-                    <li class="link">
-                        <span class="user_grade_bronze" th:text="Bronze" th:if="${user.grade == 'B'}" style="margin-top: 10px;">유저등급</span>
-                        <span class="user_grade_silver" th:text="Silver" th:if="${user.grade == 'S'}" style="margin-top: 10px;">유저등급</span>
-     					<span class="user_grade_gold" th:text="Gold" th:if="${user.grade == 'G'}" style="margin-top: 10px;">유저등급</span>
-     					<span class="user_grade_platinum" th:text="Platinum" th:if="${user.grade == 'P'}" style="margin-top: 10px;">유저등급</span>
+                    <li class="link"  id="usergradecs">
+                        <span class="user_grade_bronze" th:text="Bronze" th:if="${user.grade == 'B'}">유저등급</span>
+                        <span class="user_grade_silver" th:text="Silver" th:if="${user.grade == 'S'}" >유저등급</span>
+     					<span class="user_grade_gold" th:text="Gold" th:if="${user.grade == 'G'}">유저등급</span>
+     					<span class="user_grade_platinum" th:text="Platinum" th:if="${user.grade == 'P'}">유저등급</span>
                     </li>
                     <li class="link">
                         <a href="#" class="item service2" th:text="${user.name}+' 님'" id="namehov" style="font-size: 14px;">이름</a>
@@ -1130,7 +1130,7 @@
                             </a>
                         </li>
                         <li class="list">
-                            <a href="#" class="link">
+                            <a th:href="@{/wewalk/searchBest}" class="link">
                                 <span class="txt">베스트</span>
                             </a>
                         </li>
@@ -1154,7 +1154,7 @@
                                 <!-- 첫 홈페이지 화면에 몇 초간 notice 띄우고 자동으로 off -->
                                 <ul>
                                 	<li>등록된 주소</li>
-                                	<li th:each=item:${user.adressList} th:text="${item.type}+' - '+${item.address01}+'...'"></li>
+                                	<li th:each=item:${user.addressList} th:text="${item.type}+' - '+${item.address01}+'...'"></li>
                                 </ul>
                                 
                                 <form method="post" action="/user/mypage/shipping">
