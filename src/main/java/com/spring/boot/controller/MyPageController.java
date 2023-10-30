@@ -127,7 +127,7 @@ public class MyPageController {
         Page<Product> saleProductPage = productService.getSaleProductsPaged(user.getId(), pageNum, itemsPerPage);
         List<Product> saleProduct = saleProductPage.getContent();
 
-        int totalItemCount = (int) productService.getSaleCount(); // Sale 상품의 총 개수
+        int totalItemCount = (int) productService.getSaleCount(user.getId()); // Sale 상품의 총 개수
         int totalPages = (int) Math.ceil((double) totalItemCount / itemsPerPage);
 
         List<Integer> pageList = IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList());

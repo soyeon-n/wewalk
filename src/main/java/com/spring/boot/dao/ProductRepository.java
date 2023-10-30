@@ -53,6 +53,9 @@ public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpec
     List<Product> findByStockGreaterThan(int stock);
     List<Product> findByStockEquals(int stock);
 
+    @Query("SELECT p FROM Product p WHERE p.user.id = :userId AND p.stock > 0")
+    List<Product> findSaleProductsByUserId(@Param("userId") Long userId);
+    
     
     //판매량 순으로 검색(n개)
     List<Product> findByIdIn(List<Long> topNSellingProducts);
