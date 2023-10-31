@@ -115,8 +115,8 @@ public class ProductService {
     //}
 	
 	//Sale 출력
-	public int getSaleCount() {
-	    List<Product> saleProduct = productRepository.findByStockGreaterThan(0);
+	public int getSaleCount(Long id) {
+	    List<Product> saleProduct = productRepository.findSaleProductsByUserId(id);
 	    return saleProduct.size();
 	}
 	

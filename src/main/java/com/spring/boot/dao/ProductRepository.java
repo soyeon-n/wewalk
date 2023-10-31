@@ -13,6 +13,7 @@ import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import com.spring.boot.model.Product;
 import com.spring.boot.model.SiteUser;
@@ -38,6 +39,8 @@ public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpec
 	Optional<Product> findById(long productNo);
 	//Question findBySubjectAndContent(String subject, String content);//두개의조건으로셀렉하기
 	
+	@Query("SELECT p FROM Product p WHERE p.user.id = :userId AND p.stock > 0")
+    List<Product> findSaleProductsByUserId(@Param("userId") Long userId);
 	
 	
 	//검색-카테고리검색

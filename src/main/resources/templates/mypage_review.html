@@ -6,9 +6,10 @@
     <title>마이페이지- 상품후기</title>
     <link rel="stylesheet" href="/reset.css">
     
+    <link rel="stylesheet" href="/css/common.css">
     <link rel="stylesheet" href="/css/order_list.css">
     <link rel="stylesheet" href="/css/changeInfo.css">
-
+    <link rel="stylesheet" href="/css/myShopList.css">
     
     
     
@@ -16,7 +17,7 @@
     
     <!-- css 겹쳐서 임시삭제
     <link rel="stylesheet" href="/mykurly_order_list.css"> -->
-
+    <link rel="stylesheet" href="/mykurly_review.css">
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <script src="/mykurly.js"></script>
     
@@ -60,13 +61,11 @@
                                         </div>
                                         <div class="benefit">
                                             <strong class="tit"></strong>
-                                            <span th:text="|적립 ${user.membership == true ? (user.grade == 'B' ? '10% + 1%' : 
-							                                user.grade == 'S' ? '10% + 3%' : 
-							                                user.grade == 'G' ? '10% + 5%' : 
-							                                user.grade == 'P' ? '10% + 8%' : '10%') : 
-							                                (user.grade == 'P' ? '8%' : (user.grade == 'B' ? '1%' : 
-							                                user.grade == 'S' ? '3%' : 
-							                                user.grade == 'G' ? '5%' : ''))}|"></span>
+                                            <span th:text="|적립 ${user.membership == true ? '10%' : 
+										        user.grade == 'B' ? '1%' : 
+										        user.grade == 'S' ? '3%' : 
+										        user.grade == 'G' ? '5%' : 
+										        user.grade == 'P' ? '8%' : ''}|"></span>
                                         </div>
                                     </div>
                                 </div>
@@ -387,9 +386,6 @@
 								          <a class="layout-pagination-button layout-pagination-last-page" 
 									          th:href="@{/review/mylist(page=${paging.totalPages})}"></a>
 								          
-							          
-							          
-							     
 							     </ul>
 							
 							</nav>
@@ -405,12 +401,12 @@
                     </div>
                     
                     
+                    <div th:replace="footer :: footerFragment"></div>
 
 
                 </div>
             </div>
         </div>
     </div>
-                    <div th:replace="footer :: footerFragment"></div>
 </body>
 </html>
