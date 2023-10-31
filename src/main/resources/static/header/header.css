@@ -27,7 +27,7 @@ textarea::placeholder, input::placeholder{
 
 #content {
     min-width: 1050px;
-    min-height:800px;/* 페이징 때문에 안보여서 일단 추가해놨는데 문제 없으면 삭제 */
+    
     padding-bottom: 120px;
 }
 

@@ -1,5 +1,7 @@
 #container, #content{
     position:relative;
+    min-height: 770px;
+    border-bottom: none;
 }
 
 .page_aticle button, .page_aticle input, .page_aticle select, .page_aticle * {
@@ -665,14 +667,6 @@ body #container #main .layout-pagination .pagediv span strong{
     background-color: #1EC800;
     padding: 5px;
     border-radius: 5px;
-}
-
-.page-numbers {
-    position: absolute;
-    left: 38%; /* 원하는 위치 조절 */
-    text-align: center; /* 페이지 번호를 가로 가운데 정렬 */
-    margin-top: 770px;
-    font-size: 14px;
 }
 
 
