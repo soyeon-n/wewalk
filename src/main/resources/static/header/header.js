@@ -34,7 +34,7 @@ $(document).ready(function(){
     
     	if (!$(this).hasClass('notcurrent')) {
         var topText = $(this).closest('li.current').find('.tit .txt').text().trim();
-    	var keyword = topText.split('·')[0].trim();
+    	var keyword = topText.split('·')[0].trim().replace(/\s+/g, '');
     
     	var url = '/wewalk/search?keyword=c_' + keyword;
     	window.location.href = url;

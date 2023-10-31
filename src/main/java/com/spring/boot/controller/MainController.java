@@ -86,7 +86,7 @@ public class MainController {
 	
 	//메인에서 검색시이곳으로 keyword가 검색어
     @GetMapping("/search")
-    public String search( //@PageableDefault Pageable pageable 이미 pageable에 대한 설정 하고 왔음 
+    public String search( //@PageableDefault Pageable pageable, //이미 pageable에 대한 설정 하고 왔음 
     		@RequestParam(value = "sort", required = false) String sort, 
 			@ModelAttribute PageRequestDTO pageRequestDTO, Model model, 
     		@AuthenticationPrincipal PrincipalDetails principalDetails) {
