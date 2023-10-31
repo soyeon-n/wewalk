@@ -139,7 +139,7 @@ public class ProductController {
 	    model.addAttribute("entities", entities);
 		
 	    
-		
+		//페이징을 따로넘겨줘도 결국에는 주소값을 공동으로 쓰기떄문에 동일해지는건어쩔수없다 
 		model.addAttribute("paging1",paging1);//qna문의하기의페이징 qna_list layout
 		model.addAttribute("paging",paging);//상품리뷰의 페이징
 		
@@ -208,7 +208,7 @@ public class ProductController {
 		return ResponseEntity.ok("Cart item added successfully");
 	}
 	
-	
+	//image 맵핑
 	@ResponseBody
     @GetMapping("/images/{image}")
     public Resource processImg(@PathVariable String image) throws MalformedURLException {
