@@ -21,12 +21,11 @@ textarea::placeholder, input::placeholder{
     position: relative;
 }
 
-#main {
-    border-bottom: 1px solid #EAEAEA;
-}
+
 
 #content {
     min-width: 1050px;
+    min-height:800px;/* 페이징 때문에 안보여서 일단 추가해놨는데 문제 없으면 삭제 */
     padding-bottom: 120px;
 }
 
@@ -565,10 +564,7 @@ li:hover .sub_menu2 {
     font-weight: bolder;
 }
 
-.gnb_main:active .gnb_sub,
-.gnb_main:hover .gnb_sub {
-    display: block;
-}
+
 
 .gnb_main:active .gnb_sub,
 .gnb_main:hover .gnb_sub {
@@ -586,6 +582,7 @@ li:hover .sub_menu2 {
 
 .gnb_sub .menu .notcurrent{
     background-color: #f7f7f7;
+    height: 40px;
 }
 .gnb_sub .menu .notcurrent :hover {
     background-color: #f7f7f7;
@@ -1217,35 +1214,6 @@ li:hover .sub_menu2 {
     transition: background 0.5s;
 }
 
-/* hover시 백그라운드 그림자 */
-.page_aticle .bx_controls_direction .bx-prev:hover {
-    background: url(https://res.kurly.com/pc/service/main/1908/btn_prev_default_hover_x1.png?v=1) no-repeat 50% 50%;
-    transition: background 0.5s;
-}
-
-.page_aticle .bx_controls_direction .bx-next {
-    right: -30px;
-    background: url(https://res.kurly.com/pc/service/main/1908/btn_next_default.png?v=1) no-repeat 50% 50%;
-    transition: background 0.5s;
-}
-
-/* hover시 백그라운드 그림자 */
-.page_aticle .bx_controls_direction .bx-next:hover {
-    background: url(https://res.kurly.com/pc/service/main/1908/btn_next_default_hover_x1.png?v=1) no-repeat 50% 50%;;
-    transition: background 0.5s;
-}
-
-/* main_type2 = 이벤트 소식 */
-.page_aticle .bg {
-    background-color: #f7f7f7;
-}
-
-/* 이벤트 소식 제목 화살표 */
-.page_aticle .tit_goods .name .ico {
-    padding: 0 31px;
-    background: url(https://res.kurly.com/pc/service/main/1908/ico_title_link_x1.png) no-repeat 100% 50%;
-    font-weight: 700;
-}
 
 /* main_event 안에 main_type2가 있는 것 */
 .main_event .list_goods {

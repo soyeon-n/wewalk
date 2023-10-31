@@ -165,25 +165,25 @@
 
 						<!-- 페이징 처리 시 keyword, sort 값 추가 -->
                         <div class="layout-pagination" th:if="${!paging.isEmpty}">
-                            <div class="pagediv" 
-                            th:with="startNumber=${(paging.number/5)} * 5 + 1,
+                            <div class="pagediv">
+                            <!-- th:with="startNumber=${(paging.number/5)} * 5 + 1,
 							endNumber=(${paging.totalPages}>${startNumber}+4)?
-							${startNumber}+4 : ${paging.totalPages}">
-                                <a th:href="@{/wewalk/search(page=1, keyword=${keyword}, sort=${sort})}" class="layout-pagination-button layout-pagination-first-page">맨 처음 페이지로 가기</a>
-                                <a th:href="@{/wewalk/search(page=${paging.number-1}, keyword=${keyword}, sort=${sort})}" class="layout-pagination-button layout-pagination-prev-page">이전 페이지로 가기</a>
-<!--                                 <a th:style="${paging.number == paging.start} ? 'display:none'" th:href="@{/wewalk/search(page=1, keyword=${keyword}, sort=${sort})}" class="layout-pagination-button layout-pagination-first-page">맨 처음 페이지로 가기</a>
-                                <a th:style="${paging.number == paging.start}?'display:none'" th:href="@{/wewalk/search(page=${paging.number-1}, keyword=${keyword}, sort=${sort})}" class="layout-pagination-button layout-pagination-prev-page">이전 페이지로 가기</a> -->
-                                <a th:each="page : ${#numbers.sequence(startNumber, endNumber)}"
-									th:classappend="(${page}==${paging.number}) ? 'active'" 
+							${startNumber}+4 : ${paging.totalPages}" -->
+                                <!-- <a th:href="@{/wewalk/search(page=1, keyword=${keyword}, sort=${sort})}" class="layout-pagination-button layout-pagination-first-page">맨 처음 페이지로 가기</a>
+                                <a th:href="@{/wewalk/search(page=${paging.number-1}, keyword=${keyword}, sort=${sort})}" class="layout-pagination-button layout-pagination-prev-page">이전 페이지로 가기</a> -->
+                                <a th:style="${paging.page == 1} ? 'display:none'" th:href="@{/wewalk/search(page=1, keyword=${keyword}, sort=${sort})}" class="layout-pagination-button layout-pagination-first-page">맨 처음 페이지로 가기</a>
+                                <a th:style="${paging.page == 1}?'display:none'" th:href="@{/wewalk/search(page=${paging.page-1}, keyword=${keyword}, sort=${sort})}" class="layout-pagination-button layout-pagination-prev-page">이전 페이지로 가기</a>
+                                <a th:each="page : ${paging.pageList}"
+									th:classappend="(${page}==${paging.page}) ? 'active'" 
 									th:href="@{/wewalk/search(page=${page}, keyword=${keyword}, sort=${sort})}">
                                     <span>
-                                        <strong class="layout-pagination-button layout-pagination-number" th:classappend="(${page}==${paging.number}) ? '__active'" th:text="${page}"></strong>
+                                        <strong class="layout-pagination-button layout-pagination-number" th:classappend="(${page}==${paging.page}) ? '__active'" th:text="${page}"></strong>
                                     </span>
                                 </a>                                
-                                <a th:href="@{/wewalk/search(page=${paging.number+1}, keyword=${keyword}, sort=${sort})}" class="layout-pagination-button layout-pagination-next-page">다음 페이지로 가기</a>
-                                <a th:href="@{/wewalk/search(page=${paging.totalPages}, keyword=${keyword}, sort=${sort})}" class="layout-pagination-button layout-pagination-last-page">맨 끝 페이지로 가기</a>                               
-<!--                                 <a th:style="${paging.number == paging.end} ? 'display:none'" th:href="@{/wewalk/search(page=${paging.number+1}, keyword=${keyword}, sort=${sort})}" class="layout-pagination-button layout-pagination-next-page">다음 페이지로 가기</a>
-                                <a th:style="${paging.number == paging.end} ? 'display:none'" th:href="@{/wewalk/search(page=${paging.totalPages}, keyword=${keyword}, sort=${sort})}" class="layout-pagination-button layout-pagination-last-page">맨 끝 페이지로 가기</a>                                -->
+                                <!-- <a th:href="@{/wewalk/search(page=${paging.number+1}, keyword=${keyword}, sort=${sort})}" class="layout-pagination-button layout-pagination-next-page">다음 페이지로 가기</a>
+                                <a th:href="@{/wewalk/search(page=${paging.totalPages}, keyword=${keyword}, sort=${sort})}" class="layout-pagination-button layout-pagination-last-page">맨 끝 페이지로 가기</a>  -->                              
+                                <a th:style="${paging.page == paging.totalPages} ? 'display:none'" th:href="@{/wewalk/search(page=${paging.page+1}, keyword=${keyword}, sort=${sort})}" class="layout-pagination-button layout-pagination-next-page">다음 페이지로 가기</a>
+                                <a th:style="${paging.page == paging.totalPages} ? 'display:none'" th:href="@{/wewalk/search(page=${paging.totalPages}, keyword=${keyword}, sort=${sort})}" class="layout-pagination-button layout-pagination-last-page">맨 끝 페이지로 가기</a>                                
                             </div>
                         </div>
                     </div>                    

@@ -65,11 +65,22 @@ public class CartService {
 	
 	public List<CartItem> getCartItemList(String userName){
 		
-		SiteUser user = userRepository.findByUserName(userName).get();
+		Optional<SiteUser> user = userRepository.findByUserName(userName);
 		
-		Cart cart = cartRepository.findById(user.getId()).get();
+		if(user.isPresent()) {
+			
+			SiteUser site = user.get();
+			Optional<Cart> cart2 = cartRepository.findById(site.getId());
+			
+			if(cart2.isPresent()) {
+				Cart cart = cart2.get();
+				List<CartItem> lists = cart.getCartItemList();
+				return lists;
+			}
+		}
 		
-		return cart.getCartItemList();
+		
+		return null;
 		
 	}
 	//은별 

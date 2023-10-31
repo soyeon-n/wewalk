@@ -15,7 +15,7 @@
 </head>
 <body>
     <div id="container">
-        <div id="main">
+        <div id="main" >
           <div th:insert="header :: headerFragment"></div>
             <div id="content">
                 <div id="myPageTop" class="page_aticle mypage_top">
@@ -173,19 +173,18 @@
 												    </div>
 												</div>
 												
-
+<!-- 여기에 이전 페이지, 다음 페이지 들어가야하는데 없음(컨트롤러에서도 현재 페이지에 맞게 데이터 보내줘야함) -->
 												<div class="page-numbers">
-												    <span th:each="page, stat : ${pageList}">
-													    <span th:if="${currentPage == page}" class="current-page" th:text="${page}"></span>
-													    <a th:unless="${currentPage == page}" th:href="@{/user/mypage/sale(pageNum=${page})}" th:text="${page}"></a>
-													</span>
+													    <span th:each="page, stat : ${pageList}">
+														    <span th:if="${currentPage == page}" class="current-page" th:text="${page}"></span>
+														    <a th:unless="${currentPage == page}" th:href="@{/user/mypage/sale(pageNum=${page})}" th:text="${page}"></a>
+														</span>                 
 												</div>
 												</div>
 												
 												<div class="centered-text" th:unless="${user.seller == true}">
 												    <p>판매자 등록 후 이용해주세요.</p>
 												</div>
-												
 											</div>
 											
 										</div>		

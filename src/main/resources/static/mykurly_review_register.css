@@ -3,7 +3,7 @@
 .section_write .goods_info {
     overflow: hidden;
     padding: 20px 15px;
-    border-top: 2px solid #5f0080;
+    border-top: 2px solid #1EC800;
 }
 
 .section_write .goods_info .thumb {
@@ -180,9 +180,9 @@ textarea::placeholder, input::placeholder{
 
 .section_write .link_inquire a {
     padding: 0 9px 0 5px;
-    background: url(https://res.kurly.com/pc/ico/1806/ico_arrow_6x10.png) no-repeat 100% 4px;
+    background: url('/img/mainpage/btn_next_default_hover_v1.png') no-repeat 100% 4px;
     font-weight: 700;
-    color: #5f0080;
+    color: #1EC800;
 }
 
 
@@ -192,8 +192,8 @@ textarea::placeholder, input::placeholder{
     width: 200px;
     height: 48px;
     margin: 0 auto;
-    border: 1px solid #5f0080;
-    background-color: #5f0080;
+    border: 1px solid #1EC800;
+    background-color: #1EC800;
     font-size: 14px;
     color: #fff;
     line-height: 46px;

@@ -296,7 +296,7 @@ public class AuthController {
 		if(user == null) {
 			return "redirect:/auth/findUserName?error=nodata";
 		}
-		redirectAttributes.addFlashAttribute("alertMessage", "회원님의 계정명은 " + user + "입니다.");
+		redirectAttributes.addFlashAttribute("alertMessage", "회원님의 계정명은 " + user.getUserName() + "입니다.");
 		return "redirect:/auth/login";
 	}
 	
